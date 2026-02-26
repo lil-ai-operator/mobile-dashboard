@@ -21,6 +21,12 @@
       try { PROJECT_NAMES = JSON.parse(saved); } catch(e) {}
     }
     
+    // Apply saved names to DOM on load
+    Object.keys(PROJECT_NAMES).forEach(key => {
+      const el = document.getElementById('name-' + key);
+      if (el) el.textContent = PROJECT_NAMES[key];
+    });
+    
     function getProjectName(key) {
       return PROJECT_NAMES[key] || DEFAULT_PROJECT_NAMES[key] || key;
     }
