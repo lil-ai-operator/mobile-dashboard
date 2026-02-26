@@ -4,6 +4,31 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Mission Control - Mobile</title>
+  <script>
+    // Project names config - Wayne can edit these!
+    const DEFAULT_PROJECT_NAMES = {
+      "autobookr": "⚡ FlashCall",
+      "revenue": "💰 CashFlow", 
+      "business": "🔄 ClientLoop",
+      "brain": "🧠 NeuroNet",
+      "mobile": "📱 Mobile Dashboard"
+    };
+    
+    // Load saved names or use defaults
+    let PROJECT_NAMES = { ...DEFAULT_PROJECT_NAMES };
+    const saved = localStorage.getItem('projectNames');
+    if (saved) {
+      try { PROJECT_NAMES = JSON.parse(saved); } catch(e) {}
+    }
+    
+    function getProjectName(key) {
+      return PROJECT_NAMES[key] || DEFAULT_PROJECT_NAMES[key] || key;
+    }
+    
+    function saveProjectNames() {
+      localStorage.setItem('projectNames', JSON.stringify(PROJECT_NAMES));
+    }
+  </script>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body { 
@@ -11,7 +36,12 @@
       background: #0f172a; color: #e2e8f0;
       padding: 16px; min-height: 100vh;
     }
-    h1 { font-size: 20px; margin-bottom: 4px; color: #fff; }
+    h1 { font-size: 20px; margin-bottom: 4px; color: #fff; display: flex; align-items: center; gap: 8px; }
+    .edit-names-btn {
+      background: #334155; border: none; color: #94a3b8; font-size: 11px;
+      padding: 4px 10px; border-radius: 12px; cursor: pointer;
+    }
+    .edit-names-btn:active { background: #475569; }
     .timestamp { font-size: 12px; color: #64748b; margin-bottom: 20px; }
     
     /* Project Cards - Clickable */
@@ -109,17 +139,17 @@
   </style>
 </head>
 <body>
-  <h1>🚀 Mission Control</h1>
+  <h1>🚀 Mission Control <button class="edit-names-btn" onclick="editProjectNames()">✏️ Edit Names</button></h1>
   <p class="timestamp">Updated: just now • Auto-refresh: 5 min • Thu, 26 Feb 2026</p>
   
   <p style="font-size: 13px; color: #64748b; margin-bottom: 16px;">
     Tap any project to see its roadmap
   </p>
   
-  <!-- Project 1: Missed Call Text-back Service -->
+  <!-- Project 1: AutoBookr -->
   <div class="project-card" onclick="openModal('autobookr')">
     <div class="project-header">
-      <span class="project-name">📞 Missed Call Text-back Service</span>
+      <span class="project-name" id="name-autobookr"></span>
       <span class="project-status-dot status-green"></span>
     </div>
     <p class="status-label">Making progress • Twilio + Stripe connected</p>
@@ -127,10 +157,10 @@
     <p class="tap-hint">Tap for roadmap →</p>
   </div>
   
-  <!-- Project 2: Small Biz Outreach -->
-  <div class="project-card" onclick="openModal('outreach')">
+  <!-- Project 2: Revenue -->
+  <div class="project-card" onclick="openModal('revenue')">
     <div class="project-header">
-      <span class="project-name">💰 Small Biz Outreach</span>
+      <span class="project-name" id="name-revenue"></span>
       <span class="project-status-dot status-yellow"></span>
     </div>
     <p class="status-label">Offer ready • Need contacts to start</p>
@@ -138,10 +168,10 @@
     <p class="tap-hint">Tap for roadmap →</p>
   </div>
   
-  <!-- Project 3: Client Rebuild Project -->
-  <div class="project-card" onclick="openModal('rebuild')">
+  <!-- Project 3: Business -->
+  <div class="project-card" onclick="openModal('business')">
     <div class="project-header">
-      <span class="project-name">🔄 Client Rebuild Project</span>
+      <span class="project-name" id="name-business"></span>
       <span class="project-status-dot status-yellow"></span>
     </div>
     <p class="status-label">Context recovered • Need weekly priorities</p>
@@ -149,10 +179,10 @@
     <p class="tap-hint">Tap for roadmap →</p>
   </div>
   
-  <!-- Project 4: AI Architecture -->
+  <!-- Project 4: Brain -->
   <div class="project-card" onclick="openModal('brain')">
     <div class="project-header">
-      <span class="project-name">🧠 AI Architecture</span>
+      <span class="project-name" id="name-brain"></span>
       <span class="project-status-dot status-yellow"></span>
     </div>
     <p class="status-label">Design drafted • Waiting for approval</p>
@@ -163,7 +193,7 @@
   <!-- Project 5: Mobile Dashboard (Done) -->
   <div class="project-card" onclick="openModal('mobile')">
     <div class="project-header">
-      <span class="project-name">📱 Mobile Dashboard</span>
+      <span class="project-name" id="name-mobile"></span>
       <span class="project-status-dot status-green"></span>
     </div>
     <p class="status-label">Published and working</p>
@@ -177,11 +207,11 @@
       <span class="project-name">🚦 Quick Status</span>
     </div>
     <div class="traffic-lights">
-      <div class="traffic-item"><span class="project-status-dot status-green"></span> Text-back Service</div>
-      <div class="traffic-item"><span class="project-status-dot status-green"></span> Mobile Dashboard</div>
-      <div class="traffic-item"><span class="project-status-dot status-yellow"></span> Small Biz Outreach</div>
-      <div class="traffic-item"><span class="project-status-dot status-yellow"></span> Client Rebuild</div>
-      <div class="traffic-item"><span class="project-status-dot status-yellow"></span> AI Architecture</div>
+      <div class="traffic-item"><span class="project-status-dot status-green" id="tl-autobookr"></span> <span id="tl-name-autobookr"></span></div>
+      <div class="traffic-item"><span class="project-status-dot status-green" id="tl-mobile"></span> <span id="tl-name-mobile"></span></div>
+      <div class="traffic-item"><span class="project-status-dot status-yellow" id="tl-revenue"></span> <span id="tl-name-revenue"></span></div>
+      <div class="traffic-item"><span class="project-status-dot status-yellow" id="tl-business"></span> <span id="tl-name-business"></span></div>
+      <div class="traffic-item"><span class="project-status-dot status-yellow" id="tl-brain"></span> <span id="tl-name-brain"></span></div>
     </div>
   </div>
   
@@ -208,7 +238,7 @@
     <!-- AutoBookr Modal -->
     <div class="modal" id="modal-autobookr">
       <div class="modal-header">
-        <span class="modal-title">📞 Missed Call Text-back Service</span>
+        <span class="modal-title" id="modal-title-autobookr"></span>
         <button class="close-btn" onclick="closeModal()">&times;</button>
       </div>
       
@@ -238,10 +268,10 @@
       </div>
     </div>
     
-    <!-- Small Biz Outreach Modal -->
-    <div class="modal" id="modal-outreach">
+    <!-- Revenue Modal -->
+    <div class="modal" id="modal-revenue">
       <div class="modal-header">
-        <span class="modal-title">💰 Small Biz Outreach</span>
+        <span class="modal-title" id="modal-title-revenue"></span>
         <button class="close-btn" onclick="closeModal()">&times;</button>
       </div>
       
@@ -265,10 +295,10 @@
       </div>
     </div>
     
-    <!-- Client Rebuild Modal -->
-    <div class="modal" id="modal-rebuild">
+    <!-- Business Modal -->
+    <div class="modal" id="modal-business">
       <div class="modal-header">
-        <span class="modal-title">🔄 Client Rebuild Project</span>
+        <span class="modal-title" id="modal-title-business"></span>
         <button class="close-btn" onclick="closeModal()">&times;</button>
       </div>
       
@@ -290,10 +320,10 @@
       </div>
     </div>
     
-    <!-- AI Architecture Modal -->
+    <!-- Brain Modal -->
     <div class="modal" id="modal-brain">
       <div class="modal-header">
-        <span class="modal-title">🧠 AI Architecture</span>
+        <span class="modal-title" id="modal-title-brain"></span>
         <button class="close-btn" onclick="closeModal()">&times;</button>
       </div>
       
@@ -318,7 +348,7 @@
     <!-- Mobile Dashboard Modal -->
     <div class="modal" id="modal-mobile">
       <div class="modal-header">
-        <span class="modal-title">📱 Mobile Dashboard</span>
+        <span class="modal-title" id="modal-title-mobile"></span>
         <button class="close-btn" onclick="closeModal()">&times;</button>
       </div>
       
@@ -344,6 +374,41 @@
   </div>
 
   <script>
+    // Populate all project names
+    const projectKeys = ['autobookr', 'revenue', 'business', 'brain', 'mobile'];
+    projectKeys.forEach(key => {
+      const name = getProjectName(key);
+      // Card names
+      const cardEl = document.getElementById('name-' + key);
+      if (cardEl) cardEl.textContent = name;
+      // Traffic light names
+      const tlEl = document.getElementById('tl-name-' + key);
+      if (tlEl) tlEl.textContent = name;
+      // Modal titles
+      const modalEl = document.getElementById('modal-title-' + key);
+      if (modalEl) modalEl.textContent = name;
+    });
+    
+    function editProjectNames() {
+      const keys = Object.keys(PROJECT_NAMES);
+      let msg = "Enter a new name:\n\n";
+      keys.forEach((key, i) => {
+        msg += (i+1) + ". " + key + ": " + PROJECT_NAMES[key] + "\n";
+      });
+      msg += "\nReply with format: key=new name";
+      
+      // Simple prompt approach - ask for one at a time
+      const key = prompt("Which project? (autobookr, revenue, business, brain, mobile)");
+      if (key && PROJECT_NAMES[key] !== undefined) {
+        const newName = prompt("New name for " + PROJECT_NAMES[key] + ":", PROJECT_NAMES[key]);
+        if (newName) {
+          PROJECT_NAMES[key] = newName;
+          saveProjectNames();
+          location.reload();
+        }
+      }
+    }
+    
     function openModal(id) {
       document.getElementById('modalOverlay').classList.add('active');
       // Hide all modals first
