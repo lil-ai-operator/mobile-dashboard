@@ -28,6 +28,92 @@
     function saveProjectNames() {
       localStorage.setItem('projectNames', JSON.stringify(PROJECT_NAMES));
     }
+    
+    // Calculate progress from checkboxes in modal
+    function calculateProgress(modalId) {
+      const modal = document.getElementById(modalId);
+      if (!modal) return 0;
+      
+      const doneItems = modal.querySelectorAll('.roadmap-section.done .roadmap-item').length;
+      const todoItems = modal.querySelectorAll('.roadmap-section.todo .roadmap-item').length;
+      const total = doneItems + todoItems;
+      
+      if (total === 0) return 0;
+      return Math.round((doneItems / total) * 100);
+    }
+    
+    // Get color based on progress percentage
+    function getProgressColor(percent) {
+      if (percent > 75) return '#22c55e';
+      if (percent >= 25) return '#eab308';
+      return '#ef4444';
+    }
+    
+    // Build progress bar visual (unicode blocks)
+    function buildProgressBar(percent) {
+      const filled = Math.round(percent / 5);
+      const empty = 20 - filled;
+      return '█'.repeat(filled) + '░'.repeat(empty);
+    }
+    
+    // Update all progress bars
+    function updateProgressBars() {
+      ['autobookr', 'revenue', 'business', 'brain', 'mobile'].forEach(key => {
+        const percent = calculateProgress('modal-' + key);
+        const color = getProgressColor(percent);
+        
+        // Update progress bar fill
+        const fillEl = document.getElementById('progress-fill-' + key);
+        if (fillEl) fillEl.style.width = percent + '%';
+        if (fillEl) fillEl.style.backgroundColor = color;
+        
+        // Update percent text
+        const pctEl = document.getElementById('progress-pct-' + key);
+        if (pctEl) pctEl.textContent = percent + '%';
+        if (pctEl) pctEl.style.color = color;
+        
+        // Update unicode bar
+        const barEl = document.getElementById('progress-bar-' + key);
+        if (barEl) barEl.textContent = buildProgressBar(percent);
+        if (barEl) barEl.style.color = color;
+      });
+    }
+    
+    // Handle tap-to-edit for project names
+    function initEditableNames() {
+      const keys = ['autobookr', 'revenue', 'business', 'brain', 'mobile'];
+      keys.forEach(key => {
+        const nameEl = document.getElementById('name-' + key);
+        if (!nameEl) return;
+        
+        nameEl.contentEditable = "true";
+        nameEl.spellcheck = false;
+        
+        nameEl.addEventListener('click', function(e) {
+          e.stopPropagation(); // Don't open modal when clicking name
+        });
+        
+        nameEl.addEventListener('blur', function() {
+          const newName = nameEl.textContent.trim();
+          if (newName && newName !== getProjectName(key)) {
+            PROJECT_NAMES[key] = newName;
+            saveProjectNames();
+            // Update traffic light and modal title too
+            const tlEl = document.getElementById('tl-name-' + key);
+            if (tlEl) tlEl.textContent = newName;
+            const modalEl = document.getElementById('modal-title-' + key);
+            if (modalEl) modalEl.textContent = newName;
+          }
+        });
+        
+        nameEl.addEventListener('keydown', function(e) {
+          if (e.key === 'Enter') {
+            e.preventDefault();
+            nameEl.blur();
+          }
+        });
+      });
+    }
   </script>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -57,7 +143,18 @@
       display: flex; justify-content: space-between; align-items: center;
       margin-bottom: 8px;
     }
-    .project-name { font-size: 16px; font-weight: 600; color: #fff; }
+    .project-name { 
+      font-size: 16px; font-weight: 600; color: #fff; 
+      padding: 4px 8px; margin: -4px -8px; border-radius: 6px;
+      cursor: text; border: 2px solid transparent;
+      transition: border-color 0.2s, background 0.2s;
+    }
+    .project-name:hover { 
+      border-color: #475569; background: #334155;
+    }
+    .project-name:focus { 
+      outline: none; border-color: #3b82f6; background: #1e293b;
+    }
     .project-status-dot {
       width: 12px; height: 12px; border-radius: 50%;
       flex-shrink: 0;
@@ -65,6 +162,28 @@
     .status-green { background: #22c55e; box-shadow: 0 0 8px #22c55e; }
     .status-yellow { background: #eab308; box-shadow: 0 0 8px #eab308; }
     .status-red { background: #ef4444; box-shadow: 0 0 8px #ef4444; }
+    
+    /* Progress Bar */
+    .progress-section {
+      margin-top: 10px;
+    }
+    .progress-bar-visual {
+      font-family: monospace; font-size: 11px;
+      letter-spacing: 1px; margin-bottom: 4px;
+    }
+    .progress-track {
+      display: flex; align-items: center; gap: 8px;
+    }
+    .progress-fill-bar {
+      flex: 1; height: 6px; background: #334155; border-radius: 3px;
+      overflow: hidden;
+    }
+    .progress-fill {
+      height: 100%; border-radius: 3px; transition: width 0.3s;
+    }
+    .progress-percent {
+      min-width: 38px; text-align: right; font-size: 11px; font-weight: 700;
+    }
     
     .status-label { font-size: 12px; color: #94a3b8; }
     .build-status {
@@ -143,7 +262,7 @@
   <p class="timestamp">Updated: just now • Auto-refresh: 5 min • Thu, 26 Feb 2026</p>
   
   <p style="font-size: 13px; color: #64748b; margin-bottom: 16px;">
-    Tap any project to see its roadmap
+    Tap any project to see its roadmap • Tap name to rename
   </p>
   
   <!-- Project 1: AutoBookr -->
@@ -152,9 +271,17 @@
       <span class="project-name" id="name-autobookr"></span>
       <span class="project-status-dot status-green"></span>
     </div>
+    <div class="progress-section">
+      <div class="progress-bar-visual" id="progress-bar-autobookr"></div>
+      <div class="progress-track">
+        <div class="progress-fill-bar">
+          <div class="progress-fill" id="progress-fill-autobookr"></div>
+        </div>
+        <span class="progress-percent" id="progress-pct-autobookr"></span>
+      </div>
+    </div>
     <p class="status-label">Making progress • Twilio + Stripe connected</p>
     <span class="build-status build-ok">🔧 Building OK</span>
-    <p class="tap-hint">Tap for roadmap →</p>
   </div>
   
   <!-- Project 2: Revenue -->
@@ -163,9 +290,17 @@
       <span class="project-name" id="name-revenue"></span>
       <span class="project-status-dot status-yellow"></span>
     </div>
+    <div class="progress-section">
+      <div class="progress-bar-visual" id="progress-bar-revenue"></div>
+      <div class="progress-track">
+        <div class="progress-fill-bar">
+          <div class="progress-fill" id="progress-fill-revenue"></div>
+        </div>
+        <span class="progress-percent" id="progress-pct-revenue"></span>
+      </div>
+    </div>
     <p class="status-label">Offer ready • Need contacts to start</p>
     <span class="build-status build-attn">⚠️ Needs Attention</span>
-    <p class="tap-hint">Tap for roadmap →</p>
   </div>
   
   <!-- Project 3: Business -->
@@ -174,9 +309,17 @@
       <span class="project-name" id="name-business"></span>
       <span class="project-status-dot status-yellow"></span>
     </div>
+    <div class="progress-section">
+      <div class="progress-bar-visual" id="progress-bar-business"></div>
+      <div class="progress-track">
+        <div class="progress-fill-bar">
+          <div class="progress-fill" id="progress-fill-business"></div>
+        </div>
+        <span class="progress-percent" id="progress-pct-business"></span>
+      </div>
+    </div>
     <p class="status-label">Context recovered • Need weekly priorities</p>
     <span class="build-status build-attn">⚠️ Needs Attention</span>
-    <p class="tap-hint">Tap for roadmap →</p>
   </div>
   
   <!-- Project 4: Brain -->
@@ -185,9 +328,17 @@
       <span class="project-name" id="name-brain"></span>
       <span class="project-status-dot status-yellow"></span>
     </div>
+    <div class="progress-section">
+      <div class="progress-bar-visual" id="progress-bar-brain"></div>
+      <div class="progress-track">
+        <div class="progress-fill-bar">
+          <div class="progress-fill" id="progress-fill-brain"></div>
+        </div>
+        <span class="progress-percent" id="progress-pct-brain"></span>
+      </div>
+    </div>
     <p class="status-label">Design drafted • Waiting for approval</p>
     <span class="build-status build-attn">⚠️ Needs Attention</span>
-    <p class="tap-hint">Tap for roadmap →</p>
   </div>
   
   <!-- Project 5: Mobile Dashboard (Done) -->
@@ -196,9 +347,17 @@
       <span class="project-name" id="name-mobile"></span>
       <span class="project-status-dot status-green"></span>
     </div>
+    <div class="progress-section">
+      <div class="progress-bar-visual" id="progress-bar-mobile"></div>
+      <div class="progress-track">
+        <div class="progress-fill-bar">
+          <div class="progress-fill" id="progress-fill-mobile"></div>
+        </div>
+        <span class="progress-percent" id="progress-pct-mobile"></span>
+      </div>
+    </div>
     <p class="status-label">Published and working</p>
     <span class="build-status build-ok">✅ Building OK</span>
-    <p class="tap-hint">Tap for roadmap →</p>
   </div>
   
   <!-- Traffic Lights Summary -->
@@ -389,6 +548,10 @@
       if (modalEl) modalEl.textContent = name;
     });
     
+    // Initialize editable names and progress bars
+    initEditableNames();
+    updateProgressBars();
+    
     function editProjectNames() {
       const keys = Object.keys(PROJECT_NAMES);
       let msg = "Enter a new name:\n\n";
@@ -397,7 +560,6 @@
       });
       msg += "\nReply with format: key=new name";
       
-      // Simple prompt approach - ask for one at a time
       const key = prompt("Which project? (autobookr, revenue, business, brain, mobile)");
       if (key && PROJECT_NAMES[key] !== undefined) {
         const newName = prompt("New name for " + PROJECT_NAMES[key] + ":", PROJECT_NAMES[key]);
