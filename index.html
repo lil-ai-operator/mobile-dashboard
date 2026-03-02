@@ -9,8 +9,7 @@
     const DEFAULT_PROJECT_NAMES = {
       "autobookr": "⚡ FlashCall",
       "revenue": "💰 CashFlow", 
-      "business": "🔄 ClientLoop",
-      "brain": "🧠 NeuroNet",
+      "brain": "🧠 NeuroNet Agent Team",
       "mobile": "📱 Mobile Dashboard"
     };
     
@@ -64,7 +63,7 @@
     
     // Update all progress bars
     function updateProgressBars() {
-      ['autobookr', 'revenue', 'business', 'brain', 'mobile'].forEach(key => {
+      ['autobookr', 'revenue', 'brain', 'mobile'].forEach(key => {
         const percent = calculateProgress('modal-' + key);
         const color = getProgressColor(percent);
         
@@ -87,7 +86,7 @@
     
     // Handle tap-to-edit for project names
     function initEditableNames() {
-      const keys = ['autobookr', 'revenue', 'business', 'brain', 'mobile'];
+      const keys = ['autobookr', 'revenue', 'brain', 'mobile'];
       keys.forEach(key => {
         const nameEl = document.getElementById('name-' + key);
         if (!nameEl) return;
@@ -289,24 +288,7 @@
     <p class="status-label">Making progress • Twilio + Stripe connected</p>
     <span class="build-status build-ok">🔧 Building OK</span>
   </div>
-  <div class="project-card" onclick="openModal('business')">
-    <div class="project-header">
-      <span class="project-name" id="name-business"></span>
-      <span class="project-status-dot status-yellow"></span>
-    </div>
-    <div class="progress-section">
-      <div class="progress-bar-visual" id="progress-bar-business"></div>
-      <div class="progress-track">
-        <div class="progress-fill-bar">
-          <div class="progress-fill" id="progress-fill-business"></div>
-        </div>
-        <span class="progress-percent" id="progress-pct-business"></span>
-      </div>
-    </div>
-    <p class="status-label">Context recovered • Need weekly priorities</p>
-    <span class="build-status build-attn">⚠️ Needs Attention</span>
-  </div>
-  
+
   <!-- Project 4: Brain -->
   <div class="project-card" onclick="openModal('brain')">
     <div class="project-header">
@@ -322,7 +304,7 @@
         <span class="progress-percent" id="progress-pct-brain"></span>
       </div>
     </div>
-    <p class="status-label">Design drafted • Waiting for approval</p>
+    <p class="status-label">Agent team mode • Build plan ready to execute</p>
     <span class="build-status build-attn">⚠️ Needs Attention</span>
   </div>
   
@@ -436,31 +418,7 @@
       </div>
     </div>
     
-    <!-- Business Modal -->
-    <div class="modal" id="modal-business">
-      <div class="modal-header">
-        <span class="modal-title" id="modal-title-business"></span>
-        <button class="close-btn" onclick="closeModal()">&times;</button>
-      </div>
-      
-      <div class="roadmap-section done">
-        <h3>✓ Done</h3>
-        <div class="roadmap-item"><span class="check done">✓</span> Recover core context from files</div>
-        <div class="roadmap-item"><span class="check done">✓</span> Build current business snapshot</div>
-        <div class="roadmap-item"><span class="check done">✓</span> Rebuild key assets</div>
-      </div>
-      
-      <div class="roadmap-section todo">
-        <h3>⬜ To Do</h3>
-        <div class="roadmap-item"><span class="check todo"></span> Set top 3 weekly priorities</div>
-        <div class="roadmap-item"><span class="check todo"></span> Run daily revenue action</div>
-        <div class="roadmap-item"><span class="check todo"></span> Track outputs in memory</div>
-        <div class="roadmap-item"><span class="check todo"></span> Review and adjust weekly</div>
-        <div class="roadmap-item"><span class="check todo"></span> Identify best offer/channel</div>
-        <div class="roadmap-item"><span class="check todo"></span> Create repeatable SOP</div>
-      </div>
-    </div>
-    
+
     <!-- Brain Modal -->
     <div class="modal" id="modal-brain">
       <div class="modal-header">
@@ -471,18 +429,18 @@
       <div class="roadmap-section done">
         <h3>✓ Done</h3>
         <div class="roadmap-item"><span class="check done">✓</span> Draft regions (Creativity, Marketing, Research, Build, QA)</div>
+        <div class="roadmap-item"><span class="check done">✓</span> Define NeuroNet as agent-team project</div>
       </div>
       
       <div class="roadmap-section todo">
-        <h3>⬜ To Do</h3>
-        <div class="roadmap-item"><span class="check todo"></span> Approve final architecture</div>
-        <div class="roadmap-item"><span class="check todo"></span> Assign default model per region</div>
-        <div class="roadmap-item"><span class="check todo"></span> Assign fallback model per region</div>
-        <div class="roadmap-item"><span class="check todo"></span> Define cost-first rules</div>
-        <div class="roadmap-item"><span class="check todo"></span> Define escalation rules</div>
-        <div class="roadmap-item"><span class="check todo"></span> Define handoff format</div>
-        <div class="roadmap-item"><span class="check todo"></span> Add region prompts</div>
-        <div class="roadmap-item"><span class="check todo"></span> Test 2 full workflows</div>
+        <h3>⬜ To Do (Agent Team Launch Plan)</h3>
+        <div class="roadmap-item"><span class="check todo"></span> Approve team roles (Orchestrator, Builder, QA, Growth)</div>
+        <div class="roadmap-item"><span class="check todo"></span> Set success metric for week 1 (1 shipped workflow)</div>
+        <div class="roadmap-item"><span class="check todo"></span> Create agent contracts (inputs, outputs, done criteria)</div>
+        <div class="roadmap-item"><span class="check todo"></span> Assign primary + fallback model per agent</div>
+        <div class="roadmap-item"><span class="check todo"></span> Define handoff protocol between agents</div>
+        <div class="roadmap-item"><span class="check todo"></span> Run first end-to-end build sprint (small feature)</div>
+        <div class="roadmap-item"><span class="check todo"></span> Review quality/cost logs and tune prompts</div>
       </div>
     </div>
     
@@ -516,7 +474,7 @@
 
   <script>
     // Populate all project names
-    const projectKeys = ['autobookr', 'revenue', 'business', 'brain', 'mobile'];
+    const projectKeys = ['autobookr', 'revenue', 'brain', 'mobile'];
     projectKeys.forEach(key => {
       const name = getProjectName(key);
       // Card names
@@ -542,7 +500,7 @@
       });
       msg += "\nReply with format: key=new name";
       
-      const key = prompt("Which project? (autobookr, revenue, business, brain, mobile)");
+      const key = prompt("Which project? (autobookr, revenue, brain, mobile)");
       if (key && PROJECT_NAMES[key] !== undefined) {
         const newName = prompt("New name for " + PROJECT_NAMES[key] + ":", PROJECT_NAMES[key]);
         if (newName) {
