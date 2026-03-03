@@ -1,0 +1,173 @@
+{
+  "updatedAt": "2026-03-03T22:41:24Z",
+  "projects": [
+    {
+      "key": "autobookr_suite",
+      "name": "📞 AutoBookr Suite (App + Landing)",
+      "status": "green",
+      "summary": "Logical merge: app backend + public landing tracked together.",
+      "done": [
+        "Define product offer and pricing",
+        "Create AutoBookr plan file (`projects/AutoBookr/PLAN.md`)",
+        "Build MVP skeleton/webhook endpoint",
+        "Confirm deployment target (Render/Railway/Fly/VPS)",
+        "Deploy app and verify health endpoint (verified locally 2026-02-26)",
+        "Get Twilio credentials (Account SID, Auth Token, phone number)",
+        "Configure Twilio env vars in deployment (.env verified 2026-02-27 - CREDS_SET)",
+        "Set Twilio webhook URL for missed-call + SMS flow",
+        "Implement + verify SMS auto-reply logic (code path wired)",
+        "Test: missed call triggers correct SMS in live deploy (UNBLOCKED 2026-02-27 - credentials verified)",
+        "Get Stripe secret key + webhook secret",
+        "Create products/prices: Starter £19 monthly, Growth £49 monthly, Pro £99 monthly",
+        "Build checkout links/pages (plan-mapped checkout wired)",
+        "Add Stripe webhook for subscription status",
+        "Test: successful payment updates customer to active (UNBLOCKED 2026-02-27 - credentials verified)",
+        "Add customer onboarding form (name, trade, phone, area)",
+        "Store customer config safely",
+        "Add simple dashboard: calls/SMS activity",
+        "Add basic error handling + retry policy",
+        "End-to-end test: call -> SMS -> signup -> active status (UNBLOCKED 2026-02-27 - credentials verified, code ready)",
+        "Add simple support/runbook notes (created 2026-02-27)",
+        "Landing site published",
+        "Landing animations + dark mode added",
+        "Mobile nav alignment fixes pushed"
+      ],
+      "todo": [
+        "Publish live URL and quick-start guide",
+        "First real pilot user onboarded",
+        "5 paying users acquired",
+        "Live URL stable",
+        "Twilio + Stripe fully working in production",
+        "5 paying customers active"
+      ],
+      "blockers": [
+        "Manual live checkout/SMS verification"
+      ]
+    },
+    {
+      "key": "mission_control",
+      "name": "🚀 Mission Control",
+      "status": "yellow",
+      "summary": "Mobile dashboard for live progress, blockers, and tasks.",
+      "done": [
+        "Status cards layout created",
+        "Last updated timestamp added",
+        "Core project sections added",
+        "Key artifact links added",
+        "Define auto-refresh/update method"
+      ],
+      "todo": [
+        "Approve publish mode (GitHub Pages / static link)",
+        "Publish live URL",
+        "Add link to Telegram pinned reference",
+        "Confirm page loads cleanly on mobile",
+        "Ensure status fields map to real source files",
+        "Add blocker summary and top 3 next actions",
+        "Wayne can open one link and understand status in <30 seconds",
+        "Wire sweep output to auto-write this JSON each run"
+      ],
+      "blockers": []
+    },
+    {
+      "key": "system_backup",
+      "name": "🛟 System Backup + Recovery",
+      "status": "red",
+      "summary": "Recovery safety net with local + offsite backup readiness.",
+      "done": [
+        "Local backup script working",
+        "Rolling retention (4 backups)",
+        "Restore guide created",
+        "Restore test completed successfully"
+      ],
+      "todo": [
+        "Choose destination:",
+        "A) Google Drive",
+        "B) GitHub private backup repo",
+        "C) External drive",
+        "Configure chosen destination script",
+        "Run first offsite backup successfully",
+        "Verify restore from offsite backup",
+        "Set weekly scheduled backup cron",
+        "Add backup success/failure log",
+        "Add monthly restore test reminder",
+        "Weekly automated offsite backups run reliably",
+        "Full restore tested and documented"
+      ],
+      "blockers": [
+        "Destination/auth confirmation needed"
+      ]
+    },
+    {
+      "key": "neuronet",
+      "name": "🧠 NeuroNet Agent Team",
+      "status": "yellow",
+      "summary": "Specialized agent regions with contracts and routing.",
+      "done": [
+        "Draft regions:",
+        "Creativity Lab",
+        "Marketing Ops",
+        "Research Ops",
+        "Build Ops",
+        "Risk & QA"
+      ],
+      "todo": [
+        "Approve final region architecture",
+        "Assign default model per region",
+        "Assign fallback model per region",
+        "Define cost-first rules for routine work",
+        "Define escalation rules for complex work",
+        "Define when region should be used",
+        "Define handoff format between regions",
+        "Add region prompts/checklists",
+        "Test 2 full workflows using region handoffs",
+        "Regions are active with clear model routing and handoff rules"
+      ],
+      "blockers": []
+    },
+    {
+      "key": "aavegotchi_bot",
+      "name": "👻 Aavegotchi Petting Bot",
+      "status": "red",
+      "summary": "Idea pipeline project (planning stage).",
+      "done": [],
+      "todo": [
+        "Chain/network + wallet handling model",
+        "Security model for keys/signing",
+        "Allowed interaction cadence and ToS compliance"
+      ],
+      "blockers": [
+        "Policy/compliance + key management approach to approve"
+      ]
+    },
+    {
+      "key": "etsy_business",
+      "name": "🛍️ Etsy Business",
+      "status": "red",
+      "summary": "Idea pipeline project (planning stage).",
+      "done": [],
+      "todo": [
+        "Product niche to target first",
+        "Physical vs digital product strategy",
+        "Fulfillment model and margin targets"
+      ],
+      "blockers": [
+        "Niche + product direction needed"
+      ]
+    },
+    {
+      "key": "clare_reiki",
+      "name": "✨ Clare Reiki/Spiritual Business",
+      "status": "red",
+      "summary": "Idea pipeline project (planning stage).",
+      "done": [],
+      "todo": [
+        "Exact service menu + pricing",
+        "In-person vs remote sessions",
+        "Brand name + positioning style"
+      ],
+      "blockers": [
+        "Service/package preferences needed"
+      ]
+    }
+  ]
+}

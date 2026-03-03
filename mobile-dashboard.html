@@ -1,215 +1,207 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+  <meta http-equiv="Pragma" content="no-cache" />
+  <meta http-equiv="Expires" content="0" />
   <title>Mission Control - Mobile</title>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
-    body { 
+    body {
       font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-      background: #0f172a; color: #e2e8f0;
-      padding: 16px; min-height: 100vh;
+      background: #0f172a; color: #e2e8f0; padding: 16px; min-height: 100vh;
     }
-    h1 { font-size: 20px; margin-bottom: 4px; color: #fff; }
-    .timestamp { font-size: 12px; color: #64748b; margin-bottom: 20px; }
-    
-    .card {
-      background: #1e293b; border-radius: 12px; padding: 16px;
-      margin-bottom: 12px; border: 1px solid #334155;
+    h1 { font-size: 20px; margin-bottom: 6px; color: #fff; }
+    .timestamp { font-size: 12px; color: #94a3b8; margin-bottom: 14px; }
+    .hint { font-size: 12px; color: #64748b; margin-bottom: 16px; }
+    .quick-actions {
+      background: #172033; border: 1px solid #334155; border-radius: 12px;
+      padding: 12px; margin-bottom: 12px;
     }
-    .card h2 { font-size: 14px; color: #94a3b8; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px; }
-    
-    .status { display: flex; align-items: center; gap: 8px; }
-    .dot { width: 10px; height: 10px; border-radius: 50%; }
-    .green { background: #22c55e; }
-    .yellow { background: #eab308; }
-    .red { background: #ef4444; }
-    
-    .status-text { font-size: 16px; font-weight: 600; }
-    .status-sub { font-size: 12px; color: #94a3b8; margin-top: 4px; }
-    
-    .task-list { list-style: none; }
-    .task-list li {
-      padding: 8px 0; border-bottom: 1px solid #334155;
-      font-size: 14px; display: flex; align-items: center; gap: 8px;
+    .quick-actions h2 { font-size: 13px; margin-bottom: 8px; color: #93c5fd; }
+    .qa-item { font-size: 12px; color: #cbd5e1; padding: 6px 0; border-bottom: 1px solid #334155; }
+    .qa-item:last-child { border-bottom: none; }
+    .qa-tag { color: #94a3b8; margin-right: 6px; }
+    .project-card {
+      background: #1e293b; border: 1px solid #334155; border-radius: 12px;
+      padding: 14px; margin-bottom: 12px; cursor: pointer;
     }
-    .task-list li:last-child { border-bottom: none; }
-    .checkbox { 
-      width: 16px; height: 16px; border-radius: 4px; 
-      border: 2px solid #475569; flex-shrink: 0;
+    .project-header { display: flex; justify-content: space-between; gap: 8px; align-items: center; margin-bottom: 8px; }
+    .project-name { font-size: 15px; font-weight: 700; color: #fff; }
+    .status-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+    .green { background: #22c55e; box-shadow: 0 0 8px #22c55e; }
+    .yellow { background: #eab308; box-shadow: 0 0 8px #eab308; }
+    .red { background: #ef4444; box-shadow: 0 0 8px #ef4444; }
+    .summary { font-size: 12px; color: #94a3b8; margin-bottom: 8px; }
+
+    .track { display: flex; align-items: center; gap: 8px; }
+    .track-bg { flex: 1; height: 7px; background: #334155; border-radius: 8px; overflow: hidden; }
+    .track-fill { height: 100%; border-radius: 8px; }
+    .pct { min-width: 40px; text-align: right; font-size: 12px; font-weight: 700; }
+
+    .modal-overlay {
+      display: none; position: fixed; inset: 0; background: rgba(0,0,0,.8);
+      z-index: 50; overflow-y: auto; padding: 18px;
     }
-    .checkbox.checked { background: #22c55e; border-color: #22c55e; }
-    
-    .links { display: flex; flex-direction: column; gap: 8px; }
-    .link {
-      display: block; padding: 12px; background: #334155;
-      border-radius: 8px; color: #60a5fa; text-decoration: none;
-      font-size: 14px;
+    .modal-overlay.active { display: block; }
+    .modal {
+      max-width: 450px; margin: 10px auto 30px; background: #1e293b;
+      border: 1px solid #334155; border-radius: 14px; padding: 16px;
     }
-    .link:hover { background: #475569; }
-    
-    .blocker { background: #450a0a; border-color: #7f1d1d; }
-    .blocker-text { color: #fca5a5; font-size: 13px; }
-    .copy-btn {
-      background: #dc2626; color: white; border: none;
-      padding: 4px 8px; border-radius: 4px; font-size: 11px;
-      cursor: pointer; margin-left: 8px; vertical-align: middle;
-    }
-    .copy-btn:active { background: #b91c1c; }
-    
-    .refresh-bar {
-      position: fixed; bottom: 20px; right: 20px;
-      background: #3b82f6; color: white; padding: 12px 20px;
-      border-radius: 30px; font-size: 14px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.3); cursor: pointer;
-      display: flex; align-items: center; gap: 8px;
+    .modal-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+    .modal-title { font-size: 17px; font-weight: 700; color: #fff; }
+    .close-btn { background: none; border: none; color: #cbd5e1; font-size: 24px; line-height: 1; }
+
+    h3 { font-size: 12px; text-transform: uppercase; letter-spacing: .5px; margin: 14px 0 8px; color: #94a3b8; }
+    .done-h { color: #6ee7b7; }
+    .todo-h { color: #fcd34d; }
+    .block-h { color: #fca5a5; }
+    .item { font-size: 13px; border-bottom: 1px solid #334155; padding: 7px 0; display: flex; gap: 8px; }
+    .item:last-child { border-bottom: none; }
+    .badge { width: 18px; text-align: center; flex-shrink: 0; }
+
+    .refresh-pill {
+      position: fixed; right: 16px; bottom: 16px; border: 1px solid #3b82f6; background: #1d4ed8;
+      color: #fff; border-radius: 999px; padding: 10px 14px; font-size: 12px; cursor: pointer;
     }
   </style>
-  <script>
-    let lastUpdate = new Date();
-    function autoRefresh() {
-      const now = new Date();
-      const mins = Math.floor((now - lastUpdate) / 60000);
-      document.getElementById('timer').textContent = mins + ' min ago';
-    }
-    setInterval(autoRefresh, 30000);
-    setInterval(() => location.reload(), 300000); // 5 min auto-refresh
-  </script>
-  <script>
-    function copyBlocker(id) {
-      const text = document.getElementById(id).textContent;
-      navigator.clipboard.writeText(text);
-      alert('Copied: ' + text.substring(0, 50) + '...');
-    }
-  </script>
 </head>
 <body>
-  <!-- Incident banner - show/hide by changing style -->
-  <!-- <div class="card" style="background: #7f1d1d; border-color: #ef4444; margin-bottom: 8px;">
-    <h2>🚨 Incident</h2>
-    <p class="blocker-text">All systems operational</p>
-  </div> -->
-  
   <h1>🚀 Mission Control</h1>
-  <p class="timestamp">Updated: <span id="timer">just now</span> • Auto-refresh: 5 min • Thu, 26 Feb 2026 01:23 GMT</p>
-  
-  <div class="card" style="background: linear-gradient(135deg, #1e3a5f 0%, #0f172a 100%); border-color: #3b82f6;">
-    <h2>📋 Executive Summary</h2>
-    <p style="font-size: 14px; color: #e2e8f0; line-height: 1.5;">
-      <strong>Phase 1 complete!</strong> All 10 notification service tasks done. 
-      Backup scripts working (53MB local). Sales package ready. 
-      <strong>What's needed from you:</strong> 4 quick decisions to keep moving.
-    </p>
-  </div>
-  
-  <div class="card">
-    <h2>Overall Status</h2>
-    <div class="status">
-      <span class="dot green"></span>
-      <span class="status-text">Phase 1 ✅ COMPLETE</span>
-    </div>
-    <p class="status-sub">10/10 tasks done • Waiting on Wayne</p>
-  </div>
-  
-  <div class="card">
-    <h2>Current Sprint</h2>
-    <p style="font-size: 15px; margin-bottom: 12px;"><strong>Notification Service (Phase 1)</strong></p>
-    <ul class="task-list">
-      <li><span class="checkbox checked"></span> NS-001: Data model ✓</li>
-      <li><span class="checkbox checked"></span> NS-002: Redis pub/sub ✓</li>
-      <li><span class="checkbox checked"></span> NS-003: Service skeleton ✓</li>
-      <li><span class="checkbox checked"></span> NS-005: CRUD API ✓</li>
-      <li><span class="checkbox checked"></span> NS-006: User Pref API ✓</li>
-      <li><span class="checkbox checked"></span> NS-007: Webhook Schema ✓</li>
-      <li><span class="checkbox checked"></span> NS-008: DB Migration ✓ (PostgreSQL!)</li>
-      <li><span class="checkbox checked"></span> NS-009: WebSocket Server ✓</li>
-      <li><span class="checkbox checked"></span> NS-010: Delivery Queue ✓</li>
-    </ul>
-  </div>
-  
-  <div class="card blocker">
-    <h2>✅ Recently Approved (Tonight)</h2>
-    <p class="blocker-text"><span id="b1" style="color: #86efac;">✓ Backup: Google Drive selected</span></p>
-    <p class="blocker-text"><span id="b2" style="color: #86efac;">✓ Mobile Dashboard: Publish approved</span></p>
-    
-    <h2 style="margin-top: 16px; color: #fca5a5;">Still Needed</h2>
-    <p class="blocker-text"><span id="b3">Brain Regions: Approve architecture</span> <button class="copy-btn" onclick="copyBlocker('b3')">Copy</button></p>
-    <p class="blocker-text"><span id="b4">£100/month: Approve offer + provide contacts</span> <button class="copy-btn" onclick="copyBlocker('b4')">Copy</button></p>
-  </div>
-  
-  <div class="card" style="background: #14532d; border-color: #22c55e;">
-    <h2>✅ Approved This Session</h2>
-    <ul class="task-list">
-      <li><span class="checkbox checked"></span> <strong>"1"</strong> → ✅ Mobile dashboard publish APPROVED</li>
-      <li><span class="checkbox checked"></span> <strong>"2"</strong> → ✅ Google Drive backups APPROVED</li>
-    </ul>
-    
-    <h2 style="margin-top: 16px; color: #fca5a5;">Still Needed</h2>
-    <ul class="task-list">
-      <li><span class="checkbox"></span> <strong>"3"</strong> → Approve brain regions plan</li>
-      <li><span class="checkbox"></span> <strong>"4"</strong> → Go live with £100/month offer</li>
-    </ul>
-    <p style="font-size: 11px; color: #86efac; margin-top: 12px; font-style: italic;">Or just tell me what you want to do next 😊</p>
-  </div>
-  
-  <div class="card" style="background: #064e3b; border-color: #047857;">
-    <h2>⚡ Proactive Work</h2>
-    <p style="font-size: 13px; color: #a7f3d0; margin-bottom: 8px;">Things I can do without approval:</p>
-    <ul class="task-list">
-      <li><span class="checkbox checked"></span> Improve documentation</li>
-      <li><span class="checkbox checked"></span> Run ship-checks</li>
-      <li><span class="checkbox checked"></span> Test recovery procedures</li>
-      <li><span class="checkbox checked"></span> Optimize existing code</li>
-      <li><span class="checkbox checked"></span> Research competitor features</li>
-    </ul>
-  </div>
-  
-  <div class="card">
-    <h2>Traffic Lights</h2>
-    <div style="display: flex; gap: 16px; flex-wrap: wrap;">
-      <div class="status"><span class="dot green"></span><span style="font-size:13px;">Mobile Dashboard</span></div>
-      <div class="status"><span class="dot green"></span><span style="font-size:13px;">Backup Scripts</span></div>
-      <div class="status"><span class="dot yellow"></span><span style="font-size:13px;">Google Drive Auth</span></div>
-      <div class="status"><span class="dot yellow"></span><span style="font-size:13px;">Publish Live</span></div>
-    </div>
-  </div>
-  
-  <div class="card">
-    <h2>Quick Links</h2>
-    <div class="links">
-      <a class="link" href="https://github.com" target="_blank">GitHub Repository</a>
-      <a class="link" href="generated/ops/mission-control.md" target="_blank">📋 Master Checklist</a>
-      <a class="link" href="docs/projects/mobile-mission-control/EXECUTION_GUIDE.md" target="_blank">📱 Mobile Project</a>
-      <a class="link" href="docs/projects/backup-recovery/EXECUTION_GUIDE.md" target="_blank">💾 Backup Project</a>
-      <a class="link" href="#" onclick="location.reload()">🔄 Refresh</a>
-    </div>
-  </div>
-  
-  <div class="card">
-    <h2>Ship-Check</h2>
-    <div class="status">
-      <span class="dot green"></span>
-      <span class="status-text">✅ Passing</span>
-    </div>
+  <p class="timestamp" id="updated">Updated: loading…</p>
+  <p class="hint">Auto-updates every 60s • Tap a project for full tasks</p>
+
+  <div class="quick-actions" id="quickActions"></div>
+  <div id="projectList"></div>
+
+  <div class="modal-overlay" id="overlay" onclick="closeModal(event)">
+    <div class="modal" id="modal"></div>
   </div>
 
-  <div class="card" style="background: #1e3a5f; border-color: #3b82f6;">
-    <h2>🔍 Code Review Tonight</h2>
-    <p style="font-size: 13px; color: #bfdbfe;">WebSocket server reviewed - clean TypeScript, proper error handling, rate limiting implemented.</p>
-  </div>
-  
-  <div class="card" style="background: #312e81; border-color: #6366f1;">
-    <h2>📖 Phase 2 Guide</h2>
-    <p style="font-size: 13px; color: #c7d2fe; margin-bottom: 8px;">Created: <strong>generated/docs/phase2-implementation-guide.md</strong></p>
-    <p style="font-size: 12px; color: #a5b4fc;">8 tasks to production: CI/CD, Docker, monitoring, deployment. Or focus on £100/month offer first.</p>
-  </div>
-  
-  <div class="refresh-bar" onclick="location.reload()">
-    🔄 <span id="btn-text">Refresh</span>
-  </div>
+  <button class="refresh-pill" onclick="loadData(true)">↻ Refresh now</button>
+
   <script>
-    document.getElementById('btn-text').textContent = 'Refresh';
+    let cached = null;
+
+    function calcProgress(p) {
+      const done = (p.done || []).length;
+      const todo = (p.todo || []).length;
+      const total = done + todo;
+      if (!total) return 0;
+      return Math.round((done / total) * 100);
+    }
+
+    function progressColor(pct) {
+      if (pct > 75) return '#22c55e';
+      if (pct >= 30) return '#eab308';
+      return '#ef4444';
+    }
+
+    function itemRow(icon, text) {
+      return `<div class="item"><span class="badge">${icon}</span><span>${text}</span></div>`;
+    }
+
+    function renderQuickActions(data) {
+      const container = document.getElementById('quickActions');
+      const actions = [];
+      (data.projects || []).forEach(p => {
+        if ((p.blockers || []).length) {
+          actions.push({ project: p.name, task: p.blockers[0], kind: 'blocker' });
+        } else if ((p.todo || []).length) {
+          actions.push({ project: p.name, task: p.todo[0], kind: 'next' });
+        }
+      });
+
+      const top = actions.slice(0, 3);
+      container.innerHTML = '<h2>⚡ Top 3 Daily Moves</h2>' + (top.length
+        ? top.map(a => `<div class="qa-item"><span class="qa-tag">${a.kind === 'blocker' ? '🚫' : '▶️'} ${a.project}:</span>${a.task}</div>`).join('')
+        : '<div class="qa-item">No urgent actions right now.</div>');
+    }
+
+    function render(data) {
+      cached = data;
+      const updatedEl = document.getElementById('updated');
+      const dt = data.updatedAt ? new Date(data.updatedAt) : new Date();
+      updatedEl.textContent = `Updated: ${dt.toLocaleString()}`;
+
+      renderQuickActions(data);
+
+      const list = document.getElementById('projectList');
+      list.innerHTML = '';
+
+      (data.projects || []).forEach(p => {
+        const pct = calcProgress(p);
+        const color = progressColor(pct);
+
+        const card = document.createElement('div');
+        card.className = 'project-card';
+        card.innerHTML = `
+          <div class="project-header">
+            <div class="project-name">${p.name}</div>
+            <span class="status-dot ${p.status || 'yellow'}"></span>
+          </div>
+          <p class="summary">${p.summary || ''}</p>
+          <div class="track">
+            <div class="track-bg"><div class="track-fill" style="width:${pct}%; background:${color}"></div></div>
+            <div class="pct" style="color:${color}">${pct}%</div>
+          </div>
+        `;
+        card.onclick = () => openModal(p.key);
+        list.appendChild(card);
+      });
+    }
+
+    function openModal(key) {
+      if (!cached) return;
+      const p = (cached.projects || []).find(x => x.key === key);
+      if (!p) return;
+
+      const done = (p.done || []).map(t => itemRow('✅', t)).join('');
+      const todo = (p.todo || []).map(t => itemRow('⬜', t)).join('');
+      const blockers = (p.blockers || []).length
+        ? (p.blockers || []).map(t => itemRow('🚫', t)).join('')
+        : itemRow('✅', 'No active blockers');
+
+      document.getElementById('modal').innerHTML = `
+        <div class="modal-head">
+          <div class="modal-title">${p.name}</div>
+          <button class="close-btn" onclick="closeModal()">&times;</button>
+        </div>
+        <p class="summary">${p.summary || ''}</p>
+        <h3 class="done-h">Done</h3>
+        ${done || itemRow('•', 'None yet')}
+        <h3 class="todo-h">To Do</h3>
+        ${todo || itemRow('•', 'None')}
+        <h3 class="block-h">Blockers</h3>
+        ${blockers}
+      `;
+
+      document.getElementById('overlay').classList.add('active');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeModal(e) {
+      if (e && e.target !== e.currentTarget) return;
+      document.getElementById('overlay').classList.remove('active');
+      document.body.style.overflow = '';
+    }
+
+    async function loadData(manual) {
+      try {
+        const url = `mission-control-data.json?t=${Date.now()}`;
+        const res = await fetch(url, { cache: 'no-store' });
+        if (!res.ok) throw new Error('Failed to load dashboard data');
+        const data = await res.json();
+        render(data);
+      } catch (err) {
+        if (manual) alert('Could not refresh dashboard data right now.');
+      }
+    }
+
+    loadData(false);
+    setInterval(() => loadData(false), 60000);
   </script>
 </body>
 </html>

@@ -1,533 +1,207 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+  <meta http-equiv="Pragma" content="no-cache" />
+  <meta http-equiv="Expires" content="0" />
   <title>Mission Control - Mobile</title>
-  <script>
-    // Project names config - Wayne can edit these!
-    const DEFAULT_PROJECT_NAMES = {
-      "autobookr": "⚡ FlashCall",
-      "revenue": "💰 CashFlow", 
-      "brain": "🧠 NeuroNet Agent Team",
-      "mobile": "📱 Mobile Dashboard"
-    };
-    
-    // Load saved names or use defaults
-    let PROJECT_NAMES = { ...DEFAULT_PROJECT_NAMES };
-    const saved = localStorage.getItem('projectNames');
-    if (saved) {
-      try { PROJECT_NAMES = JSON.parse(saved); } catch(e) {}
-    }
-    
-    // Apply saved names to DOM on load
-    Object.keys(PROJECT_NAMES).forEach(key => {
-      const el = document.getElementById('name-' + key);
-      if (el) el.textContent = PROJECT_NAMES[key];
-    });
-    
-    function getProjectName(key) {
-      return PROJECT_NAMES[key] || DEFAULT_PROJECT_NAMES[key] || key;
-    }
-    
-    function saveProjectNames() {
-      localStorage.setItem('projectNames', JSON.stringify(PROJECT_NAMES));
-    }
-    
-    // Calculate progress from checkboxes in modal
-    function calculateProgress(modalId) {
-      const modal = document.getElementById(modalId);
-      if (!modal) return 0;
-      
-      const doneItems = modal.querySelectorAll('.roadmap-section.done .roadmap-item').length;
-      const todoItems = modal.querySelectorAll('.roadmap-section.todo .roadmap-item').length;
-      const total = doneItems + todoItems;
-      
-      if (total === 0) return 0;
-      return Math.round((doneItems / total) * 100);
-    }
-    
-    // Get color based on progress percentage
-    function getProgressColor(percent) {
-      if (percent > 75) return '#22c55e';
-      if (percent >= 25) return '#eab308';
-      return '#ef4444';
-    }
-    
-    // Build progress bar visual (unicode blocks)
-    function buildProgressBar(percent) {
-      const filled = Math.round(percent / 5);
-      const empty = 20 - filled;
-      return '█'.repeat(filled) + '░'.repeat(empty);
-    }
-    
-    // Update all progress bars
-    function updateProgressBars() {
-      ['autobookr', 'revenue', 'brain', 'mobile'].forEach(key => {
-        const percent = calculateProgress('modal-' + key);
-        const color = getProgressColor(percent);
-        
-        // Update progress bar fill
-        const fillEl = document.getElementById('progress-fill-' + key);
-        if (fillEl) fillEl.style.width = percent + '%';
-        if (fillEl) fillEl.style.backgroundColor = color;
-        
-        // Update percent text
-        const pctEl = document.getElementById('progress-pct-' + key);
-        if (pctEl) pctEl.textContent = percent + '%';
-        if (pctEl) pctEl.style.color = color;
-        
-        // Update unicode bar
-        const barEl = document.getElementById('progress-bar-' + key);
-        if (barEl) barEl.textContent = buildProgressBar(percent);
-        if (barEl) barEl.style.color = color;
-      });
-    }
-    
-    // Handle tap-to-edit for project names
-    function initEditableNames() {
-      const keys = ['autobookr', 'revenue', 'brain', 'mobile'];
-      keys.forEach(key => {
-        const nameEl = document.getElementById('name-' + key);
-        if (!nameEl) return;
-        
-        nameEl.contentEditable = "true";
-        nameEl.spellcheck = false;
-        
-        nameEl.addEventListener('click', function(e) {
-          e.stopPropagation(); // Don't open modal when clicking name
-        });
-        
-        nameEl.addEventListener('blur', function() {
-          const newName = nameEl.textContent.trim();
-          if (newName && newName !== getProjectName(key)) {
-            PROJECT_NAMES[key] = newName;
-            saveProjectNames();
-            // Update traffic light and modal title too
-            const tlEl = document.getElementById('tl-name-' + key);
-            if (tlEl) tlEl.textContent = newName;
-            const modalEl = document.getElementById('modal-title-' + key);
-            if (modalEl) modalEl.textContent = newName;
-          }
-        });
-        
-        nameEl.addEventListener('keydown', function(e) {
-          if (e.key === 'Enter') {
-            e.preventDefault();
-            nameEl.blur();
-          }
-        });
-      });
-    }
-  </script>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
-    body { 
+    body {
       font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-      background: #0f172a; color: #e2e8f0;
-      padding: 16px; min-height: 100vh;
+      background: #0f172a; color: #e2e8f0; padding: 16px; min-height: 100vh;
     }
-    h1 { font-size: 20px; margin-bottom: 4px; color: #fff; display: flex; align-items: center; gap: 8px; }
-    .edit-names-btn {
-      background: #334155; border: none; color: #94a3b8; font-size: 11px;
-      padding: 4px 10px; border-radius: 12px; cursor: pointer;
+    h1 { font-size: 20px; margin-bottom: 6px; color: #fff; }
+    .timestamp { font-size: 12px; color: #94a3b8; margin-bottom: 14px; }
+    .hint { font-size: 12px; color: #64748b; margin-bottom: 16px; }
+    .quick-actions {
+      background: #172033; border: 1px solid #334155; border-radius: 12px;
+      padding: 12px; margin-bottom: 12px;
     }
-    .edit-names-btn:active { background: #475569; }
-    .timestamp { font-size: 12px; color: #64748b; margin-bottom: 20px; }
-    
-    /* Project Cards - Clickable */
+    .quick-actions h2 { font-size: 13px; margin-bottom: 8px; color: #93c5fd; }
+    .qa-item { font-size: 12px; color: #cbd5e1; padding: 6px 0; border-bottom: 1px solid #334155; }
+    .qa-item:last-child { border-bottom: none; }
+    .qa-tag { color: #94a3b8; margin-right: 6px; }
     .project-card {
-      background: #1e293b; border-radius: 12px; padding: 16px;
-      margin-bottom: 12px; border: 1px solid #334155;
-      cursor: pointer; transition: transform 0.1s, border-color 0.1s;
+      background: #1e293b; border: 1px solid #334155; border-radius: 12px;
+      padding: 14px; margin-bottom: 12px; cursor: pointer;
     }
-    .project-card:active { transform: scale(0.98); }
-    .project-card:hover { border-color: #3b82f6; }
-    
-    .project-header {
-      display: flex; justify-content: space-between; align-items: center;
-      margin-bottom: 8px;
-    }
-    .project-name { 
-      font-size: 16px; font-weight: 600; color: #fff; 
-      padding: 4px 8px; margin: -4px -8px; border-radius: 6px;
-      cursor: text; border: 2px solid transparent;
-      transition: border-color 0.2s, background 0.2s;
-    }
-    .project-name:hover { 
-      border-color: #475569; background: #334155;
-    }
-    .project-name:focus { 
-      outline: none; border-color: #3b82f6; background: #1e293b;
-    }
-    .project-status-dot {
-      width: 12px; height: 12px; border-radius: 50%;
-      flex-shrink: 0;
-    }
-    .status-green { background: #22c55e; box-shadow: 0 0 8px #22c55e; }
-    .status-yellow { background: #eab308; box-shadow: 0 0 8px #eab308; }
-    .status-red { background: #ef4444; box-shadow: 0 0 8px #ef4444; }
-    
-    /* Progress Bar */
-    .progress-section {
-      margin-top: 10px;
-    }
-    .progress-bar-visual {
-      font-family: monospace; font-size: 11px;
-      letter-spacing: 1px; margin-bottom: 4px;
-    }
-    .progress-track {
-      display: flex; align-items: center; gap: 8px;
-    }
-    .progress-fill-bar {
-      flex: 1; height: 6px; background: #334155; border-radius: 3px;
-      overflow: hidden;
-    }
-    .progress-fill {
-      height: 100%; border-radius: 3px; transition: width 0.3s;
-    }
-    .progress-percent {
-      min-width: 38px; text-align: right; font-size: 11px; font-weight: 700;
-    }
-    
-    .status-label { font-size: 12px; color: #94a3b8; }
-    .build-status {
-      font-size: 11px; padding: 4px 8px; border-radius: 4px;
-      margin-top: 8px; display: inline-block;
-    }
-    .build-ok { background: #064e3b; color: #6ee7b7; }
-    .build-attn { background: #450a0a; color: #fca5a5; }
-    
-    .tap-hint { font-size: 11px; color: #64748b; margin-top: 8px; }
-    
-    /* Modal Styles */
+    .project-header { display: flex; justify-content: space-between; gap: 8px; align-items: center; margin-bottom: 8px; }
+    .project-name { font-size: 15px; font-weight: 700; color: #fff; }
+    .status-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+    .green { background: #22c55e; box-shadow: 0 0 8px #22c55e; }
+    .yellow { background: #eab308; box-shadow: 0 0 8px #eab308; }
+    .red { background: #ef4444; box-shadow: 0 0 8px #ef4444; }
+    .summary { font-size: 12px; color: #94a3b8; margin-bottom: 8px; }
+
+    .track { display: flex; align-items: center; gap: 8px; }
+    .track-bg { flex: 1; height: 7px; background: #334155; border-radius: 8px; overflow: hidden; }
+    .track-fill { height: 100%; border-radius: 8px; }
+    .pct { min-width: 40px; text-align: right; font-size: 12px; font-weight: 700; }
+
     .modal-overlay {
-      display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0;
-      background: rgba(0,0,0,0.8); z-index: 100;
-      padding: 20px; overflow-y: auto;
+      display: none; position: fixed; inset: 0; background: rgba(0,0,0,.8);
+      z-index: 50; overflow-y: auto; padding: 18px;
     }
     .modal-overlay.active { display: block; }
-    
     .modal {
-      background: #1e293b; border-radius: 16px; padding: 20px;
-      max-width: 400px; margin: 20px auto; border: 1px solid #334155;
+      max-width: 450px; margin: 10px auto 30px; background: #1e293b;
+      border: 1px solid #334155; border-radius: 14px; padding: 16px;
     }
-    .modal-header {
-      display: flex; justify-content: space-between; align-items: center;
-      margin-bottom: 16px; padding-bottom: 12px; border-bottom: 1px solid #334155;
-    }
-    .modal-title { font-size: 18px; font-weight: 600; color: #fff; }
-    .close-btn {
-      background: none; border: none; color: #94a3b8; font-size: 24px;
-      cursor: pointer; padding: 0; line-height: 1;
-    }
-    
-    .roadmap-section { margin-bottom: 16px; }
-    .roadmap-section h3 {
-      font-size: 13px; text-transform: uppercase; letter-spacing: 0.5px;
-      margin-bottom: 8px; color: #94a3b8;
-    }
-    .roadmap-section.done h3 { color: #6ee7b7; }
-    .roadmap-section.todo h3 { color: #fbbf24; }
-    
-    .roadmap-item {
-      display: flex; align-items: center; gap: 10px;
-      padding: 8px 0; font-size: 13px; border-bottom: 1px solid #334155;
-    }
-    .roadmap-item:last-child { border-bottom: none; }
-    
-    .check {
-      width: 18px; height: 18px; border-radius: 4px;
-      display: flex; align-items: center; justify-content: center;
-      flex-shrink: 0; font-size: 12px;
-    }
-    .check.done { background: #22c55e; }
-    .check.todo { background: transparent; border: 2px solid #475569; }
-    
-    /* Traffic Lights */
-    .traffic-lights {
-      display: flex; gap: 16px; flex-wrap: wrap; margin-top: 8px;
-    }
-    .traffic-item {
-      display: flex; align-items: center; gap: 6px;
-      font-size: 12px; color: #94a3b8;
-    }
-    
-    .refresh-bar {
-      position: fixed; bottom: 20px; right: 20px;
-      background: #3b82f6; color: white; padding: 12px 20px;
-      border-radius: 30px; font-size: 14px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.3); cursor: pointer;
-      display: flex; align-items: center; gap: 8px;
+    .modal-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+    .modal-title { font-size: 17px; font-weight: 700; color: #fff; }
+    .close-btn { background: none; border: none; color: #cbd5e1; font-size: 24px; line-height: 1; }
+
+    h3 { font-size: 12px; text-transform: uppercase; letter-spacing: .5px; margin: 14px 0 8px; color: #94a3b8; }
+    .done-h { color: #6ee7b7; }
+    .todo-h { color: #fcd34d; }
+    .block-h { color: #fca5a5; }
+    .item { font-size: 13px; border-bottom: 1px solid #334155; padding: 7px 0; display: flex; gap: 8px; }
+    .item:last-child { border-bottom: none; }
+    .badge { width: 18px; text-align: center; flex-shrink: 0; }
+
+    .refresh-pill {
+      position: fixed; right: 16px; bottom: 16px; border: 1px solid #3b82f6; background: #1d4ed8;
+      color: #fff; border-radius: 999px; padding: 10px 14px; font-size: 12px; cursor: pointer;
     }
   </style>
 </head>
 <body>
-  <h1>🚀 Mission Control <button class="edit-names-btn" onclick="editProjectNames()">✏️ Edit Names</button></h1>
-  <p class="timestamp">Updated: just now • Auto-refresh: 5 min • Thu, 26 Feb 2026</p>
-  
-  <p style="font-size: 13px; color: #64748b; margin-bottom: 16px;">
-    Tap any project to see its roadmap • Tap name to rename
-  </p>
-  
-  <!-- Project 1: AutoBookr -->
-  <div class="project-card" onclick="openModal('autobookr')">
-    <div class="project-header">
-      <span class="project-name" id="name-autobookr"></span>
-      <span class="project-status-dot status-green"></span>
-    </div>
-    <div class="progress-section">
-      <div class="progress-bar-visual" id="progress-bar-autobookr"></div>
-      <div class="progress-track">
-        <div class="progress-fill-bar">
-          <div class="progress-fill" id="progress-fill-autobookr"></div>
-        </div>
-        <span class="progress-percent" id="progress-pct-autobookr"></span>
-      </div>
-    </div>
-    <p class="status-label">Making progress • Twilio + Stripe connected</p>
-    <span class="build-status build-ok">🔧 Building OK</span>
+  <h1>🚀 Mission Control</h1>
+  <p class="timestamp" id="updated">Updated: loading…</p>
+  <p class="hint">Auto-updates every 60s • Tap a project for full tasks</p>
+
+  <div class="quick-actions" id="quickActions"></div>
+  <div id="projectList"></div>
+
+  <div class="modal-overlay" id="overlay" onclick="closeModal(event)">
+    <div class="modal" id="modal"></div>
   </div>
 
-  <!-- Project 4: Brain -->
-  <div class="project-card" onclick="openModal('brain')">
-    <div class="project-header">
-      <span class="project-name" id="name-brain"></span>
-      <span class="project-status-dot status-yellow"></span>
-    </div>
-    <div class="progress-section">
-      <div class="progress-bar-visual" id="progress-bar-brain"></div>
-      <div class="progress-track">
-        <div class="progress-fill-bar">
-          <div class="progress-fill" id="progress-fill-brain"></div>
-        </div>
-        <span class="progress-percent" id="progress-pct-brain"></span>
-      </div>
-    </div>
-    <p class="status-label">Agent team mode • Build plan ready to execute</p>
-    <span class="build-status build-attn">⚠️ Needs Attention</span>
-  </div>
-  
-  <!-- Project 5: Mobile Dashboard (Done) -->
-  <div class="project-card" onclick="openModal('mobile')">
-    <div class="project-header">
-      <span class="project-name" id="name-mobile"></span>
-      <span class="project-status-dot status-green"></span>
-    </div>
-    <div class="progress-section">
-      <div class="progress-bar-visual" id="progress-bar-mobile"></div>
-      <div class="progress-track">
-        <div class="progress-fill-bar">
-          <div class="progress-fill" id="progress-fill-mobile"></div>
-        </div>
-        <span class="progress-percent" id="progress-pct-mobile"></span>
-      </div>
-    </div>
-    <p class="status-label">Published and working</p>
-    <span class="build-status build-ok">✅ Building OK</span>
-  </div>
-  
-  <!-- Traffic Lights Summary -->
-  <div class="project-card" style="cursor: default;">
-    <div class="project-header">
-      <span class="project-name">🚦 Quick Status</span>
-    </div>
-    <div class="traffic-lights">
-      <div class="traffic-item"><span class="project-status-dot status-green" id="tl-autobookr"></span> <span id="tl-name-autobookr"></span></div>
-      <div class="traffic-item"><span class="project-status-dot status-yellow" id="tl-brain"></span> <span id="tl-name-brain"></span></div>
-      <div class="traffic-item"><span class="project-status-dot status-green" id="tl-mobile"></span> <span id="tl-name-mobile"></span></div>
-    </div>
-  </div>
-  
-  <!-- Blockers -->
-  <div class="project-card" style="background: #450a0a; border-color: #7f1d1d;">
-    <div class="project-header">
-      <span class="project-name" style="color: #fca5a5;">🚫 Blockers</span>
-    </div>
-    <p style="font-size: 13px; color: #fca5a5; margin-bottom: 8px;">Needs your input:</p>
-    <ul style="font-size: 13px; color: #fca5a5; padding-left: 16px;">
-      <li>Deploy AutoBookr to production</li>
-      <li>Get first customer</li>
-    </ul>
-  </div>
-  
-  <div class="refresh-bar" onclick="location.reload()">
-    🔄 Refresh
-  </div>
-
-  <!-- Modals -->
-  <div class="modal-overlay" id="modalOverlay" onclick="closeModal(event)">
-    
-    <!-- AutoBookr Modal -->
-    <div class="modal" id="modal-autobookr">
-      <div class="modal-header">
-        <span class="modal-title" id="modal-title-autobookr"></span>
-        <button class="close-btn" onclick="closeModal()">&times;</button>
-      </div>
-      
-      <div class="roadmap-section done">
-        <h3>✓ Done</h3>
-        <div class="roadmap-item"><span class="check done">✓</span> Define product offer and pricing</div>
-        <div class="roadmap-item"><span class="check done">✓</span> Create plan file</div>
-        <div class="roadmap-item"><span class="check done">✓</span> Build MVP skeleton/webhook</div>
-        <div class="roadmap-item"><span class="check done">✓</span> Get Twilio credentials</div>
-        <div class="roadmap-item"><span class="check done">✓</span> Implement SMS auto-reply logic</div>
-        <div class="roadmap-item"><span class="check done">✓</span> Get Stripe credentials</div>
-        <div class="roadmap-item"><span class="check done">✓</span> Create products/prices in Stripe</div>
-        <div class="roadmap-item"><span class="check done">✓</span> Build checkout links</div>
-        <div class="roadmap-item"><span class="check done">✓</span> Add customer onboarding form</div>
-        <div class="roadmap-item"><span class="check done">✓</span> Add dashboard</div>
-      </div>
-      
-      <div class="roadmap-section todo">
-        <h3>⬜ To Do</h3>
-        <div class="roadmap-item"><span class="check todo"></span> Deploy app and verify health</div>
-        <div class="roadmap-item"><span class="check todo"></span> Configure Twilio env vars</div>
-        <div class="roadmap-item"><span class="check todo"></span> Test missed call triggers SMS</div>
-        <div class="roadmap-item"><span class="check todo"></span> Test payment updates customer</div>
-        <div class="roadmap-item"><span class="check todo"></span> End-to-end test</div>
-        <div class="roadmap-item"><span class="check todo"></span> Publish live URL</div>
-        <div class="roadmap-item"><span class="check todo"></span> Get first 5 paying customers</div>
-      </div>
-    </div>
-    
-    <!-- Revenue Modal -->
-    <div class="modal" id="modal-revenue">
-      <div class="modal-header">
-        <span class="modal-title" id="modal-title-revenue"></span>
-        <button class="close-btn" onclick="closeModal()">&times;</button>
-      </div>
-      
-      <div class="roadmap-section done">
-        <h3>✓ Done</h3>
-        <div class="roadmap-item"><span class="check done">✓</span> Pick initial micro-offer</div>
-        <div class="roadmap-item"><span class="check done">✓</span> Create one-page offer</div>
-        <div class="roadmap-item"><span class="check done">✓</span> Create FAQ + intake assets</div>
-        <div class="roadmap-item"><span class="check done">✓</span> Create lead tracker</div>
-        <div class="roadmap-item"><span class="check done">✓</span> Create outreach templates</div>
-      </div>
-      
-      <div class="roadmap-section todo">
-        <h3>⬜ To Do</h3>
-        <div class="roadmap-item"><span class="check todo"></span> Final approve offer positioning</div>
-        <div class="roadmap-item"><span class="check todo"></span> Connect booking/payment flow</div>
-        <div class="roadmap-item"><span class="check todo"></span> Add 30 prospects</div>
-        <div class="roadmap-item"><span class="check todo"></span> Send daily outreach batch</div>
-        <div class="roadmap-item"><span class="check todo"></span> Close first paid customer</div>
-        <div class="roadmap-item"><span class="check todo"></span> Hit £100/month target</div>
-      </div>
-    </div>
-    
-
-    <!-- Brain Modal -->
-    <div class="modal" id="modal-brain">
-      <div class="modal-header">
-        <span class="modal-title" id="modal-title-brain"></span>
-        <button class="close-btn" onclick="closeModal()">&times;</button>
-      </div>
-      
-      <div class="roadmap-section done">
-        <h3>✓ Done</h3>
-        <div class="roadmap-item"><span class="check done">✓</span> Draft regions (Creativity, Marketing, Research, Build, QA)</div>
-        <div class="roadmap-item"><span class="check done">✓</span> Define NeuroNet as agent-team project</div>
-      </div>
-      
-      <div class="roadmap-section todo">
-        <h3>⬜ To Do (Agent Team Launch Plan)</h3>
-        <div class="roadmap-item"><span class="check todo"></span> Approve team roles (Orchestrator, Builder, QA, Growth)</div>
-        <div class="roadmap-item"><span class="check todo"></span> Set success metric for week 1 (1 shipped workflow)</div>
-        <div class="roadmap-item"><span class="check todo"></span> Create agent contracts (inputs, outputs, done criteria)</div>
-        <div class="roadmap-item"><span class="check todo"></span> Assign primary + fallback model per agent</div>
-        <div class="roadmap-item"><span class="check todo"></span> Define handoff protocol between agents</div>
-        <div class="roadmap-item"><span class="check todo"></span> Run first end-to-end build sprint (small feature)</div>
-        <div class="roadmap-item"><span class="check todo"></span> Review quality/cost logs and tune prompts</div>
-      </div>
-    </div>
-    
-    <!-- Mobile Dashboard Modal -->
-    <div class="modal" id="modal-mobile">
-      <div class="modal-header">
-        <span class="modal-title" id="modal-title-mobile"></span>
-        <button class="close-btn" onclick="closeModal()">&times;</button>
-      </div>
-      
-      <div class="roadmap-section done">
-        <h3>✓ Done</h3>
-        <div class="roadmap-item"><span class="check done">✓</span> Status cards layout</div>
-        <div class="roadmap-item"><span class="check done">✓</span> Last updated timestamp</div>
-        <div class="roadmap-item"><span class="check done">✓</span> Core project sections</div>
-        <div class="roadmap-item"><span class="check done">✓</span> Key artifact links</div>
-        <div class="roadmap-item"><span class="check done">✓</span> Auto-refresh method</div>
-        <div class="roadmap-item"><span class="check done">✓</span> Blocker summary</div>
-      </div>
-      
-      <div class="roadmap-section todo">
-        <h3>⬜ To Do</h3>
-        <div class="roadmap-item"><span class="check todo"></span> Approve publish mode</div>
-        <div class="roadmap-item"><span class="check todo"></span> Publish live URL</div>
-        <div class="roadmap-item"><span class="check todo"></span> Add to Telegram pinned</div>
-        <div class="roadmap-item"><span class="check todo"></span> Confirm mobile load</div>
-      </div>
-    </div>
-    
-  </div>
+  <button class="refresh-pill" onclick="loadData(true)">↻ Refresh now</button>
 
   <script>
-    // Populate all project names
-    const projectKeys = ['autobookr', 'revenue', 'brain', 'mobile'];
-    projectKeys.forEach(key => {
-      const name = getProjectName(key);
-      // Card names
-      const cardEl = document.getElementById('name-' + key);
-      if (cardEl) cardEl.textContent = name;
-      // Traffic light names
-      const tlEl = document.getElementById('tl-name-' + key);
-      if (tlEl) tlEl.textContent = name;
-      // Modal titles
-      const modalEl = document.getElementById('modal-title-' + key);
-      if (modalEl) modalEl.textContent = name;
-    });
-    
-    // Initialize editable names and progress bars
-    initEditableNames();
-    updateProgressBars();
-    
-    function editProjectNames() {
-      const keys = Object.keys(PROJECT_NAMES);
-      let msg = "Enter a new name:\n\n";
-      keys.forEach((key, i) => {
-        msg += (i+1) + ". " + key + ": " + PROJECT_NAMES[key] + "\n";
-      });
-      msg += "\nReply with format: key=new name";
-      
-      const key = prompt("Which project? (autobookr, revenue, brain, mobile)");
-      if (key && PROJECT_NAMES[key] !== undefined) {
-        const newName = prompt("New name for " + PROJECT_NAMES[key] + ":", PROJECT_NAMES[key]);
-        if (newName) {
-          PROJECT_NAMES[key] = newName;
-          saveProjectNames();
-          location.reload();
-        }
-      }
+    let cached = null;
+
+    function calcProgress(p) {
+      const done = (p.done || []).length;
+      const todo = (p.todo || []).length;
+      const total = done + todo;
+      if (!total) return 0;
+      return Math.round((done / total) * 100);
     }
-    
-    function openModal(id) {
-      document.getElementById('modalOverlay').classList.add('active');
-      // Hide all modals first
-      document.querySelectorAll('.modal').forEach(m => m.style.display = 'none');
-      // Show selected modal
-      document.getElementById('modal-' + id).style.display = 'block';
+
+    function progressColor(pct) {
+      if (pct > 75) return '#22c55e';
+      if (pct >= 30) return '#eab308';
+      return '#ef4444';
+    }
+
+    function itemRow(icon, text) {
+      return `<div class="item"><span class="badge">${icon}</span><span>${text}</span></div>`;
+    }
+
+    function renderQuickActions(data) {
+      const container = document.getElementById('quickActions');
+      const actions = [];
+      (data.projects || []).forEach(p => {
+        if ((p.blockers || []).length) {
+          actions.push({ project: p.name, task: p.blockers[0], kind: 'blocker' });
+        } else if ((p.todo || []).length) {
+          actions.push({ project: p.name, task: p.todo[0], kind: 'next' });
+        }
+      });
+
+      const top = actions.slice(0, 3);
+      container.innerHTML = '<h2>⚡ Top 3 Daily Moves</h2>' + (top.length
+        ? top.map(a => `<div class="qa-item"><span class="qa-tag">${a.kind === 'blocker' ? '🚫' : '▶️'} ${a.project}:</span>${a.task}</div>`).join('')
+        : '<div class="qa-item">No urgent actions right now.</div>');
+    }
+
+    function render(data) {
+      cached = data;
+      const updatedEl = document.getElementById('updated');
+      const dt = data.updatedAt ? new Date(data.updatedAt) : new Date();
+      updatedEl.textContent = `Updated: ${dt.toLocaleString()}`;
+
+      renderQuickActions(data);
+
+      const list = document.getElementById('projectList');
+      list.innerHTML = '';
+
+      (data.projects || []).forEach(p => {
+        const pct = calcProgress(p);
+        const color = progressColor(pct);
+
+        const card = document.createElement('div');
+        card.className = 'project-card';
+        card.innerHTML = `
+          <div class="project-header">
+            <div class="project-name">${p.name}</div>
+            <span class="status-dot ${p.status || 'yellow'}"></span>
+          </div>
+          <p class="summary">${p.summary || ''}</p>
+          <div class="track">
+            <div class="track-bg"><div class="track-fill" style="width:${pct}%; background:${color}"></div></div>
+            <div class="pct" style="color:${color}">${pct}%</div>
+          </div>
+        `;
+        card.onclick = () => openModal(p.key);
+        list.appendChild(card);
+      });
+    }
+
+    function openModal(key) {
+      if (!cached) return;
+      const p = (cached.projects || []).find(x => x.key === key);
+      if (!p) return;
+
+      const done = (p.done || []).map(t => itemRow('✅', t)).join('');
+      const todo = (p.todo || []).map(t => itemRow('⬜', t)).join('');
+      const blockers = (p.blockers || []).length
+        ? (p.blockers || []).map(t => itemRow('🚫', t)).join('')
+        : itemRow('✅', 'No active blockers');
+
+      document.getElementById('modal').innerHTML = `
+        <div class="modal-head">
+          <div class="modal-title">${p.name}</div>
+          <button class="close-btn" onclick="closeModal()">&times;</button>
+        </div>
+        <p class="summary">${p.summary || ''}</p>
+        <h3 class="done-h">Done</h3>
+        ${done || itemRow('•', 'None yet')}
+        <h3 class="todo-h">To Do</h3>
+        ${todo || itemRow('•', 'None')}
+        <h3 class="block-h">Blockers</h3>
+        ${blockers}
+      `;
+
+      document.getElementById('overlay').classList.add('active');
       document.body.style.overflow = 'hidden';
     }
-    
+
     function closeModal(e) {
       if (e && e.target !== e.currentTarget) return;
-      document.getElementById('modalOverlay').classList.remove('active');
+      document.getElementById('overlay').classList.remove('active');
       document.body.style.overflow = '';
     }
-    
-    // Auto-refresh
-    setInterval(() => location.reload(), 300000);
+
+    async function loadData(manual) {
+      try {
+        const url = `mission-control-data.json?t=${Date.now()}`;
+        const res = await fetch(url, { cache: 'no-store' });
+        if (!res.ok) throw new Error('Failed to load dashboard data');
+        const data = await res.json();
+        render(data);
+      } catch (err) {
+        if (manual) alert('Could not refresh dashboard data right now.');
+      }
+    }
+
+    loadData(false);
+    setInterval(() => loadData(false), 60000);
   </script>
 </body>
 </html>
