@@ -9,25 +9,36 @@
   <title>Mission Control - Mobile</title>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
-    body {
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-      background: #0f172a; color: #e2e8f0; padding: 16px; min-height: 100vh;
-    }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #0f172a; color: #e2e8f0; padding: 16px; min-height: 100vh; }
     h1 { font-size: 20px; margin-bottom: 6px; color: #fff; }
-    .timestamp { font-size: 12px; color: #94a3b8; margin-bottom: 14px; }
-    .hint { font-size: 12px; color: #64748b; margin-bottom: 16px; }
-    .quick-actions {
-      background: #172033; border: 1px solid #334155; border-radius: 12px;
-      padding: 12px; margin-bottom: 12px;
-    }
-    .quick-actions h2 { font-size: 13px; margin-bottom: 8px; color: #93c5fd; }
+    .timestamp { font-size: 12px; color: #94a3b8; margin-bottom: 10px; }
+    .hint { font-size: 12px; color: #64748b; margin-bottom: 14px; }
+
+    .section { background: #172033; border: 1px solid #334155; border-radius: 12px; padding: 12px; margin-bottom: 12px; }
+    .section h2 { font-size: 13px; margin-bottom: 8px; color: #93c5fd; }
     .qa-item { font-size: 12px; color: #cbd5e1; padding: 6px 0; border-bottom: 1px solid #334155; }
     .qa-item:last-child { border-bottom: none; }
     .qa-tag { color: #94a3b8; margin-right: 6px; }
-    .project-card {
-      background: #1e293b; border: 1px solid #334155; border-radius: 12px;
-      padding: 14px; margin-bottom: 12px; cursor: pointer;
-    }
+
+    .queue-top { display: flex; justify-content: space-between; align-items: center; gap: 8px; margin-bottom: 8px; flex-wrap: wrap; }
+    .queue-meta { font-size: 11px; color: #94a3b8; }
+    .queue-controls { display: flex; gap: 6px; }
+    .mini-btn { border: 1px solid #475569; background: #0f172a; color: #cbd5e1; border-radius: 999px; padding: 5px 9px; font-size: 10px; cursor: pointer; }
+    .mini-btn.active { border-color: #22c55e; color: #86efac; }
+    .queue-group { margin-top: 10px; }
+    .queue-group-title { font-size: 11px; color: #93c5fd; letter-spacing: .4px; text-transform: uppercase; margin: 8px 0; }
+    .queue-item { display: flex; justify-content: space-between; gap: 8px; align-items: center; border: 1px solid #334155; border-radius: 10px; padding: 10px; margin-bottom: 8px; background: #1e293b; }
+    .queue-item:last-child { margin-bottom: 0; }
+    .queue-left { min-width: 0; }
+    .queue-title { font-size: 13px; color: #fff; font-weight: 600; line-height: 1.3; }
+    .queue-note { font-size: 11px; color: #94a3b8; margin-top: 4px; }
+    .queue-tags { display: flex; gap: 6px; margin-top: 6px; flex-wrap: wrap; }
+    .pill { font-size: 10px; border-radius: 999px; padding: 3px 7px; border: 1px solid #475569; color: #cbd5e1; }
+    .pill.new { background: #14532d; border-color: #22c55e; color: #86efac; font-weight: 700; }
+    .pill.priority { background: #3b0764; border-color: #a855f7; color: #d8b4fe; }
+    .queue-btn { border: 1px solid #3b82f6; border-radius: 8px; background: #1d4ed8; color: #fff; text-decoration: none; font-size: 12px; padding: 8px 10px; white-space: nowrap; }
+
+    .project-card { background: #1e293b; border: 1px solid #334155; border-radius: 12px; padding: 14px; margin-bottom: 12px; cursor: pointer; }
     .project-header { display: flex; justify-content: space-between; gap: 8px; align-items: center; margin-bottom: 8px; }
     .project-name { font-size: 15px; font-weight: 700; color: #fff; }
     .status-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
@@ -35,25 +46,17 @@
     .yellow { background: #eab308; box-shadow: 0 0 8px #eab308; }
     .red { background: #ef4444; box-shadow: 0 0 8px #ef4444; }
     .summary { font-size: 12px; color: #94a3b8; margin-bottom: 8px; }
-
     .track { display: flex; align-items: center; gap: 8px; }
     .track-bg { flex: 1; height: 7px; background: #334155; border-radius: 8px; overflow: hidden; }
     .track-fill { height: 100%; border-radius: 8px; }
     .pct { min-width: 40px; text-align: right; font-size: 12px; font-weight: 700; }
 
-    .modal-overlay {
-      display: none; position: fixed; inset: 0; background: rgba(0,0,0,.8);
-      z-index: 50; overflow-y: auto; padding: 18px;
-    }
+    .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,.8); z-index: 50; overflow-y: auto; padding: 18px; }
     .modal-overlay.active { display: block; }
-    .modal {
-      max-width: 450px; margin: 10px auto 30px; background: #1e293b;
-      border: 1px solid #334155; border-radius: 14px; padding: 16px;
-    }
+    .modal { max-width: 450px; margin: 10px auto 30px; background: #1e293b; border: 1px solid #334155; border-radius: 14px; padding: 16px; }
     .modal-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
     .modal-title { font-size: 17px; font-weight: 700; color: #fff; }
     .close-btn { background: none; border: none; color: #cbd5e1; font-size: 24px; line-height: 1; }
-
     h3 { font-size: 12px; text-transform: uppercase; letter-spacing: .5px; margin: 14px 0 8px; color: #94a3b8; }
     .done-h { color: #6ee7b7; }
     .todo-h { color: #fcd34d; }
@@ -62,10 +65,7 @@
     .item:last-child { border-bottom: none; }
     .badge { width: 18px; text-align: center; flex-shrink: 0; }
 
-    .refresh-pill {
-      position: fixed; right: 16px; bottom: 16px; border: 1px solid #3b82f6; background: #1d4ed8;
-      color: #fff; border-radius: 999px; padding: 10px 14px; font-size: 12px; cursor: pointer;
-    }
+    .refresh-pill { position: fixed; right: 16px; bottom: 16px; border: 1px solid #3b82f6; background: #1d4ed8; color: #fff; border-radius: 999px; padding: 10px 14px; font-size: 12px; cursor: pointer; }
   </style>
 </head>
 <body>
@@ -73,7 +73,8 @@
   <p class="timestamp" id="updated">Updated: loading…</p>
   <p class="hint">Auto-updates every 60s • Tap a project for full tasks</p>
 
-  <div class="quick-actions" id="quickActions"></div>
+  <div class="section" id="quickActions"></div>
+  <div class="section" id="readQueue"></div>
   <div id="projectList"></div>
 
   <div class="modal-overlay" id="overlay" onclick="closeModal(event)">
@@ -83,7 +84,57 @@
   <button class="refresh-pill" onclick="loadData(true)">↻ Refresh now</button>
 
   <script>
+    const READ_STATE_KEY = 'mc-read-state-v1';
+    const READ_PREFS_KEY = 'mc-read-prefs-v1';
     let cached = null;
+
+    function getReadState() {
+      try { return JSON.parse(localStorage.getItem(READ_STATE_KEY) || '{}'); }
+      catch { return {}; }
+    }
+
+    function setReadState(state) {
+      localStorage.setItem(READ_STATE_KEY, JSON.stringify(state));
+    }
+
+    function getReadPrefs() {
+      try { return JSON.parse(localStorage.getItem(READ_PREFS_KEY) || '{"newOnly":false,"sort":"newest"}'); }
+      catch { return { newOnly: false, sort: 'newest' }; }
+    }
+
+    function setReadPrefs(prefs) {
+      localStorage.setItem(READ_PREFS_KEY, JSON.stringify(prefs));
+    }
+
+    function markRead(id) {
+      const state = getReadState();
+      state[id] = new Date().toISOString();
+      setReadState(state);
+      if (cached) renderReadQueue(cached);
+    }
+
+    function markAllRead() {
+      if (!cached) return;
+      const state = getReadState();
+      const now = new Date().toISOString();
+      (cached.readQueue || []).forEach(item => { state[item.id] = now; });
+      setReadState(state);
+      renderReadQueue(cached);
+    }
+
+    function toggleNewOnly() {
+      const prefs = getReadPrefs();
+      prefs.newOnly = !prefs.newOnly;
+      setReadPrefs(prefs);
+      if (cached) renderReadQueue(cached);
+    }
+
+    function toggleSort() {
+      const prefs = getReadPrefs();
+      prefs.sort = prefs.sort === 'newest' ? 'alpha' : 'newest';
+      setReadPrefs(prefs);
+      if (cached) renderReadQueue(cached);
+    }
 
     function calcProgress(p) {
       const done = (p.done || []).length;
@@ -120,6 +171,70 @@
         : '<div class="qa-item">No urgent actions right now.</div>');
     }
 
+    function renderReadQueue(data) {
+      const container = document.getElementById('readQueue');
+      const state = getReadState();
+      const prefs = getReadPrefs();
+      const items = (data.readQueue || []).map(item => {
+        const readAt = state[item.id];
+        const isNew = !readAt || (item.updatedAt && new Date(item.updatedAt).getTime() > new Date(readAt).getTime());
+        return { ...item, isNew };
+      });
+
+      const unreadCount = items.filter(i => i.isNew).length;
+
+      let list = [...items];
+      if (prefs.newOnly) list = list.filter(i => i.isNew);
+      if (prefs.sort === 'newest') {
+        list.sort((a, b) => (new Date(b.updatedAt || 0).getTime()) - (new Date(a.updatedAt || 0).getTime()));
+      } else {
+        list.sort((a, b) => (a.title || '').localeCompare((b.title || '')));
+      }
+
+      const grouped = list.reduce((acc, item) => {
+        const g = item.group || 'Other';
+        if (!acc[g]) acc[g] = [];
+        acc[g].push(item);
+        return acc;
+      }, {});
+
+      const rows = Object.entries(grouped).map(([groupName, groupItems]) => {
+        const inner = groupItems.map(item => {
+          const href = item.url || item.path || '#';
+          const updated = item.updatedAt ? new Date(item.updatedAt).toLocaleString() : 'unknown';
+          return `
+            <div class="queue-item">
+              <div class="queue-left">
+                <div class="queue-title">${item.title}</div>
+                <div class="queue-note">${item.note || ''}</div>
+                <div class="queue-tags">
+                  ${item.project ? `<span class="pill">${item.project}</span>` : ''}
+                  ${item.priority === 'high' ? '<span class="pill priority">HIGH</span>' : ''}
+                  ${item.isNew ? '<span class="pill new">NEW</span>' : ''}
+                  <span class="pill">Updated ${updated}</span>
+                </div>
+              </div>
+              <a class="queue-btn" href="${href}" target="_blank" rel="noopener" onclick="markRead('${item.id}')">Open</a>
+            </div>
+          `;
+        }).join('');
+        return `<div class="queue-group"><div class="queue-group-title">${groupName}</div>${inner}</div>`;
+      }).join('');
+
+      container.innerHTML = `
+        <h2>📂 Files Hub</h2>
+        <div class="queue-top">
+          <div class="queue-meta">${unreadCount} item(s) new or changed</div>
+          <div class="queue-controls">
+            <button class="mini-btn ${prefs.newOnly ? 'active' : ''}" onclick="toggleNewOnly()">${prefs.newOnly ? 'Showing: NEW' : 'Filter: All'}</button>
+            <button class="mini-btn" onclick="toggleSort()">Sort: ${prefs.sort === 'newest' ? 'Newest' : 'A-Z'}</button>
+            <button class="mini-btn" onclick="markAllRead()">Mark all read</button>
+          </div>
+        </div>
+        ${rows || '<div class="qa-item">No files match current filter.</div>'}
+      `;
+    }
+
     function render(data) {
       cached = data;
       const updatedEl = document.getElementById('updated');
@@ -127,6 +242,7 @@
       updatedEl.textContent = `Updated: ${dt.toLocaleString()}`;
 
       renderQuickActions(data);
+      renderReadQueue(data);
 
       const list = document.getElementById('projectList');
       list.innerHTML = '';

@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-03-03T22:41:24Z",
+  "updatedAt": "2026-03-04T09:16:13Z",
   "projects": [
     {
       "key": "autobookr_suite",
@@ -168,6 +168,96 @@
       "blockers": [
         "Service/package preferences needed"
       ]
+    }
+  ],
+  "readQueue": [
+    {
+      "id": "today-focus",
+      "title": "TODAY_FOCUS.md",
+      "group": "🔥 Today",
+      "project": "Daily",
+      "note": "What to execute right now",
+      "priority": "high",
+      "path": "../../TODAY_FOCUS.md",
+      "url": "https://github.com/lil-ai-operator/notification-service/blob/main/TODAY_FOCUS.md",
+      "updatedAt": "2026-03-03T21:44:41Z"
+    },
+    {
+      "id": "wayne-stack",
+      "title": "wayne-action-stack.md",
+      "group": "🔥 Today",
+      "project": "Blockers",
+      "note": "Anything waiting on Wayne",
+      "priority": "high",
+      "path": "../../wayne-action-stack.md",
+      "url": "https://github.com/lil-ai-operator/notification-service/blob/main/wayne-action-stack.md",
+      "updatedAt": "2026-03-03T21:44:42Z"
+    },
+    {
+      "id": "current-status",
+      "title": "CURRENT_STATUS.md",
+      "group": "🔥 Today",
+      "project": "Status",
+      "note": "Quick status snapshot",
+      "priority": "normal",
+      "path": "../../CURRENT_STATUS.md",
+      "url": "https://github.com/lil-ai-operator/notification-service/blob/main/CURRENT_STATUS.md",
+      "updatedAt": "2026-02-24T17:43:28Z"
+    },
+    {
+      "id": "master-guide",
+      "title": "MASTER_PROJECT_EXECUTION_GUIDE.md",
+      "group": "🧭 Control Docs",
+      "project": "All Projects",
+      "note": "Main tracker with checkbox progress",
+      "priority": "high",
+      "path": "../../MASTER_PROJECT_EXECUTION_GUIDE.md",
+      "url": "https://github.com/lil-ai-operator/notification-service/blob/main/MASTER_PROJECT_EXECUTION_GUIDE.md",
+      "updatedAt": "2026-03-03T21:44:41Z"
+    },
+    {
+      "id": "backlog",
+      "title": "PROJECTS_BACKLOG_WAYNE.md",
+      "group": "🧭 Control Docs",
+      "project": "Roadmap",
+      "note": "Big-picture project queue",
+      "priority": "normal",
+      "path": "../../PROJECTS_BACKLOG_WAYNE.md",
+      "url": "https://github.com/lil-ai-operator/notification-service/blob/main/PROJECTS_BACKLOG_WAYNE.md",
+      "updatedAt": "2026-03-03T21:44:41Z"
+    },
+    {
+      "id": "plain-guide",
+      "title": "PLAIN_ENGLISH_GUIDE.md",
+      "group": "🧭 Control Docs",
+      "project": "Comms",
+      "note": "Simple-language summary guide",
+      "priority": "normal",
+      "path": "../../PLAIN_ENGLISH_GUIDE.md",
+      "url": "https://github.com/lil-ai-operator/notification-service/blob/main/PLAIN_ENGLISH_GUIDE.md",
+      "updatedAt": "2026-03-03T21:44:35Z"
+    },
+    {
+      "id": "memory-long",
+      "title": "MEMORY.md",
+      "group": "🧠 Memory",
+      "project": "Long-term",
+      "note": "Curated long-term memory",
+      "priority": "normal",
+      "path": "../../MEMORY.md",
+      "url": "https://github.com/lil-ai-operator/notification-service/blob/main/MEMORY.md",
+      "updatedAt": "2026-03-03T21:44:41Z"
+    },
+    {
+      "id": "session-start",
+      "title": "SESSION_START.md",
+      "group": "🧠 Memory",
+      "project": "Handoff",
+      "note": "Fast handoff and current priorities",
+      "priority": "normal",
+      "path": "../../SESSION_START.md",
+      "url": "https://github.com/lil-ai-operator/notification-service/blob/main/SESSION_START.md",
+      "updatedAt": "2026-03-03T21:44:41Z"
     }
   ]
 }
