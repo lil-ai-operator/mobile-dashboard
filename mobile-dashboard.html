@@ -75,6 +75,16 @@
     .badge { width: 18px; text-align: center; flex-shrink: 0; }
 
     .refresh-pill { position: fixed; right: 16px; bottom: 16px; border: 1px solid #3b82f6; background: #1d4ed8; color: #fff; border-radius: 999px; padding: 10px 14px; font-size: 12px; cursor: pointer; }
+
+    /* Gallery swipe */
+    .gallery-full { display: none; position: fixed; inset: 0; background: #000; z-index: 100; }
+    .gallery-full.active { display: flex; align-items: center; justify-content: center; }
+    .gallery-full img { max-width: 95%; max-height: 90%; object-fit: contain; }
+    .gallery-nav { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(255,255,255,0.2); border: none; color: #fff; font-size: 32px; padding: 16px; cursor: pointer; border-radius: 8px; }
+    .gallery-prev { left: 16px; }
+    .gallery-next { right: 16px; }
+    .gallery-close { position: absolute; top: 16px; right: 16px; background: rgba(255,255,255,0.2); border: none; color: #fff; font-size: 24px; width: 40px; height: 40px; border-radius: 50%; cursor: pointer; }
+    .gallery-counter { position: absolute; bottom: 16px; left: 50%; transform: translateX(-50%); color: #fff; font-size: 14px; background: rgba(0,0,0,0.5); padding: 8px 16px; border-radius: 20px; }
   </style>
 </head>
 <body>
@@ -225,6 +235,11 @@
         const inner = groupItems.map(item => {
           const href = item.url || item.path || '#';
           const updated = item.updatedAt ? new Date(item.updatedAt).toLocaleString() : 'unknown';
+          const isImage = item.title.match(/\.(png|jpg|jpeg|gif)$/i);
+          const btnText = isImage ? 'View' : 'Open';
+          const btnHtml = isImage 
+            ? `<button class="queue-btn" onclick="openGalleryFromBtn(this, '${href}', '${item.title}')">${btnText}</button>`
+            : `<a class="queue-btn" href="${href}" target="_blank" rel="noopener" onclick="markRead('${item.id}')">${btnText}</a>`;
           return `
             <div class="queue-item">
               <div class="queue-left">
@@ -237,7 +252,7 @@
                   <span class="pill">${updated}</span>
                 </div>
               </div>
-              <a class="queue-btn" href="${href}" target="_blank" rel="noopener" onclick="markRead('${item.id}')">Open</a>
+              ${btnHtml}
             </div>
           `;
         }).join('');
@@ -352,6 +367,53 @@
 
     loadData(false);
     setInterval(() => loadData(false), 60000);
+
+    // Gallery swipe
+    let galleryImages = [], currentGalleryIndex = 0;
+    function openGalleryFromBtn(btn, url, title) {
+      const items = document.querySelectorAll('.queue-group');
+      galleryImages = [];
+      items.forEach(group => {
+        const header = group.querySelector('.queue-header-title');
+        if (header && header.textContent.includes('Brand')) {
+          const queueItems = group.querySelectorAll('.queue-item');
+          queueItems.forEach(item => {
+            const titleEl = item.querySelector('.queue-title');
+            const btnEl = item.querySelector('.queue-btn');
+            if (titleEl && btnEl) {
+              const t = titleEl.textContent;
+              if (t.match(/\.(png|jpg|jpeg|gif)$/i)) galleryImages.push({ title: t, url: btnEl.getAttribute('href') });
+            }
+          });
+        }
+      });
+      currentGalleryIndex = galleryImages.findIndex(img => img.url === url);
+      if (currentGalleryIndex === -1) currentGalleryIndex = 0;
+      const img = document.getElementById('gallery-img');
+      const counter = document.getElementById('gallery-counter');
+      img.src = galleryImages[currentGalleryIndex].url;
+      counter.textContent = `${currentGalleryIndex + 1} / ${galleryImages.length}`;
+      document.getElementById('gallery-modal').classList.add('active');
+    }
+    function prevGallery() {
+      currentGalleryIndex = (currentGalleryIndex - 1 + galleryImages.length) % galleryImages.length;
+      document.getElementById('gallery-img').src = galleryImages[currentGalleryIndex].url;
+      document.getElementById('gallery-counter').textContent = `${currentGalleryIndex + 1} / ${galleryImages.length}`;
+    }
+    function nextGallery() {
+      currentGalleryIndex = (currentGalleryIndex + 1) % galleryImages.length;
+      document.getElementById('gallery-img').src = galleryImages[currentGalleryIndex].url;
+      document.getElementById('gallery-counter').textContent = `${currentGalleryIndex + 1} / ${galleryImages.length}`;
+    }
+    function closeGallery() { document.getElementById('gallery-modal').classList.remove('active'); }
   </script>
+
+  <div class="gallery-full" id="gallery-modal" onclick="closeGallery()">
+    <button class="gallery-close" onclick="closeGallery()">×</button>
+    <button class="gallery-nav gallery-prev" onclick="event.stopPropagation(); prevGallery()">‹</button>
+    <img id="gallery-img" src="" onclick="event.stopPropagation(); nextGallery()" />
+    <button class="gallery-nav gallery-next" onclick="event.stopPropagation(); nextGallery()">›</button>
+    <div class="gallery-counter" id="gallery-counter">1 / 1</div>
+  </div>
 </body>
 </html>
