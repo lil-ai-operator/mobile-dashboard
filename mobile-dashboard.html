@@ -25,18 +25,27 @@
     .queue-controls { display: flex; gap: 6px; }
     .mini-btn { border: 1px solid #475569; background: #0f172a; color: #cbd5e1; border-radius: 999px; padding: 5px 9px; font-size: 10px; cursor: pointer; }
     .mini-btn.active { border-color: #22c55e; color: #86efac; }
-    .queue-group { margin-top: 10px; }
+    .queue-group { margin-top: 8px; }
     .queue-group-title { font-size: 11px; color: #93c5fd; letter-spacing: .4px; text-transform: uppercase; margin: 8px 0; }
-    .queue-item { display: flex; justify-content: space-between; gap: 8px; align-items: center; border: 1px solid #334155; border-radius: 10px; padding: 10px; margin-bottom: 8px; background: #1e293b; }
+    .queue-header { display: flex; justify-content: space-between; align-items: center; padding: 10px 12px; background: #172033; border: 1px solid #334155; border-radius: 10px; margin-bottom: 6px; cursor: pointer; }
+    .queue-header:active { background: #1e293b; }
+    .queue-header-left { display: flex; align-items: center; gap: 8px; }
+    .queue-header-title { font-size: 13px; color: #fff; font-weight: 600; }
+    .queue-badge { font-size: 10px; background: #22c55e; color: #fff; border-radius: 999px; padding: 2px 6px; font-weight: 700; }
+    .queue-chevron { font-size: 12px; color: #64748b; transition: transform 0.2s; }
+    .queue-chevron.open { transform: rotate(180deg); }
+    .queue-items { display: none; padding: 0 4px; }
+    .queue-items.open { display: block; }
+    .queue-item { display: flex; justify-content: space-between; gap: 8px; align-items: center; border: 1px solid #334155; border-radius: 8px; padding: 8px; margin-bottom: 6px; background: #1e293b; }
     .queue-item:last-child { margin-bottom: 0; }
     .queue-left { min-width: 0; }
-    .queue-title { font-size: 13px; color: #fff; font-weight: 600; line-height: 1.3; }
-    .queue-note { font-size: 11px; color: #94a3b8; margin-top: 4px; }
-    .queue-tags { display: flex; gap: 6px; margin-top: 6px; flex-wrap: wrap; }
-    .pill { font-size: 10px; border-radius: 999px; padding: 3px 7px; border: 1px solid #475569; color: #cbd5e1; }
+    .queue-title { font-size: 12px; color: #fff; font-weight: 600; line-height: 1.3; }
+    .queue-note { font-size: 10px; color: #94a3b8; margin-top: 2px; }
+    .queue-tags { display: flex; gap: 4px; margin-top: 4px; flex-wrap: wrap; }
+    .pill { font-size: 9px; border-radius: 999px; padding: 2px 5px; border: 1px solid #475569; color: #cbd5e1; }
     .pill.new { background: #14532d; border-color: #22c55e; color: #86efac; font-weight: 700; }
     .pill.priority { background: #3b0764; border-color: #a855f7; color: #d8b4fe; }
-    .queue-btn { border: 1px solid #3b82f6; border-radius: 8px; background: #1d4ed8; color: #fff; text-decoration: none; font-size: 12px; padding: 8px 10px; white-space: nowrap; }
+    .queue-btn { border: 1px solid #3b82f6; border-radius: 6px; background: #1d4ed8; color: #fff; text-decoration: none; font-size: 11px; padding: 6px 8px; white-space: nowrap; }
 
     .project-card { background: #1e293b; border: 1px solid #334155; border-radius: 12px; padding: 14px; margin-bottom: 12px; cursor: pointer; }
     .project-header { display: flex; justify-content: space-between; gap: 8px; align-items: center; margin-bottom: 8px; }
@@ -136,6 +145,18 @@
       if (cached) renderReadQueue(cached);
     }
 
+    function toggleGroup(id) {
+      const el = document.getElementById('queue-items-' + id);
+      const chev = document.getElementById('queue-chev-' + id);
+      if (el.classList.contains('open')) {
+        el.classList.remove('open');
+        chev.classList.remove('open');
+      } else {
+        el.classList.add('open');
+        chev.classList.add('open');
+      }
+    }
+
     function calcProgress(p) {
       const done = (p.done || []).length;
       const todo = (p.todo || []).length;
@@ -198,7 +219,9 @@
         return acc;
       }, {});
 
-      const rows = Object.entries(grouped).map(([groupName, groupItems]) => {
+      const rows = Object.entries(grouped).map(([groupName, groupItems], idx) => {
+        const newCount = groupItems.filter(i => i.isNew).length;
+        const groupId = 'g' + idx;
         const inner = groupItems.map(item => {
           const href = item.url || item.path || '#';
           const updated = item.updatedAt ? new Date(item.updatedAt).toLocaleString() : 'unknown';
@@ -211,14 +234,24 @@
                   ${item.project ? `<span class="pill">${item.project}</span>` : ''}
                   ${item.priority === 'high' ? '<span class="pill priority">HIGH</span>' : ''}
                   ${item.isNew ? '<span class="pill new">NEW</span>' : ''}
-                  <span class="pill">Updated ${updated}</span>
+                  <span class="pill">${updated}</span>
                 </div>
               </div>
               <a class="queue-btn" href="${href}" target="_blank" rel="noopener" onclick="markRead('${item.id}')">Open</a>
             </div>
           `;
         }).join('');
-        return `<div class="queue-group"><div class="queue-group-title">${groupName}</div>${inner}</div>`;
+        return `
+          <div class="queue-group">
+            <div class="queue-header" onclick="toggleGroup('${groupId}')">
+              <div class="queue-header-left">
+                <span class="queue-header-title">${groupName}</span>
+                ${newCount > 0 ? `<span class="queue-badge">${newCount}</span>` : ''}
+              </div>
+              <span class="queue-chevron" id="queue-chev-${groupId}">▼</span>
+            </div>
+            <div class="queue-items" id="queue-items-${groupId}">${inner}</div>
+          </div>`;
       }).join('');
 
       container.innerHTML = `
