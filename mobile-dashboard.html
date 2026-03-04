@@ -79,12 +79,11 @@
     /* Gallery swipe */
     .gallery-full { display: none; position: fixed; inset: 0; background: #000; z-index: 100; }
     .gallery-full.active { display: flex; align-items: center; justify-content: center; }
-    .gallery-full img { max-width: 95%; max-height: 90%; object-fit: contain; }
-    .gallery-nav { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(255,255,255,0.2); border: none; color: #fff; font-size: 32px; padding: 16px; cursor: pointer; border-radius: 8px; }
-    .gallery-prev { left: 16px; }
-    .gallery-next { right: 16px; }
-    .gallery-close { position: absolute; top: 16px; right: 16px; background: rgba(255,255,255,0.2); border: none; color: #fff; font-size: 24px; width: 40px; height: 40px; border-radius: 50%; cursor: pointer; }
-    .gallery-counter { position: absolute; bottom: 16px; left: 50%; transform: translateX(-50%); color: #fff; font-size: 14px; background: rgba(0,0,0,0.5); padding: 8px 16px; border-radius: 20px; }
+    .gallery-full img { max-width: 95%; max-height: 90%; object-fit: contain; touch-action: pan-y; }
+    .gallery-nav { display: none; }
+    .gallery-close { position: absolute; top: 16px; right: 16px; background: rgba(0,0,0,0.6); border: none; color: #fff; font-size: 24px; width: 44px; height: 44px; border-radius: 50%; cursor: pointer; z-index: 10; }
+    .gallery-counter { position: absolute; bottom: 24px; left: 50%; transform: translateX(-50%); color: #fff; font-size: 14px; background: rgba(0,0,0,0.6); padding: 8px 20px; border-radius: 20px; font-weight: 600; }
+    .gallery-hint { position: absolute; bottom: 60px; left: 50%; transform: translateX(-50%); color: rgba(255,255,255,0.6); font-size: 12px; }
   </style>
 </head>
 <body>
@@ -368,13 +367,12 @@
     loadData(false);
     setInterval(() => loadData(false), 60000);
 
-    // Gallery swipe
-    let galleryImages = [], currentGalleryIndex = 0;
+    // Gallery swipe with touch gestures
+    let galleryImages = [], currentGalleryIndex = 0, touchStartX = 0;
+    
     function openGalleryFromBtn(btn) {
       const url = btn.getAttribute('data-url');
-      const title = btn.closest('.queue-item').querySelector('.queue-title').textContent;
       
-      // Build gallery from all queue items with images
       galleryImages = [];
       document.querySelectorAll('.queue-item').forEach(item => {
         const titleEl = item.querySelector('.queue-title');
@@ -394,30 +392,38 @@
       if (currentGalleryIndex === -1) currentGalleryIndex = 0;
       
       if (galleryImages.length > 0) {
-        document.getElementById('gallery-img').src = galleryImages[currentGalleryIndex].url;
-        document.getElementById('gallery-counter').textContent = `${currentGalleryIndex + 1} / ${galleryImages.length}`;
-        document.getElementById('gallery-modal').classList.add('active');
+        const modal = document.getElementById('gallery-modal');
+        modal.classList.add('active');
+        modal.ontouchstart = e => touchStartX = e.touches[0].clientX;
+        modal.ontouchend = e => {
+          const diff = touchStartX - e.changedTouches[0].clientX;
+          if (Math.abs(diff) > 50) diff > 0 ? nextGallery() : prevGallery();
+        };
+        updateGalleryImage();
       }
     }
-    function prevGallery() {
-      currentGalleryIndex = (currentGalleryIndex - 1 + galleryImages.length) % galleryImages.length;
+    
+    function updateGalleryImage() {
       document.getElementById('gallery-img').src = galleryImages[currentGalleryIndex].url;
       document.getElementById('gallery-counter').textContent = `${currentGalleryIndex + 1} / ${galleryImages.length}`;
+    }
+    
+    function prevGallery() {
+      currentGalleryIndex = (currentGalleryIndex - 1 + galleryImages.length) % galleryImages.length;
+      updateGalleryImage();
     }
     function nextGallery() {
       currentGalleryIndex = (currentGalleryIndex + 1) % galleryImages.length;
-      document.getElementById('gallery-img').src = galleryImages[currentGalleryIndex].url;
-      document.getElementById('gallery-counter').textContent = `${currentGalleryIndex + 1} / ${galleryImages.length}`;
+      updateGalleryImage();
     }
     function closeGallery() { document.getElementById('gallery-modal').classList.remove('active'); }
   </script>
 
   <div class="gallery-full" id="gallery-modal" onclick="closeGallery()">
     <button class="gallery-close" onclick="closeGallery()">×</button>
-    <button class="gallery-nav gallery-prev" onclick="event.stopPropagation(); prevGallery()">‹</button>
-    <img id="gallery-img" src="" onclick="event.stopPropagation(); nextGallery()" />
-    <button class="gallery-nav gallery-next" onclick="event.stopPropagation(); nextGallery()">›</button>
+    <img id="gallery-img" src="" style="touch-action: pan-y pinch-zoom;" />
     <div class="gallery-counter" id="gallery-counter">1 / 1</div>
+    <div class="gallery-hint">← Swipe to browse →</div>
   </div>
 </body>
 </html>
