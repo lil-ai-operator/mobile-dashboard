@@ -32,7 +32,10 @@
         "Landing animations + dark mode added",
         "Mobile nav alignment fixes pushed",
         "Create brand kit v1: logo concept + colours + icon set rules",
-        "Build customer portal MVP: login, edit SMS template, business hours, notifications, plan status"
+        "Build customer portal MVP: login, edit SMS template, business hours, notifications, plan status",
+        "Apply conversion copy: add 'Value anchor' line - One recovered job/month can cover this plan",
+        "Add optional add-ons: AI Receptionist Lite £29-49, AI Receptionist Pro £79-149",
+        "Add pricing comparison narrative vs competitors on landing page"
       ],
       "todo": [
         "Publish live URL and quick-start guide",
@@ -43,10 +46,7 @@
         "5 paying customers active",
         "Add analytics dashboard with conversion funnels",
         "Implement waitlist for overcapacity periods",
-        "Apply conversion copy: add 'Value anchor' line - One recovered job/month can cover this plan",
-        "Add optional add-ons: AI Receptionist Lite £29-49, AI Receptionist Pro £79-149",
-        "Add real trade photos for authentic UK feel + product mockups",
-        "Add pricing comparison narrative vs competitors on landing page"
+        "Add real trade photos for authentic UK feel + product mockups"
       ],
       "blockers": [
         "Manual live checkout/SMS verification"
