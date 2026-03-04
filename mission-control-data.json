@@ -278,6 +278,28 @@
       "path": "../../SESSION_START.md",
       "url": "https://raw.githack.com/lil-ai-operator/mobile-dashboard/main/docs/SESSION_START.md",
       "updatedAt": "2026-03-03T21:44:41Z"
+    },
+    {
+      "id": "brand-kit",
+      "title": "BRAND_KIT_V1.md",
+      "group": "📚 Docs",
+      "project": "AutoBookr",
+      "note": "Brand kit v1 - logo concepts, colors, typography",
+      "priority": "high",
+      "path": "docs/BRAND_KIT_V1.md",
+      "url": "https://raw.githack.com/lil-ai-operator/mobile-dashboard/main/docs/BRAND_KIT_V1.md",
+      "updatedAt": "2026-03-04T16:52:05Z"
+    },
+    {
+      "id": "portal-spec",
+      "title": "PORTAL_MVP_SPEC.md",
+      "group": "📚 Docs",
+      "project": "AutoBookr",
+      "note": "Portal MVP spec - screens, API, DB schema",
+      "priority": "normal",
+      "path": "docs/PORTAL_MVP_SPEC.md",
+      "url": "https://raw.githack.com/lil-ai-operator/mobile-dashboard/main/docs/PORTAL_MVP_SPEC.md",
+      "updatedAt": "2026-03-04T16:52:05Z"
     }
   ]
 }
