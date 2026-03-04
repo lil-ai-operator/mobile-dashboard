@@ -46,7 +46,13 @@
         "5 paying customers active",
         "Add analytics dashboard with conversion funnels",
         "Implement waitlist for overcapacity periods",
-        "Add real trade photos for authentic UK feel + product mockups"
+        "Add real trade photos for authentic UK feel + product mockups",
+        "Finalise logo concept (approve one of 3 concepts)",
+        "Create SVG logo files + favicon",
+        "Set up brand colour variables in landing CSS",
+        "Apply brand typography (Inter font) across site",
+        "Source real UK trade photos for hero sections",
+        "Create product mockups (SMS bubbles, dashboard)"
       ],
       "blockers": [
         "Manual live checkout/SMS verification"
