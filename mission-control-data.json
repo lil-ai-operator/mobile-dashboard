@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-03-04T20:33:38Z",
+  "updatedAt": "2026-03-04T20:46:58Z",
   "projects": [
     {
       "key": "autobookr_suite",
@@ -383,6 +383,83 @@
       "path": "docs/BRAND_KIT_V1.md",
       "url": "https://raw.githack.com/lil-ai-operator/mobile-dashboard/main/docs/BRAND_KIT_V1.md",
       "updatedAt": "2026-03-04T16:51:59Z"
+    },
+    {
+      "id": "logo-a",
+      "title": "logo-concept-a.png",
+      "group": "🎨 Brand",
+      "project": "AutoBookr",
+      "note": "Logo concept A - blue hook",
+      "priority": "normal",
+      "path": "docs/logo-concept-a.png",
+      "url": "https://raw.githack.com/lil-ai-operator/mobile-dashboard/main/docs/logo-concept-a.png",
+      "updatedAt": "2026-03-04T20:46:51Z"
+    },
+    {
+      "id": "logo-b",
+      "title": "logo-concept-b.png",
+      "group": "🎨 Brand",
+      "project": "AutoBookr",
+      "note": "Logo concept B - green checkmark",
+      "priority": "normal",
+      "path": "docs/logo-concept-b.png",
+      "url": "https://raw.githack.com/lil-ai-operator/mobile-dashboard/main/docs/logo-concept-b.png",
+      "updatedAt": "2026-03-04T20:46:51Z"
+    },
+    {
+      "id": "logo-c",
+      "title": "logo-concept-c.png",
+      "group": "🎨 Brand",
+      "project": "AutoBookr",
+      "note": "Logo concept C - wave gradient",
+      "priority": "normal",
+      "path": "docs/logo-concept-c.png",
+      "url": "https://raw.githack.com/lil-ai-operator/mobile-dashboard/main/docs/logo-concept-c.png",
+      "updatedAt": "2026-03-04T20:46:51Z"
+    },
+    {
+      "id": "favicon",
+      "title": "favicon.png",
+      "group": "🎨 Brand",
+      "project": "AutoBookr",
+      "note": "AutoBookr favicon",
+      "priority": "normal",
+      "path": "docs/favicon.png",
+      "url": "https://raw.githack.com/lil-ai-operator/mobile-dashboard/main/docs/favicon.png",
+      "updatedAt": "2026-03-04T20:46:51Z"
+    },
+    {
+      "id": "mockup-dashboard",
+      "title": "mockup-dashboard.png",
+      "group": "🎨 Brand",
+      "project": "AutoBookr",
+      "note": "Dashboard UI mockup with SMS",
+      "priority": "normal",
+      "path": "docs/mockup-dashboard.png",
+      "url": "https://raw.githack.com/lil-ai-operator/mobile-dashboard/main/docs/mockup-dashboard.png",
+      "updatedAt": "2026-03-04T20:46:51Z"
+    },
+    {
+      "id": "photo-plumber",
+      "title": "photo-plumber-uk.jpg",
+      "group": "🎨 Brand",
+      "project": "AutoBookr",
+      "note": "UK trade photo - Plumber",
+      "priority": "normal",
+      "path": "docs/photo-plumber-uk.jpg",
+      "url": "https://raw.githack.com/lil-ai-operator/mobile-dashboard/main/docs/photo-plumber-uk.jpg",
+      "updatedAt": "2026-03-04T20:46:51Z"
+    },
+    {
+      "id": "photo-electrician",
+      "title": "photo-electrician-uk.jpg",
+      "group": "🎨 Brand",
+      "project": "AutoBookr",
+      "note": "UK trade photo - Electrician",
+      "priority": "normal",
+      "path": "docs/photo-electrician-uk.jpg",
+      "url": "https://raw.githack.com/lil-ai-operator/mobile-dashboard/main/docs/photo-electrician-uk.jpg",
+      "updatedAt": "2026-03-04T20:46:51Z"
     }
   ]
 }
