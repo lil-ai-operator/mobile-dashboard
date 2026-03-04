@@ -306,8 +306,8 @@
 
     async function loadData(manual) {
       try {
-        // Use jsDelivr CDN for live updates (bypasses GitHub Pages caching)
-        const url = `https://cdn.jsdelivr.net/gh/lil-ai-operator/mobile-dashboard@main/mission-control-data.json?t=${Date.now()}`;
+        // Use raw.githack.com for proper HTML rendering + live JSON
+        const url = `https://raw.githack.com/lil-ai-operator/mobile-dashboard/main/mission-control-data.json?t=${Date.now()}`;
         const res = await fetch(url, { cache: 'no-store' });
         if (!res.ok) throw new Error('Failed to load dashboard data');
         const data = await res.json();
