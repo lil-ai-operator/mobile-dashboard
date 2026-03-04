@@ -29,13 +29,14 @@
     .queue-group-title { font-size: 11px; color: #93c5fd; letter-spacing: .4px; text-transform: uppercase; margin: 8px 0; }
     .queue-header { display: flex; justify-content: space-between; align-items: center; padding: 10px 12px; background: #172033; border: 1px solid #334155; border-radius: 10px; margin-bottom: 6px; cursor: pointer; }
     .queue-header:active { background: #1e293b; }
+    .queue-header.collapsed .queue-chevron { transform: rotate(-90deg); }
+    .queue-items { display: none; padding: 0 4px; }
+    .queue-items.open { display: block; }
     .queue-header-left { display: flex; align-items: center; gap: 8px; }
     .queue-header-title { font-size: 13px; color: #fff; font-weight: 600; }
     .queue-badge { font-size: 10px; background: #22c55e; color: #fff; border-radius: 999px; padding: 2px 6px; font-weight: 700; }
     .queue-chevron { font-size: 12px; color: #64748b; transition: transform 0.2s; }
     .queue-chevron.open { transform: rotate(180deg); }
-    .queue-items { display: none; padding: 0 4px; }
-    .queue-items.open { display: block; }
     .queue-item { display: flex; justify-content: space-between; gap: 8px; align-items: center; border: 1px solid #334155; border-radius: 8px; padding: 8px; margin-bottom: 6px; background: #1e293b; }
     .queue-item:last-child { margin-bottom: 0; }
     .queue-left { min-width: 0; }
@@ -155,14 +156,17 @@
     }
 
     function toggleGroup(id) {
+      const header = document.getElementById('queue-header-' + id);
       const el = document.getElementById('queue-items-' + id);
       const chev = document.getElementById('queue-chev-' + id);
       if (el.classList.contains('open')) {
         el.classList.remove('open');
         chev.classList.remove('open');
+        header.classList.add('collapsed');
       } else {
         el.classList.add('open');
         chev.classList.add('open');
+        header.classList.remove('collapsed');
       }
     }
 
@@ -186,19 +190,26 @@
 
     function renderQuickActions(data) {
       const container = document.getElementById('quickActions');
-      const actions = [];
+      const wayneTasks = [];
       (data.projects || []).forEach(p => {
-        if ((p.blockers || []).length) {
-          actions.push({ project: p.name, task: p.blockers[0], kind: 'blocker' });
-        } else if ((p.todo || []).length) {
-          actions.push({ project: p.name, task: p.todo[0], kind: 'next' });
-        }
+        // Find tasks that need Wayne action
+        (p.todo || []).forEach(t => {
+          if (t.toLowerCase().includes('pilot') || t.toLowerCase().includes('onboard') || 
+              t.toLowerCase().includes('approve') || t.toLowerCase().includes('auth') ||
+              t.toLowerCase().includes('research') || t.toLowerCase().includes('direction') ||
+              t.toLowerCase().includes('needs you') || t.toLowerCase().includes('preference')) {
+            wayneTasks.push({ project: p.name, task: t });
+          }
+        });
+        // Also add blockers
+        (p.blockers || []).forEach(b => {
+          wayneTasks.push({ project: p.name, task: b, isBlocker: true });
+        });
       });
 
-      const top = actions.slice(0, 3);
-      container.innerHTML = '<h2>⚡ Top 3 Daily Moves</h2>' + (top.length
-        ? top.map(a => `<div class="qa-item"><span class="qa-tag">${a.kind === 'blocker' ? '🚫' : '▶️'} ${a.project}:</span>${a.task}</div>`).join('')
-        : '<div class="qa-item">No urgent actions right now.</div>');
+      container.innerHTML = '<h2>📋 Your Tasks</h2>' + (wayneTasks.length
+        ? wayneTasks.slice(0, 8).map(a => `<div class="qa-item"><span class="qa-tag">${a.isBlocker ? '🚫' : '▶️'} ${a.project.replace(/[^A-Z]/g, '')}:</span>${a.task.substring(0, 60)}${a.task.length > 60 ? '...' : ''}</div>`).join('')
+        : '<div class="qa-item">✅ All caught up! No tasks waiting on you.</div>');
     }
 
     function renderReadQueue(data) {
@@ -257,7 +268,7 @@
         }).join('');
         return `
           <div class="queue-group">
-            <div class="queue-header" onclick="toggleGroup('${groupId}')">
+            <div class="queue-header collapsed" id="queue-header-${groupId}" onclick="toggleGroup('${groupId}')">
               <div class="queue-header-left">
                 <span class="queue-header-title">${groupName}</span>
                 ${newCount > 0 ? `<span class="queue-badge">${newCount}</span>` : ''}
