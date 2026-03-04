@@ -16,6 +16,13 @@
 
     .section { background: #172033; border: 1px solid #334155; border-radius: 12px; padding: 12px; margin-bottom: 12px; }
     .section h2 { font-size: 13px; margin-bottom: 8px; color: #93c5fd; }
+    
+    /* Collapsible sections */
+    .collapsible-header { display: flex; justify-content: space-between; align-items: center; padding: 12px 14px; background: #1e3a5f; border: 1px solid #334155; border-radius: 10px; cursor: pointer; margin-bottom: 8px; }
+    .collapsible-header:hover { background: #234567; }
+    .collapsible-title { font-size: 14px; font-weight: 600; color: #fff; }
+    .collapsible-chevron { font-size: 12px; color: #94a3b8; }
+    .collapsible-content { margin-bottom: 8px; }
     .qa-item { font-size: 12px; color: #cbd5e1; padding: 6px 0; border-bottom: 1px solid #334155; }
     .qa-item:last-child { border-bottom: none; }
     .qa-tag { color: #94a3b8; margin-right: 6px; }
@@ -188,6 +195,15 @@
       return `<div class="item"><span class="badge">${icon}</span><span>${text}</span></div>`;
     }
 
+    function toggleSection(sectionId, header) {
+      const content = header.nextElementSibling;
+      const isOpen = content.style.display === 'block';
+      content.style.display = isOpen ? 'none' : 'block';
+      header.classList.toggle('open', !isOpen);
+      header.querySelector('.collapsible-chevron').textContent = isOpen ? '▶' : '▼';
+      localStorage.setItem('mc-' + sectionId + '-open', !isOpen);
+    }
+
     function renderQuickActions(data) {
       const container = document.getElementById('quickActions');
       const wayneTasks = [];
@@ -207,9 +223,18 @@
         });
       });
 
-      container.innerHTML = '<h2>📋 Your Tasks</h2>' + (wayneTasks.length
-        ? wayneTasks.slice(0, 8).map(a => `<div class="qa-item"><span class="qa-tag">${a.isBlocker ? '🚫' : '▶️'} ${a.project.replace(/[^A-Z]/g, '')}:</span>${a.task.substring(0, 60)}${a.task.length > 60 ? '...' : ''}</div>`).join('')
-        : '<div class="qa-item">✅ All caught up! No tasks waiting on you.</div>');
+      const isOpen = localStorage.getItem('mc-tasks-open') === 'true';
+      container.innerHTML = `
+        <div class="collapsible-header ${isOpen ? 'open' : ''}" onclick="toggleSection('tasks', this)">
+          <span class="collapsible-title">📋 Your Tasks</span>
+          <span class="collapsible-chevron">${isOpen ? '▼' : '▶'}</span>
+        </div>
+        <div class="collapsible-content" style="display: ${isOpen ? 'block' : 'none'}">
+          ${wayneTasks.length
+            ? wayneTasks.slice(0, 8).map(a => `<div class="qa-item"><span class="qa-tag">${a.isBlocker ? '🚫' : '▶️'} ${a.project.replace(/[^A-Z]/g, '')}:</span>${a.task.substring(0, 60)}${a.task.length > 60 ? '...' : ''}</div>`).join('')
+            : '<div class="qa-item">✅ All caught up! No tasks waiting on you.</div>'}
+        </div>
+      `;
     }
 
     function renderReadQueue(data) {
@@ -279,17 +304,23 @@
           </div>`;
       }).join('');
 
+      const isFilesOpen = localStorage.getItem('mc-files-open') === 'true';
       container.innerHTML = `
-        <h2>📂 Files Hub</h2>
-        <div class="queue-top">
-          <div class="queue-meta">${unreadCount} item(s) new or changed</div>
-          <div class="queue-controls">
-            <button class="mini-btn ${prefs.newOnly ? 'active' : ''}" onclick="toggleNewOnly()">${prefs.newOnly ? 'Showing: NEW' : 'Filter: All'}</button>
-            <button class="mini-btn" onclick="toggleSort()">Sort: ${prefs.sort === 'newest' ? 'Newest' : 'A-Z'}</button>
-            <button class="mini-btn" onclick="markAllRead()">Mark all read</button>
-          </div>
+        <div class="collapsible-header ${isFilesOpen ? 'open' : ''}" onclick="toggleSection('files', this)">
+          <span class="collapsible-title">📂 Files Hub</span>
+          <span class="collapsible-chevron">${isFilesOpen ? '▼' : '▶'}</span>
         </div>
-        ${rows || '<div class="qa-item">No files match current filter.</div>'}
+        <div class="collapsible-content" style="display: ${isFilesOpen ? 'block' : 'none'}">
+          <div class="queue-top">
+            <div class="queue-meta">${unreadCount} item(s) new or changed</div>
+            <div class="queue-controls">
+              <button class="mini-btn ${prefs.newOnly ? 'active' : ''}" onclick="toggleNewOnly()">${prefs.newOnly ? 'Showing: NEW' : 'Filter: All'}</button>
+              <button class="mini-btn" onclick="toggleSort()">Sort: ${prefs.sort === 'newest' ? 'Newest' : 'A-Z'}</button>
+              <button class="mini-btn" onclick="markAllRead()">Mark all read</button>
+            </div>
+          </div>
+          ${rows || '<div class="qa-item">No files match current filter.</div>'}
+        </div>
       `;
     }
 
