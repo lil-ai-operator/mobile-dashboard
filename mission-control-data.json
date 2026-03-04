@@ -37,7 +37,9 @@
         "Add optional add-ons: AI Receptionist Lite £29-49, AI Receptionist Pro £79-149",
         "Add pricing comparison narrative vs competitors on landing page",
         "Finalise logo concept (approve one of 3 concepts)",
-        "Create SVG logo files + favicon"
+        "Create SVG logo files + favicon",
+        "Create product mockups (SMS bubbles, dashboard)",
+        "Source real UK trade photos for hero sections"
       ],
       "todo": [
         "Publish live URL and quick-start guide",
@@ -50,9 +52,7 @@
         "Implement waitlist for overcapacity periods",
         "Add real trade photos for authentic UK feel + product mockups",
         "Set up brand colour variables in landing CSS",
-        "Apply brand typography (Inter font) across site",
-        "Source real UK trade photos for hero sections",
-        "Create product mockups (SMS bubbles, dashboard)"
+        "Apply brand typography (Inter font) across site"
       ],
       "blockers": [
         "Manual live checkout/SMS verification"
