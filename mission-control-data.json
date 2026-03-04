@@ -179,7 +179,7 @@
       "note": "What to execute right now",
       "priority": "high",
       "path": "../../TODAY_FOCUS.md",
-      "url": "https://lil-ai-operator.github.io/mobile-dashboard/docs/TODAY_FOCUS.md",
+      "url": "https://raw.githack.com/lil-ai-operator/mobile-dashboard/main/docs/TODAY_FOCUS.md",
       "updatedAt": "2026-03-03T21:44:41Z"
     },
     {
@@ -190,7 +190,7 @@
       "note": "Anything waiting on Wayne",
       "priority": "high",
       "path": "../../wayne-action-stack.md",
-      "url": "https://lil-ai-operator.github.io/mobile-dashboard/docs/wayne-action-stack.md",
+      "url": "https://raw.githack.com/lil-ai-operator/mobile-dashboard/main/docs/wayne-action-stack.md",
       "updatedAt": "2026-03-03T21:44:42Z"
     },
     {
@@ -201,7 +201,7 @@
       "note": "Quick status snapshot",
       "priority": "normal",
       "path": "../../CURRENT_STATUS.md",
-      "url": "https://lil-ai-operator.github.io/mobile-dashboard/docs/CURRENT_STATUS.md",
+      "url": "https://raw.githack.com/lil-ai-operator/mobile-dashboard/main/docs/CURRENT_STATUS.md",
       "updatedAt": "2026-02-24T17:43:28Z"
     },
     {
@@ -212,7 +212,7 @@
       "note": "Main tracker with checkbox progress",
       "priority": "high",
       "path": "../../MASTER_PROJECT_EXECUTION_GUIDE.md",
-      "url": "https://lil-ai-operator.github.io/mobile-dashboard/docs/MASTER_PROJECT_EXECUTION_GUIDE.md",
+      "url": "https://raw.githack.com/lil-ai-operator/mobile-dashboard/main/docs/MASTER_PROJECT_EXECUTION_GUIDE.md",
       "updatedAt": "2026-03-03T21:44:41Z"
     },
     {
@@ -223,7 +223,7 @@
       "note": "Big-picture project queue",
       "priority": "normal",
       "path": "../../PROJECTS_BACKLOG_WAYNE.md",
-      "url": "https://lil-ai-operator.github.io/mobile-dashboard/docs/PROJECTS_BACKLOG_WAYNE.md",
+      "url": "https://raw.githack.com/lil-ai-operator/mobile-dashboard/main/docs/PROJECTS_BACKLOG_WAYNE.md",
       "updatedAt": "2026-03-03T21:44:41Z"
     },
     {
@@ -234,7 +234,7 @@
       "note": "Simple-language summary guide",
       "priority": "normal",
       "path": "../../PLAIN_ENGLISH_GUIDE.md",
-      "url": "https://lil-ai-operator.github.io/mobile-dashboard/docs/PLAIN_ENGLISH_GUIDE.md",
+      "url": "https://raw.githack.com/lil-ai-operator/mobile-dashboard/main/docs/PLAIN_ENGLISH_GUIDE.md",
       "updatedAt": "2026-03-03T21:44:35Z"
     },
     {
@@ -245,7 +245,7 @@
       "note": "Curated long-term memory",
       "priority": "normal",
       "path": "../../MEMORY.md",
-      "url": "https://lil-ai-operator.github.io/mobile-dashboard/docs/MEMORY.md",
+      "url": "https://raw.githack.com/lil-ai-operator/mobile-dashboard/main/docs/MEMORY.md",
       "updatedAt": "2026-03-03T21:44:41Z"
     },
     {
@@ -256,7 +256,7 @@
       "note": "Fast handoff and current priorities",
       "priority": "normal",
       "path": "../../SESSION_START.md",
-      "url": "https://lil-ai-operator.github.io/mobile-dashboard/docs/SESSION_START.md",
+      "url": "https://raw.githack.com/lil-ai-operator/mobile-dashboard/main/docs/SESSION_START.md",
       "updatedAt": "2026-03-03T21:44:41Z"
     }
   ]
