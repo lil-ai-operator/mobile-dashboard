@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-03-04T16:58:37Z",
+  "updatedAt": "2026-03-04T18:48:26Z",
   "projects": [
     {
       "key": "autobookr_suite",
@@ -35,7 +35,9 @@
         "Build customer portal MVP: login, edit SMS template, business hours, notifications, plan status",
         "Apply conversion copy: add 'Value anchor' line - One recovered job/month can cover this plan",
         "Add optional add-ons: AI Receptionist Lite £29-49, AI Receptionist Pro £79-149",
-        "Add pricing comparison narrative vs competitors on landing page"
+        "Add pricing comparison narrative vs competitors on landing page",
+        "Finalise logo concept (approve one of 3 concepts)",
+        "Create SVG logo files + favicon"
       ],
       "todo": [
         "Publish live URL and quick-start guide",
@@ -47,8 +49,6 @@
         "Add analytics dashboard with conversion funnels",
         "Implement waitlist for overcapacity periods",
         "Add real trade photos for authentic UK feel + product mockups",
-        "Finalise logo concept (approve one of 3 concepts)",
-        "Create SVG logo files + favicon",
         "Set up brand colour variables in landing CSS",
         "Apply brand typography (Inter font) across site",
         "Source real UK trade photos for hero sections",
