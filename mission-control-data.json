@@ -38,7 +38,15 @@
         "5 paying users acquired",
         "Live URL stable",
         "Twilio + Stripe fully working in production",
-        "5 paying customers active"
+        "5 paying customers active",
+        "Add analytics dashboard with conversion funnels",
+        "Implement waitlist for overcapacity periods",
+        "Apply conversion copy: add 'Value anchor' line - One recovered job/month can cover this plan",
+        "Add optional add-ons: AI Receptionist Lite £29-49, AI Receptionist Pro £79-149",
+        "Create brand kit v1: logo concept + colours + icon set rules",
+        "Add real trade photos for authentic UK feel + product mockups",
+        "Build customer portal MVP: login, edit SMS template, business hours, notifications, plan status",
+        "Add pricing comparison narrative vs competitors on landing page"
       ],
       "blockers": [
         "Manual live checkout/SMS verification"
@@ -54,17 +62,19 @@
         "Last updated timestamp added",
         "Core project sections added",
         "Key artifact links added",
-        "Define auto-refresh/update method"
-      ],
-      "todo": [
-        "Approve publish mode (GitHub Pages / static link)",
+        "Define auto-refresh/update method",
         "Publish live URL",
+        "Approve publish mode (GitHub Pages / static link)",
         "Add link to Telegram pinned reference",
         "Confirm page loads cleanly on mobile",
+        "Wire sweep output to auto-write this JSON each run"
+      ],
+      "todo": [
         "Ensure status fields map to real source files",
         "Add blocker summary and top 3 next actions",
         "Wayne can open one link and understand status in <30 seconds",
-        "Wire sweep output to auto-write this JSON each run"
+        "Add dark/light mode toggle",
+        "Add push notifications for urgent blockers"
       ],
       "blockers": []
     },
@@ -91,7 +101,9 @@
         "Add backup success/failure log",
         "Add monthly restore test reminder",
         "Weekly automated offsite backups run reliably",
-        "Full restore tested and documented"
+        "Full restore tested and documented",
+        "Add incremental backup option",
+        "Create backup status widget"
       ],
       "blockers": [
         "Destination/auth confirmation needed"
@@ -108,19 +120,21 @@
         "Marketing Ops",
         "Research Ops",
         "Build Ops",
-        "Risk & QA"
-      ],
-      "todo": [
-        "Approve final region architecture",
+        "Risk & QA",
         "Assign default model per region",
         "Assign fallback model per region",
         "Define cost-first rules for routine work",
         "Define escalation rules for complex work",
         "Define when region should be used",
         "Define handoff format between regions",
-        "Add region prompts/checklists",
+        "Add region prompts/checklists"
+      ],
+      "todo": [
+        "Approve final region architecture",
         "Test 2 full workflows using region handoffs",
-        "Regions are active with clear model routing and handoff rules"
+        "Regions are active with clear model routing and handoff rules",
+        "Add usage metrics per region",
+        "Create region health monitoring"
       ],
       "blockers": []
     },
@@ -133,7 +147,9 @@
       "todo": [
         "Chain/network + wallet handling model",
         "Security model for keys/signing",
-        "Allowed interaction cadence and ToS compliance"
+        "Allowed interaction cadence and ToS compliance",
+        "Research Aavegotchi API and interaction patterns",
+        "Draft security model for wallet handling"
       ],
       "blockers": [
         "Policy/compliance + key management approach to approve"
@@ -148,7 +164,9 @@
       "todo": [
         "Product niche to target first",
         "Physical vs digital product strategy",
-        "Fulfillment model and margin targets"
+        "Fulfillment model and margin targets",
+        "Research top-performing niches in UK market",
+        "Analyze competitor pricing strategies"
       ],
       "blockers": [
         "Niche + product direction needed"
@@ -163,7 +181,9 @@
       "todo": [
         "Exact service menu + pricing",
         "In-person vs remote sessions",
-        "Brand name + positioning style"
+        "Brand name + positioning style",
+        "Research competitor positioning in UK",
+        "Draft service menu with clear pricing"
       ],
       "blockers": [
         "Service/package preferences needed"
