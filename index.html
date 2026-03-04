@@ -238,7 +238,7 @@
           const isImage = item.title.match(/\.(png|jpg|jpeg|gif)$/i);
           const btnText = isImage ? 'View' : 'Open';
           const btnHtml = isImage 
-            ? `<button class="queue-btn" onclick="openGalleryFromBtn(this, '${href}', '${item.title}')">${btnText}</button>`
+            ? `<button class="queue-btn" data-url="${href}" onclick="openGalleryFromBtn(this)">${btnText}</button>`
             : `<a class="queue-btn" href="${href}" target="_blank" rel="noopener" onclick="markRead('${item.id}')">${btnText}</a>`;
           return `
             <div class="queue-item">
@@ -370,30 +370,34 @@
 
     // Gallery swipe
     let galleryImages = [], currentGalleryIndex = 0;
-    function openGalleryFromBtn(btn, url, title) {
-      const items = document.querySelectorAll('.queue-group');
+    function openGalleryFromBtn(btn) {
+      const url = btn.getAttribute('data-url');
+      const title = btn.closest('.queue-item').querySelector('.queue-title').textContent;
+      
+      // Build gallery from all queue items with images
       galleryImages = [];
-      items.forEach(group => {
-        const header = group.querySelector('.queue-header-title');
-        if (header && header.textContent.includes('Brand')) {
-          const queueItems = group.querySelectorAll('.queue-item');
-          queueItems.forEach(item => {
-            const titleEl = item.querySelector('.queue-title');
-            const btnEl = item.querySelector('.queue-btn');
-            if (titleEl && btnEl) {
-              const t = titleEl.textContent;
-              if (t.match(/\.(png|jpg|jpeg|gif)$/i)) galleryImages.push({ title: t, url: btnEl.getAttribute('href') });
+      document.querySelectorAll('.queue-item').forEach(item => {
+        const titleEl = item.querySelector('.queue-title');
+        const btnEl = item.querySelector('.queue-btn');
+        if (titleEl && btnEl) {
+          const t = titleEl.textContent;
+          if (t.match(/\.(png|jpg|jpeg|gif)$/i)) {
+            const btnhref = btnEl.getAttribute('data-url') || btnEl.getAttribute('href');
+            if (btnhref && btnhref.startsWith('http')) {
+              galleryImages.push({ title: t, url: btnhref });
             }
-          });
+          }
         }
       });
+      
       currentGalleryIndex = galleryImages.findIndex(img => img.url === url);
       if (currentGalleryIndex === -1) currentGalleryIndex = 0;
-      const img = document.getElementById('gallery-img');
-      const counter = document.getElementById('gallery-counter');
-      img.src = galleryImages[currentGalleryIndex].url;
-      counter.textContent = `${currentGalleryIndex + 1} / ${galleryImages.length}`;
-      document.getElementById('gallery-modal').classList.add('active');
+      
+      if (galleryImages.length > 0) {
+        document.getElementById('gallery-img').src = galleryImages[currentGalleryIndex].url;
+        document.getElementById('gallery-counter').textContent = `${currentGalleryIndex + 1} / ${galleryImages.length}`;
+        document.getElementById('gallery-modal').classList.add('active');
+      }
     }
     function prevGallery() {
       currentGalleryIndex = (currentGalleryIndex - 1 + galleryImages.length) % galleryImages.length;
