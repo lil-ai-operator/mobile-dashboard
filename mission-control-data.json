@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-03-05T10:37:31Z",
+  "updatedAt": "2026-03-05T10:37:53Z",
   "projects": [
     {
       "key": "autobookr_suite",
@@ -7,45 +7,162 @@
       "status": "green",
       "summary": "Logical merge: app backend + public landing tracked together.",
       "done": [
-        "Define product offer and pricing",
-        "Create AutoBookr plan file (`projects/AutoBookr/PLAN.md`)",
-        "Build MVP skeleton/webhook endpoint",
-        "Confirm deployment target (Render/Railway/Fly/VPS)",
-        "Deploy app and verify health endpoint (verified locally 2026-02-26)",
-        "Get Twilio credentials (Account SID, Auth Token, phone number)",
-        "Configure Twilio env vars in deployment (.env verified 2026-02-27 - CREDS_SET)",
-        "Set Twilio webhook URL for missed-call + SMS flow",
-        "Implement + verify SMS auto-reply logic (code path wired)",
-        "Test: missed call triggers correct SMS in live deploy (UNBLOCKED 2026-02-27 - credentials verified)",
-        "Get Stripe secret key + webhook secret",
-        "Create products/prices: Starter £19 monthly, Growth £49 monthly, Pro £99 monthly",
-        "Build checkout links/pages (plan-mapped checkout wired)",
-        "Add Stripe webhook for subscription status",
-        "Test: successful payment updates customer to active (UNBLOCKED 2026-02-27 - credentials verified)",
-        "Add customer onboarding form (name, trade, phone, area)",
-        "Store customer config safely",
-        "Add simple dashboard: calls/SMS activity",
-        "Add basic error handling + retry policy",
-        "End-to-end test: call -> SMS -> signup -> active status (UNBLOCKED 2026-02-27 - credentials verified, code ready)",
-        "Add simple support/runbook notes (created 2026-02-27)",
-        "Landing site published",
-        "Landing animations + dark mode added",
-        "Mobile nav alignment fixes pushed",
-        "Create brand kit v1: logo concept + colours + icon set rules",
-        "Build customer portal MVP: login, edit SMS template, business hours, notifications, plan status",
-        "Apply conversion copy: add 'Value anchor' line - One recovered job/month can cover this plan",
-        "Add optional add-ons: AI Receptionist Lite £29-49, AI Receptionist Pro £79-149",
-        "Add pricing comparison narrative vs competitors on landing page",
-        "Finalise logo concept (approve one of 3 concepts)",
-        "Create SVG logo files + favicon",
-        "Create product mockups (SMS bubbles, dashboard)",
-        "Source real UK trade photos for hero sections",
-        "projects/AutoBookr/brand-style-guide.md",
-        "projects/AutoBookr/brand-board.html",
-        "projects/AutoBookr/brand-compare.html",
-        "projects/AutoBookr/competitor-report.md",
-        "projects/AutoBookr/PLAN.md",
-        "projects/AutoBookr/RUNBOOK.md"
+        {
+          "task": "Define product offer and pricing",
+          "completedAt": "2026-03-05"
+        },
+        {
+          "task": "Create AutoBookr plan file (`projects/AutoBookr/PLAN.md`)",
+          "completedAt": "2026-03-05"
+        },
+        {
+          "task": "Build MVP skeleton/webhook endpoint",
+          "completedAt": "2026-03-05"
+        },
+        {
+          "task": "Confirm deployment target (Render/Railway/Fly/VPS)",
+          "completedAt": "2026-03-05"
+        },
+        {
+          "task": "Deploy app and verify health endpoint (verified locally 2026-02-26)",
+          "completedAt": "2026-03-05"
+        },
+        {
+          "task": "Get Twilio credentials (Account SID, Auth Token, phone number)",
+          "completedAt": "2026-03-05"
+        },
+        {
+          "task": "Configure Twilio env vars in deployment (.env verified 2026-02-27 - CREDS_SET)",
+          "completedAt": "2026-03-05"
+        },
+        {
+          "task": "Set Twilio webhook URL for missed-call + SMS flow",
+          "completedAt": "2026-03-05"
+        },
+        {
+          "task": "Implement + verify SMS auto-reply logic (code path wired)",
+          "completedAt": "2026-03-05"
+        },
+        {
+          "task": "Test: missed call triggers correct SMS in live deploy (UNBLOCKED 2026-02-27 - credentials verified)",
+          "completedAt": "2026-03-05"
+        },
+        {
+          "task": "Get Stripe secret key + webhook secret",
+          "completedAt": "2026-03-05"
+        },
+        {
+          "task": "Create products/prices: Starter £19 monthly, Growth £49 monthly, Pro £99 monthly",
+          "completedAt": "2026-03-05"
+        },
+        {
+          "task": "Build checkout links/pages (plan-mapped checkout wired)",
+          "completedAt": "2026-03-05"
+        },
+        {
+          "task": "Add Stripe webhook for subscription status",
+          "completedAt": "2026-03-05"
+        },
+        {
+          "task": "Test: successful payment updates customer to active (UNBLOCKED 2026-02-27 - credentials verified)",
+          "completedAt": "2026-03-05"
+        },
+        {
+          "task": "Add customer onboarding form (name, trade, phone, area)",
+          "completedAt": "2026-03-05"
+        },
+        {
+          "task": "Store customer config safely",
+          "completedAt": "2026-03-05"
+        },
+        {
+          "task": "Add simple dashboard: calls/SMS activity",
+          "completedAt": "2026-03-05"
+        },
+        {
+          "task": "Add basic error handling + retry policy",
+          "completedAt": "2026-03-05"
+        },
+        {
+          "task": "End-to-end test: call -> SMS -> signup -> active status (UNBLOCKED 2026-02-27 - credentials verified, code ready)",
+          "completedAt": "2026-03-05"
+        },
+        {
+          "task": "Add simple support/runbook notes (created 2026-02-27)",
+          "completedAt": "2026-03-05"
+        },
+        {
+          "task": "Landing site published",
+          "completedAt": "2026-03-05"
+        },
+        {
+          "task": "Landing animations + dark mode added",
+          "completedAt": "2026-03-05"
+        },
+        {
+          "task": "Mobile nav alignment fixes pushed",
+          "completedAt": "2026-03-05"
+        },
+        {
+          "task": "Create brand kit v1: logo concept + colours + icon set rules",
+          "completedAt": "2026-03-05"
+        },
+        {
+          "task": "Build customer portal MVP: login, edit SMS template, business hours, notifications, plan status",
+          "completedAt": "2026-03-05"
+        },
+        {
+          "task": "Apply conversion copy: add 'Value anchor' line - One recovered job/month can cover this plan",
+          "completedAt": "2026-03-05"
+        },
+        {
+          "task": "Add optional add-ons: AI Receptionist Lite £29-49, AI Receptionist Pro £79-149",
+          "completedAt": "2026-03-05"
+        },
+        {
+          "task": "Add pricing comparison narrative vs competitors on landing page",
+          "completedAt": "2026-03-05"
+        },
+        {
+          "task": "Finalise logo concept (approve one of 3 concepts)",
+          "completedAt": "2026-03-05"
+        },
+        {
+          "task": "Create SVG logo files + favicon",
+          "completedAt": "2026-03-05"
+        },
+        {
+          "task": "Create product mockups (SMS bubbles, dashboard)",
+          "completedAt": "2026-03-05"
+        },
+        {
+          "task": "Source real UK trade photos for hero sections",
+          "completedAt": "2026-03-05"
+        },
+        {
+          "task": "projects/AutoBookr/brand-style-guide.md",
+          "completedAt": "2026-03-05"
+        },
+        {
+          "task": "projects/AutoBookr/brand-board.html",
+          "completedAt": "2026-03-05"
+        },
+        {
+          "task": "projects/AutoBookr/brand-compare.html",
+          "completedAt": "2026-03-05"
+        },
+        {
+          "task": "projects/AutoBookr/competitor-report.md",
+          "completedAt": "2026-03-05"
+        },
+        {
+          "task": "projects/AutoBookr/PLAN.md",
+          "completedAt": "2026-03-05"
+        },
+        {
+          "task": "projects/AutoBookr/RUNBOOK.md",
+          "completedAt": "2026-03-05"
+        }
       ],
       "todo": [
         "Publish live URL and quick-start guide",
@@ -70,77 +187,290 @@
       "status": "yellow",
       "summary": "Mobile dashboard for live progress, blockers, and tasks.",
       "done": [
-        "Status cards layout created",
-        "Last updated timestamp added",
-        "Core project sections added",
-        "Key artifact links added",
-        "Define auto-refresh/update method",
-        "Publish live URL",
-        "Approve publish mode (GitHub Pages / static link)",
-        "Add link to Telegram pinned reference",
-        "Confirm page loads cleanly on mobile",
-        "Wire sweep output to auto-write this JSON each run",
-        "generated/ops/mission-control-sweep-test-2026-03-03.md",
-        "generated/ops/today-parallel-progress.md",
-        "generated/ops/autobookr-logo-brief-v1.md",
-        "generated/ops/autobookr-brand-kit-v1.md",
-        "generated/ops/business-state-snapshot.md",
-        "generated/ops/mission-control-data-contract.md",
-        "generated/ops/autobookr-success-cancel-live-test-sheet.md",
-        "generated/ops/income-research-2026-02-26.md",
-        "generated/ops/mission-control-source-links.md",
-        "generated/ops/aavegotchi-bot-mvp-scope-v1.md",
-        "generated/ops/project-sweep-agent-assignment-2026-03-03.md",
-        "generated/ops/mission-control-quick-actions-spec.md",
-        "generated/ops/clare-reiki-launch-pack-v1.md",
-        "generated/ops/mission-control-v2-task-sync-contract.md",
-        "generated/ops/morning-update.md",
-        "generated/ops/backup-option-a-prep.md",
-        "generated/ops/etsy-first-10-listings-plan.md",
-        "generated/ops/backup-recovery-plan.md",
-        "generated/ops/autobookr-landing-trust-roi-upgrade.md",
-        "generated/ops/customer-portal-mvp-spec-v1.md",
-        "generated/ops/readable-readiness-summary-2026-02-23.md",
-        "generated/ops/no-wait-queue-2026-03-03.md",
-        "generated/ops/brain-regions-plan.md",
-        "generated/ops/autobookr-ai-receptionist-addon-spec.md",
-        "generated/ops/weekly-ops-2026-09.md",
-        "generated/ops/autobookr-suite-next-7-days.md",
-        "generated/ops/disaster-recovery-drill-sop.md",
-        "generated/ops/single-pane-summary.md",
-        "generated/ops/wayne-action-stack.md",
-        "generated/ops/autobookr-e2e-test-2026-02-26.md",
-        "generated/ops/micro-offer-001.md",
-        "generated/ops/mobile-dashboard-publish-prep.md",
-        "generated/ops/final-integration-closeout-2026-02-23.md",
-        "generated/ops/autobookr-homepage-copy-v2.md",
-        "generated/ops/autobookr-e2e-checklist-v2.md",
-        "generated/ops/autobookr-image-plan-v1.md",
-        "generated/ops/backup-destination-wrapper-plan.md",
-        "generated/ops/autobookr-conversion-event-map.md",
-        "generated/ops/mission-control-blocker-rollup.md",
-        "generated/ops/project-queues.md",
-        "generated/ops/backup-first-offsite-runbook.md",
-        "generated/ops/wayne-decision-pack.md",
-        "generated/ops/backup-verification-checklist.md",
-        "generated/ops/backup-scripts/RESTORE_GUIDE.md",
-        "generated/ops/sweeps/sweep-v2-2026-03-04-0630.md",
-        "generated/ops/sweeps/sweep-v2-2026-03-03-2241.md",
-        "generated/ops/sweeps/sweep-v2-2026-03-05-0730.md",
-        "generated/ops/sweeps/sweep-2026-03-03-2202.md",
-        "generated/ops/sweeps/sweep-v2-2026-03-04-1130.md",
-        "generated/ops/sweeps/sweep-v2-2026-03-04-0730.md",
-        "generated/ops/sweeps/sweep-v2-2026-03-04-0030.md",
-        "generated/ops/sweeps/sweep-v2-2026-03-04-2030.md",
-        "generated/ops/sweeps/sweep-v2-2026-03-05-0257.md",
-        "generated/ops/sweeps/sweep-v2-2026-03-04-0330.md",
-        "generated/ops/sweeps/sweep-v2-2026-03-04-1530.md",
-        "generated/ops/sweeps/sweep-v2-2026-03-03-2212.md",
-        "generated/ops/mobile-dashboard.html",
-        "generated/ops/autobookr-landing.html",
-        "generated/ops/mobile-dashboard-live.html",
-        "generated/ops/.mobile-dashboard-serve/index.html",
-        "generated/ops/.github/workflows/generated/ops/generated/ops/mobile-dashboard.html"
+        {
+          "task": "Status cards layout created",
+          "completedAt": "2026-03-05"
+        },
+        {
+          "task": "Last updated timestamp added",
+          "completedAt": "2026-03-05"
+        },
+        {
+          "task": "Core project sections added",
+          "completedAt": "2026-03-05"
+        },
+        {
+          "task": "Key artifact links added",
+          "completedAt": "2026-03-05"
+        },
+        {
+          "task": "Define auto-refresh/update method",
+          "completedAt": "2026-03-05"
+        },
+        {
+          "task": "Publish live URL",
+          "completedAt": "2026-03-05"
+        },
+        {
+          "task": "Approve publish mode (GitHub Pages / static link)",
+          "completedAt": "2026-03-05"
+        },
+        {
+          "task": "Add link to Telegram pinned reference",
+          "completedAt": "2026-03-05"
+        },
+        {
+          "task": "Confirm page loads cleanly on mobile",
+          "completedAt": "2026-03-05"
+        },
+        {
+          "task": "Wire sweep output to auto-write this JSON each run",
+          "completedAt": "2026-03-05"
+        },
+        {
+          "task": "generated/ops/mission-control-sweep-test-2026-03-03.md",
+          "completedAt": "2026-03-05"
+        },
+        {
+          "task": "generated/ops/today-parallel-progress.md",
+          "completedAt": "2026-03-05"
+        },
+        {
+          "task": "generated/ops/autobookr-logo-brief-v1.md",
+          "completedAt": "2026-03-05"
+        },
+        {
+          "task": "generated/ops/autobookr-brand-kit-v1.md",
+          "completedAt": "2026-03-05"
+        },
+        {
+          "task": "generated/ops/business-state-snapshot.md",
+          "completedAt": "2026-03-05"
+        },
+        {
+          "task": "generated/ops/mission-control-data-contract.md",
+          "completedAt": "2026-03-05"
+        },
+        {
+          "task": "generated/ops/autobookr-success-cancel-live-test-sheet.md",
+          "completedAt": "2026-03-05"
+        },
+        {
+          "task": "generated/ops/income-research-2026-02-26.md",
+          "completedAt": "2026-03-05"
+        },
+        {
+          "task": "generated/ops/mission-control-source-links.md",
+          "completedAt": "2026-03-05"
+        },
+        {
+          "task": "generated/ops/aavegotchi-bot-mvp-scope-v1.md",
+          "completedAt": "2026-03-05"
+        },
+        {
+          "task": "generated/ops/project-sweep-agent-assignment-2026-03-03.md",
+          "completedAt": "2026-03-05"
+        },
+        {
+          "task": "generated/ops/mission-control-quick-actions-spec.md",
+          "completedAt": "2026-03-05"
+        },
+        {
+          "task": "generated/ops/clare-reiki-launch-pack-v1.md",
+          "completedAt": "2026-03-05"
+        },
+        {
+          "task": "generated/ops/mission-control-v2-task-sync-contract.md",
+          "completedAt": "2026-03-05"
+        },
+        {
+          "task": "generated/ops/morning-update.md",
+          "completedAt": "2026-03-05"
+        },
+        {
+          "task": "generated/ops/backup-option-a-prep.md",
+          "completedAt": "2026-03-05"
+        },
+        {
+          "task": "generated/ops/etsy-first-10-listings-plan.md",
+          "completedAt": "2026-03-05"
+        },
+        {
+          "task": "generated/ops/backup-recovery-plan.md",
+          "completedAt": "2026-03-05"
+        },
+        {
+          "task": "generated/ops/autobookr-landing-trust-roi-upgrade.md",
+          "completedAt": "2026-03-05"
+        },
+        {
+          "task": "generated/ops/customer-portal-mvp-spec-v1.md",
+          "completedAt": "2026-03-05"
+        },
+        {
+          "task": "generated/ops/readable-readiness-summary-2026-02-23.md",
+          "completedAt": "2026-03-05"
+        },
+        {
+          "task": "generated/ops/no-wait-queue-2026-03-03.md",
+          "completedAt": "2026-03-05"
+        },
+        {
+          "task": "generated/ops/brain-regions-plan.md",
+          "completedAt": "2026-03-05"
+        },
+        {
+          "task": "generated/ops/autobookr-ai-receptionist-addon-spec.md",
+          "completedAt": "2026-03-05"
+        },
+        {
+          "task": "generated/ops/weekly-ops-2026-09.md",
+          "completedAt": "2026-03-05"
+        },
+        {
+          "task": "generated/ops/autobookr-suite-next-7-days.md",
+          "completedAt": "2026-03-05"
+        },
+        {
+          "task": "generated/ops/disaster-recovery-drill-sop.md",
+          "completedAt": "2026-03-05"
+        },
+        {
+          "task": "generated/ops/single-pane-summary.md",
+          "completedAt": "2026-03-05"
+        },
+        {
+          "task": "generated/ops/wayne-action-stack.md",
+          "completedAt": "2026-03-05"
+        },
+        {
+          "task": "generated/ops/autobookr-e2e-test-2026-02-26.md",
+          "completedAt": "2026-03-05"
+        },
+        {
+          "task": "generated/ops/micro-offer-001.md",
+          "completedAt": "2026-03-05"
+        },
+        {
+          "task": "generated/ops/mobile-dashboard-publish-prep.md",
+          "completedAt": "2026-03-05"
+        },
+        {
+          "task": "generated/ops/final-integration-closeout-2026-02-23.md",
+          "completedAt": "2026-03-05"
+        },
+        {
+          "task": "generated/ops/autobookr-homepage-copy-v2.md",
+          "completedAt": "2026-03-05"
+        },
+        {
+          "task": "generated/ops/autobookr-e2e-checklist-v2.md",
+          "completedAt": "2026-03-05"
+        },
+        {
+          "task": "generated/ops/autobookr-image-plan-v1.md",
+          "completedAt": "2026-03-05"
+        },
+        {
+          "task": "generated/ops/backup-destination-wrapper-plan.md",
+          "completedAt": "2026-03-05"
+        },
+        {
+          "task": "generated/ops/autobookr-conversion-event-map.md",
+          "completedAt": "2026-03-05"
+        },
+        {
+          "task": "generated/ops/mission-control-blocker-rollup.md",
+          "completedAt": "2026-03-05"
+        },
+        {
+          "task": "generated/ops/project-queues.md",
+          "completedAt": "2026-03-05"
+        },
+        {
+          "task": "generated/ops/backup-first-offsite-runbook.md",
+          "completedAt": "2026-03-05"
+        },
+        {
+          "task": "generated/ops/wayne-decision-pack.md",
+          "completedAt": "2026-03-05"
+        },
+        {
+          "task": "generated/ops/backup-verification-checklist.md",
+          "completedAt": "2026-03-05"
+        },
+        {
+          "task": "generated/ops/backup-scripts/RESTORE_GUIDE.md",
+          "completedAt": "2026-03-05"
+        },
+        {
+          "task": "generated/ops/sweeps/sweep-v2-2026-03-04-0630.md",
+          "completedAt": "2026-03-05"
+        },
+        {
+          "task": "generated/ops/sweeps/sweep-v2-2026-03-03-2241.md",
+          "completedAt": "2026-03-05"
+        },
+        {
+          "task": "generated/ops/sweeps/sweep-v2-2026-03-05-0730.md",
+          "completedAt": "2026-03-05"
+        },
+        {
+          "task": "generated/ops/sweeps/sweep-2026-03-03-2202.md",
+          "completedAt": "2026-03-05"
+        },
+        {
+          "task": "generated/ops/sweeps/sweep-v2-2026-03-04-1130.md",
+          "completedAt": "2026-03-05"
+        },
+        {
+          "task": "generated/ops/sweeps/sweep-v2-2026-03-04-0730.md",
+          "completedAt": "2026-03-05"
+        },
+        {
+          "task": "generated/ops/sweeps/sweep-v2-2026-03-04-0030.md",
+          "completedAt": "2026-03-05"
+        },
+        {
+          "task": "generated/ops/sweeps/sweep-v2-2026-03-04-2030.md",
+          "completedAt": "2026-03-05"
+        },
+        {
+          "task": "generated/ops/sweeps/sweep-v2-2026-03-05-0257.md",
+          "completedAt": "2026-03-05"
+        },
+        {
+          "task": "generated/ops/sweeps/sweep-v2-2026-03-04-0330.md",
+          "completedAt": "2026-03-05"
+        },
+        {
+          "task": "generated/ops/sweeps/sweep-v2-2026-03-04-1530.md",
+          "completedAt": "2026-03-05"
+        },
+        {
+          "task": "generated/ops/sweeps/sweep-v2-2026-03-03-2212.md",
+          "completedAt": "2026-03-05"
+        },
+        {
+          "task": "generated/ops/mobile-dashboard.html",
+          "completedAt": "2026-03-05"
+        },
+        {
+          "task": "generated/ops/autobookr-landing.html",
+          "completedAt": "2026-03-05"
+        },
+        {
+          "task": "generated/ops/mobile-dashboard-live.html",
+          "completedAt": "2026-03-05"
+        },
+        {
+          "task": "generated/ops/.mobile-dashboard-serve/index.html",
+          "completedAt": "2026-03-05"
+        },
+        {
+          "task": "generated/ops/.github/workflows/generated/ops/generated/ops/mobile-dashboard.html",
+          "completedAt": "2026-03-05"
+        }
       ],
       "todo": [
         "Ensure status fields map to real source files",
@@ -157,10 +487,22 @@
       "status": "red",
       "summary": "Recovery safety net with local + offsite backup readiness.",
       "done": [
-        "Local backup script working",
-        "Rolling retention (4 backups)",
-        "Restore guide created",
-        "Restore test completed successfully"
+        {
+          "task": "Local backup script working",
+          "completedAt": "2026-03-05"
+        },
+        {
+          "task": "Rolling retention (4 backups)",
+          "completedAt": "2026-03-05"
+        },
+        {
+          "task": "Restore guide created",
+          "completedAt": "2026-03-05"
+        },
+        {
+          "task": "Restore test completed successfully",
+          "completedAt": "2026-03-05"
+        }
       ],
       "todo": [
         "Choose destination:",
@@ -188,20 +530,62 @@
       "status": "yellow",
       "summary": "Specialized agent regions with contracts and routing.",
       "done": [
-        "Draft regions:",
-        "Creativity Lab",
-        "Marketing Ops",
-        "Research Ops",
-        "Build Ops",
-        "Risk & QA",
-        "Assign default model per region",
-        "Assign fallback model per region",
-        "Define cost-first rules for routine work",
-        "Define escalation rules for complex work",
-        "Define when region should be used",
-        "Define handoff format between regions",
-        "Add region prompts/checklists",
-        "projects/NeuroNetAgentTeam/docs/handoff-protocol.md"
+        {
+          "task": "Draft regions:",
+          "completedAt": "2026-03-05"
+        },
+        {
+          "task": "Creativity Lab",
+          "completedAt": "2026-03-05"
+        },
+        {
+          "task": "Marketing Ops",
+          "completedAt": "2026-03-05"
+        },
+        {
+          "task": "Research Ops",
+          "completedAt": "2026-03-05"
+        },
+        {
+          "task": "Build Ops",
+          "completedAt": "2026-03-05"
+        },
+        {
+          "task": "Risk & QA",
+          "completedAt": "2026-03-05"
+        },
+        {
+          "task": "Assign default model per region",
+          "completedAt": "2026-03-05"
+        },
+        {
+          "task": "Assign fallback model per region",
+          "completedAt": "2026-03-05"
+        },
+        {
+          "task": "Define cost-first rules for routine work",
+          "completedAt": "2026-03-05"
+        },
+        {
+          "task": "Define escalation rules for complex work",
+          "completedAt": "2026-03-05"
+        },
+        {
+          "task": "Define when region should be used",
+          "completedAt": "2026-03-05"
+        },
+        {
+          "task": "Define handoff format between regions",
+          "completedAt": "2026-03-05"
+        },
+        {
+          "task": "Add region prompts/checklists",
+          "completedAt": "2026-03-05"
+        },
+        {
+          "task": "projects/NeuroNetAgentTeam/docs/handoff-protocol.md",
+          "completedAt": "2026-03-05"
+        }
       ],
       "todo": [
         "Approve final region architecture",
