@@ -110,7 +110,8 @@
     .pct { min-width: 40px; text-align: right; font-size: 12px; font-weight: 700; }
 
     .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,.9); z-index: 50; overflow-y: auto; padding: 18px; }
-    .modal-overlay.active { display: block; animation: fade-in 0.3s ease-out; }
+    .modal-overlay.active { display: block; animation: fadeIn 0.3s ease-out; }
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
     .modal { max-width: 450px; margin: 10px auto 30px; background: linear-gradient(135deg, #1E293B 0%, #2D1B4E 100%); border: 2px solid #00FF88; border-radius: 14px; padding: 16px; animation: slide-in 0.3s ease-out; }
     .modal-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
     .modal-title { font-size: 17px; font-weight: 700; color: #fff; }
@@ -122,7 +123,23 @@
     .block-h { color: #FF6B6B; font-size: 14px; margin: 16px 0 8px; }
     
     /* Enhanced Modal Styles */
-    .project-progress { background: linear-gradient(135deg, #1E293B 0%, #2D1B4E 100%); border: 1px solid #00FF88; border-radius: 10px; padding: 14px; margin-bottom: 12px; }
+    @keyframes modalPop {
+      0% { opacity: 0; transform: scale(0.8) translateY(20px); }
+      50% { transform: scale(1.05) translateY(-5px); }
+      100% { opacity: 1; transform: scale(1) translateY(0); }
+    }
+    @keyframes modalSlide {
+      0% { opacity: 0; transform: translateX(-50px); }
+      100% { opacity: 1; transform: translateX(0); }
+    }
+    @keyframes borderGlow {
+      0%, 100% { border-color: #00FF88; box-shadow: 0 0 20px rgba(0,255,136,0.3); }
+      50% { border-color: #8B5CF6; box-shadow: 0 0 30px rgba(139,92,246,0.4); }
+    }
+    
+    .modal { max-width: 450px; margin: 10px auto 30px; background: linear-gradient(135deg, #1E293B 0%, #2D1B4E 100%); border: 2px solid #00FF88; border-radius: 14px; padding: 16px; animation: modalPop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), borderGlow 2s infinite; }
+    
+    .project-progress { background: linear-gradient(135deg, #1E293B 0%, #2D1B4E 100%); border: 1px solid #00FF88; border-radius: 10px; padding: 14px; margin-bottom: 12px; animation: modalSlide 0.3s ease-out 0.1s both; }
     .progress-label { font-size: 13px; font-weight: 600; color: #fff; margin-bottom: 8px; }
     .progress-bar { height: 8px; background: #334155; border-radius: 4px; overflow: hidden; }
     .progress-fill { height: 100%; border-radius: 4px; transition: width 0.5s ease; }
@@ -583,21 +600,27 @@
           <div class="links-container">${linksHtml}</div>
         </div>
         
-        <!-- Today's/Week Stats -->
-        <div class="project-stats">
+        <!-- Stats -->
+        <div class="project-stats" style="animation: modalSlide 0.3s ease-out 0.15s both;">
           <div class="stat"><span class="stat-num" style="color:#00FF88">${todayCount}</span><span class="stat-label">Today</span></div>
           <div class="stat"><span class="stat-num" style="color:#FFB347">${weekCount}</span><span class="stat-label">This Week</span></div>
           <div class="stat"><span class="stat-num">${doneCount}</span><span class="stat-label">Total</span></div>
         </div>
         
+        <!-- Links -->
+        <div class="project-section" style="animation: modalSlide 0.3s ease-out 0.2s both;">
+          <div class="section-label">🔗 Links</div>
+          <div class="links-container">${linksHtml}</div>
+        </div>
+        
         <!-- Files -->
-        <div class="project-section">
+        <div class="project-section" style="animation: modalSlide 0.3s ease-out 0.25s both;">
           <div class="section-label">📁 Files</div>
           <div class="files-container">${filesHtml}</div>
         </div>
         
         <!-- Done -->
-        <div class="task-section">
+        <div class="task-section" style="animation: modalSlide 0.3s ease-out 0.3s both;">
           <div class="task-header" onclick="toggleSection('done')">
             <span>✅ Done (${doneCount})</span>
             <span class="chevron">▼</span>
@@ -606,12 +629,12 @@
             ${(p.done || []).slice(0, 20).map(t => {
               const task = typeof t === 'string' ? t : t.task || '';
               return `<div class="task-item done">✓ ${task.substring(0, 60)}${task.length > 60 ? '...' : ''}</div>`;
-            }).join('') || '<div class="task-item">None yet</div>'}
+            }).join( class="task-item">None yet'') || '<div</div>'}
           </div>
         </div>
         
         <!-- To Do -->
-        <div class="task-section">
+        <div class="task-section" style="animation: modalSlide 0.3s ease-out 0.35s both;">
           <div class="task-header" onclick="toggleSection('todo')">
             <span>⬜ To Do (${todoCount})</span>
             <span class="chevron">▼</span>
@@ -622,7 +645,7 @@
         </div>
         
         <!-- Blockers -->
-        <div class="task-section">
+        <div class="task-section" style="animation: modalSlide 0.3s ease-out 0.4s both;">
           <div class="task-header" onclick="toggleSection('blockers')">
             <span>🚫 Blockers (${(p.blockers || []).length})</span>
             <span class="chevron">▼</span>
