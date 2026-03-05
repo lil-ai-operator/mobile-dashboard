@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-03-05T10:48:02Z",
+  "updatedAt": "2026-03-05T10:52:21Z",
   "projects": [
     {
       "key": "autobookr_suite",
@@ -511,17 +511,32 @@
         {
           "task": "Restore test completed successfully",
           "completedAt": "2026-02-28"
+        },
+        {
+          "task": "Choose destination:",
+          "completedAt": "2026-03-05"
+        },
+        {
+          "task": "A) Google Drive",
+          "completedAt": "2026-03-05"
+        },
+        {
+          "task": "Configure chosen destination script",
+          "completedAt": "2026-03-05"
+        },
+        {
+          "task": "Run first offsite backup successfully",
+          "completedAt": "2026-03-05"
+        },
+        {
+          "task": "Set weekly scheduled backup cron",
+          "completedAt": "2026-03-05"
         }
       ],
       "todo": [
-        "Choose destination:",
-        "A) Google Drive",
         "B) GitHub private backup repo",
         "C) External drive",
-        "Configure chosen destination script",
-        "Run first offsite backup successfully",
         "Verify restore from offsite backup",
-        "Set weekly scheduled backup cron",
         "Add backup success/failure log",
         "Add monthly restore test reminder",
         "Weekly automated offsite backups run reliably",
