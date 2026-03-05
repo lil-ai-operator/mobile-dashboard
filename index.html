@@ -625,7 +625,7 @@
             ${(p.done || []).slice(0, 20).map(t => {
               const task = typeof t === 'string' ? t : t.task || '';
               return `<div class="task-item done">✓ ${task.substring(0, 60)}${task.length > 60 ? '...' : ''}</div>`;
-            }).join( class="task-item">None yet'') || '<div</div>'}
+            }).join('') || '<div class="task-item">None yet</div>'}
           </div>
         </div>
         
