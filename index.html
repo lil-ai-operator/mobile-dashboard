@@ -9,7 +9,7 @@
   <title>Mission Control - Mobile</title>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
-    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #0f172a; color: #e2e8f0; padding: 16px; min-height: 100vh; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: linear-gradient(135deg, #0D0D0D 0%, #1A1A2E 100%); color: #e2e8f0; padding: 16px; min-height: 100vh; }
     
     /* Header with avatar */
     .mc-header { display: flex; align-items: center; gap: 12px; margin-bottom: 8px; }
@@ -23,12 +23,12 @@
     .timestamp { font-size: 12px; color: #94a3b8; margin-bottom: 10px; }
     .hint { font-size: 12px; color: #64748b; margin-bottom: 14px; }
 
-    .section { background: #172033; border: 1px solid #334155; border-radius: 12px; padding: 12px; margin-bottom: 12px; }
-    .section h2 { font-size: 13px; margin-bottom: 8px; color: #93c5fd; }
+    .section { background: #1E293B; border: 1px solid #334155; border-radius: 12px; padding: 12px; margin-bottom: 12px; }
+    .section h2 { font-size: 13px; margin-bottom: 8px; color: #00FF88; }
     
     /* Collapsible sections */
-    .collapsible-header { display: flex; justify-content: space-between; align-items: center; padding: 12px 14px; background: #1e3a5f; border: 1px solid #334155; border-radius: 10px; cursor: pointer; margin-bottom: 8px; }
-    .collapsible-header:hover { background: #234567; }
+    .collapsible-header { display: flex; justify-content: space-between; align-items: center; padding: 12px 14px; background: linear-gradient(135deg, #1E293B 0%, #2D1B4E 100%); border: 1px solid #8B5CF6; border-radius: 10px; cursor: pointer; margin-bottom: 8px; }
+    .collapsible-header:hover { background: linear-gradient(135deg, #2D1B4E 0%, #3D2B5E 100%); }
     .collapsible-title { font-size: 14px; font-weight: 600; color: #fff; }
     .collapsible-chevron { font-size: 12px; color: #94a3b8; }
     .collapsible-content { margin-bottom: 8px; }
@@ -42,9 +42,9 @@
     .mini-btn { border: 1px solid #475569; background: #0f172a; color: #cbd5e1; border-radius: 999px; padding: 5px 9px; font-size: 10px; cursor: pointer; }
     .mini-btn.active { border-color: #00FF88; color: #00FF88; }
     .queue-group { margin-top: 8px; }
-    .queue-group-title { font-size: 11px; color: #93c5fd; letter-spacing: .4px; text-transform: uppercase; margin: 8px 0; }
-    .queue-header { display: flex; justify-content: space-between; align-items: center; padding: 10px 12px; background: #172033; border: 1px solid #334155; border-radius: 10px; margin-bottom: 6px; cursor: pointer; }
-    .queue-header:active { background: #1e293b; }
+    .queue-group-title { font-size: 11px; color: #8B5CF6; letter-spacing: .4px; text-transform: uppercase; margin: 8px 0; }
+    .queue-header { display: flex; justify-content: space-between; align-items: center; padding: 10px 12px; background: linear-gradient(135deg, #1E293B 0%, #2D1B4E 100%); border: 1px solid #8B5CF6; border-radius: 10px; margin-bottom: 6px; cursor: pointer; }
+    .queue-header:active { background: linear-gradient(135deg, #2D1B4E 0%, #4D3B6E 100%); }
     .queue-header.collapsed .queue-chevron { transform: rotate(-90deg); }
     .queue-items { display: none; padding: 0 4px; }
     .queue-items.open { display: block; }
@@ -53,18 +53,20 @@
     .queue-badge { font-size: 10px; background: #00FF88; color: #0D0D0D; border-radius: 999px; padding: 2px 6px; font-weight: 700; }
     .queue-chevron { font-size: 12px; color: #64748b; transition: transform 0.2s; }
     .queue-chevron.open { transform: rotate(180deg); }
-    .queue-item { display: flex; justify-content: space-between; gap: 8px; align-items: center; border: 1px solid #334155; border-radius: 8px; padding: 8px; margin-bottom: 6px; background: #1e293b; }
+    .queue-item { display: flex; justify-content: space-between; gap: 8px; align-items: center; border: 1px solid #8B5CF6; border-radius: 8px; padding: 8px; margin-bottom: 6px; background: #1E293B; }
+    .queue-item:hover { border-color: #00FF88; }
     .queue-item:last-child { margin-bottom: 0; }
     .queue-left { min-width: 0; }
     .queue-title { font-size: 12px; color: #fff; font-weight: 600; line-height: 1.3; }
     .queue-note { font-size: 10px; color: #94a3b8; margin-top: 2px; }
     .queue-tags { display: flex; gap: 4px; margin-top: 4px; flex-wrap: wrap; }
-    .pill { font-size: 9px; border-radius: 999px; padding: 2px 5px; border: 1px solid #475569; color: #cbd5e1; }
+    .pill { font-size: 9px; border-radius: 999px; padding: 2px 5px; border: 1px solid #8B5CF6; color: #8B5CF6; }
     .pill.new { background: #0D0D0D; border-color: #00FF88; color: #00FF88; font-weight: 700; }
-    .pill.priority { background: #3b0764; border-color: #a855f7; color: #d8b4fe; }
-    .queue-btn { border: 1px solid #3b82f6; border-radius: 6px; background: #1d4ed8; color: #fff; text-decoration: none; font-size: 11px; padding: 6px 8px; white-space: nowrap; }
+    .pill.priority { background: #2D1B4E; border-color: #FF6B6B; color: #FF6B6B; }
+    .queue-btn { border: 1px solid #00FF88; border-radius: 6px; background: #00FF88; color: #0D0D0D; text-decoration: none; font-size: 11px; padding: 6px 8px; white-space: nowrap; font-weight: 600; }
 
-    .project-card { background: #1e293b; border: 1px solid #334155; border-radius: 12px; padding: 14px; margin-bottom: 12px; cursor: pointer; }
+    .project-card { background: linear-gradient(135deg, #1E293B 0%, #2D1B4E 100%); border: 1px solid #8B5CF6; border-radius: 12px; padding: 14px; margin-bottom: 12px; cursor: pointer; }
+    .project-card:hover { border-color: #00FF88; }
     .project-header { display: flex; justify-content: space-between; gap: 8px; align-items: center; margin-bottom: 8px; }
     .project-name { font-size: 15px; font-weight: 700; color: #fff; }
     .status-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
@@ -73,7 +75,7 @@
     .red { background: #FF6B6B; box-shadow: 0 0 8px #FF6B6B; }
     .summary { font-size: 12px; color: #94a3b8; margin-bottom: 8px; }
     .track { display: flex; align-items: center; gap: 8px; }
-    .track-bg { flex: 1; height: 7px; background: #334155; border-radius: 8px; overflow: hidden; }
+    .track-bg { flex: 1; height: 7px; background: #334155; border-radius: 8px; overflow: hidden; border: 1px solid #8B5CF6; }
     .track-fill { height: 100%; border-radius: 8px; }
     .pct { min-width: 40px; text-align: right; font-size: 12px; font-weight: 700; }
 
