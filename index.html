@@ -151,7 +151,7 @@
     
     .modal { max-width: 450px; margin: 10px auto 30px; background: linear-gradient(135deg, #1E293B 0%, #2D1B4E 100%); border: 2px solid #00FF88; border-radius: 14px; padding: 16px; animation: modalPop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), borderGlow 2s infinite; }
     
-    .project-progress { background: linear-gradient(135deg, #1E293B 0%, #2D1B4E 100%); border: 1px solid #00FF88; border-radius: 10px; padding: 14px; margin-bottom: 12px; animation: modalSlide 0.3s ease-out 0.1s both; }
+    .project-progress { background: linear-gradient(135deg, #1E293B 0%, #2D1B4E 100%); border: 1px solid #00FF88; border-radius: 10px; padding: 14px; margin-bottom: 12px; animation: fadeUp 0.4s ease-out 0.1s both; }
     .progress-label { font-size: 13px; font-weight: 600; color: #fff; margin-bottom: 8px; }
     .progress-bar { height: 8px; background: #334155; border-radius: 4px; overflow: hidden; }
     .progress-fill { height: 100%; border-radius: 4px; transition: width 0.5s ease; }
@@ -502,18 +502,18 @@
       updatedEl.textContent = `Updated: ${dt.toLocaleString()}`;
 
       renderTasksCompleted(data);
-      renderQuickActions(data);
       renderReadQueue(data);
 
       const list = document.getElementById('projectList');
       list.innerHTML = '';
 
-      (data.projects || []).forEach(p => {
+      (data.projects || []).forEach((p, i) => {
         const pct = calcProgress(p);
         const color = progressColor(pct);
 
         const card = document.createElement('div');
         card.className = 'project-card';
+        card.style.animation = `fadeUp 0.4s ease-out ${i * 0.1}s both`;
         card.innerHTML = `
           <div class="project-header">
             <div class="project-name">${p.name}</div>
@@ -576,6 +576,12 @@
         ? knownFiles.map(f => `<div class="project-file">📄 ${f}</div>`).join('')
         : '<span style="color:#64748b;font-size:11px;">No files tracked</span>';
       
+      // Wayne's tasks for this project (from blockers + todo)
+      const wayneTasks = [...(p.blockers || []), ...(p.todo || [])].slice(0, 5);
+      const myTasksHtml = wayneTasks.length
+        ? wayneTasks.map(t => `<div class="task-item" style="color:#FFB347;">⏳ ${t.substring(0, 50)}${t.length > 50 ? '...' : ''}</div>`).join('')
+        : '<div class="task-item done">🎉 All caught up!</div>';
+      
       // Today's tasks
       const today = new Date().toISOString().split('T')[0];
       const weekAgo = new Date();
@@ -609,22 +615,33 @@
         </div>
         
         <!-- Stats -->
-        <div class="project-stats" style="animation: modalSlide 0.3s ease-out 0.15s both;">
+        <div class="project-stats" style="animation: fadeUp 0.4s ease-out 0.1s both;">
           <div class="stat"><span class="stat-num" style="color:#00FF88">${todayCount}</span><span class="stat-label">Today</span></div>
           <div class="stat"><span class="stat-num" style="color:#FFB347">${weekCount}</span><span class="stat-label">This Week</span></div>
           <div class="stat"><span class="stat-num">${doneCount}</span><span class="stat-label">Total</span></div>
         </div>
         
         <!-- Links -->
-        <div class="project-section" style="animation: modalSlide 0.3s ease-out 0.2s both;">
+        <div class="project-section" style="animation: fadeUp 0.4s ease-out 0.15s both;">
           <div class="section-label">🔗 Links</div>
           <div class="links-container">${linksHtml}</div>
         </div>
         
         <!-- Files -->
-        <div class="project-section" style="animation: modalSlide 0.3s ease-out 0.25s both;">
+        <div class="project-section" style="animation: fadeUp 0.4s ease-out 0.2s both;">
           <div class="section-label">📁 Files</div>
           <div class="files-container">${filesHtml}</div>
+        </div>
+        
+        <!-- My Tasks -->
+        <div class="task-section" style="animation: fadeUp 0.4s ease-out 0.25s both;">
+          <div class="task-header" onclick="toggleSection('mytasks')">
+            <span style="color:#FFB347;">👤 My Tasks (${wayneTasks.length})</span>
+            <span class="chevron">▶</span>
+          </div>
+          <div class="task-list" id="mytasks-list" style="display:none;">
+            ${myTasksHtml}
+          </div>
         </div>
         
         <!-- Done -->
