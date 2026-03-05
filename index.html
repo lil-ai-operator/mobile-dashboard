@@ -109,17 +109,19 @@
     .track-fill { height: 100%; border-radius: 8px; }
     .pct { min-width: 40px; text-align: right; font-size: 12px; font-weight: 700; }
 
-    .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,.8); z-index: 50; overflow-y: auto; padding: 18px; }
-    .modal-overlay.active { display: block; }
-    .modal { max-width: 450px; margin: 10px auto 30px; background: #1e293b; border: 1px solid #334155; border-radius: 14px; padding: 16px; }
+    .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,.9); z-index: 50; overflow-y: auto; padding: 18px; }
+    .modal-overlay.active { display: block; animation: fade-in 0.3s ease-out; }
+    .modal { max-width: 450px; margin: 10px auto 30px; background: linear-gradient(135deg, #1E293B 0%, #2D1B4E 100%); border: 2px solid #00FF88; border-radius: 14px; padding: 16px; animation: slide-in 0.3s ease-out; }
     .modal-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
     .modal-title { font-size: 17px; font-weight: 700; color: #fff; }
-    .close-btn { background: none; border: none; color: #cbd5e1; font-size: 24px; line-height: 1; }
+    .close-btn { background: none; border: none; color: #00FF88; font-size: 24px; line-height: 1; cursor: pointer; }
     h3 { font-size: 12px; text-transform: uppercase; letter-spacing: .5px; margin: 14px 0 8px; color: #94a3b8; }
-    .done-h { color: #6ee7b7; }
-    .todo-h { color: #fcd34d; }
-    .block-h { color: #fca5a5; }
-    .item { font-size: 13px; border-bottom: 1px solid #334155; padding: 7px 0; display: flex; gap: 8px; }
+    .done-h { color: #00FF88; font-size: 14px; margin: 16px 0 8px; cursor: pointer; display: flex; align-items: center; gap: 6px; }
+    .done-h:hover { text-shadow: 0 0 10px #00FF88; }
+    .todo-h { color: #FFB347; font-size: 14px; margin: 16px 0 8px; }
+    .block-h { color: #FF6B6B; font-size: 14px; margin: 16px 0 8px; }
+    .item { font-size: 13px; border-bottom: 1px solid #334155; padding: 7px 0; display: flex; gap: 8px; background: rgba(0,255,136,0.03); border-radius: 6px; margin-bottom: 4px; transition: all 0.2s; }
+    .item:hover { border-color: #00FF88; background: rgba(0,255,136,0.08); }
     .item:last-child { border-bottom: none; }
     .badge { width: 18px; text-align: center; flex-shrink: 0; }
 
@@ -260,34 +262,57 @@
       const weekStr = weekAgo.toISOString().split('T')[0];
       
       let todayCount = 0, weekCount = 0, totalCount = 0;
+      let todayTasks = [], weekTasks = [], olderTasks = [];
       
       (data.projects || []).forEach(p => {
         (p.done || []).forEach(item => {
           totalCount++;
-          // Handle both string and object formats
           const taskStr = typeof item === 'string' ? item : (item.task || '');
           const completedAt = typeof item === 'object' ? (item.completedAt || '') : '';
           
           if (completedAt === todayStr) {
             todayCount++;
             weekCount++;
+            todayTasks.push(taskStr);
           } else if (completedAt >= weekStr) {
             weekCount++;
+            weekTasks.push(taskStr);
+          } else {
+            olderTasks.push(taskStr);
           }
         });
       });
       
+      const formatTasks = (tasks, title, color) => {
+        if (tasks.length === 0) return '';
+        return `<div style="margin-top:8px;">
+          <div style="font-size:11px;color:${color};margin-bottom:4px;">${title}</div>
+          ${tasks.slice(0, 10).map(t => `<div class="item" style="font-size:11px;padding:4px;">✓ ${t.substring(0, 50)}${t.length > 50 ? '...' : ''}</div>`).join('')}
+          ${tasks.length > 10 ? `<div style="font-size:10px;color:#64748b;padding:4px;">+${tasks.length - 10} more...</div>` : ''}
+        </div>`;
+      };
+      
       container.innerHTML = `
-        <div class="Collapsible-header open">
+        <div class="Collapsible-header open" onclick="toggleCompletedDetails()">
           <span class="Collapsible-title">✅ Completed</span>
           <span class="Collapsible-chevron" style="color: #00FF88;">${totalCount} total</span>
         </div>
         <div class="Collapsible-content" style="display: block;">
-          <div class="qa-item" style="color: #94a3b8; font-size: 12px;">
-            Today's: ${todayCount} | This week: ${weekCount} | All time: ${totalCount}
+          <div class="qa-item" style="color: #00FF88; font-size: 12px; cursor:pointer;" onclick="event.stopPropagation();toggleCompletedDetails()">
+            📅 Today: ${todayCount} | 📆 This week: ${weekCount}
+          </div>
+          <div id="completed-details" style="display:none;">
+            ${formatTasks(todayTasks, '📅 TODAY', '#00FF88')}
+            ${formatTasks(weekTasks, '📆 THIS WEEK', '#FFB347')}
+            ${formatTasks(olderTasks, '📚 OLDER', '#64748b')}
           </div>
         </div>
       `;
+    }
+    
+    function toggleCompletedDetails() {
+      const el = document.getElementById('completed-details');
+      el.style.display = el.style.display === 'none' ? 'block' : 'none';
     }
 
     function renderQuickActions(data) {
