@@ -10,6 +10,12 @@
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #0f172a; color: #e2e8f0; padding: 16px; min-height: 100vh; }
+    
+    /* Header with avatar */
+    .mc-header { display: flex; align-items: center; gap: 12px; margin-bottom: 8px; }
+    .mc-avatar { width: 48px; height: 48px; border-radius: 50%; background: linear-gradient(135deg, #22c55e 0%, #14b8a6 100%); display: flex; align-items: center; justify-content: center; font-size: 24px; flex-shrink: 0; }
+    .mc-title h1 { font-size: 20px; margin-bottom: 2px; color: #fff; }
+    
     h1 { font-size: 20px; margin-bottom: 6px; color: #fff; }
     .timestamp { font-size: 12px; color: #94a3b8; margin-bottom: 10px; }
     .hint { font-size: 12px; color: #64748b; margin-bottom: 14px; }
@@ -95,10 +101,16 @@
   </style>
 </head>
 <body>
-  <h1>🚀 Mission Control</h1>
-  <p class="timestamp" id="updated">Updated: loading…</p>
+  <div class="mc-header">
+    <div class="mc-avatar" id="mc-avatar"></div>
+    <div class="mc-title">
+      <h1>🚀 Mission Control</h1>
+      <p class="timestamp" id="updated">Updated: loading…</p>
+    </div>
+  </div>
   <p class="hint">Auto-updates every 60s • Tap a project for full tasks</p>
 
+  <div class="section" id="tasksCompleted"></div>
   <div class="section" id="quickActions"></div>
   <div class="section" id="readQueue"></div>
   <div id="projectList"></div>
@@ -107,7 +119,7 @@
     <div class="modal" id="modal"></div>
   </div>
 
-  <button class="refresh-pill" onclick="loadData(true)">↻ Refresh now</button>
+
 
   <script>
     const READ_STATE_KEY = 'mc-read-state-v1';
@@ -202,6 +214,32 @@
       header.classList.toggle('open', !isOpen);
       header.querySelector('.collapsible-chevron').textContent = isOpen ? '▶' : '▼';
       localStorage.setItem('mc-' + sectionId + '-open', !isOpen);
+    }
+
+    function renderTasksCompleted(data) {
+      const container = document.getElementById('tasksCompleted');
+      const today = new Date().toISOString().split('T')[0];
+      const todayStr = '2026-03-05';
+      
+      let todayCount = 0, weekCount = 0, totalCount = 0;
+      
+      (data.projects || []).forEach(p => {
+        (p.done || []).forEach(task => {
+          totalCount++;
+        });
+      });
+      
+      container.innerHTML = `
+        <div class="Collapsible-header open">
+          <span class="Collapsible-title">✅ Completed</span>
+          <span class="Collapsible-chevron" style="color: #22c55e;">${totalCount} total</span>
+        </div>
+        <div class="Collapsible-content" style="display: block;">
+          <div class="qa-item" style="color: #94a3b8; font-size: 12px;">
+            Today's: ${todayCount} | This week: ${weekCount} | All time: ${totalCount}
+          </div>
+        </div>
+      `;
     }
 
     function renderQuickActions(data) {
@@ -330,6 +368,7 @@
       const dt = data.updatedAt ? new Date(data.updatedAt) : new Date();
       updatedEl.textContent = `Updated: ${dt.toLocaleString()}`;
 
+      renderTasksCompleted(data);
       renderQuickActions(data);
       renderReadQueue(data);
 

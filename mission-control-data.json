@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-03-04T21:51:06Z",
+  "updatedAt": "2026-03-05T09:31:54Z",
   "projects": [
     {
       "key": "autobookr_suite",
@@ -460,6 +460,17 @@
       "path": "docs/photo-electrician-uk.jpg",
       "url": "https://raw.githack.com/lil-ai-operator/mobile-dashboard/main/docs/photo-electrician-uk.jpg",
       "updatedAt": "2026-03-04T20:46:51Z"
+    },
+    {
+      "id": "brand-board",
+      "title": "BRAND_BOARD.md",
+      "group": "🎨 Brand",
+      "project": "AutoBookr",
+      "note": "Auto-tracked from docs folder",
+      "priority": "normal",
+      "path": "docs/BRAND_BOARD.md",
+      "url": "https://raw.githack.com/lil-ai-operator/mobile-dashboard/main/docs/BRAND_BOARD.md",
+      "updatedAt": "2026-03-04T22:00:11Z"
     }
   ]
 }
