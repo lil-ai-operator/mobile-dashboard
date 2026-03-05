@@ -13,7 +13,10 @@
     
     /* Header with avatar */
     .mc-header { display: flex; align-items: center; gap: 12px; margin-bottom: 8px; }
-    .mc-avatar { width: 48px; height: 48px; border-radius: 50%; background: linear-gradient(135deg, #22c55e 0%, #14b8a6 100%); display: flex; align-items: center; justify-content: center; font-size: 24px; flex-shrink: 0; }
+    .mc-avatar { width: 48px; height: 48px; border-radius: 50%; background: linear-gradient(135deg, #00FF88 0%, #00CC6A 100%); display: flex; align-items: center; justify-content: center; font-size: 24px; flex-shrink: 0; }
+    .status-dot.green { background: #00FF88; }
+    .status-dot.yellow { background: #FFB347; }
+    .status-dot.red { background: #FF6B6B; }
     .mc-title h1 { font-size: 20px; margin-bottom: 2px; color: #fff; }
     
     h1 { font-size: 20px; margin-bottom: 6px; color: #fff; }
@@ -37,7 +40,7 @@
     .queue-meta { font-size: 11px; color: #94a3b8; }
     .queue-controls { display: flex; gap: 6px; }
     .mini-btn { border: 1px solid #475569; background: #0f172a; color: #cbd5e1; border-radius: 999px; padding: 5px 9px; font-size: 10px; cursor: pointer; }
-    .mini-btn.active { border-color: #22c55e; color: #86efac; }
+    .mini-btn.active { border-color: #00FF88; color: #00FF88; }
     .queue-group { margin-top: 8px; }
     .queue-group-title { font-size: 11px; color: #93c5fd; letter-spacing: .4px; text-transform: uppercase; margin: 8px 0; }
     .queue-header { display: flex; justify-content: space-between; align-items: center; padding: 10px 12px; background: #172033; border: 1px solid #334155; border-radius: 10px; margin-bottom: 6px; cursor: pointer; }
@@ -47,7 +50,7 @@
     .queue-items.open { display: block; }
     .queue-header-left { display: flex; align-items: center; gap: 8px; }
     .queue-header-title { font-size: 13px; color: #fff; font-weight: 600; }
-    .queue-badge { font-size: 10px; background: #22c55e; color: #fff; border-radius: 999px; padding: 2px 6px; font-weight: 700; }
+    .queue-badge { font-size: 10px; background: #00FF88; color: #0D0D0D; border-radius: 999px; padding: 2px 6px; font-weight: 700; }
     .queue-chevron { font-size: 12px; color: #64748b; transition: transform 0.2s; }
     .queue-chevron.open { transform: rotate(180deg); }
     .queue-item { display: flex; justify-content: space-between; gap: 8px; align-items: center; border: 1px solid #334155; border-radius: 8px; padding: 8px; margin-bottom: 6px; background: #1e293b; }
@@ -57,7 +60,7 @@
     .queue-note { font-size: 10px; color: #94a3b8; margin-top: 2px; }
     .queue-tags { display: flex; gap: 4px; margin-top: 4px; flex-wrap: wrap; }
     .pill { font-size: 9px; border-radius: 999px; padding: 2px 5px; border: 1px solid #475569; color: #cbd5e1; }
-    .pill.new { background: #14532d; border-color: #22c55e; color: #86efac; font-weight: 700; }
+    .pill.new { background: #0D0D0D; border-color: #00FF88; color: #00FF88; font-weight: 700; }
     .pill.priority { background: #3b0764; border-color: #a855f7; color: #d8b4fe; }
     .queue-btn { border: 1px solid #3b82f6; border-radius: 6px; background: #1d4ed8; color: #fff; text-decoration: none; font-size: 11px; padding: 6px 8px; white-space: nowrap; }
 
@@ -65,9 +68,9 @@
     .project-header { display: flex; justify-content: space-between; gap: 8px; align-items: center; margin-bottom: 8px; }
     .project-name { font-size: 15px; font-weight: 700; color: #fff; }
     .status-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
-    .green { background: #22c55e; box-shadow: 0 0 8px #22c55e; }
-    .yellow { background: #eab308; box-shadow: 0 0 8px #eab308; }
-    .red { background: #ef4444; box-shadow: 0 0 8px #ef4444; }
+    .green { background: #00FF88; box-shadow: 0 0 8px #00FF88; }
+    .yellow { background: #FFB347; box-shadow: 0 0 8px #FFB347; }
+    .red { background: #FF6B6B; box-shadow: 0 0 8px #FF6B6B; }
     .summary { font-size: 12px; color: #94a3b8; margin-bottom: 8px; }
     .track { display: flex; align-items: center; gap: 8px; }
     .track-bg { flex: 1; height: 7px; background: #334155; border-radius: 8px; overflow: hidden; }
@@ -198,9 +201,9 @@
     }
 
     function progressColor(pct) {
-      if (pct > 75) return '#22c55e';
-      if (pct >= 30) return '#eab308';
-      return '#ef4444';
+      if (pct > 75) return '#00FF88';
+      if (pct >= 30) return '#FFB347';
+      return '#FF6B6B';
     }
 
     function itemRow(icon, text) {
@@ -245,7 +248,7 @@
       container.innerHTML = `
         <div class="Collapsible-header open">
           <span class="Collapsible-title">✅ Completed</span>
-          <span class="Collapsible-chevron" style="color: #22c55e;">${totalCount} total</span>
+          <span class="Collapsible-chevron" style="color: #00FF88;">${totalCount} total</span>
         </div>
         <div class="Collapsible-content" style="display: block;">
           <div class="qa-item" style="color: #94a3b8; font-size: 12px;">
