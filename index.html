@@ -13,7 +13,7 @@
     
     /* Header with avatar */
     .mc-header { display: flex; align-items: center; gap: 12px; margin-bottom: 8px; }
-    .mc-avatar { width: 48px; height: 48px; border-radius: 50%; background: linear-gradient(135deg, #00FF88 0%, #00CC6A 100%); display: flex; align-items: center; justify-content: center; font-size: 24px; flex-shrink: 0; }
+    .mc-avatar { width: 48px; height: 48px; border-radius: 50%; background: linear-gradient(135deg, #00FF88 0%, #8B5CF6 100%); display: flex; align-items: center; justify-content: center; font-size: 24px; flex-shrink: 0; overflow: hidden; }
     .status-dot.green { background: #00FF88; }
     .status-dot.yellow { background: #FFB347; }
     .status-dot.red { background: #FF6B6B; }
@@ -105,7 +105,7 @@
 </head>
 <body>
   <div class="mc-header">
-    <div class="mc-avatar" id="mc-avatar"></div>
+    <div class="mc-avatar" id="mc-avatar"><img src="01_PEPE4-export.gif" style="width:100%;height:100%;border-radius:50%;object-fit:cover;"></div>
     <div class="mc-title">
       <h1>🚀 Mission Control</h1>
       <p class="timestamp" id="updated">Updated: loading…</p>
