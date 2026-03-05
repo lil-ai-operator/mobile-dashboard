@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-03-05T10:52:21Z",
+  "updatedAt": "2026-03-05T11:10:18Z",
   "projects": [
     {
       "key": "autobookr_suite",
@@ -544,9 +544,7 @@
         "Add incremental backup option",
         "Create backup status widget"
       ],
-      "blockers": [
-        "Destination/auth confirmation needed"
-      ]
+      "blockers": []
     },
     {
       "key": "neuronet",
