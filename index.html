@@ -224,24 +224,23 @@
       weekAgo.setDate(weekAgo.getDate() - 7);
       const weekStr = weekAgo.toISOString().split('T')[0];
       
-      // Use root updatedAt for date logic
-      const rootUpdated = (data.updatedAt || '').split('T')[0];
-      
       let todayCount = 0, weekCount = 0, totalCount = 0;
       
       (data.projects || []).forEach(p => {
-        (p.done || []).forEach(task => {
+        (p.done || []).forEach(item => {
           totalCount++;
+          // Handle both string and object formats
+          const taskStr = typeof item === 'string' ? item : (item.task || '');
+          const completedAt = typeof item === 'object' ? (item.completedAt || '') : '';
+          
+          if (completedAt === todayStr) {
+            todayCount++;
+            weekCount++;
+          } else if (completedAt >= weekStr) {
+            weekCount++;
+          }
         });
       });
-      
-      // Calculate today/week based on root updatedAt
-      if (rootUpdated === todayStr) {
-        todayCount = totalCount;
-        weekCount = totalCount;
-      } else if (rootUpdated >= weekStr) {
-        weekCount = totalCount;
-      }
       
       container.innerHTML = `
         <div class="Collapsible-header open">
@@ -416,7 +415,10 @@
       const p = (cached.projects || []).find(x => x.key === key);
       if (!p) return;
 
-      const done = (p.done || []).map(t => itemRow('✅', t)).join('');
+      const done = (p.done || []).map(t => {
+        const taskName = typeof t === 'string' ? t : (t.task || '');
+        return itemRow('✅', taskName);
+      }).join('');
       const todo = (p.todo || []).map(t => itemRow('⬜', t)).join('');
       const blockers = (p.blockers || []).length
         ? (p.blockers || []).map(t => itemRow('🚫', t)).join('')
