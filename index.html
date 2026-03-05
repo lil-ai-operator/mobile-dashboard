@@ -8,26 +8,56 @@
   <meta http-equiv="Expires" content="0" />
   <title>Mission Control - Mobile</title>
   <style>
+    /* Animations */
+    @keyframes pulse-green {
+      0%, 100% { box-shadow: 0 0 5px #00FF88; }
+      50% { box-shadow: 0 0 20px #00FF88, 0 0 30px #00FF88; }
+    }
+    @keyframes float {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-5px); }
+    }
+    @keyframes glow-border {
+      0%, 100% { border-color: #00FF88; }
+      50% { border-color: #8B5CF6; }
+    }
+    @keyframes slide-in {
+      from { opacity: 0; transform: translateX(-20px); }
+      to { opacity: 1; transform: translateX(0); }
+    }
+    @keyframes fade-in {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+    @keyframes spin-slow {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+    
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: linear-gradient(135deg, #0D0D0D 0%, #1A1A2E 100%); color: #e2e8f0; padding: 16px; min-height: 100vh; }
     
     /* Header with avatar */
-    .mc-header { display: flex; align-items: center; gap: 12px; margin-bottom: 8px; }
-    .mc-avatar { width: 48px; height: 48px; border-radius: 50%; background: linear-gradient(135deg, #00FF88 0%, #8B5CF6 100%); display: flex; align-items: center; justify-content: center; font-size: 24px; flex-shrink: 0; overflow: hidden; }
-    .status-dot.green { background: #00FF88; }
+    .mc-header { display: flex; align-items: center; gap: 12px; margin-bottom: 8px; animation: slide-in 0.5s ease-out; }
+    .mc-avatar { width: 48px; height: 48px; border-radius: 50%; background: linear-gradient(135deg, #00FF88 0%, #8B5CF6 100%); display: flex; align-items: center; justify-content: center; font-size: 24px; flex-shrink: 0; overflow: hidden; animation: float 3s ease-in-out infinite; border: 2px solid #00FF88; }
+    .status-dot.green { background: #00FF88; animation: pulse-green 2s infinite; }
     .status-dot.yellow { background: #FFB347; }
     .status-dot.red { background: #FF6B6B; }
     .mc-title h1 { font-size: 20px; margin-bottom: 2px; color: #fff; }
     
     h1 { font-size: 20px; margin-bottom: 6px; color: #fff; }
-    .timestamp { font-size: 12px; color: #94a3b8; margin-bottom: 10px; }
+    .timestamp { font-size: 12px; color: #00FF88; margin-bottom: 10px; animation: fade-in 0.5s ease-out; }
     .hint { font-size: 12px; color: #64748b; margin-bottom: 14px; }
 
-    .section { background: #1E293B; border: 1px solid #334155; border-radius: 12px; padding: 12px; margin-bottom: 12px; }
+    .section { background: #1E293B; border: 1px solid #00FF88; border-radius: 12px; padding: 12px; margin-bottom: 12px; animation: fade-in 0.5s ease-out; animation-fill-mode: both; }
+    .section:nth-child(2) { animation-delay: 0.1s; }
+    .section:nth-child(3) { animation-delay: 0.2s; }
+    .section:nth-child(4) { animation-delay: 0.3s; }
     .section h2 { font-size: 13px; margin-bottom: 8px; color: #00FF88; }
     
     /* Collapsible sections */
-    .collapsible-header { display: flex; justify-content: space-between; align-items: center; padding: 12px 14px; background: linear-gradient(135deg, #1E293B 0%, #2D1B4E 100%); border: 1px solid #8B5CF6; border-radius: 10px; cursor: pointer; margin-bottom: 8px; }
+    .collapsible-header { display: flex; justify-content: space-between; align-items: center; padding: 12px 14px; background: linear-gradient(135deg, #1E293B 0%, #2D1B4E 100%); border: 1px solid #00FF88; border-radius: 10px; cursor: pointer; margin-bottom: 8px; transition: all 0.3s ease; animation: glow-border 3s infinite; }
+    .collapsible-header:hover { background: linear-gradient(135deg, #2D1B4E 0%, #3D2B5E 100%); transform: scale(1.02); }
     .collapsible-header:hover { background: linear-gradient(135deg, #2D1B4E 0%, #3D2B5E 100%); }
     .collapsible-title { font-size: 14px; font-weight: 600; color: #fff; }
     .collapsible-chevron { font-size: 12px; color: #94a3b8; }
@@ -42,8 +72,8 @@
     .mini-btn { border: 1px solid #475569; background: #0f172a; color: #cbd5e1; border-radius: 999px; padding: 5px 9px; font-size: 10px; cursor: pointer; }
     .mini-btn.active { border-color: #00FF88; color: #00FF88; }
     .queue-group { margin-top: 8px; }
-    .queue-group-title { font-size: 11px; color: #8B5CF6; letter-spacing: .4px; text-transform: uppercase; margin: 8px 0; }
-    .queue-header { display: flex; justify-content: space-between; align-items: center; padding: 10px 12px; background: linear-gradient(135deg, #1E293B 0%, #2D1B4E 100%); border: 1px solid #8B5CF6; border-radius: 10px; margin-bottom: 6px; cursor: pointer; }
+    .queue-group-title { font-size: 11px; color: #00FF88; letter-spacing: .4px; text-transform: uppercase; margin: 8px 0; }
+    .queue-header { display: flex; justify-content: space-between; align-items: center; padding: 10px 12px; background: linear-gradient(135deg, #1E293B 0%, #2D1B4E 100%); border: 1px solid #00FF88; border-radius: 10px; margin-bottom: 6px; cursor: pointer; transition: all 0.3s ease; }
     .queue-header:active { background: linear-gradient(135deg, #2D1B4E 0%, #4D3B6E 100%); }
     .queue-header.collapsed .queue-chevron { transform: rotate(-90deg); }
     .queue-items { display: none; padding: 0 4px; }
@@ -53,8 +83,8 @@
     .queue-badge { font-size: 10px; background: #00FF88; color: #0D0D0D; border-radius: 999px; padding: 2px 6px; font-weight: 700; }
     .queue-chevron { font-size: 12px; color: #64748b; transition: transform 0.2s; }
     .queue-chevron.open { transform: rotate(180deg); }
-    .queue-item { display: flex; justify-content: space-between; gap: 8px; align-items: center; border: 1px solid #8B5CF6; border-radius: 8px; padding: 8px; margin-bottom: 6px; background: #1E293B; }
-    .queue-item:hover { border-color: #00FF88; }
+    .queue-item { display: flex; justify-content: space-between; gap: 8px; align-items: center; border: 1px solid #00FF88; border-radius: 8px; padding: 8px; margin-bottom: 6px; background: #1E293B; transition: all 0.3s ease; animation: slide-in 0.3s ease-out; }
+    .queue-item:hover { border-color: #00FF88; box-shadow: 0 0 15px rgba(0,255,136,0.2); transform: translateX(5px); }
     .queue-item:last-child { margin-bottom: 0; }
     .queue-left { min-width: 0; }
     .queue-title { font-size: 12px; color: #fff; font-weight: 600; line-height: 1.3; }
@@ -65,8 +95,8 @@
     .pill.priority { background: #2D1B4E; border-color: #FF6B6B; color: #FF6B6B; }
     .queue-btn { border: 1px solid #00FF88; border-radius: 6px; background: #00FF88; color: #0D0D0D; text-decoration: none; font-size: 11px; padding: 6px 8px; white-space: nowrap; font-weight: 600; }
 
-    .project-card { background: linear-gradient(135deg, #1E293B 0%, #2D1B4E 100%); border: 1px solid #8B5CF6; border-radius: 12px; padding: 14px; margin-bottom: 12px; cursor: pointer; }
-    .project-card:hover { border-color: #00FF88; }
+    .project-card { background: linear-gradient(135deg, #1E293B 0%, #2D1B4E 100%); border: 2px solid #00FF88; border-radius: 12px; padding: 14px; margin-bottom: 12px; cursor: pointer; transition: all 0.3s ease; animation: fade-in 0.5s ease-out; animation-fill-mode: both; }
+    .project-card:hover { border-color: #00FF88; transform: scale(1.03); box-shadow: 0 0 20px rgba(0,255,136,0.3); }
     .project-header { display: flex; justify-content: space-between; gap: 8px; align-items: center; margin-bottom: 8px; }
     .project-name { font-size: 15px; font-weight: 700; color: #fff; }
     .status-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
