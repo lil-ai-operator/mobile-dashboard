@@ -120,6 +120,37 @@
     .done-h:hover { text-shadow: 0 0 10px #00FF88; }
     .todo-h { color: #FFB347; font-size: 14px; margin: 16px 0 8px; }
     .block-h { color: #FF6B6B; font-size: 14px; margin: 16px 0 8px; }
+    
+    /* Enhanced Modal Styles */
+    .project-progress { background: linear-gradient(135deg, #1E293B 0%, #2D1B4E 100%); border: 1px solid #00FF88; border-radius: 10px; padding: 14px; margin-bottom: 12px; }
+    .progress-label { font-size: 13px; font-weight: 600; color: #fff; margin-bottom: 8px; }
+    .progress-bar { height: 8px; background: #334155; border-radius: 4px; overflow: hidden; }
+    .progress-fill { height: 100%; border-radius: 4px; transition: width 0.5s ease; }
+    .progress-stats { font-size: 11px; color: #94a3b8; margin-top: 6px; }
+    
+    .project-stats { display: flex; gap: 12px; margin-bottom: 12px; }
+    .stat { flex: 1; text-align: center; background: #1E293B; border: 1px solid #334155; border-radius: 8px; padding: 10px; }
+    .stat-num { display: block; font-size: 20px; font-weight: 700; }
+    .stat-label { font-size: 10px; color: #64748b; text-transform: uppercase; }
+    
+    .project-section { margin-bottom: 12px; }
+    .section-label { font-size: 11px; color: #00FF88; text-transform: uppercase; margin-bottom: 6px; }
+    .links-container { display: flex; gap: 8px; flex-wrap: wrap; }
+    .project-link { background: linear-gradient(135deg, #00FF88 0%, #00CC6A 100%); color: #0D0D0D; padding: 8px 12px; border-radius: 6px; text-decoration: none; font-size: 12px; font-weight: 600; }
+    .project-link:hover { transform: scale(1.05); }
+    
+    .files-container { background: #1E293B; border: 1px solid #334155; border-radius: 8px; padding: 8px; max-height: 100px; overflow-y: auto; }
+    .project-file { font-size: 11px; color: #94a3b8; padding: 4px 0; border-bottom: 1px solid #334155; }
+    .project-file:last-child { border-bottom: none; }
+    
+    .task-section { margin-bottom: 10px; }
+    .task-header { background: linear-gradient(135deg, #1E293B 0%, #2D1B4E 100%); border: 1px solid #00FF88; border-radius: 8px; padding: 10px 12px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; font-size: 13px; font-weight: 600; }
+    .task-header .chevron { font-size: 10px; }
+    .task-list { background: #1E293B; border: 1px solid #334155; border-top: none; border-radius: 0 0 8px 8px; padding: 8px; max-height: 150px; overflow-y: auto; }
+    .task-item { font-size: 12px; color: #94a3b8; padding: 5px 0; border-bottom: 1px solid #334155; }
+    .task-item:last-child { border-bottom: none; }
+    .task-item.done { color: #00FF88; }
+    .task-item.blocker { color: #FF6B6B; }
     .item { font-size: 13px; border-bottom: 1px solid #334155; padding: 7px 0; display: flex; gap: 8px; background: rgba(0,255,136,0.03); border-radius: 6px; margin-bottom: 4px; transition: all 0.2s; }
     .item:hover { border-color: #00FF88; background: rgba(0,255,136,0.08); }
     .item:last-child { border-bottom: none; }
@@ -475,31 +506,140 @@
       const p = (cached.projects || []).find(x => x.key === key);
       if (!p) return;
 
-      const done = (p.done || []).map(t => {
-        const taskName = typeof t === 'string' ? t : (t.task || '');
-        return itemRow('✅', taskName);
-      }).join('');
-      const todo = (p.todo || []).map(t => itemRow('⬜', t)).join('');
-      const blockers = (p.blockers || []).length
-        ? (p.blockers || []).map(t => itemRow('🚫', t)).join('')
-        : itemRow('✅', 'No active blockers');
+      // Get project links based on key
+      const projectLinks = {
+        'autobookr_suite': [
+          {label: '🌐 Landing', url: 'https://lil-ai-operator.github.io/autobookr-landing/'},
+          {label: '📱 Dashboard', url: 'https://lil-ai-operator.github.io/mobile-dashboard/'},
+        ],
+        'mission_control': [
+          {label: '🌐 Dashboard', url: 'https://lil-ai-operator.github.io/mobile-dashboard/'},
+          {label: '📊 Data JSON', url: 'https://lil-ai-operator.github.io/mobile-dashboard/mission-control-data.json'},
+        ],
+        'system_backup': [
+          {label: '📁 Backups', url: 'https://drive.google.com/drive/folders/1X8K4'},
+        ],
+        'neuronet': [
+          {label: '📖 Docs', url: 'https://github.com/lil-ai-operator/NeuroNetAgentTeam/tree/main/docs'},
+        ]
+      };
+      
+      const links = projectLinks[p.key] || [];
+      const linksHtml = links.length ? links.map(l => `<a href="${l.url}" target="_blank" class="project-link">${l.label}</a>`).join('') : '<span style="color:#64748b;font-size:11px;">No links</span>';
+      
+      // Calculate progress
+      const doneCount = (p.done || []).length;
+      const todoCount = (p.todo || []).length;
+      const totalCount = doneCount + todoCount;
+      const pct = totalCount > 0 ? Math.round((doneCount / totalCount) * 100) : 0;
+      const color = pct > 75 ? '#00FF88' : pct >= 30 ? '#FFB347' : '#FF6B6B';
+      
+      // Get project files from done tasks that look like file paths
+      const filePatterns = [
+        'projects/', 'generated/', 'docs/', '.md', '.html', '.json', '.js', '.ts'
+      ];
+      const projectFiles = (p.done || []).filter(t => {
+        const task = typeof t === 'string' ? t : t.task || '';
+        return filePatterns.some(pat => task.includes(pat));
+      }).slice(0, 8).map(t => {
+        const task = typeof t === 'string' ? t : t.task || '';
+        const match = task.match(/(projects\/[^\s]+\.(md|html|json)|generated\/[^\s]+\.(md|json)|docs\/[^\s]+\.md)/);
+        return match ? match[0] : null;
+      }).filter(Boolean);
+      
+      const filesHtml = projectFiles.length 
+        ? projectFiles.map(f => `<div class="project-file">📄 ${f}</div>`).join('')
+        : '<span style="color:#64748b;font-size:11px;">No files tracked</span>';
+      
+      // Today's tasks
+      const today = new Date().toISOString().split('T')[0];
+      const weekAgo = new Date();
+      weekAgo.setDate(weekAgo.getDate() - 7);
+      const weekStr = weekAgo.toISOString().split('T')[0];
+      
+      let todayCount = 0, weekCount = 0;
+      (p.done || []).forEach(item => {
+        const completedAt = typeof item === 'object' ? (item.completedAt || '') : '';
+        if (completedAt === today) { todayCount++; weekCount++; }
+        else if (completedAt >= weekStr) weekCount++;
+      });
 
       document.getElementById('modal').innerHTML = `
         <div class="modal-head">
           <div class="modal-title">${p.name}</div>
           <button class="close-btn" onclick="closeModal()">&times;</button>
         </div>
-        <p class="summary">${p.summary || ''}</p>
-        <h3 class="done-h">Done</h3>
-        ${done || itemRow('•', 'None yet')}
-        <h3 class="todo-h">To Do</h3>
-        ${todo || itemRow('•', 'None')}
-        <h3 class="block-h">Blockers</h3>
-        ${blockers}
+        
+        <!-- Progress -->
+        <div class="project-progress">
+          <div class="progress-label">📊 Progress: ${pct}%</div>
+          <div class="progress-bar"><div class="progress-fill" style="width:${pct}%;background:${color}"></div></div>
+          <div class="progress-stats">${doneCount} done | ${todoCount} to go</div>
+        </div>
+        
+        <!-- Links -->
+        <div class="project-section">
+          <div class="section-label">🔗 Links</div>
+          <div class="links-container">${linksHtml}</div>
+        </div>
+        
+        <!-- Today's/Week Stats -->
+        <div class="project-stats">
+          <div class="stat"><span class="stat-num" style="color:#00FF88">${todayCount}</span><span class="stat-label">Today</span></div>
+          <div class="stat"><span class="stat-num" style="color:#FFB347">${weekCount}</span><span class="stat-label">This Week</span></div>
+          <div class="stat"><span class="stat-num">${doneCount}</span><span class="stat-label">Total</span></div>
+        </div>
+        
+        <!-- Files -->
+        <div class="project-section">
+          <div class="section-label">📁 Files</div>
+          <div class="files-container">${filesHtml}</div>
+        </div>
+        
+        <!-- Done -->
+        <div class="task-section">
+          <div class="task-header" onclick="toggleSection('done')">
+            <span>✅ Done (${doneCount})</span>
+            <span class="chevron">▼</span>
+          </div>
+          <div class="task-list" id="done-list">
+            ${(p.done || []).slice(0, 20).map(t => {
+              const task = typeof t === 'string' ? t : t.task || '';
+              return `<div class="task-item done">✓ ${task.substring(0, 60)}${task.length > 60 ? '...' : ''}</div>`;
+            }).join('') || '<div class="task-item">None yet</div>'}
+          </div>
+        </div>
+        
+        <!-- To Do -->
+        <div class="task-section">
+          <div class="task-header" onclick="toggleSection('todo')">
+            <span>⬜ To Do (${todoCount})</span>
+            <span class="chevron">▼</span>
+          </div>
+          <div class="task-list" id="todo-list">
+            ${(p.todo || []).map(t => `<div class="task-item">○ ${t.substring(0, 60)}${t.length > 60 ? '...' : ''}</div>`).join('') || '<div class="task-item">All done! 🎉</div>'}
+          </div>
+        </div>
+        
+        <!-- Blockers -->
+        <div class="task-section">
+          <div class="task-header" onclick="toggleSection('blockers')">
+            <span>🚫 Blockers (${(p.blockers || []).length})</span>
+            <span class="chevron">▼</span>
+          </div>
+          <div class="task-list" id="blockers-list">
+            ${(p.blockers || []).map(t => `<div class="task-item blocker">⚠ ${t}</div>`).join('') || '<div class="task-item done">No blockers! ✅</div>'}
+          </div>
+        </div>
       `;
 
       document.getElementById('overlay').classList.add('active');
       document.body.style.overflow = 'hidden';
+    }
+    
+    function toggleSection(id) {
+      const el = document.getElementById(id + '-list');
+      el.style.display = el.style.display === 'none' ? 'block' : 'none';
     }
 
     function closeModal(e) {
