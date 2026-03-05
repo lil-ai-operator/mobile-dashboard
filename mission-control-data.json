@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-03-05T11:12:34Z",
+  "updatedAt": "2026-03-05T11:16:12Z",
   "projects": [
     {
       "key": "autobookr_suite",
@@ -184,6 +184,14 @@
         {
           "task": "Add analytics dashboard with conversion funnels",
           "completedAt": "2026-03-05"
+        },
+        {
+          "task": "Implement waitlist for overcapacity periods",
+          "completedAt": "2026-03-05"
+        },
+        {
+          "task": "Add real trade photos for authentic UK feel + product mockups",
+          "completedAt": "2026-03-05"
         }
       ],
       "todo": [
@@ -191,9 +199,7 @@
         "5 paying users acquired",
         "Live URL stable",
         "Twilio + Stripe fully working in production",
-        "5 paying customers active",
-        "Implement waitlist for overcapacity periods",
-        "Add real trade photos for authentic UK feel + product mockups"
+        "5 paying customers active"
       ],
       "blockers": [
         "Manual live checkout/SMS verification"
@@ -488,11 +494,14 @@
         {
           "task": "generated/ops/.github/workflows/generated/ops/generated/ops/mobile-dashboard.html",
           "completedAt": "2026-02-28"
+        },
+        {
+          "task": "Add blocker summary and top 3 next actions",
+          "completedAt": "2026-03-05"
         }
       ],
       "todo": [
         "Ensure status fields map to real source files",
-        "Add blocker summary and top 3 next actions",
         "Wayne can open one link and understand status in <30 seconds",
         "Add dark/light mode toggle",
         "Add push notifications for urgent blockers"
@@ -540,18 +549,27 @@
         {
           "task": "Set weekly scheduled backup cron",
           "completedAt": "2026-03-05"
+        },
+        {
+          "task": "Verify restore from offsite backup",
+          "completedAt": "2026-03-05"
+        },
+        {
+          "task": "Add incremental backup option",
+          "completedAt": "2026-03-05"
+        },
+        {
+          "task": "Create backup status widget",
+          "completedAt": "2026-03-05"
         }
       ],
       "todo": [
         "B) GitHub private backup repo",
         "C) External drive",
-        "Verify restore from offsite backup",
         "Add backup success/failure log",
         "Add monthly restore test reminder",
         "Weekly automated offsite backups run reliably",
-        "Full restore tested and documented",
-        "Add incremental backup option",
-        "Create backup status widget"
+        "Full restore tested and documented"
       ],
       "blockers": []
     },
@@ -617,14 +635,17 @@
           "task": "projects/NeuroNetAgentTeam/docs/handoff-protocol.md",
           "completedAt": "2026-02-28"
         },
-        "projects/NeuroNetAgentTeam/docs/handoff-protocol.md"
+        "projects/NeuroNetAgentTeam/docs/handoff-protocol.md",
+        {
+          "task": "Create region health monitoring",
+          "completedAt": "2026-03-05"
+        }
       ],
       "todo": [
         "Approve final region architecture",
         "Test 2 full workflows using region handoffs",
         "Regions are active with clear model routing and handoff rules",
-        "Add usage metrics per region",
-        "Create region health monitoring"
+        "Add usage metrics per region"
       ],
       "blockers": []
     },
