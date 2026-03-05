@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-03-05T10:42:12Z",
+  "updatedAt": "2026-03-05T10:48:02Z",
   "projects": [
     {
       "key": "autobookr_suite",
@@ -162,10 +162,21 @@
         {
           "task": "projects/AutoBookr/RUNBOOK.md",
           "completedAt": "2026-02-28"
+        },
+        {
+          "task": "Publish live URL and quick-start guide",
+          "completedAt": "2026-03-05"
+        },
+        {
+          "task": "Set up brand colour variables in landing CSS",
+          "completedAt": "2026-03-05"
+        },
+        {
+          "task": "Apply brand typography (Inter font) across site",
+          "completedAt": "2026-03-05"
         }
       ],
       "todo": [
-        "Publish live URL and quick-start guide",
         "First real pilot user onboarded",
         "5 paying users acquired",
         "Live URL stable",
@@ -173,9 +184,7 @@
         "5 paying customers active",
         "Add analytics dashboard with conversion funnels",
         "Implement waitlist for overcapacity periods",
-        "Add real trade photos for authentic UK feel + product mockups",
-        "Set up brand colour variables in landing CSS",
-        "Apply brand typography (Inter font) across site"
+        "Add real trade photos for authentic UK feel + product mockups"
       ],
       "blockers": [
         "Manual live checkout/SMS verification"
