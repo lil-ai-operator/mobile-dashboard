@@ -224,20 +224,24 @@
       weekAgo.setDate(weekAgo.getDate() - 7);
       const weekStr = weekAgo.toISOString().split('T')[0];
       
+      // Use root updatedAt for date logic
+      const rootUpdated = (data.updatedAt || '').split('T')[0];
+      
       let todayCount = 0, weekCount = 0, totalCount = 0;
       
       (data.projects || []).forEach(p => {
-        const projUpdated = (p.updatedAt || p.updatedAt || '').split('T')[0];
         (p.done || []).forEach(task => {
           totalCount++;
-          if (projUpdated === todayStr) {
-            todayCount++;
-            weekCount++;
-          } else if (projUpdated >= weekStr) {
-            weekCount++;
-          }
         });
       });
+      
+      // Calculate today/week based on root updatedAt
+      if (rootUpdated === todayStr) {
+        todayCount = totalCount;
+        weekCount = totalCount;
+      } else if (rootUpdated >= weekStr) {
+        weekCount = totalCount;
+      }
       
       container.innerHTML = `
         <div class="Collapsible-header open">
