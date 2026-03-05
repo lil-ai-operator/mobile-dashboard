@@ -218,14 +218,24 @@
 
     function renderTasksCompleted(data) {
       const container = document.getElementById('tasksCompleted');
-      const today = new Date().toISOString().split('T')[0];
-      const todayStr = '2026-03-05';
+      const today = new Date();
+      const todayStr = today.toISOString().split('T')[0];
+      const weekAgo = new Date(today);
+      weekAgo.setDate(weekAgo.getDate() - 7);
+      const weekStr = weekAgo.toISOString().split('T')[0];
       
       let todayCount = 0, weekCount = 0, totalCount = 0;
       
       (data.projects || []).forEach(p => {
+        const projUpdated = (p.updatedAt || p.updatedAt || '').split('T')[0];
         (p.done || []).forEach(task => {
           totalCount++;
+          if (projUpdated === todayStr) {
+            todayCount++;
+            weekCount++;
+          } else if (projUpdated >= weekStr) {
+            weekCount++;
+          }
         });
       });
       
