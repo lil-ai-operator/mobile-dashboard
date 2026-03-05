@@ -95,7 +95,7 @@
     .pill.priority { background: #2D1B4E; border-color: #FF6B6B; color: #FF6B6B; }
     .queue-btn { border: 1px solid #00FF88; border-radius: 6px; background: #00FF88; color: #0D0D0D; text-decoration: none; font-size: 11px; padding: 6px 8px; white-space: nowrap; font-weight: 600; }
 
-    .project-card { background: linear-gradient(135deg, #1E293B 0%, #2D1B4E 100%); border: 2px solid #00FF88; border-radius: 12px; padding: 14px; margin-bottom: 12px; cursor: pointer; transition: all 0.3s ease; animation: fade-in 0.5s ease-out; animation-fill-mode: both; }
+    .project-card { background: linear-gradient(135deg, #1E293B 0%, #2D1B4E 100%); border: 2px solid #00FF88; border-radius: 12px; padding: 14px; margin-bottom: 12px; cursor: pointer; transition: all 0.3s ease; }
     .project-card:hover { border-color: #00FF88; transform: scale(1.03); box-shadow: 0 0 20px rgba(0,255,136,0.3); }
     .project-header { display: flex; justify-content: space-between; gap: 8px; align-items: center; margin-bottom: 8px; }
     .project-name { font-size: 15px; font-weight: 700; color: #fff; }
@@ -551,21 +551,17 @@
       const pct = totalCount > 0 ? Math.round((doneCount / totalCount) * 100) : 0;
       const color = pct > 75 ? '#00FF88' : pct >= 30 ? '#FFB347' : '#FF6B6B';
       
-      // Get project files from done tasks that look like file paths
-      const filePatterns = [
-        'projects/', 'generated/', 'docs/', '.md', '.html', '.json', '.js', '.ts'
-      ];
-      const projectFiles = (p.done || []).filter(t => {
-        const task = typeof t === 'string' ? t : t.task || '';
-        return filePatterns.some(pat => task.includes(pat));
-      }).slice(0, 8).map(t => {
-        const task = typeof t === 'string' ? t : t.task || '';
-        const match = task.match(/(projects\/[^\s]+\.(md|html|json)|generated\/[^\s]+\.(md|json)|docs\/[^\s]+\.md)/);
-        return match ? match[0] : null;
-      }).filter(Boolean);
+      // Get project files based on project key
+      const projectFilesMap = {
+        'autobookr_suite': ['brand-style-guide.md', 'brand-board.html', 'brand-compare.html', 'competitor-report.md', 'PLAN.md', 'RUNBOOK.md', 'index.html'],
+        'mission_control': ['mission-control-data.json', 'index.html', 'generated/ops/mission-control.md'],
+        'system_backup': ['scripts/backup*.sh', 'README.md'],
+        'neuronet': ['handoff-protocol.md', 'region-*.md', 'docs/'],
+      };
       
-      const filesHtml = projectFiles.length 
-        ? projectFiles.map(f => `<div class="project-file">📄 ${f}</div>`).join('')
+      const knownFiles = projectFilesMap[p.key] || [];
+      const filesHtml = knownFiles.length 
+        ? knownFiles.map(f => `<div class="project-file">📄 ${f}</div>`).join('')
         : '<span style="color:#64748b;font-size:11px;">No files tracked</span>';
       
       // Today's tasks
