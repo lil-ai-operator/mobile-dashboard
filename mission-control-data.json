@@ -703,6 +703,14 @@
         {
           "task": "Create Canva design prompts (10 UK-themed)",
           "completedAt": "2026-03-06"
+        },
+        {
+          "task": "Create first 3 design concepts (AI-ready prompts)",
+          "completedAt": "2026-03-06"
+        },
+        {
+          "task": "Create step-by-step Etsy shop setup guide",
+          "completedAt": "2026-03-06"
         }
       ],
       "todo": [
@@ -715,10 +723,10 @@
       "blockers": []
     },
     {
-      "key": "clare_reiki",
-      "name": "✨ Clare Reiki (Distance Healing)",
+      "key": "divineflow",
+      "name": "✨ DivineFlow (Distance Healing)",
       "status": "green",
-      "summary": "Distance healing with full automation. Calendly guide + website copy ready.",
+      "summary": "Clare's healing business. Brand: Moonlit Lavender + Mystic Purple. Website ready.",
       "done": [
         {
           "task": "Research automated booking systems (Flowdara, Calendly)",
@@ -739,15 +747,25 @@
         {
           "task": "Create soft launch email sequence (3 emails)",
           "completedAt": "2026-03-06"
+        },
+        {
+          "task": "Create brand identity (logo, colors, typography)",
+          "completedAt": "2026-03-06"
+        },
+        {
+          "task": "Create website mockup with brand colors",
+          "completedAt": "2026-03-06"
         }
       ],
       "todo": [
         "Create Calendly account",
         "Set up event types (First £55, Follow-up £40, Mini £20)",
         "Connect Stripe payment",
-        "Build 1-page site on Carrd",
+        "Connect booking to DivineFlow site",
         "Soft launch: free sessions to friends"
       ],
+      "blockers": []
+    }
       "blockers": []
     }
   ],
