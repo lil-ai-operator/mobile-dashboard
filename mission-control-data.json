@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-03-06T06:47:39Z",
+  "updatedAt": "2026-03-06T06:50:18Z",
   "projects": [
     {
       "key": "autobookr_suite",
@@ -677,8 +677,8 @@
     {
       "key": "etsy_business",
       "name": "🛍️ Etsy POD Store",
-      "status": "yellow",
-      "summary": "Print-on-demand via Printify - automated fulfillment. Model: create designs, Printify handles production + shipping.",
+      "status": "green",
+      "summary": "Print-on-demand via Printify. Docs: plan, TODO, listing templates ready.",
       "done": [
         {
           "task": "Research winning POD categories for UK market",
@@ -687,12 +687,20 @@
         {
           "task": "Create project plan with automation stack",
           "completedAt": "2026-03-06"
+        },
+        {
+          "task": "Create Etsy TODO checklist + design ideas",
+          "completedAt": "2026-03-06"
+        },
+        {
+          "task": "Create SEO listing templates (t-shirt, mug, tote)",
+          "completedAt": "2026-03-06"
         }
       ],
       "todo": [
-        "Open Etsy shop (verify ID)",
+        "Create Etsy seller account",
         "Sign up Printify + connect Etsy",
-        "Create first 5 designs (Canva free)",
+        "Create first 5 designs (Canva)",
         "Upload + price products",
         "Launch with social push"
       ],
@@ -702,7 +710,7 @@
       "key": "clare_reiki",
       "name": "✨ Clare Reiki (Distance Healing)",
       "status": "green",
-      "summary": "Automated wellness: distance healing sessions. Calendly setup guide created with event types, pricing, payment integration.",
+      "summary": "Distance healing with full automation. Calendly guide + website copy ready.",
       "done": [
         {
           "task": "Research automated booking systems (Flowdara, Calendly)",
@@ -715,14 +723,17 @@
         {
           "task": "Create detailed Calendly setup guide",
           "completedAt": "2026-03-06"
+        },
+        {
+          "task": "Create website copy (hero, about, services, testimonials)",
+          "completedAt": "2026-03-06"
         }
       ],
       "todo": [
         "Create Calendly account",
-        "Set up event types (First £60-80, Follow-up £45-60, Mini £25-35)",
+        "Set up event types (First £55, Follow-up £40, Mini £20)",
         "Connect Stripe payment",
-        "Customize confirmation email",
-        "Build 1-page site (Carrd or Insta)",
+        "Build 1-page site on Carrd",
         "Soft launch: free sessions to friends"
       ],
       "blockers": []
