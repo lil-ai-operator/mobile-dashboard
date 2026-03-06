@@ -734,7 +734,7 @@
       "key": "divineflow",
       "name": "✨ DivineFlow (Distance Healing)",
       "status": "green",
-      "summary": "Clare's healing business. Brand: Moonlit Lavender + Mystic Purple. Website ready.",
+      "summary": "Clare's healing business. Brand: Moonlit Lavender + Mystic Purple. Website: https://lil-ai-operator.github.io/divineflow/",
       "done": [
         {
           "task": "Research automated booking systems (Flowdara, Calendly)",
@@ -783,6 +783,21 @@
         "Connect Stripe payment",
         "Connect booking to DivineFlow site",
         "Soft launch: free sessions to friends"
+      ],
+      "blockers": []
+    },
+    {
+      "key": "aavegotchi",
+      "name": "👻 Aavegotchi (Web3 Gaming)",
+      "status": "yellow",
+      "summary": "Web3 gaming NFTs - GHST token, realm farming, gotchi trading.",
+      "done": [],
+      "todo": [
+        "Research Aavegotchi game mechanics",
+        "Understand GHST tokenomics",
+        "Set up compatible wallet (MetaMask)",
+        "Learn realm/land gameplay",
+        "Research gotchi traits and rarity"
       ],
       "blockers": []
     }
