@@ -695,6 +695,10 @@
         {
           "task": "Create SEO listing templates (t-shirt, mug, tote)",
           "completedAt": "2026-03-06"
+        },
+        {
+          "task": "Create Canva design prompts (10 UK-themed)",
+          "completedAt": "2026-03-06"
         }
       ],
       "todo": [
@@ -726,6 +730,10 @@
         },
         {
           "task": "Create website copy (hero, about, services, testimonials)",
+          "completedAt": "2026-03-06"
+        },
+        {
+          "task": "Create soft launch email sequence (3 emails)",
           "completedAt": "2026-03-06"
         }
       ],
