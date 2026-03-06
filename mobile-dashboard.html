@@ -219,27 +219,58 @@
     function renderTasksCompleted(data) {
       const container = document.getElementById('tasksCompleted');
       const today = new Date().toISOString().split('T')[0];
-      const todayStr = '2026-03-05';
+      const weekAgo = new Date();
+      weekAgo.setDate(weekAgo.getDate() - 7);
+      const weekAgoStr = weekAgo.toISOString().split('T')[0];
       
-      let todayCount = 0, weekCount = 0, totalCount = 0;
+      const todayTasks = [];
+      const weekTasks = [];
       
       (data.projects || []).forEach(p => {
         (p.done || []).forEach(task => {
-          totalCount++;
+          const date = task.completedAt || '';
+          if (date === today) {
+            todayTasks.push({ project: p.name, task: task.task });
+          } else if (date >= weekAgoStr) {
+            weekTasks.push({ project: p.name, task: task.task });
+          }
         });
       });
       
-      container.innerHTML = `
+      let html = `
         <div class="Collapsible-header open">
           <span class="Collapsible-title">✅ Completed</span>
-          <span class="Collapsible-chevron" style="color: #22c55e;">${totalCount} total</span>
+          <span class="Collapsible-chevron" style="color: #22c55e;">${todayTasks.length + weekTasks.length} recent</span>
         </div>
         <div class="Collapsible-content" style="display: block;">
-          <div class="qa-item" style="color: #94a3b8; font-size: 12px;">
-            Today's: ${todayCount} | This week: ${weekCount} | All time: ${totalCount}
-          </div>
-        </div>
       `;
+      
+      if (todayTasks.length > 0) {
+        html += `<div style="color: #4ade80; font-size: 11px; margin-bottom: 4px; font-weight: 600;">📅 TODAY (${todayTasks.length})</div>`;
+        todayTasks.forEach(t => {
+          html += `<div class="qa-item" style="padding: 4px 0; border-bottom: 1px solid #1e293b;">
+            <span style="color: #64748b; font-size: 10px;">${t.project.replace(/[^A-Z]/g, '').slice(0,2)}</span>
+            <span style="color: #e2e8f0; font-size: 11px;">${t.task.length > 50 ? t.task.slice(0,50) + '...' : t.task}</span>
+          </div>`;
+        });
+      }
+      
+      if (weekTasks.length > 0) {
+        html += `<div style="color: #60a5fa; font-size: 11px; margin: 8px 0 4px; font-weight: 600;">📆 THIS WEEK (${weekTasks.length})</div>`;
+        weekTasks.forEach(t => {
+          html += `<div class="qa-item" style="padding: 4px 0; border-bottom: 1px solid #1e293b;">
+            <span style="color: #64748b; font-size: 10px;">${t.project.replace(/[^A-Z]/g, '').slice(0,2)}</span>
+            <span style="color: #94a3b8; font-size: 11px;">${t.task.length > 50 ? t.task.slice(0,50) + '...' : t.task}</span>
+          </div>`;
+        });
+      }
+      
+      if (todayTasks.length === 0 && weekTasks.length === 0) {
+        html += `<div class="qa-item" style="color: #64748b; font-size: 12px;">No tasks completed recently</div>`;
+      }
+      
+      html += `</div>`;
+      container.innerHTML = html;
     }
 
     function renderQuickActions(data) {
