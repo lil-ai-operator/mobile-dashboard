@@ -724,14 +724,28 @@
 
     async function loadData(manual) {
       try {
-        // Load from GitHub Pages
-        const url = `https://lil-ai-operator.github.io/mobile-dashboard/mission-control-data.json?t=${Date.now()}`;
-        const res = await fetch(url, { cache: 'no-store' });
-        if (!res.ok) throw new Error('Failed to load dashboard data');
+        // Try GitHub Pages first
+        let url = `https://lil-ai-operator.github.io/mobile-dashboard/mission-control-data.json`;
+        
+        const res = await fetch(url);
+        if (!res.ok) throw new Error('Failed');
         const data = await res.json();
         render(data);
+        
+        // Also try raw GitHub as backup
+        fetch('https://raw.githubusercontent.com/lil-ai-operator/mobile-dashboard/main/mission-control-data.json')
+          .then(r => r.json())
+          .then(backupData => { if (backupData.updatedAt > data.updatedAt) render(backupData); })
+          .catch(() => {});
       } catch (err) {
-        if (manual) alert('Could not refresh dashboard data right now.');
+        // Try backup URL
+        try {
+          const backup = await fetch('https://raw.githubusercontent.com/lil-ai-operator/mobile-dashboard/main/mission-control-data.json');
+          const data = await backup.json();
+          render(data);
+        } catch (e) {
+          if (manual) alert('Could not load dashboard. Please try again.');
+        }
       }
     }
 
