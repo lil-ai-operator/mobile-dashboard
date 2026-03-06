@@ -342,24 +342,8 @@
           </div>`;
       }).join('');
 
-      const isFilesOpen = localStorage.getItem('mc-files-open') === 'true';
-      container.innerHTML = `
-        <div class="collapsible-header ${isFilesOpen ? 'open' : ''}" onclick="toggleSection('files', this)">
-          <span class="collapsible-title">📂 Files Hub</span>
-          <span class="collapsible-chevron">${isFilesOpen ? '▼' : '▶'}</span>
-        </div>
-        <div class="collapsible-content" style="display: ${isFilesOpen ? 'block' : 'none'}">
-          <div class="queue-top">
-            <div class="queue-meta">${unreadCount} item(s) new or changed</div>
-            <div class="queue-controls">
-              <button class="mini-btn ${prefs.newOnly ? 'active' : ''}" onclick="toggleNewOnly()">${prefs.newOnly ? 'Showing: NEW' : 'Filter: All'}</button>
-              <button class="mini-btn" onclick="toggleSort()">Sort: ${prefs.sort === 'newest' ? 'Newest' : 'A-Z'}</button>
-              <button class="mini-btn" onclick="markAllRead()">Mark all read</button>
-            </div>
-          </div>
-          ${rows || '<div class="qa-item">No files match current filter.</div>'}
-        </div>
-      `;
+      // Removed Files Hub section - files now live in project folders
+      container.innerHTML = rows;
     }
 
     function render(data) {
