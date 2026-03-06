@@ -701,8 +701,8 @@
     {
       "key": "clare_reiki",
       "name": "✨ Clare Reiki (Distance Healing)",
-      "status": "yellow",
-      "summary": "Automated wellness: distance healing sessions via video. Full booking automation with Calendly + auto Zoom links.",
+      "status": "green",
+      "summary": "Automated wellness: distance healing sessions. Calendly setup guide created with event types, pricing, payment integration.",
       "done": [
         {
           "task": "Research automated booking systems (Flowdara, Calendly)",
@@ -711,14 +711,19 @@
         {
           "task": "Create project plan with automation workflow",
           "completedAt": "2026-03-06"
+        },
+        {
+          "task": "Create detailed Calendly setup guide",
+          "completedAt": "2026-03-06"
         }
       ],
       "todo": [
-        "Set up Calendly with availability",
-        "Create Stripe payment link",
+        "Create Calendly account",
+        "Set up event types (First £60-80, Follow-up £45-60, Mini £25-35)",
+        "Connect Stripe payment",
+        "Customize confirmation email",
         "Build 1-page site (Carrd or Insta)",
-        "Soft launch: free/mini sessions to friends",
-        "Go live with paid sessions"
+        "Soft launch: free sessions to friends"
       ],
       "blockers": []
     }
