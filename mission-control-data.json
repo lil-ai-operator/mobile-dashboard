@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-03-06T06:53:36Z",
+  "updatedAt": "2026-03-06T06:56:31Z",
   "projects": [
     {
       "key": "autobookr_suite",
@@ -13,6 +13,10 @@
         },
         {
           "task": "Add 'Who This Is For / Not For' qualifier sections",
+          "completedAt": "2026-03-06"
+        },
+        {
+          "task": "Create pilot customer outreach plan (trades, messages, follow-up)",
           "completedAt": "2026-03-06"
         },
         {
