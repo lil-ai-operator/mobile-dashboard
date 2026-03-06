@@ -245,7 +245,7 @@
       const state = getReadState();
       state[id] = new Date().toISOString();
       setReadState(state);
-      if (cached) renderReadQueue(cached);
+      // renderReadQueue removed
     }
 
     function markAllRead() {
@@ -254,21 +254,21 @@
       const now = new Date().toISOString();
       (cached.readQueue || []).forEach(item => { state[item.id] = now; });
       setReadState(state);
-      renderReadQueue(cached);
+      // renderReadQueue removed
     }
 
     function toggleNewOnly() {
       const prefs = getReadPrefs();
       prefs.newOnly = !prefs.newOnly;
       setReadPrefs(prefs);
-      if (cached) renderReadQueue(cached);
+      // renderReadQueue removed
     }
 
     function toggleSort() {
       const prefs = getReadPrefs();
       prefs.sort = prefs.sort === 'newest' ? 'alpha' : 'newest';
       setReadPrefs(prefs);
-      if (cached) renderReadQueue(cached);
+      // renderReadQueue removed
     }
 
     function toggleGroup(id) {
