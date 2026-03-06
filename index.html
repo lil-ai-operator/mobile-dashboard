@@ -691,7 +691,7 @@
 
     async function loadData(manual) {
       try {
-        // Use raw.githack.com for proper HTML rendering + live JSON
+        // Load from GitHub Pages
         const url = `https://lil-ai-operator.github.io/mobile-dashboard/mission-control-data.json?t=${Date.now()}`;
         const res = await fetch(url, { cache: 'no-store' });
         if (!res.ok) throw new Error('Failed to load dashboard data');
