@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-03-06T07:16:13Z",
+  "updatedAt": "2026-03-06T07:20:24Z",
   "projects": [
     {
       "key": "autobookr_suite",
@@ -17,6 +17,14 @@
         },
         {
           "task": "Create pilot customer outreach plan (trades, messages, follow-up)",
+          "completedAt": "2026-03-06"
+        },
+        {
+          "task": "Create sales script for pilot calls",
+          "completedAt": "2026-03-06"
+        },
+        {
+          "task": "Create FAQs document",
           "completedAt": "2026-03-06"
         },
         {
@@ -754,6 +762,18 @@
         },
         {
           "task": "Create website mockup with brand colors",
+          "completedAt": "2026-03-06"
+        },
+        {
+          "task": "Create social media strategy",
+          "completedAt": "2026-03-06"
+        },
+        {
+          "task": "Create launch announcement posts",
+          "completedAt": "2026-03-06"
+        },
+        {
+          "task": "Create testimonial prompts",
           "completedAt": "2026-03-06"
         }
       ],
