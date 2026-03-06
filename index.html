@@ -534,7 +534,15 @@
         ],
         'neuronet': [
           {label: '📖 Docs', url: 'https://github.com/lil-ai-operator/NeuroNetAgentTeam/tree/main/docs'},
-        ]
+        ],
+        'divineflow': [
+          {label: '🌐 Website', url: 'https://lil-ai-operator.github.io/divineflow/'},
+        ],
+        'etsy_business': [
+          {label: '🎨 Designs', url: 'https://canva.com'},
+        ],
+        'aavegotchi_bot': [],
+        'aavegotchi': [],
       };
       
       const links = projectLinks[p.key] || [];
@@ -573,11 +581,36 @@
       const weekStr = weekAgo.toISOString().split('T')[0];
       
       let todayCount = 0, weekCount = 0;
+      let todayTasks = [], weekTasks = [];
       (p.done || []).forEach(item => {
+        const task = typeof item === 'object' ? item.task : item;
         const completedAt = typeof item === 'object' ? (item.completedAt || '') : '';
-        if (completedAt === today) { todayCount++; weekCount++; }
-        else if (completedAt >= weekStr) weekCount++;
+        if (completedAt === today) { 
+          todayCount++; 
+          weekCount++;
+          todayTasks.push(task);
+        }
+        else if (completedAt >= weekStr) { 
+          weekCount++;
+          weekTasks.push(task);
+        }
       });
+
+      // Format today's tasks for display
+      const todayTasksHtml = todayTasks.length > 0 
+        ? `<div style="margin-top:6px;max-height:80px;overflow-y:auto;">
+            ${todayTasks.slice(0,5).map(t => `<div class="task-item done" style="font-size:10px;">✓ ${t.substring(0,40)}${t.length>40?'...':''}</div>`).join('')}
+            ${todayTasks.length > 5 ? `<div style="font-size:9px;color:#64748b;">+${todayTasks.length-5} more</div>` : ''}
+           </div>`
+        : '';
+        
+      // Format this week's tasks for display  
+      const weekTasksHtml = weekTasks.length > 0
+        ? `<div style="margin-top:6px;max-height:80px;overflow-y:auto;">
+            ${weekTasks.slice(0,5).map(t => `<div class="task-item done" style="font-size:10px;color:#FFB347;">✓ ${t.substring(0,40)}${t.length>40?'...':''}</div>`).join('')}
+            ${weekTasks.length > 5 ? `<div style="font-size:9px;color:#64748b;">+${weekTasks.length-5} more</div>` : ''}
+           </div>`
+        : '';
 
       document.getElementById('modal').innerHTML = `
         <div class="modal-head">
@@ -592,18 +625,18 @@
           <div class="progress-stats">${doneCount} done | ${todoCount} to go</div>
         </div>
         
-        <!-- Links -->
-        <div class="project-section">
-          <div class="section-label">🔗 Links</div>
-          <div class="links-container">${linksHtml}</div>
-        </div>
-        
-        <!-- Stats -->
+        <!-- Stats with task names -->
         <div class="project-stats" style="animation: fadeUp 0.4s ease-out 0.1s both;">
           <div class="stat"><span class="stat-num" style="color:#00FF88">${todayCount}</span><span class="stat-label">Today</span></div>
           <div class="stat"><span class="stat-num" style="color:#FFB347">${weekCount}</span><span class="stat-label">This Week</span></div>
           <div class="stat"><span class="stat-num">${doneCount}</span><span class="stat-label">Total</span></div>
         </div>
+        
+        <!-- Today's tasks inline -->
+        ${todayTasksHtml}
+        
+        <!-- This week's tasks inline -->
+        ${weekTasksHtml}
         
         <!-- Links -->
         <div class="project-section" style="animation: fadeUp 0.4s ease-out 0.15s both;">
