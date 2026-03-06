@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-03-05T17:46:26Z",
+  "updatedAt": "2026-03-06T06:35:00Z",
   "projects": [
     {
       "key": "autobookr_suite",
@@ -7,6 +7,14 @@
       "status": "green",
       "summary": "Logical merge: app backend + public landing tracked together.",
       "done": [
+        {
+          "task": "Add proof block (case studies with UK trades examples)",
+          "completedAt": "2026-03-06"
+        },
+        {
+          "task": "Add 'Who This Is For / Not For' qualifier sections",
+          "completedAt": "2026-03-06"
+        },
         {
           "task": "Define product offer and pricing",
           "completedAt": "2026-02-28"
@@ -668,37 +676,51 @@
     },
     {
       "key": "etsy_business",
-      "name": "🛍️ Etsy Business",
-      "status": "red",
-      "summary": "Idea pipeline project (planning stage).",
-      "done": [],
-      "todo": [
-        "Product niche to target first",
-        "Physical vs digital product strategy",
-        "Fulfillment model and margin targets",
-        "Research top-performing niches in UK market",
-        "Analyze competitor pricing strategies"
+      "name": "🛍️ Etsy POD Store",
+      "status": "yellow",
+      "summary": "Print-on-demand via Printify - automated fulfillment. Model: create designs, Printify handles production + shipping.",
+      "done": [
+        {
+          "task": "Research winning POD categories for UK market",
+          "completedAt": "2026-03-06"
+        },
+        {
+          "task": "Create project plan with automation stack",
+          "completedAt": "2026-03-06"
+        }
       ],
-      "blockers": [
-        "Niche + product direction needed"
-      ]
+      "todo": [
+        "Open Etsy shop (verify ID)",
+        "Sign up Printify + connect Etsy",
+        "Create first 5 designs (Canva free)",
+        "Upload + price products",
+        "Launch with social push"
+      ],
+      "blockers": []
     },
     {
       "key": "clare_reiki",
-      "name": "✨ Clare Reiki/Spiritual Business",
-      "status": "red",
-      "summary": "Idea pipeline project (planning stage).",
-      "done": [],
-      "todo": [
-        "Exact service menu + pricing",
-        "In-person vs remote sessions",
-        "Brand name + positioning style",
-        "Research competitor positioning in UK",
-        "Draft service menu with clear pricing"
+      "name": "✨ Clare Reiki (Distance Healing)",
+      "status": "yellow",
+      "summary": "Automated wellness: distance healing sessions via video. Full booking automation with Calendly + auto Zoom links.",
+      "done": [
+        {
+          "task": "Research automated booking systems (Flowdara, Calendly)",
+          "completedAt": "2026-03-06"
+        },
+        {
+          "task": "Create project plan with automation workflow",
+          "completedAt": "2026-03-06"
+        }
       ],
-      "blockers": [
-        "Service/package preferences needed"
-      ]
+      "todo": [
+        "Set up Calendly with availability",
+        "Create Stripe payment link",
+        "Build 1-page site (Carrd or Insta)",
+        "Soft launch: free/mini sessions to friends",
+        "Go live with paid sessions"
+      ],
+      "blockers": []
     }
   ],
   "readQueue": [
