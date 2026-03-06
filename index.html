@@ -486,7 +486,7 @@
       updatedEl.textContent = `Updated: ${dt.toLocaleString()}`;
 
       renderTasksCompleted(data);
-      renderReadQueue(data);
+      // renderReadQueue removed - files now in project folders
 
       const list = document.getElementById('projectList');
       list.innerHTML = '';
