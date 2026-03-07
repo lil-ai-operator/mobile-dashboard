@@ -756,7 +756,15 @@
       
       // Get project files based on project key
       const projectFilesMap = {
-        'autobookr_suite': ['brand-board.html', 'brand-compare.html', 'brand-style-guide.md'],
+        'autobookr_suite': [
+          'index.html',
+          'pricing.html',
+          'how-it-works.html',
+          'faq.html',
+          'brand-board.html',
+          'brand-compare.html',
+          'brand-style-guide.md'
+        ],
         'mission_control': ['index.html', 'mobile-dashboard.html'],
         'system_backup': [],
         'neuronet': [],
@@ -769,10 +777,13 @@
       const filesHtml = knownFiles.length 
         ? knownFiles.map(f => {
           let url;
-          if (f.endsWith('.html')) {
+          // AutoBookr landing files
+          if (f === 'brand-board.html' || f === 'brand-compare.html' || f === 'brand-style-guide.md' || f === 'index.html' || f === 'pricing.html' || f === 'faq.html' || f === 'how-it-works.html') {
+            url = 'https://lil-ai-operator.github.io/autobookr-landing/' + f;
+          // Dashboard files
+          } else if (f === 'index.html' || f === 'mobile-dashboard.html' || f === 'mission-control-data.json') {
             url = 'https://lil-ai-operator.github.io/mobile-dashboard/' + f;
-          } else if (f.endsWith('.json')) {
-            url = 'https://lil-ai-operator.github.io/mobile-dashboard/' + f;
+          // Default to raw github
           } else {
             url = 'https://raw.githubusercontent.com/lil-ai-operator/mobile-dashboard/main/' + f;
           }
