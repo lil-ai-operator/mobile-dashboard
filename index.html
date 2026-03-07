@@ -766,8 +766,8 @@
   </div>
 
   <script>
-    // Embedded data
-    const cachedData = {"updatedAt": "2026-03-07T22:00:00Z", "projects": [{"key": "autobookr_suite", "name": "📞 AutoBookr Suite", "status": "green", "summary": "AI receptionist for tradies - landing + app ready.", "priority": "p0", "done": [{"task": "Define pricing tiers", "done": true}, {"task": "Build landing page", "done": true}, {"task": "Connect Stripe", "done": true}, {"task": "Connect Twilio", "done": true}], "todo": ["Get first customer", "Scale to 5 users", "Add more features"], "blockers": ["Need live test"]}, {"key": "mission_control", "name": "🚀 Mission Control", "status": "green", "summary": "Mobile dashboard for project tracking.", "priority": "p1", "done": [{"task": "Build dashboard", "done": true}, {"task": "Add files section", "done": true}, {"task": "Deploy to GitHub", "done": true}], "todo": ["Add analytics", "Add search", "Add themes"], "blockers": []}, {"key": "system_backup", "name": "🛟 System Backup", "status": "yellow", "summary": "Local + offsite backup setup.", "priority": "p1", "done": [{"task": "Local backup script", "done": true}, {"task": "Test restore", "done": true}], "todo": ["Setup Google Drive", "Schedule cron"], "blockers": ["OAuth pending"]}, {"key": "neuronet", "name": "🧠 NeuroNet", "status": "green", "summary": "Agent team with region routing.", "priority": "p2", "done": [{"task": "Define regions", "done": true}, {"task": "Set up handoffs", "done": true}], "todo": ["Test workflows", "Launch"], "blockers": []}, {"key": "aavegotchi_bot", "name": "👻 Aavegotchi Bot", "status": "red", "summary": "Petting bot for Aavegotchi game.", "priority": "p2", "done": [], "todo": ["Research API", "Build prototype"], "blockers": ["Need approval"]}, {"key": "etsy_business", "name": "🛍️ Etsy Business", "status": "red", "summary": "Etsy store planning.", "priority": "p2", "done": [], "todo": ["Choose niche", "Source products"], "blockers": ["Need direction"]}, {"key": "clare_reiki", "name": "✨ Clare Reiki", "status": "red", "summary": "Spiritual business website.", "priority": "p2", "done": [], "todo": ["Define services", "Build site"], "blockers": ["Need info"]}]};
+    // Default data (fallback)
+    window.missionData = {"updatedAt": "2026-03-07T22:00:00Z", "projects": [{"key": "autobookr_suite", "name": "📞 AutoBookr Suite", "status": "green", "summary": "AI receptionist for tradies - landing + app ready.", "priority": "p0", "done": [{"task": "Define pricing tiers", "done": true}, {"task": "Build landing page", "done": true}, {"task": "Connect Stripe", "done": true}, {"task": "Connect Twilio", "done": true}], "todo": ["Get first customer", "Scale to 5 users", "Add more features"], "blockers": ["Need live test"]}, {"key": "mission_control", "name": "🚀 Mission Control", "status": "green", "summary": "Mobile dashboard for project tracking.", "priority": "p1", "done": [{"task": "Build dashboard", "done": true}, {"task": "Add files section", "done": true}, {"task": "Deploy to GitHub", "done": true}], "todo": ["Add analytics", "Add search", "Add themes"], "blockers": []}, {"key": "system_backup", "name": "🛟 System Backup", "status": "yellow", "summary": "Local + offsite backup setup.", "priority": "p1", "done": [{"task": "Local backup script", "done": true}, {"task": "Test restore", "done": true}], "todo": ["Setup Google Drive", "Schedule cron"], "blockers": ["OAuth pending"]}, {"key": "neuronet", "name": "🧠 NeuroNet", "status": "green", "summary": "Agent team with region routing.", "priority": "p2", "done": [{"task": "Define regions", "done": true}, {"task": "Set up handoffs", "done": true}], "todo": ["Test workflows", "Launch"], "blockers": []}, {"key": "aavegotchi_bot", "name": "👻 Aavegotchi Bot", "status": "red", "summary": "Petting bot for Aavegotchi game.", "priority": "p2", "done": [], "todo": ["Research API", "Build prototype"], "blockers": ["Need approval"]}, {"key": "etsy_business", "name": "🛍️ Etsy Business", "status": "red", "summary": "Etsy store planning.", "priority": "p2", "done": [], "todo": ["Choose niche", "Source products"], "blockers": ["Need direction"]}, {"key": "clare_reiki", "name": "✨ Clare Reiki", "status": "red", "summary": "Spiritual business website.", "priority": "p2", "done": [], "todo": ["Define services", "Build site"], "blockers": ["Need info"]}]};
 
     let currentFilter = 'all';
     
@@ -775,11 +775,12 @@
     const projectFiles = {"autobookr_suite": [{"name": "Landing", "url": "https://lil-ai-operator.github.io/autobookr-landing/"}, {"name": "Pricing", "url": "https://lil-ai-operator.github.io/autobookr-landing/pricing.html"}, {"name": "FAQ", "url": "https://lil-ai-operator.github.io/autobookr-landing/faq.html"}, {"name": "How it Works", "url": "https://lil-ai-operator.github.io/autobookr-landing/how-it-works.html"}, {"name": "Sales Script", "url": "https://lil-ai-operator.github.io/mobile-dashboard/generated/ops/autobookr-sales-script.md"}, {"name": "Outreach", "url": "https://lil-ai-operator.github.io/mobile-dashboard/generated/ops/autobookr-pilot-outreach.md"}, {"name": "Free Trial", "url": "https://lil-ai-operator.github.io/mobile-dashboard/generated/ops/autobookr-outreach-free-trial.md"}, {"name": "Competitor", "url": "https://lil-ai-operator.github.io/mobile-dashboard/generated/ops/autobookr-competitor-analysis.md"}], "mission_control": [{"name": "Dashboard", "url": "https://lil-ai-operator.github.io/mobile-dashboard/"}, {"name": "Data JSON", "url": "https://lil-ai-operator.github.io/mobile-dashboard/mission-control-data.json"}], "system_backup": [], "neuronet": [], "aavegotchi_bot": [], "etsy_business": [], "clare_reiki": []};
     
     function render() {
-      document.getElementById('lastUpdated').textContent = 'Updated: ' + new Date(cachedData.updatedAt).toLocaleString();
+      const data = window.missionData;
+      document.getElementById('lastUpdated').textContent = 'Updated: ' + new Date(data.updatedAt).toLocaleString();
       
       // Stats
       let green = 0, yellow = 0, red = 0, tasks = 0;
-      cachedData.projects.forEach(p => {
+      data.projects.forEach(p => {
         if(p.status === 'green') green++;
         if(p.status === 'yellow') yellow++;
         if(p.status === 'red') red++;
@@ -795,7 +796,7 @@
       const container = document.getElementById('projectsContainer');
       container.innerHTML = '';
       
-      cachedData.projects.forEach((p, i) => {
+      data.projects.forEach((p, i) => {
         if(currentFilter !== 'all' && p.status !== currentFilter) return;
         
         const doneCount = p.done?.length || 0;
@@ -915,8 +916,34 @@
       document.getElementById('settingsModal').classList.remove('open');
     }
     
-    function refreshData() {
-      render();
+    async function refreshData() {
+      const fab = document.querySelector('.fab');
+      const originalIcon = fab.innerHTML;
+      fab.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+      fab.style.animation = 'spin 1s linear infinite';
+      
+      try {
+        const response = await fetch('https://lil-ai-operator.github.io/mobile-dashboard/mission-control-data.json');
+        if (!response.ok) throw new Error('Failed to fetch');
+        const jsonData = await response.json();
+        
+        // Update embedded data
+        window.missionData = jsonData;
+        localStorage.setItem('missionData', JSON.stringify(jsonData));
+        
+        render();
+      } catch (err) {
+        console.error('Refresh failed:', err);
+        // Try loading from cache
+        const cached = localStorage.getItem('missionData');
+        if (cached) {
+          window.missionData = JSON.parse(cached);
+          render();
+        }
+      } finally {
+        fab.innerHTML = originalIcon;
+        fab.style.animation = '';
+      }
     }
     
     // Close modal on outside click
@@ -924,8 +951,17 @@
       if(e.target === this) closeSettings();
     });
     
-    // Initial render
-    render();
+    // Initial load - try cache first, then fetch
+    async function init() {
+      const cached = localStorage.getItem('missionData');
+      if (cached) {
+        window.missionData = JSON.parse(cached);
+        render();
+      }
+      // Then refresh in background
+      await refreshData();
+    }
+    init();
     
     // Auto-refresh every 5 minutes
     setInterval(refreshData, 300000);

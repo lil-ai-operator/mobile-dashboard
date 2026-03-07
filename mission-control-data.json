@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-03-07T23:24:31Z",
+  "updatedAt": "2026-03-07T23:26:48Z",
   "projects": [
     {
       "key": "autobookr_suite",
@@ -43,19 +43,18 @@
     {
       "key": "system_backup",
       "name": "🛟 System Backup + Recovery",
-      "status": "yellow",
-      "summary": "Recovery safety net with local + offsite backup readiness.",
+      "status": "green",
+      "summary": "Google Drive backup active with rclone.",
       "done": [
-        "Local backup working",
-        "Google Drive selected"
+        "Setup rclone",
+        "Configure Google Drive",
+        "Test backup",
+        "First backup completed"
       ],
       "todo": [
-        "Complete OAuth",
-        "Run first offsite backup"
+        "Schedule automatic backups"
       ],
-      "blockers": [
-        "OAuth flow pending"
-      ]
+      "blockers": []
     },
     {
       "key": "neuronet",
