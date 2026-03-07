@@ -761,6 +761,8 @@
           'pricing.html',
           'how-it-works.html',
           'faq.html',
+          
+          'results.html',
           'brand-board.html',
           'brand-compare.html',
           'brand-style-guide.md'
@@ -871,9 +873,12 @@
         </div>
         
         <!-- Files -->
-        <div class="project-section" style="animation: fadeUp 0.4s ease-out 0.2s both;">
-          <div class="section-label" onclick="toggleFiles('files-${p.key}')" style="cursor:pointer;">📁 Files (${knownFiles.length}) <span id="files-${p.key}-icon">▶</span></div>
-          <div class="files-container" id="files-${p.key}" style="display:none;">${filesHtml}</div>
+        <div class="task-section" style="animation: fadeUp 0.4s ease-out 0.2s both;">
+          <div class="task-header" onclick="toggleFiles('files-${p.key}')" style="cursor:pointer;background:linear-gradient(135deg,#1E293B,#2D1B4E);">
+            <span style="color:#58a6ff;">📁 Files (${knownFiles.length})</span>
+            <span class="chevron" id="files-${p.key}-icon">▶</span>
+          </div>
+          <div class="files-container" id="files-${p.key}" style="display:none;padding:8px 4px;">${filesHtml}</div>
         </div>
         
         <!-- My Tasks -->
