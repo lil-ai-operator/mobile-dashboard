@@ -73,13 +73,18 @@
     
     async function loadData(manual) {
       try {
-        const url = 'https://raw.githubusercontent.com/lil-ai-operator/mobile-dashboard/main/mission-control-data.json?t=' + Date.now();
+        const url = 'https://lil-ai-operator.github.io/mobile-dashboard/mission-control-data.json?t=' + Date.now();
+        console.log('Fetching:', url);
         const res = await fetch(url, { cache: 'no-store' });
-        if (!res.ok) throw new Error('Failed to load');
+        console.log('Response:', res.status, res.ok);
+        if (!res.ok) throw new Error('Failed to load: ' + res.status);
         cached = await res.json();
+        console.log('Data loaded:', cached.projects?.length, 'projects');
         render();
       } catch (err) {
-        if (manual) alert('Could not load data');
+        console.error('Load error:', err);
+        if (manual) alert('Could not load data: ' + err);
+        document.getElementById('updated').textContent = 'Error: ' + err.message;
       }
     }
     
