@@ -1,1079 +1,908 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
-  <meta http-equiv="Pragma" content="no-cache" />
-  <meta http-equiv="Expires" content="0" />
-  <title>Mission Control - Mobile</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>🚀 Mission Control</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
-    /* Animations */
-    @keyframes pulse-green {
-      0%, 100% { box-shadow: 0 0 5px #00FF88; }
-      50% { box-shadow: 0 0 20px #00FF88, 0 0 30px #00FF88; }
+    :root {
+      --bg-primary: #0a0a0f;
+      --bg-secondary: #12121a;
+      --bg-card: #1a1a24;
+      --bg-hover: #22222e;
+      --accent-green: #00d68f;
+      --accent-yellow: #ffaa00;
+      --accent-red: #ff4757;
+      --accent-blue: #3b82f6;
+      --accent-purple: #8b5cf6;
+      --text-primary: #ffffff;
+      --text-secondary: #9ca3af;
+      --text-muted: #6b7280;
+      --border-color: #2a2a3a;
     }
+    
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--bg-primary);
+      color: var(--text-primary);
+      min-height: 100vh;
+      padding-bottom: 80px;
+    }
+    
+    /* Header */
+    .header {
+      background: linear-gradient(135deg, #1a1a24 0%, #0a0a0f 100%);
+      padding: 20px;
+      border-bottom: 1px solid var(--border-color);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    
+    .header-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+    }
+    
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    
+    .logo-icon {
+      width: 44px;
+      height: 44px;
+      background: linear-gradient(135deg, var(--accent-green), var(--accent-purple));
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 22px;
+      animation: float 3s ease-in-out infinite;
+    }
+    
     @keyframes float {
-      0%, 100% { transform: translateY(0px); }
-      50% { transform: translateY(-5px); }
-    }
-    @keyframes glow-border {
-      0%, 100% { border-color: #00FF88; }
-      50% { border-color: #8B5CF6; }
-    }
-    @keyframes slide-in {
-      from { opacity: 0; transform: translateX(-20px); }
-      to { opacity: 1; transform: translateX(0); }
-    }
-    @keyframes fade-in {
-      from { opacity: 0; }
-      to { opacity: 1; }
-    }
-    @keyframes spin-slow {
-      from { transform: rotate(0deg); }
-      to { transform: rotate(360deg); }
-    }
-    @keyframes bell-shake {
-      0%, 100% { transform: rotate(0); }
-      20% { transform: rotate(15deg); }
-      40% { transform: rotate(-15deg); }
-      60% { transform: rotate(10deg); }
-      80% { transform: rotate(-10deg); }
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-3px); }
     }
     
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: linear-gradient(135deg, #0D0D0D 0%, #1A1A2E 100%); color: #e2e8f0; padding: 16px; min-height: 100vh; }
-    
-    /* Header with avatar */
-    .mc-header { display: flex; align-items: center; gap: 12px; margin-bottom: 8px; animation: slide-in 0.5s ease-out; }
-    .mc-avatar { width: 48px; height: 48px; border-radius: 50%; background: linear-gradient(135deg, #00FF88 0%, #8B5CF6 100%); display: flex; align-items: center; justify-content: center; font-size: 24px; flex-shrink: 0; overflow: hidden; animation: float 3s ease-in-out infinite; border: 2px solid #00FF88; }
-    .status-dot.green { background: #00FF88; animation: pulse-green 2s infinite; }
-    .status-dot.yellow { background: #FFB347; }
-    .status-dot.red { background: #FF6B6B; }
-    .mc-title { flex: 1; }
-    .mc-title h1 { font-size: 20px; margin-bottom: 2px; color: #fff; }
-    
-    /* Notification bell */
-    .notif-bell { position: relative; cursor: pointer; font-size: 22px; padding: 8px; transition: transform 0.2s; }
-    .notif-bell:hover { transform: scale(1.1); }
-    .notif-bell.shake { animation: bell-shake 0.5s ease; }
-    .notif-badge { position: absolute; top: 2px; right: 2px; background: #FF6B6B; color: #fff; font-size: 10px; font-weight: 700; border-radius: 999px; min-width: 16px; height: 16px; display: flex; align-items: center; justify-content: center; padding: 0 4px; }
-    .notif-badge:empty, .notif-badge[data-count="0"] { display: none; }
-    .notif-panel { position: fixed; top: 0; right: -320px; width: 300px; height: 100vh; background: #1A1A2E; border-left: 1px solid #00FF88; z-index: 1000; transition: right 0.3s ease; overflow-y: auto; padding: 16px; }
-    .notif-panel.open { right: 0; }
-    .notif-panel-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; padding-bottom: 12px; border-bottom: 1px solid #334155; }
-    .notif-panel-title { font-size: 16px; font-weight: 600; color: #fff; }
-    .notif-close { background: none; border: none; color: #94a3b8; font-size: 24px; cursor: pointer; }
-    .notif-item { background: #1E293B; border-radius: 8px; padding: 12px; margin-bottom: 10px; border-left: 3px solid #00FF88; }
-    .notif-item.blocker { border-left-color: #FF6B6B; }
-    .notif-item.task { border-left-color: #8B5CF6; }
-    .notif-item.wayne { border-left-color: #FFB347; }
-    .notif-item-time { font-size: 10px; color: #64748b; margin-bottom: 4px; }
-    .notif-item-title { font-size: 13px; color: #fff; line-height: 1.4; }
-    .notif-empty { text-align: center; color: #64748b; padding: 40px 0; }
-    .notif-enable-btn { display: inline-block; background: #00FF88; color: #0D0D0D; border: none; border-radius: 8px; padding: 8px 14px; font-size: 12px; font-weight: 600; cursor: pointer; margin-left: 8px; }
-    .notif-enable-btn:hover { background: #00cc6a; }
-    
-    h1 { font-size: 20px; margin-bottom: 6px; color: #fff; }
-    .timestamp { font-size: 12px; color: #00FF88; margin-bottom: 10px; animation: fade-in 0.5s ease-out; }
-    .hint { font-size: 12px; color: #64748b; margin-bottom: 14px; }
-
-    .section { background: #1E293B; border: 1px solid #00FF88; border-radius: 12px; padding: 12px; margin-bottom: 12px; animation: fade-in 0.5s ease-out; animation-fill-mode: both; }
-    .section:nth-child(2) { animation-delay: 0.1s; }
-    .section:nth-child(3) { animation-delay: 0.2s; }
-    .section:nth-child(4) { animation-delay: 0.3s; }
-    .section h2 { font-size: 13px; margin-bottom: 8px; color: #00FF88; }
-    
-    /* Collapsible sections */
-    .collapsible-header { display: flex; justify-content: space-between; align-items: center; padding: 12px 14px; background: linear-gradient(135deg, #1E293B 0%, #2D1B4E 100%); border: 1px solid #00FF88; border-radius: 10px; cursor: pointer; margin-bottom: 8px; transition: all 0.3s ease; animation: glow-border 3s infinite; }
-    .collapsible-header:hover { background: linear-gradient(135deg, #2D1B4E 0%, #3D2B5E 100%); transform: scale(1.02); }
-    .collapsible-header:hover { background: linear-gradient(135deg, #2D1B4E 0%, #3D2B5E 100%); }
-    .collapsible-title { font-size: 14px; font-weight: 600; color: #fff; }
-    .collapsible-chevron { font-size: 12px; color: #94a3b8; }
-    .collapsible-content { margin-bottom: 8px; }
-    .qa-item { font-size: 12px; color: #cbd5e1; padding: 6px 0; border-bottom: 1px solid #334155; }
-    .qa-item:last-child { border-bottom: none; }
-    .qa-tag { color: #94a3b8; margin-right: 6px; }
-
-    .queue-top { display: flex; justify-content: space-between; align-items: center; gap: 8px; margin-bottom: 8px; flex-wrap: wrap; }
-    .queue-meta { font-size: 11px; color: #94a3b8; }
-    .queue-controls { display: flex; gap: 6px; }
-    .mini-btn { border: 1px solid #475569; background: #0f172a; color: #cbd5e1; border-radius: 999px; padding: 5px 9px; font-size: 10px; cursor: pointer; }
-    .mini-btn.active { border-color: #00FF88; color: #00FF88; }
-    .queue-group { margin-top: 8px; }
-    .queue-group-title { font-size: 11px; color: #00FF88; letter-spacing: .4px; text-transform: uppercase; margin: 8px 0; }
-    .queue-header { display: flex; justify-content: space-between; align-items: center; padding: 10px 12px; background: linear-gradient(135deg, #1E293B 0%, #2D1B4E 100%); border: 1px solid #00FF88; border-radius: 10px; margin-bottom: 6px; cursor: pointer; transition: all 0.3s ease; }
-    .queue-header:active { background: linear-gradient(135deg, #2D1B4E 0%, #4D3B6E 100%); }
-    .queue-header.collapsed .queue-chevron { transform: rotate(-90deg); }
-    .queue-items { display: none; padding: 0 4px; }
-    .queue-items.open { display: block; }
-    .queue-header-left { display: flex; align-items: center; gap: 8px; }
-    .queue-header-title { font-size: 13px; color: #fff; font-weight: 600; }
-    .queue-badge { font-size: 10px; background: #00FF88; color: #0D0D0D; border-radius: 999px; padding: 2px 6px; font-weight: 700; }
-    .queue-chevron { font-size: 12px; color: #64748b; transition: transform 0.2s; }
-    .queue-chevron.open { transform: rotate(180deg); }
-    .queue-item { display: flex; justify-content: space-between; gap: 8px; align-items: center; border: 1px solid #00FF88; border-radius: 8px; padding: 8px; margin-bottom: 6px; background: #1E293B; transition: all 0.3s ease; animation: slide-in 0.3s ease-out; }
-    .queue-item:hover { border-color: #00FF88; box-shadow: 0 0 15px rgba(0,255,136,0.2); transform: translateX(5px); }
-    .queue-item:last-child { margin-bottom: 0; }
-    .queue-left { min-width: 0; }
-    .queue-title { font-size: 12px; color: #fff; font-weight: 600; line-height: 1.3; }
-    .queue-note { font-size: 10px; color: #94a3b8; margin-top: 2px; }
-    .queue-tags { display: flex; gap: 4px; margin-top: 4px; flex-wrap: wrap; }
-    .pill { font-size: 9px; border-radius: 999px; padding: 2px 5px; border: 1px solid #8B5CF6; color: #8B5CF6; }
-    .pill.new { background: #0D0D0D; border-color: #00FF88; color: #00FF88; font-weight: 700; }
-    .pill.priority { background: #2D1B4E; border-color: #FF6B6B; color: #FF6B6B; }
-    .queue-btn { border: 1px solid #00FF88; border-radius: 6px; background: #00FF88; color: #0D0D0D; text-decoration: none; font-size: 11px; padding: 6px 8px; white-space: nowrap; font-weight: 600; }
-
-    .project-card { background: linear-gradient(135deg, #1E293B 0%, #2D1B4E 100%); border: 2px solid #00FF88; border-radius: 12px; padding: 14px; margin-bottom: 12px; cursor: pointer; transition: all 0.3s ease; }
-    .project-card:hover { border-color: #00FF88; transform: scale(1.03); box-shadow: 0 0 20px rgba(0,255,136,0.3); }
-    .project-header { display: flex; justify-content: space-between; gap: 8px; align-items: center; margin-bottom: 8px; }
-    .project-name { font-size: 15px; font-weight: 700; color: #fff; }
-    .status-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
-    .green { background: #00FF88; box-shadow: 0 0 8px #00FF88; }
-    .yellow { background: #FFB347; box-shadow: 0 0 8px #FFB347; }
-    .red { background: #FF6B6B; box-shadow: 0 0 8px #FF6B6B; }
-    .summary { font-size: 12px; color: #94a3b8; margin-bottom: 8px; }
-    .track { display: flex; align-items: center; gap: 8px; }
-    .track-bg { flex: 1; height: 7px; background: #334155; border-radius: 8px; overflow: hidden; border: 1px solid #8B5CF6; }
-    .track-fill { height: 100%; border-radius: 8px; }
-    .pct { min-width: 40px; text-align: right; font-size: 12px; font-weight: 700; }
-
-    .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,.9); z-index: 50; overflow-y: auto; padding: 18px; }
-    .modal-overlay.active { display: block; animation: fadeIn 0.3s ease-out; }
-    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-    .modal { max-width: 450px; margin: 10px auto 30px; background: linear-gradient(135deg, #1E293B 0%, #2D1B4E 100%); border: 2px solid #00FF88; border-radius: 14px; padding: 16px; animation: slide-in 0.3s ease-out; }
-    .modal-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
-    .modal-title { font-size: 17px; font-weight: 700; color: #fff; }
-    .close-btn { background: none; border: none; color: #00FF88; font-size: 24px; line-height: 1; cursor: pointer; }
-    h3 { font-size: 12px; text-transform: uppercase; letter-spacing: .5px; margin: 14px 0 8px; color: #94a3b8; }
-    .done-h { color: #00FF88; font-size: 14px; margin: 16px 0 8px; cursor: pointer; display: flex; align-items: center; gap: 6px; }
-    .done-h:hover { text-shadow: 0 0 10px #00FF88; }
-    .todo-h { color: #FFB347; font-size: 14px; margin: 16px 0 8px; }
-    .block-h { color: #FF6B6B; font-size: 14px; margin: 16px 0 8px; }
-    
-    /* Enhanced Modal Styles */
-    @keyframes modalPop {
-      0% { opacity: 0; transform: scale(0.8) translateY(20px); }
-      50% { transform: scale(1.05) translateY(-5px); }
-      100% { opacity: 1; transform: scale(1) translateY(0); }
-    }
-    @keyframes modalSlide {
-      0% { opacity: 0; transform: translateX(-50px); }
-      100% { opacity: 1; transform: translateX(0); }
-    }
-    @keyframes borderGlow {
-      0%, 100% { border-color: #00FF88; box-shadow: 0 0 20px rgba(0,255,136,0.3); }
-      50% { border-color: #8B5CF6; box-shadow: 0 0 30px rgba(139,92,246,0.4); }
-    }
-    @keyframes scaleIn {
-      0% { opacity: 0; transform: scale(0.9); }
-      100% { opacity: 1; transform: scale(1); }
-    }
-    @keyframes fadeUp {
-      0% { opacity: 0; transform: translateY(10px); }
-      100% { opacity: 1; transform: translateY(0); }
-    }
-    @keyframes spinIn {
-      0% { opacity: 0; transform: rotate(-10deg) scale(0.8); }
-      100% { opacity: 1; transform: rotate(0) scale(1); }
+    .logo-text h1 {
+      font-size: 20px;
+      font-weight: 700;
     }
     
-    .modal { max-width: 450px; margin: 10px auto 30px; background: linear-gradient(135deg, #1E293B 0%, #2D1B4E 100%); border: 2px solid #00FF88; border-radius: 14px; padding: 16px; animation: modalPop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), borderGlow 2s infinite; }
+    .logo-text span {
+      font-size: 12px;
+      color: var(--text-muted);
+    }
     
-    .project-progress { background: linear-gradient(135deg, #1E293B 0%, #2D1B4E 100%); border: 1px solid #00FF88; border-radius: 10px; padding: 14px; margin-bottom: 12px; animation: fadeUp 0.4s ease-out 0.1s both; }
-    .progress-label { font-size: 13px; font-weight: 600; color: #fff; margin-bottom: 8px; }
-    .progress-bar { height: 8px; background: #334155; border-radius: 4px; overflow: hidden; }
-    .progress-fill { height: 100%; border-radius: 4px; transition: width 0.5s ease; }
-    .progress-stats { font-size: 11px; color: #94a3b8; margin-top: 6px; }
+    .header-actions {
+      display: flex;
+      gap: 8px;
+    }
     
-    .project-stats { display: flex; gap: 12px; margin-bottom: 12px; }
-    .stat { flex: 1; text-align: center; background: #1E293B; border: 1px solid #334155; border-radius: 8px; padding: 10px; }
-    .stat-num { display: block; font-size: 20px; font-weight: 700; }
-    .stat-label { font-size: 10px; color: #64748b; text-transform: uppercase; }
+    .icon-btn {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      color: var(--text-secondary);
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s;
+    }
     
-    .project-section { margin-bottom: 12px; }
-    .section-label { font-size: 11px; color: #00FF88; text-transform: uppercase; margin-bottom: 6px; }
-    .links-container { display: flex; gap: 8px; flex-wrap: wrap; }
-    .project-link { background: linear-gradient(135deg, #00FF88 0%, #00CC6A 100%); color: #0D0D0D; padding: 8px 12px; border-radius: 6px; text-decoration: none; font-size: 12px; font-weight: 600; }
-    .project-link:hover { transform: scale(1.05); }
+    .icon-btn:hover {
+      background: var(--bg-hover);
+      color: var(--text-primary);
+    }
     
-    .files-container { background: #1E293B; border: 1px solid #334155; border-radius: 8px; padding: 8px; max-height: 100px; overflow-y: auto; }
-    .project-file { font-size: 11px; color: #94a3b8; padding: 4px 0; border-bottom: 1px solid #334155; }
-    .project-file a:hover { color: #79c0ff; text-decoration: underline; }
-    .project-file:last-child { border-bottom: none; }
+    .icon-btn.active {
+      background: var(--accent-green);
+      color: #000;
+      border-color: var(--accent-green);
+    }
     
-    .task-section { margin-bottom: 10px; }
-    .task-header { background: linear-gradient(135deg, #1E293B 0%, #2D1B4E 100%); border: 1px solid #00FF88; border-radius: 8px; padding: 10px 12px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; font-size: 13px; font-weight: 600; }
-    .task-header .chevron { font-size: 10px; transition: transform 0.3s ease; display: inline-block; }
-    .task-list { background: #1E293B; border: 1px solid #334155; border-top: none; border-radius: 0 0 8px 8px; padding: 8px; max-height: 150px; overflow-y: auto; }
-    .task-item { font-size: 12px; color: #94a3b8; padding: 5px 0; border-bottom: 1px solid #334155; }
-    .task-item:last-child { border-bottom: none; }
-    .task-item.done { color: #00FF88; }
-    .task-item.blocker { color: #FF6B6B; }
-    .item { font-size: 13px; border-bottom: 1px solid #334155; padding: 7px 0; display: flex; gap: 8px; background: rgba(0,255,136,0.03); border-radius: 6px; margin-bottom: 4px; transition: all 0.2s; }
-    .item:hover { border-color: #00FF88; background: rgba(0,255,136,0.08); }
-    .item:last-child { border-bottom: none; }
-    .badge { width: 18px; text-align: center; flex-shrink: 0; }
-
-    .refresh-pill { position: fixed; right: 16px; bottom: 16px; border: 1px solid #3b82f6; background: #1d4ed8; color: #fff; border-radius: 999px; padding: 10px 14px; font-size: 12px; cursor: pointer; }
-
-    /* Gallery swipe */
-    .gallery-full { display: none; position: fixed; inset: 0; background: #000; z-index: 100; }
-    .gallery-full.active { display: flex; align-items: center; justify-content: center; }
-    .gallery-full img { max-width: 95%; max-height: 90%; object-fit: contain; touch-action: pan-y; }
-    .gallery-nav { display: none; }
-    .gallery-close { position: absolute; top: 16px; right: 16px; background: rgba(0,0,0,0.6); border: none; color: #fff; font-size: 24px; width: 44px; height: 44px; border-radius: 50%; cursor: pointer; z-index: 10; }
-    .gallery-counter { position: absolute; bottom: 24px; left: 50%; transform: translateX(-50%); color: #fff; font-size: 14px; background: rgba(0,0,0,0.6); padding: 8px 20px; border-radius: 20px; font-weight: 600; }
-    .gallery-hint { position: absolute; bottom: 60px; left: 50%; transform: translateX(-50%); color: rgba(255,255,255,0.6); font-size: 12px; }
+    /* Live indicator */
+    .live-status {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 12px;
+      color: var(--text-secondary);
+    }
+    
+    .live-dot {
+      width: 8px;
+      height: 8px;
+      background: var(--accent-green);
+      border-radius: 50%;
+      animation: pulse 2s infinite;
+    }
+    
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.5; }
+    }
+    
+    /* Search */
+    .search-bar {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 12px 16px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-top: 12px;
+    }
+    
+    .search-bar i { color: var(--text-muted); }
+    
+    .search-bar input {
+      background: transparent;
+      border: none;
+      color: var(--text-primary);
+      font-size: 14px;
+      width: 100%;
+      outline: none;
+    }
+    
+    .search-bar input::placeholder { color: var(--text-muted); }
+    
+    /* Stats overview */
+    .stats-row {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+      padding: 16px 20px;
+      background: var(--bg-secondary);
+    }
+    
+    .stat-card {
+      background: var(--bg-card);
+      border-radius: 12px;
+      padding: 14px;
+      text-align: center;
+      border: 1px solid var(--border-color);
+    }
+    
+    .stat-card .number {
+      font-size: 24px;
+      font-weight: 700;
+    }
+    
+    .stat-card .label {
+      font-size: 11px;
+      color: var(--text-muted);
+      margin-top: 4px;
+    }
+    
+    .stat-card.green .number { color: var(--accent-green); }
+    .stat-card.yellow .number { color: var(--accent-yellow); }
+    .stat-card.red .number { color: var(--accent-red); }
+    .stat-card.blue .number { color: var(--accent-blue); }
+    
+    /* Filter tabs */
+    .filter-tabs {
+      display: flex;
+      gap: 8px;
+      padding: 12px 20px;
+      overflow-x: auto;
+    }
+    
+    .filter-tab {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      color: var(--text-secondary);
+      padding: 8px 16px;
+      border-radius: 20px;
+      font-size: 13px;
+      white-space: nowrap;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    
+    .filter-tab:hover { background: var(--bg-hover); }
+    
+    .filter-tab.active {
+      background: var(--accent-blue);
+      color: white;
+      border-color: var(--accent-blue);
+    }
+    
+    /* Project cards */
+    .projects-container {
+      padding: 0 20px;
+    }
+    
+    .project-card {
+      background: var(--bg-card);
+      border-radius: 16px;
+      margin-bottom: 16px;
+      border: 1px solid var(--border-color);
+      overflow: hidden;
+      transition: all 0.3s;
+    }
+    
+    .project-card:hover {
+      border-color: var(--accent-purple);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 30px rgba(0,0,0,0.3);
+    }
+    
+    .project-header {
+      padding: 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      cursor: pointer;
+    }
+    
+    .project-info {
+      flex: 1;
+    }
+    
+    .project-name {
+      font-size: 16px;
+      font-weight: 600;
+      margin-bottom: 6px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    
+    .priority-tag {
+      font-size: 10px;
+      padding: 2px 8px;
+      border-radius: 10px;
+      font-weight: 600;
+    }
+    
+    .priority-p0 { background: var(--accent-red); color: white; }
+    .priority-p1 { background: var(--accent-yellow); color: black; }
+    .priority-p2 { background: var(--text-muted); color: white; }
+    
+    .project-summary {
+      font-size: 13px;
+      color: var(--text-secondary);
+      line-height: 1.4;
+    }
+    
+    .project-status {
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+    
+    .status-green { 
+      background: var(--accent-green); 
+      box-shadow: 0 0 15px var(--accent-green);
+    }
+    .status-yellow { 
+      background: var(--accent-yellow); 
+      box-shadow: 0 0 15px var(--accent-yellow);
+    }
+    .status-red { 
+      background: var(--accent-red); 
+      box-shadow: 0 0 15px var(--accent-red);
+    }
+    
+    /* Progress bar */
+    .project-progress {
+      padding: 0 16px 16px;
+    }
+    
+    .progress-bar {
+      height: 6px;
+      background: var(--bg-secondary);
+      border-radius: 3px;
+      overflow: hidden;
+    }
+    
+    .progress-fill {
+      height: 100%;
+      border-radius: 3px;
+      transition: width 0.5s ease;
+    }
+    
+    .progress-fill.green { background: var(--accent-green); }
+    .progress-fill.yellow { background: var(--accent-yellow); }
+    .progress-fill.red { background: var(--accent-red); }
+    
+    .progress-stats {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 8px;
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+    
+    /* Expanded content */
+    .project-content {
+      display: none;
+      border-top: 1px solid var(--border-color);
+      padding: 16px;
+      background: var(--bg-secondary);
+    }
+    
+    .project-content.open { display: block; }
+    
+    .content-section {
+      margin-bottom: 16px;
+    }
+    
+    .content-section:last-child { margin-bottom: 0; }
+    
+    .section-title {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--accent-purple);
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+    }
+    
+    .section-title i {
+      transition: transform 0.2s;
+    }
+    
+    .section-title.collapsed i {
+      transform: rotate(-90deg);
+    }
+    
+    .task-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    
+    .task-item {
+      background: var(--bg-card);
+      padding: 10px 12px;
+      border-radius: 8px;
+      font-size: 13px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      border: 1px solid transparent;
+      transition: all 0.2s;
+    }
+    
+    .task-item:hover {
+      border-color: var(--border-color);
+    }
+    
+    .task-item.done {
+      color: var(--text-muted);
+      text-decoration: line-through;
+    }
+    
+    .task-status {
+      width: 18px;
+      height: 18px;
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 10px;
+      flex-shrink: 0;
+    }
+    
+    .task-status.done { background: var(--accent-green); color: black; }
+    .task-status.todo { border: 2px solid var(--text-muted); }
+    .task-status.blocked { background: var(--accent-red); color: white; }
+    
+    /* Files section */
+    .files-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 8px;
+    }
+    
+    .file-link {
+      background: var(--bg-card);
+      padding: 10px 12px;
+      border-radius: 8px;
+      font-size: 12px;
+      color: var(--accent-blue);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      border: 1px solid var(--border-color);
+      transition: all 0.2s;
+    }
+    
+    .file-link:hover {
+      background: var(--bg-hover);
+      border-color: var(--accent-blue);
+    }
+    
+    /* Blockers */
+    .blocker-item {
+      background: rgba(255, 71, 87, 0.1);
+      border-left: 3px solid var(--accent-red);
+      padding: 10px 12px;
+      border-radius: 0 8px 8px 0;
+      font-size: 13px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    
+    .blocker-item i { color: var(--accent-red); }
+    
+    /* Activity feed */
+    .activity-feed {
+      max-height: 200px;
+      overflow-y: auto;
+    }
+    
+    .activity-item {
+      display: flex;
+      gap: 10px;
+      padding: 8px 0;
+      border-bottom: 1px solid var(--border-color);
+      font-size: 12px;
+    }
+    
+    .activity-item:last-child { border: none; }
+    
+    .activity-icon {
+      width: 28px;
+      height: 28px;
+      background: var(--bg-card);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    
+    .activity-icon.done { color: var(--accent-green); }
+    .activity-icon.blocked { color: var(--accent-red); }
+    .activity-icon.update { color: var(--accent-blue); }
+    
+    /* Floating action button */
+    .fab {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      width: 56px;
+      height: 56px;
+      background: linear-gradient(135deg, var(--accent-green), var(--accent-purple));
+      border-radius: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      color: white;
+      box-shadow: 0 8px 30px rgba(0, 214, 143, 0.3);
+      cursor: pointer;
+      transition: all 0.3s;
+      z-index: 90;
+    }
+    
+    .fab:hover {
+      transform: scale(1.1);
+    }
+    
+    /* Modal */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.8);
+      z-index: 200;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+    
+    .modal-overlay.open { display: flex; }
+    
+    .modal {
+      background: var(--bg-card);
+      border-radius: 20px;
+      width: 100%;
+      max-width: 500px;
+      max-height: 80vh;
+      overflow-y: auto;
+      animation: modalIn 0.3s ease;
+    }
+    
+    @keyframes modalIn {
+      from { opacity: 0; transform: scale(0.9); }
+      to { opacity: 1; transform: scale(1); }
+    }
+    
+    .modal-header {
+      padding: 20px;
+      border-bottom: 1px solid var(--border-color);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    
+    .modal-header h2 { font-size: 18px; }
+    
+    .modal-close {
+      background: none;
+      border: none;
+      color: var(--text-muted);
+      font-size: 24px;
+      cursor: pointer;
+    }
+    
+    .modal-body { padding: 20px; }
+    
+    /* Settings */
+    .settings-group {
+      margin-bottom: 20px;
+    }
+    
+    .settings-label {
+      font-size: 12px;
+      color: var(--text-muted);
+      margin-bottom: 8px;
+    }
+    
+    .toggle-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px 0;
+      border-bottom: 1px solid var(--border-color);
+    }
+    
+    .toggle {
+      width: 48px;
+      height: 26px;
+      background: var(--bg-secondary);
+      border-radius: 13px;
+      position: relative;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    
+    .toggle.active { background: var(--accent-green); }
+    
+    .toggle::after {
+      content: '';
+      position: absolute;
+      width: 22px;
+      height: 22px;
+      background: white;
+      border-radius: 50%;
+      top: 2px;
+      left: 2px;
+      transition: transform 0.2s;
+    }
+    
+    .toggle.active::after { transform: translateX(22px); }
+    
+    /* Mobile responsive */
+    @media (max-width: 600px) {
+      .stats-row {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      
+      .files-grid {
+        grid-template-columns: 1fr;
+      }
+      
+      .header {
+        padding: 16px;
+      }
+      
+      .logo-icon {
+        width: 38px;
+        height: 38px;
+        font-size: 18px;
+      }
+    }
   </style>
 </head>
 <body>
-  <div class="mc-header">
-    <div class="mc-avatar" id="mc-avatar"><img src="01_PEPE4-export.gif" style="width:100%;height:100%;border-radius:50%;object-fit:cover;"></div>
-    <div class="mc-title">
-      <h1>🚀 Mission Control</h1>
-      <p class="timestamp" id="updated">Updated: loading…</p>
-    </div>
-    <div class="notif-bell" id="notifBell" onclick="toggleNotifPanel()">🔔<span class="notif-badge" id="notifBadge" data-count="0">0</span></div>
-  </div>
-  <div class="notif-panel" id="notifPanel">
-    <div class="notif-panel-header">
-      <span class="notif-panel-title">Notifications</span>
-      <div>
-        <button class="notif-enable-btn" onclick="clearAllNotifs()" style="font-size:10px;padding:4px 8px;margin-right:8px;">Clear All</button>
-        <button class="notif-close" onclick="toggleNotifPanel()">×</button>
+  <!-- Header -->
+  <div class="header">
+    <div class="header-top">
+      <div class="logo">
+        <div class="logo-icon">🐸</div>
+        <div class="logo-text">
+          <h1>Mission Control</h1>
+          <span id="lastUpdated">Updated: --</span>
+        </div>
+      </div>
+      <div class="header-actions">
+        <button class="icon-btn" onclick="toggleSearch()" title="Search">
+          <i class="fas fa-search"></i>
+        </button>
+        <button class="icon-btn" onclick="openSettings()" title="Settings">
+          <i class="fas fa-cog"></i>
+        </button>
       </div>
     </div>
-    <div id="notifList"></div>
+    <div class="live-status">
+      <div class="live-dot"></div>
+      <span>Live</span>
+    </div>
+    <div class="search-bar" id="searchBar" style="display: none;">
+      <i class="fas fa-search"></i>
+      <input type="text" placeholder="Search projects, tasks, files..." onkeyup="filterProjects(this.value)">
+    </div>
   </div>
-  <p class="hint">Auto-updates every 60s • Tap a project for full tasks <button class="notif-enable-btn" id="enableNotifBtn" onclick="requestNotifPerm()">🔔 Enable Notifications</button></p>
-
-  <!-- <div class="section" id="tasksCompleted"></div> -->
-  <!-- <div class="section" id="quickActions"></div> -->
-  <!--   <div class="section" id="readQueue"></div> -->
-  <div id="projectList"></div>
-
-  <div class="modal-overlay" id="overlay" onclick="closeModal(event)">
-    <div class="modal" id="modal"></div>
+  
+  <!-- Stats -->
+  <div class="stats-row">
+    <div class="stat-card green">
+      <div class="number" id="statGreen">0</div>
+      <div class="label">🟢 Active</div>
+    </div>
+    <div class="stat-card yellow">
+      <div class="number" id="statYellow">0</div>
+      <div class="label">🟡 In Progress</div>
+    </div>
+    <div class="stat-card red">
+      <div class="number" id="statRed">0</div>
+      <div class="label">🔴 Blocked</div>
+    </div>
+    <div class="stat-card blue">
+      <div class="number" id="statTasks">0</div>
+      <div class="label">📋 Tasks</div>
+    </div>
   </div>
-
-
+  
+  <!-- Filters -->
+  <div class="filter-tabs">
+    <div class="filter-tab active" onclick="setFilter('all', this)">All</div>
+    <div class="filter-tab" onclick="setFilter('green', this)">🟢 Active</div>
+    <div class="filter-tab" onclick="setFilter('yellow', this)">🟡 In Progress</div>
+    <div class="filter-tab" onclick="setFilter('red', this)">🔴 Blocked</div>
+    <div class="filter-tab" onclick="setFilter('files', this)">📁 With Files</div>
+  </div>
+  
+  <!-- Projects -->
+  <div class="projects-container" id="projectsContainer">
+    <!-- Projects loaded dynamically -->
+  </div>
+  
+  <!-- FAB -->
+  <div class="fab" onclick="refreshData()">
+    <i class="fas fa-sync-alt"></i>
+  </div>
+  
+  <!-- Settings Modal -->
+  <div class="modal-overlay" id="settingsModal">
+    <div class="modal">
+      <div class="modal-header">
+        <h2>⚙️ Settings</h2>
+        <button class="modal-close" onclick="closeSettings()">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="settings-group">
+          <div class="settings-label">Appearance</div>
+          <div class="toggle-row">
+            <span>Dark Mode</span>
+            <div class="toggle active" onclick="this.classList.toggle('active')"></div>
+          </div>
+          <div class="toggle-row">
+            <span>Compact View</span>
+            <div class="toggle" onclick="this.classList.toggle('active')"></div>
+          </div>
+        </div>
+        <div class="settings-group">
+          <div class="settings-label">Data</div>
+          <div class="toggle-row">
+            <span>Auto-refresh (5 min)</span>
+            <div class="toggle active" onclick="this.classList.toggle('active')"></div>
+          </div>
+        </div>
+        <div class="settings-group">
+          <div class="settings-label">About</div>
+          <p style="color: var(--text-muted); font-size: 13px;">
+            Mission Control v2.0<br>
+            Built with GPT-5.4 🚀
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <script>
-    const READ_STATE_KEY = 'mc-read-state-v1';
-    const READ_PREFS_KEY = 'mc-read-prefs-v1';
-    const NOTIF_PREFS_KEY = 'mc-notif-prefs-v1';
-    const NOTIF_STORE_KEY = 'mc-notif-store-v1';
-    let cached = null;
-    let notifPermission = 'default';
+    // Embedded data
+    const cachedData = {"updatedAt": "2026-03-07T22:00:00Z", "projects": [{"key": "autobookr_suite", "name": "📞 AutoBookr Suite", "status": "green", "summary": "AI receptionist for tradies - landing + app ready.", "priority": "p0", "done": [{"task": "Define pricing tiers", "done": true}, {"task": "Build landing page", "done": true}, {"task": "Connect Stripe", "done": true}, {"task": "Connect Twilio", "done": true}], "todo": ["Get first customer", "Scale to 5 users", "Add more features"], "blockers": ["Need live test"]}, {"key": "mission_control", "name": "🚀 Mission Control", "status": "green", "summary": "Mobile dashboard for project tracking.", "priority": "p1", "done": [{"task": "Build dashboard", "done": true}, {"task": "Add files section", "done": true}, {"task": "Deploy to GitHub", "done": true}], "todo": ["Add analytics", "Add search", "Add themes"], "blockers": []}, {"key": "system_backup", "name": "🛟 System Backup", "status": "yellow", "summary": "Local + offsite backup setup.", "priority": "p1", "done": [{"task": "Local backup script", "done": true}, {"task": "Test restore", "done": true}], "todo": ["Setup Google Drive", "Schedule cron"], "blockers": ["OAuth pending"]}, {"key": "neuronet", "name": "🧠 NeuroNet", "status": "green", "summary": "Agent team with region routing.", "priority": "p2", "done": [{"task": "Define regions", "done": true}, {"task": "Set up handoffs", "done": true}], "todo": ["Test workflows", "Launch"], "blockers": []}, {"key": "aavegotchi_bot", "name": "👻 Aavegotchi Bot", "status": "red", "summary": "Petting bot for Aavegotchi game.", "priority": "p2", "done": [], "todo": ["Research API", "Build prototype"], "blockers": ["Need approval"]}, {"key": "etsy_business", "name": "🛍️ Etsy Business", "status": "red", "summary": "Etsy store planning.", "priority": "p2", "done": [], "todo": ["Choose niche", "Source products"], "blockers": ["Need direction"]}, {"key": "clare_reiki", "name": "✨ Clare Reiki", "status": "red", "summary": "Spiritual business website.", "priority": "p2", "done": [], "todo": ["Define services", "Build site"], "blockers": ["Need info"]}]};
 
-    // Notification Service
-    function getNotifPrefs() {
-      try { return JSON.parse(localStorage.getItem(NOTIF_PREFS_KEY) || '{"enabled":false,"blockers":true,"tasks":true,"wayne":true}'); }
-      catch { return { enabled: false, blockers: true, tasks: true, wayne: true }; }
-    }
-
-    function setNotifPrefs(prefs) {
-      localStorage.setItem(NOTIF_PREFS_KEY, JSON.stringify(prefs));
-    }
-
-    function getNotifStore() {
-      try { return JSON.parse(localStorage.getItem(NOTIF_STORE_KEY) || '[]'); }
-      catch { return []; }
-    }
-
-    function setNotifStore(store) {
-      localStorage.setItem(NOTIF_STORE_KEY, JSON.stringify(store.slice(0, 50)));
-    }
-
-    function addNotif(title, body, type) {
-      const store = getNotifStore();
-      const notif = { id: Date.now(), title, body, type, time: new Date().toISOString() };
-      store.unshift(notif);
-      setNotifStore(store);
-      updateNotifBadge();
-      renderNotifList();
-      
-      // Show browser notification if enabled
-      const prefs = getNotifPrefs();
-      if (prefs.enabled && notifPermission === 'granted') {
-        new Notification(title, { body, icon: '01_PEPE4-export.gif' });
-      }
-      
-      // Shake bell
-      const bell = document.getElementById('notifBell');
-      bell.classList.add('shake');
-      setTimeout(() => bell.classList.remove('shake'), 500);
-    }
-
-    function updateNotifBadge() {
-      const store = getNotifStore();
-      const badge = document.getElementById('notifBadge');
-      badge.textContent = store.length;
-      badge.setAttribute('data-count', store.length);
-    }
-
-    function renderNotifList() {
-      const list = document.getElementById('notifList');
-      const store = getNotifStore();
-      if (!store.length) {
-        list.innerHTML = '<div class="notif-empty">No notifications yet</div>';
-        return;
-      }
-      list.innerHTML = store.map(n => `
-        <div class="notif-item ${n.type}">
-          <div class="notif-item-time">${new Date(n.time).toLocaleString()}</div>
-          <div class="notif-item-title">${n.title}<br><small>${n.body}</small></div>
-        </div>
-      `).join('');
-    }
-
-    function toggleNotifPanel() {
-      const panel = document.getElementById('notifPanel');
-      panel.classList.toggle('open');
-    }
-
-    function clearAllNotifs() {
-      localStorage.removeItem(NOTIF_STORE_KEY);
-      updateNotifBadge();
-      renderNotifList();
-    }
-
-    async function requestNotifPerm() {
-      if (!('Notification' in window)) {
-        alert('This browser does not support notifications');
-        return;
-      }
-      notifPermission = await Notification.requestPermission();
-      const prefs = getNotifPrefs();
-      prefs.enabled = notifPermission === 'granted';
-      setNotifPrefs(prefs);
-      if (notifPermission === 'granted') {
-        new Notification('Notifications enabled!', { body: 'You will be notified about blockers, tasks, and Wayne items.' });
-      }
-    }
-
-    function initNotifs() {
-      if ('Notification' in window) {
-        notifPermission = Notification.permission;
-      }
-      const prefs = getNotifPrefs();
-      const btn = document.getElementById('enableNotifBtn');
-      if (btn) {
-        if (prefs.enabled || notifPermission === 'granted') {
-          btn.textContent = '🔔 Notifications On';
-          btn.style.background = '#8B5CF6';
-        } else if (notifPermission === 'denied') {
-          btn.textContent = '🔕 Blocked';
-          btn.disabled = true;
-          btn.style.background = '#475569';
-        }
-      }
-      updateNotifBadge();
-      renderNotifList();
-    }
-
-    // Check for new blockers, tasks, Wayne items
-    function checkAndNotify(data, oldData) {
-      if (!data || !oldData) return;
-      const prefs = getNotifPrefs();
-      
-      // Check blockers
-      if (prefs.blockers) {
-        data.projects.forEach(p => {
-          const oldP = (oldData.projects || []).find(op => op.key === p.key);
-          const oldBlockers = oldP ? (oldP.blockers || []) : [];
-          (p.blockers || []).forEach(b => {
-            if (!oldBlockers.includes(b)) {
-              addNotif('🚫 Blocker Detected', `${p.name}: ${b.substring(0, 50)}`, 'blocker');
-            }
-          });
-        });
-      }
-      
-      // Check Wayne tasks (items in todo that need Wayne action)
-      if (prefs.wayne) {
-        const getWayneTasks = (projData) => {
-          const tasks = [];
-          (projData.projects || []).forEach(p => {
-            (p.todo || []).forEach(t => {
-              if (t.toLowerCase().includes('pilot') || t.toLowerCase().includes('onboard') || 
-                  t.toLowerCase().includes('approve') || t.toLowerCase().includes('auth') ||
-                  t.toLowerCase().includes('research') || t.toLowerCase().includes('direction') ||
-                  t.toLowerCase().includes('needs you') || t.toLowerCase().includes('preference')) {
-                tasks.push({ project: p.name, task: t });
-              }
-            });
-            (p.blockers || []).forEach(b => {
-              tasks.push({ project: p.name, task: b, isBlocker: true });
-            });
-          });
-          return tasks;
-        };
-        
-        const oldWayne = getWayneTasks(oldData);
-        const newWayne = getWayneTasks(data);
-        const oldTaskKeys = new Set(oldWayne.map(t => t.task.toLowerCase()));
-        newWayne.forEach(t => {
-          if (!oldTaskKeys.has(t.task.toLowerCase())) {
-            addNotif('👤 New Wayne Task', `${t.project.replace(/[^A-Z]/g, '')}: ${t.task.substring(0, 50)}`, 'wayne');
-          }
-        });
-      }
-    }
-
-    function getReadState() {
-      try { return JSON.parse(localStorage.getItem(READ_STATE_KEY) || '{}'); }
-      catch { return {}; }
-    }
-
-    function setReadState(state) {
-      localStorage.setItem(READ_STATE_KEY, JSON.stringify(state));
-    }
-
-    function getReadPrefs() {
-      try { return JSON.parse(localStorage.getItem(READ_PREFS_KEY) || '{"newOnly":false,"sort":"newest"}'); }
-      catch { return { newOnly: false, sort: 'newest' }; }
-    }
-
-    function setReadPrefs(prefs) {
-      localStorage.setItem(READ_PREFS_KEY, JSON.stringify(prefs));
-    }
-
-    function markRead(id) {
-      const state = getReadState();
-      state[id] = new Date().toISOString();
-      setReadState(state);
-      // renderReadQueue removed
-    }
-
-    function markAllRead() {
-      if (!cached) return;
-      const state = getReadState();
-      const now = new Date().toISOString();
-      (cached.readQueue || []).forEach(item => { state[item.id] = now; });
-      setReadState(state);
-      // renderReadQueue removed
-    }
-
-    function toggleNewOnly() {
-      const prefs = getReadPrefs();
-      prefs.newOnly = !prefs.newOnly;
-      setReadPrefs(prefs);
-      // renderReadQueue removed
-    }
-
-    function toggleSort() {
-      const prefs = getReadPrefs();
-      prefs.sort = prefs.sort === 'newest' ? 'alpha' : 'newest';
-      setReadPrefs(prefs);
-      // renderReadQueue removed
-    }
-
-    function toggleGroup(id) {
-      const header = document.getElementById('queue-header-' + id);
-      const el = document.getElementById('queue-items-' + id);
-      const chev = document.getElementById('queue-chev-' + id);
-      if (el.classList.contains('open')) {
-        el.classList.remove('open');
-        chev.classList.remove('open');
-        header.classList.add('collapsed');
-      } else {
-        el.classList.add('open');
-        chev.classList.add('open');
-        header.classList.remove('collapsed');
-      }
-    }
-
-    function calcProgress(p) {
-      const done = (p.done || []).length;
-      const todo = (p.todo || []).length;
-      const total = done + todo;
-      if (!total) return 0;
-      return Math.round((done / total) * 100);
-    }
-
-    function progressColor(pct) {
-      if (pct > 75) return '#00FF88';
-      if (pct >= 30) return '#FFB347';
-      return '#FF6B6B';
-    }
-
-    function itemRow(icon, text) {
-      return `<div class="item"><span class="badge">${icon}</span><span>${text}</span></div>`;
-    }
-
-    function toggleSection(sectionId, header) {
-      const content = header.nextElementSibling;
-      const isOpen = content.style.display === 'block';
-      content.style.display = isOpen ? 'none' : 'block';
-      header.classList.toggle('open', !isOpen);
-      header.querySelector('.collapsible-chevron').textContent = isOpen ? '▶' : '▼';
-      localStorage.setItem('mc-' + sectionId + '-open', !isOpen);
-    }
-
-    function renderTasksCompleted(data) {
-      const container = document.getElementById('tasksCompleted');
-      const today = new Date();
-      const todayStr = today.toISOString().split('T')[0];
-      const weekAgo = new Date(today);
-      weekAgo.setDate(weekAgo.getDate() - 7);
-      const weekStr = weekAgo.toISOString().split('T')[0];
-      
-      let todayCount = 0, weekCount = 0, totalCount = 0;
-      let todayTasks = [], weekTasks = [], olderTasks = [];
-      
-      (data.projects || []).forEach(p => {
-        (p.done || []).forEach(item => {
-          totalCount++;
-          const taskStr = typeof item === 'string' ? item : (item.task || '');
-          const completedAt = typeof item === 'object' ? (item.completedAt || '') : '';
-          
-          if (completedAt === todayStr) {
-            todayCount++;
-            weekCount++;
-            todayTasks.push(taskStr);
-          } else if (completedAt >= weekStr) {
-            weekCount++;
-            weekTasks.push(taskStr);
-          } else {
-            olderTasks.push(taskStr);
-          }
-        });
-      });
-      
-      const formatTasks = (tasks, title, color) => {
-        if (tasks.length === 0) return '';
-        return `<div style="margin-top:8px;">
-          <div style="font-size:11px;color:${color};margin-bottom:4px;">${title}</div>
-          ${tasks.slice(0, 10).map(t => `<div class="item" style="font-size:11px;padding:4px;">✓ ${t.substring(0, 50)}${t.length > 50 ? '...' : ''}</div>`).join('')}
-          ${tasks.length > 10 ? `<div style="font-size:10px;color:#64748b;padding:4px;">+${tasks.length - 10} more...</div>` : ''}
-        </div>`;
-      };
-      
-      container.innerHTML = `
-        <div class="Collapsible-header open" onclick="toggleCompletedDetails()">
-          <span class="Collapsible-title">✅ Completed</span>
-          <span class="Collapsible-chevron" style="color: #00FF88;">${totalCount} total</span>
-        </div>
-        <div class="Collapsible-content" style="display: block;">
-          <div class="qa-item" style="color: #00FF88; font-size: 12px; cursor:pointer;" onclick="event.stopPropagation();toggleCompletedDetails()">
-            📅 Today: ${todayCount} | 📆 This week: ${weekCount}
-          </div>
-          <div id="completed-details" style="display:none;">
-            ${formatTasks(todayTasks, '📅 TODAY', '#00FF88')}
-            ${formatTasks(weekTasks, '📆 THIS WEEK', '#FFB347')}
-            ${formatTasks(olderTasks, '📚 OLDER', '#64748b')}
-          </div>
-        </div>
-      `;
-    }
+    let currentFilter = 'all';
     
-    function toggleCompletedDetails() {
-      const el = document.getElementById('completed-details');
-      el.style.display = el.style.display === 'none' ? 'block' : 'none';
-    }
-
-    function renderQuickActions(data) {
-      const container = document.getElementById('quickActions');
-      const wayneTasks = [];
-      (data.projects || []).forEach(p => {
-        // Find tasks that need Wayne action
-        (p.todo || []).forEach(t => {
-          if (t.toLowerCase().includes('pilot') || t.toLowerCase().includes('onboard') || 
-              t.toLowerCase().includes('approve') || t.toLowerCase().includes('auth') ||
-              t.toLowerCase().includes('research') || t.toLowerCase().includes('direction') ||
-              t.toLowerCase().includes('needs you') || t.toLowerCase().includes('preference')) {
-            wayneTasks.push({ project: p.name, task: t });
-          }
-        });
-        // Also add blockers
-        (p.blockers || []).forEach(b => {
-          wayneTasks.push({ project: p.name, task: b, isBlocker: true });
-        });
+    // Project files mapping
+    const projectFiles = {
+      'autobookr_suite': [
+        {name: 'index.html', url: 'https://lil-ai-operator.github.io/autobookr-landing/'},
+        {name: 'pricing.html', url: 'https://lil-ai-operator.github.io/autobookr-landing/pricing.html'},
+        {name: 'faqs.md', url: 'https://lil-ai-operator.github.io/mobile-dashboard/generated/ops/autobookr-faqs.md'},
+        {name: 'sales-script.md', url: 'https://lil-ai-operator.github.io/mobile-dashboard/generated/ops/autobookr-sales-script.md'}
+      ],
+      'mission_control': [
+        {name: 'Dashboard', url: 'https://lil-ai-operator.github.io/mobile-dashboard/'},
+        {name: 'Data JSON', url: 'https://lil-ai-operator.github.io/mobile-dashboard/mission-control-data.json'}
+      ],
+      'system_backup': [],
+      'neuronet': [],
+      'aavegotchi_bot': [],
+      'etsy_business': [],
+      'clare_reiki': []
+    };
+    
+    function render() {
+      document.getElementById('lastUpdated').textContent = 'Updated: ' + new Date(cachedData.updatedAt).toLocaleString();
+      
+      // Stats
+      let green = 0, yellow = 0, red = 0, tasks = 0;
+      cachedData.projects.forEach(p => {
+        if(p.status === 'green') green++;
+        if(p.status === 'yellow') yellow++;
+        if(p.status === 'red') red++;
+        tasks += (p.done?.length || 0) + (p.todo?.length || 0);
       });
-
-      const isOpen = localStorage.getItem('mc-tasks-open') === 'true';
-      container.innerHTML = `
-        <div class="collapsible-header ${isOpen ? 'open' : ''}" onclick="toggleSection('tasks', this)">
-          <span class="collapsible-title">📋 Your Tasks</span>
-          <span class="collapsible-chevron">${isOpen ? '▼' : '▶'}</span>
-        </div>
-        <div class="collapsible-content" style="display: ${isOpen ? 'block' : 'none'}">
-          ${wayneTasks.length
-            ? wayneTasks.slice(0, 8).map(a => `<div class="qa-item"><span class="qa-tag">${a.isBlocker ? '🚫' : '▶️'} ${a.project.replace(/[^A-Z]/g, '')}:</span>${a.task.substring(0, 60)}${a.task.length > 60 ? '...' : ''}</div>`).join('')
-            : '<div class="qa-item">✅ All caught up! No tasks waiting on you.</div>'}
-        </div>
-      `;
-    }
-
-    function renderReadQueue(data) {
-      const container = document.getElementById('readQueue');
-      const state = getReadState();
-      const prefs = getReadPrefs();
-      const items = (data.readQueue || []).map(item => {
-        const readAt = state[item.id];
-        const isNew = !readAt || (item.updatedAt && new Date(item.updatedAt).getTime() > new Date(readAt).getTime());
-        return { ...item, isNew };
-      });
-
-      const unreadCount = items.filter(i => i.isNew).length;
-
-      let list = [...items];
-      if (prefs.newOnly) list = list.filter(i => i.isNew);
-      if (prefs.sort === 'newest') {
-        list.sort((a, b) => (new Date(b.updatedAt || 0).getTime()) - (new Date(a.updatedAt || 0).getTime()));
-      } else {
-        list.sort((a, b) => (a.title || '').localeCompare((b.title || '')));
-      }
-
-      const grouped = list.reduce((acc, item) => {
-        const g = item.group || 'Other';
-        if (!acc[g]) acc[g] = [];
-        acc[g].push(item);
-        return acc;
-      }, {});
-
-      const rows = Object.entries(grouped).map(([groupName, groupItems], idx) => {
-        const newCount = groupItems.filter(i => i.isNew).length;
-        const groupId = 'g' + idx;
-        const inner = groupItems.map(item => {
-          const href = item.url || item.path || '#';
-          const updated = item.updatedAt ? new Date(item.updatedAt).toLocaleString() : 'unknown';
-          const isImage = item.title.match(/\.(png|jpg|jpeg|gif)$/i);
-          const btnText = isImage ? 'View' : 'Open';
-          const btnHtml = isImage 
-            ? `<button class="queue-btn" data-url="${href}" onclick="openGalleryFromBtn(this)">${btnText}</button>`
-            : `<a class="queue-btn" href="${href}" target="_blank" rel="noopener" onclick="markRead('${item.id}')">${btnText}</a>`;
-          return `
-            <div class="queue-item">
-              <div class="queue-left">
-                <div class="queue-title">${item.title}</div>
-                <div class="queue-note">${item.note || ''}</div>
-                <div class="queue-tags">
-                  ${item.project ? `<span class="pill">${item.project}</span>` : ''}
-                  ${item.priority === 'high' ? '<span class="pill priority">HIGH</span>' : ''}
-                  ${item.isNew ? '<span class="pill new">NEW</span>' : ''}
-                  <span class="pill">${updated}</span>
+      
+      document.getElementById('statGreen').textContent = green;
+      document.getElementById('statYellow').textContent = yellow;
+      document.getElementById('statRed').textContent = red;
+      document.getElementById('statTasks').textContent = tasks;
+      
+      // Render projects
+      const container = document.getElementById('projectsContainer');
+      container.innerHTML = '';
+      
+      cachedData.projects.forEach((p, i) => {
+        if(currentFilter !== 'all' && p.status !== currentFilter) return;
+        
+        const doneCount = p.done?.length || 0;
+        const todoCount = p.todo?.length || 0;
+        const total = doneCount + todoCount;
+        const pct = total > 0 ? Math.round((doneCount / total) * 100) : 0;
+        
+        const files = projectFiles[p.key] || [];
+        const hasFiles = files.length > 0;
+        
+        if(currentFilter === 'files' && !hasFiles) return;
+        
+        let html = `
+          <div class="project-card" style="animation: fadeUp 0.4s ease-out ${i * 0.1}s both;">
+            <div class="project-header" onclick="toggleProject('${p.key}')">
+              <div class="project-info">
+                <div class="project-name">
+                  ${p.name}
+                  <span class="priority-tag priority-${p.priority}">${p.priority.toUpperCase()}</span>
                 </div>
+                <div class="project-summary">${p.summary}</div>
               </div>
-              ${btnHtml}
+              <div class="project-status status-${p.status}"></div>
             </div>
-          `;
-        }).join('');
-        return `
-          <div class="queue-group">
-            <div class="queue-header collapsed" id="queue-header-${groupId}" onclick="toggleGroup('${groupId}')">
-              <div class="queue-header-left">
-                <span class="queue-header-title">${groupName}</span>
-                ${newCount > 0 ? `<span class="queue-badge">${newCount}</span>` : ''}
+            <div class="project-progress">
+              <div class="progress-bar">
+                <div class="progress-fill ${p.status}" style="width: ${pct}%"></div>
               </div>
-              <span class="queue-chevron" id="queue-chev-${groupId}">▼</span>
+              <div class="progress-stats">
+                <span>${doneCount}/${total} tasks</span>
+                <span>${pct}%</span>
+              </div>
             </div>
-            <div class="queue-items" id="queue-items-${groupId}">${inner}</div>
-          </div>`;
-      }).join('');
-
-      // Files now in project folders - removed Files Hub
-      container.innerHTML = rows;
-    }
-
-    function render(data) {
-      cached = data;
-      const updatedEl = document.getElementById('updated');
-      const dt = data.updatedAt ? new Date(data.updatedAt) : new Date();
-      updatedEl.textContent = `Updated: ${dt.toLocaleString()}`;
-
-      
-      // renderReadQueue removed - files now in project folders
-
-      const list = document.getElementById('projectList');
-      list.innerHTML = '';
-
-      (data.projects || []).forEach((p, i) => {
-        const pct = calcProgress(p);
-        const color = progressColor(pct);
-
-        const card = document.createElement('div');
-        card.className = 'project-card';
-        card.style.animation = `fadeUp 0.4s ease-out ${i * 0.1}s both`;
-        card.innerHTML = `
-          <div class="project-header">
-            <div class="project-name">${p.name}</div>
-            <span class="status-dot ${p.status || 'yellow'}"></span>
-          </div>
-          <p class="summary">${p.summary || ''}</p>
-          <div class="track">
-            <div class="track-bg"><div class="track-fill" style="width:${pct}%; background:${color}"></div></div>
-            <div class="pct" style="color:${color}">${pct}%</div>
-          </div>
+            <div class="project-content" id="content-${p.key}">
         `;
-        card.onclick = () => openModal(p.key);
-        list.appendChild(card);
+        
+        // Blockers
+        if(p.blockers?.length) {
+          html += `<div class="content-section">
+            <div class="section-title">🚫 Blockers</div>
+            ${p.blockers.map(b => `<div class="blocker-item"><i class="fas fa-exclamation-circle"></i> ${b}</div>`).join('')}
+          </div>`;
+        }
+        
+        // Done tasks
+        if(p.done?.length) {
+          html += `<div class="content-section">
+            <div class="section-title" onclick="toggleSection(this)">✅ Done (${p.done.length}) <i class="fas fa-chevron-down"></i></div>
+            <div class="task-list">
+              ${p.done.map(t => `<div class="task-item done"><span class="task-status done">✓</span> ${typeof t === 'string' ? t : t.task}</div>`).join('')}
+            </div>
+          </div>`;
+        }
+        
+        // Todo tasks
+        if(p.todo?.length) {
+          html += `<div class="content-section">
+            <div class="section-title" onclick="toggleSection(this)">⬜ To Do (${p.todo.length}) <i class="fas fa-chevron-down"></i></div>
+            <div class="task-list">
+              ${p.todo.map(t => `<div class="task-item"><span class="task-status todo"></span> ${t}</div>`).join('')}
+            </div>
+          </div>`;
+        }
+        
+        // Files
+        if(hasFiles) {
+          html += `<div class="content-section">
+            <div class="section-title" onclick="toggleSection(this)">📁 Files (${files.length}) <i class="fas fa-chevron-down"></i></div>
+            <div class="files-grid">
+              ${files.map(f => `<a href="${f.url}" target="_blank" class="file-link"><i class="fas fa-file-alt"></i> ${f.name}</a>`).join('')}
+            </div>
+          </div>`;
+        }
+        
+        html += `</div></div>`;
+        container.innerHTML += html;
       });
     }
-
-    function openModal(key) {
-      if (!cached) return;
-      const p = (cached.projects || []).find(x => x.key === key);
-      if (!p) return;
-
-      // Get project links based on key
-      const projectLinks = {
-        'autobookr_suite': [
-          {label: '🌐 Landing', url: 'https://lil-ai-operator.github.io/autobookr-landing/'},
-          {label: '📱 Dashboard', url: 'https://lil-ai-operator.github.io/mobile-dashboard/'},
-        ],
-        'mission_control': [
-          {label: '🌐 Dashboard', url: 'https://lil-ai-operator.github.io/mobile-dashboard/'},
-          {label: '📊 Data JSON', url: 'https://lil-ai-operator.github.io/mobile-dashboard/mission-control-data.json'},
-        ],
-        'system_backup': [
-          {label: '📁 Backups', url: 'https://drive.google.com/drive/folders/1X8K4'},
-        ],
-        'neuronet': [
-          {label: '📖 Docs', url: 'https://github.com/lil-ai-operator/NeuroNetAgentTeam/tree/main/docs'},
-        ],
-        'divineflow': [
-          {label: '🌐 Website', url: 'https://lil-ai-operator.github.io/divineflow/'},
-        ],
-        'etsy_business': [
-          {label: '🎨 Designs', url: 'https://canva.com'},
-        ],
-        'aavegotchi_bot': [],
-        'aavegotchi': [],
-      };
-      
-      const links = projectLinks[p.key] || [];
-      const linksHtml = links.length ? links.map(l => `<a href="${l.url}" target="_blank" class="project-link">${l.label}</a>`).join('') : '<span style="color:#64748b;font-size:11px;">No links</span>';
-      
-      // Calculate progress
-      const doneCount = (p.done || []).length;
-      const todoCount = (p.todo || []).length;
-      const totalCount = doneCount + todoCount;
-      const pct = totalCount > 0 ? Math.round((doneCount / totalCount) * 100) : 0;
-      const color = pct > 75 ? '#00FF88' : pct >= 30 ? '#FFB347' : '#FF6B6B';
-      
-      // Get project files based on project key
-      const projectFilesMap = {
-        'autobookr_suite': [
-          // Landing pages
-          'index.html',
-          'pricing.html', 
-          'how-it-works.html',
-          'faq.html',
-          'results.html',
-          'brand-board.html',
-          'brand-style-guide.md',
-          // Generated ops docs
-          'generated/ops/autobookr-sales-script.md',
-          'generated/ops/autobookr-demo-script.md',
-          'generated/ops/autobookr-pilot-outreach.md',
-          'generated/ops/autobookr-faqs.md',
-          'generated/ops/autobookr-outreach-free-trial.md',
-          'generated/ops/autobookr-competitor-analysis.md',
-          // AutoBookr docs
-          'projects/AutoBookr/docs/outreach-email-templates.md',
-          'projects/AutoBookr/docs/trades-target-list.md',
-          'projects/AutoBookr/docs/followup-sequence.md',
-          'projects/AutoBookr/docs/BRAND_KIT_V1.md'
-        ],
-        'mission_control': ['index.html', 'mobile-dashboard.html'],
-        'system_backup': [],
-        'neuronet': [],
-        'aavegotchi_bot': [],
-        'etsy_business': [],
-        'clare_reiki': [],
-      };
-      
-      const knownFiles = projectFilesMap[p.key] || [];
-      const filesHtml = knownFiles.length 
-        ? knownFiles.map(f => {
-          let url;
-          // AutoBookr landing pages (HTML)
-          if (f === 'index.html' || f === 'pricing.html' || f === 'faq.html' || f === 'how-it-works.html' || f === 'results.html' || f === 'brand-board.html' || f === 'brand-style-guide.md') {
-            url = 'https://lil-ai-operator.github.io/autobookr-landing/' + f;
-          // Docs from generated/ops
-          } else if (f.startsWith('generated/ops/')) {
-            url = 'https://raw.githubusercontent.com/lil-ai-operator/mobile-dashboard/main/' + f;
-          // Docs from AutoBookr project
-          } else if (f.startsWith('projects/AutoBookr/')) {
-            url = 'https://raw.githubusercontent.com/lil-ai-operator/mobile-dashboard/main/' + f;
-          // Dashboard files
-          } else if (f === 'mobile-dashboard.html' || f === 'mission-control-data.json') {
-            url = 'https://lil-ai-operator.github.io/mobile-dashboard/' + f;
-          // Default
-          } else {
-            url = 'https://raw.githubusercontent.com/lil-ai-operator/mobile-dashboard/main/' + f;
-          }
-          return `<div class="project-file"><a href="${url}" target="_blank" style="color:#58a6ff;text-decoration:none;">📄 ${f.split('/').pop()}</a></div>`;
-        }).join('')
-        : '<span style="color:#64748b;font-size:11px;">No files tracked</span>';
-      
-      // Wayne's tasks for this project (from blockers + todo)
-      const wayneTasks = [...(p.blockers || []), ...(p.todo || [])].slice(0, 5);
-      const myTasksHtml = wayneTasks.length
-        ? wayneTasks.map(t => `<div class="task-item" style="color:#FFB347;">⏳ ${t.substring(0, 50)}${t.length > 50 ? '...' : ''}</div>`).join('')
-        : '<div class="task-item done">🎉 All caught up!</div>';
-      
-      // Today's tasks
-      const today = new Date().toISOString().split('T')[0];
-      const weekAgo = new Date();
-      weekAgo.setDate(weekAgo.getDate() - 7);
-      const weekStr = weekAgo.toISOString().split('T')[0];
-      
-      let todayCount = 0, weekCount = 0;
-      let todayTasks = [], weekTasks = [];
-      (p.done || []).forEach(item => {
-        const task = typeof item === 'object' ? item.task : item;
-        const completedAt = typeof item === 'object' ? (item.completedAt || '') : '';
-        if (completedAt === today) { 
-          todayCount++; 
-          weekCount++;
-          todayTasks.push(task);
-        }
-        else if (completedAt >= weekStr) { 
-          weekCount++;
-          weekTasks.push(task);
-        }
+    
+    function toggleProject(key) {
+      const content = document.getElementById('content-' + key);
+      content.classList.toggle('open');
+    }
+    
+    function toggleSection(el) {
+      el.classList.toggle('collapsed');
+      const list = el.nextElementSibling;
+      list.style.display = list.style.display === 'none' ? 'flex' : 'none';
+    }
+    
+    function setFilter(filter, tab) {
+      currentFilter = filter;
+      document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
+      tab.classList.add('active');
+      render();
+    }
+    
+    function filterProjects(query) {
+      query = query.toLowerCase();
+      document.querySelectorAll('.project-card').forEach(card => {
+        const text = card.textContent.toLowerCase();
+        card.style.display = text.includes(query) ? 'block' : 'none';
       });
-
-      // Format today's tasks for display
-      const todayTasksHtml = todayTasks.length > 0 
-        ? `<div style="margin-top:6px;max-height:80px;overflow-y:auto;">
-            ${todayTasks.slice(0,5).map(t => `<div class="task-item done" style="font-size:10px;">✓ ${t.substring(0,40)}${t.length>40?'...':''}</div>`).join('')}
-            ${todayTasks.length > 5 ? `<div style="font-size:9px;color:#64748b;">+${todayTasks.length-5} more</div>` : ''}
-           </div>`
-        : '';
-        
-      // Format this week's tasks for display  
-      const weekTasksHtml = weekTasks.length > 0
-        ? `<div style="margin-top:6px;max-height:80px;overflow-y:auto;">
-            ${weekTasks.slice(0,5).map(t => `<div class="task-item done" style="font-size:10px;color:#FFB347;">✓ ${t.substring(0,40)}${t.length>40?'...':''}</div>`).join('')}
-            ${weekTasks.length > 5 ? `<div style="font-size:9px;color:#64748b;">+${weekTasks.length-5} more</div>` : ''}
-           </div>`
-        : '';
-
-      document.getElementById('modal').innerHTML = `
-        <div class="modal-head">
-          <div class="modal-title">${p.name}</div>
-          <button class="close-btn" onclick="closeModal()">&times;</button>
-        </div>
-        
-        <!-- Progress -->
-        <div class="project-progress">
-          <div class="progress-label">📊 Progress: ${pct}%</div>
-          <div class="progress-bar"><div class="progress-fill" style="width:${pct}%;background:${color}"></div></div>
-          <div class="progress-stats">${doneCount} done | ${todoCount} to go</div>
-        </div>
-        
-        <!-- Stats with task names -->
-        <div class="project-stats" style="animation: fadeUp 0.4s ease-out 0.1s both;">
-          <div class="stat"><span class="stat-num" style="color:#00FF88">${todayCount}</span><span class="stat-label">Today</span></div>
-          <div class="stat"><span class="stat-num" style="color:#FFB347">${weekCount}</span><span class="stat-label">This Week</span></div>
-          <div class="stat"><span class="stat-num">${doneCount}</span><span class="stat-label">Total</span></div>
-        </div>
-        
-        <!-- Today's tasks inline -->
-        ${todayTasksHtml}
-        
-        <!-- This week's tasks inline -->
-        ${weekTasksHtml}
-        
-        <!-- Links -->
-        <div class="project-section" style="animation: fadeUp 0.4s ease-out 0.15s both;">
-          <div class="section-label">🔗 Links</div>
-          <div class="links-container">${linksHtml}</div>
-        </div>
-        
-        <!-- Files -->
-        <div class="task-section" style="animation: fadeUp 0.4s ease-out 0.2s both;">
-          <div class="task-header" onclick="toggleFiles('files-${p.key}')" style="cursor:pointer;background:linear-gradient(135deg,#1E293B,#2D1B4E);">
-            <span style="color:#58a6ff;">📁 Files (${knownFiles.length})</span>
-            <span class="chevron" id="files-${p.key}-icon">▶</span>
-          </div>
-          <div class="files-container" id="files-${p.key}" style="display:none;padding:8px 4px;">${filesHtml}</div>
-        </div>
-        
-        <!-- My Tasks -->
-        <div class="task-section" style="animation: fadeUp 0.4s ease-out 0.25s both;">
-          <div class="task-header" onclick="toggleSection('mytasks')">
-            <span style="color:#FFB347;">👤 My Tasks (${wayneTasks.length})</span>
-            <span class="chevron">▶</span>
-          </div>
-          <div class="task-list" id="mytasks-list" style="display:none;">
-            ${myTasksHtml}
-          </div>
-        </div>
-        
-        <!-- Done -->
-        <div class="task-section" style="animation: fadeUp 0.4s ease-out 0.3s both;">
-          <div class="task-header" onclick="toggleSection('done')">
-            <span>✅ Done (${doneCount})</span>
-            <span class="chevron">▶</span>
-          </div>
-          <div class="task-list" id="done-list" style="display:none;">
-            ${(p.done || []).slice(0, 20).map(t => {
-              const task = typeof t === 'string' ? t : t.task || '';
-              return `<div class="task-item done">✓ ${task.substring(0, 60)}${task.length > 60 ? '...' : ''}</div>`;
-            }).join('') || '<div class="task-item">None yet</div>'}
-          </div>
-        </div>
-        
-        <!-- To Do -->
-        <div class="task-section" style="animation: fadeUp 0.4s ease-out 0.45s both;">
-          <div class="task-header" onclick="toggleSection('todo')">
-            <span>⬜ To Do (${todoCount})</span>
-            <span class="chevron">▶</span>
-          </div>
-          <div class="task-list" id="todo-list" style="display:none;">
-            ${(p.todo || []).map(t => `<div class="task-item">○ ${t.substring(0, 60)}${t.length > 60 ? '...' : ''}</div>`).join('') || '<div class="task-item">All done! 🎉</div>'}
-          </div>
-        </div>
-        
-        <!-- Blockers -->
-        <div class="task-section" style="animation: fadeUp 0.4s ease-out 0.6s both;">
-          <div class="task-header" onclick="toggleSection('blockers')">
-            <span>🚫 Blockers (${(p.blockers || []).length})</span>
-            <span class="chevron">▶</span>
-          </div>
-          <div class="task-list" id="blockers-list" style="display:none;">
-            ${(p.blockers || []).map(t => `<div class="task-item blocker">⚠ ${t}</div>`).join('') || '<div class="task-item done">No blockers! ✅</div>'}
-          </div>
-        </div>
-      `;
-
-      document.getElementById('overlay').classList.add('active');
-      document.body.style.overflow = 'hidden';
     }
     
-    function toggleSection(id) {
-      const el = document.getElementById(id + '-list');
-      const isHidden = el.style.display === 'none';
-      el.style.display = isHidden ? 'block' : 'none';
-      // Animate the content when opening
-      if (isHidden) {
-        el.style.animation = 'scaleIn 0.3s ease-out';
-      }
-      // Rotate chevron
-      const header = el.previousElementSibling;
-      const chev = header.querySelector('.chevron');
-      chev.style.transform = isHidden ? 'rotate(90deg)' : 'rotate(0)';
-    }
-
-    function closeModal(e) {
-      if (e && e.target !== e.currentTarget) return;
-      document.getElementById('overlay').classList.remove('active');
-      document.body.style.overflow = '';
-    }
-
-    async function loadData(manual) {
-      const oldData = cached;
-      try {
-        // Try GitHub Pages first
-        let url = `https://lil-ai-operator.github.io/mobile-dashboard/mission-control-data.json`;
-        
-        const res = await fetch(url);
-        if (!res.ok) throw new Error('Failed');
-        const data = await res.json();
-        checkAndNotify(data, oldData);
-        render(data);
-        
-        // Also try raw GitHub as backup
-        fetch('https://raw.githubusercontent.com/lil-ai-operator/mobile-dashboard/main/mission-control-data.json')
-          .then(r => r.json())
-          .then(backupData => { 
-            if (backupData.updatedAt > data.updatedAt) {
-              checkAndNotify(backupData, oldData);
-              render(backupData);
-            }
-          })
-          .catch(() => {});
-      } catch (err) {
-        // Try backup URL
-        try {
-          const backup = await fetch('https://raw.githubusercontent.com/lil-ai-operator/mobile-dashboard/main/mission-control-data.json');
-          const data = await backup.json();
-          checkAndNotify(data, oldData);
-          render(data);
-        } catch (e) {
-          if (manual) alert('Could not load dashboard. Please try again.');
-        }
-      }
-    }
-
-    loadData(false);
-    initNotifs();
-    setInterval(() => loadData(false), 60000);
-
-    // Gallery swipe with touch gestures
-    let galleryImages = [], currentGalleryIndex = 0, touchStartX = 0;
-    
-    function openGalleryFromBtn(btn) {
-      const url = btn.getAttribute('data-url');
-      
-      galleryImages = [];
-      document.querySelectorAll('.queue-item').forEach(item => {
-        const titleEl = item.querySelector('.queue-title');
-        const btnEl = item.querySelector('.queue-btn');
-        if (titleEl && btnEl) {
-          const t = titleEl.textContent;
-          if (t.match(/\.(png|jpg|jpeg|gif)$/i)) {
-            const btnhref = btnEl.getAttribute('data-url') || btnEl.getAttribute('href');
-            if (btnhref && btnhref.startsWith('http')) {
-              galleryImages.push({ title: t, url: btnhref });
-            }
-          }
-        }
-      });
-      
-      currentGalleryIndex = galleryImages.findIndex(img => img.url === url);
-      if (currentGalleryIndex === -1) currentGalleryIndex = 0;
-      
-      if (galleryImages.length > 0) {
-        const modal = document.getElementById('gallery-modal');
-        modal.classList.add('active');
-        modal.ontouchstart = e => touchStartX = e.touches[0].clientX;
-        modal.ontouchend = e => {
-          const diff = touchStartX - e.changedTouches[0].clientX;
-          if (Math.abs(diff) > 50) diff > 0 ? nextGallery() : prevGallery();
-        };
-        updateGalleryImage();
-      }
+    function toggleSearch() {
+      const bar = document.getElementById('searchBar');
+      bar.style.display = bar.style.display === 'none' ? 'flex' : 'none';
+      if(bar.style.display === 'flex') bar.querySelector('input').focus();
     }
     
-    function updateGalleryImage() {
-      document.getElementById('gallery-img').src = galleryImages[currentGalleryIndex].url;
-      document.getElementById('gallery-counter').textContent = `${currentGalleryIndex + 1} / ${galleryImages.length}`;
+    function openSettings() {
+      document.getElementById('settingsModal').classList.add('open');
     }
     
-    function prevGallery() {
-      currentGalleryIndex = (currentGalleryIndex - 1 + galleryImages.length) % galleryImages.length;
-      updateGalleryImage();
+    function closeSettings() {
+      document.getElementById('settingsModal').classList.remove('open');
     }
-    function nextGallery() {
-      currentGalleryIndex = (currentGalleryIndex + 1) % galleryImages.length;
-      updateGalleryImage();
+    
+    function refreshData() {
+      render();
     }
-    function closeGallery() { document.getElementById('gallery-modal').classList.remove('active'); }
-  function toggleFiles(id) {
-      var el = document.getElementById(id);
-      var icon = document.getElementById(id + '-icon');
-      if (el.style.display === 'none') {
-        el.style.display = 'block';
-        icon.textContent = '▼';
-      } else {
-        el.style.display = 'none';
-        icon.textContent = '▶';
-      }
-    }</script>
-
-  <div class="gallery-full" id="gallery-modal" onclick="closeGallery()">
-    <button class="gallery-close" onclick="closeGallery()">×</button>
-    <img id="gallery-img" src="" style="touch-action: pan-y pinch-zoom;" />
-    <div class="gallery-counter" id="gallery-counter">1 / 1</div>
-    <div class="gallery-hint">← Swipe to browse →</div>
-  </div>
+    
+    // Close modal on outside click
+    document.getElementById('settingsModal').addEventListener('click', function(e) {
+      if(e.target === this) closeSettings();
+    });
+    
+    // Initial render
+    render();
+    
+    // Auto-refresh every 5 minutes
+    setInterval(refreshData, 300000);
+  </script>
 </body>
 </html>
-<!-- 2026-03-06 v7 - Added push notification system with bell icon, badge, and notification panel -->
