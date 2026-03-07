@@ -417,8 +417,22 @@
       const p = (cached.projects || []).find(x => x.key === key);
       if (!p) return;
 
-      const done = (p.done || []).map(t => itemRow('✅', t)).join('');
-      const todo = (p.todo || []).map(t => itemRow('⬜', t)).join('');
+      // Handle both string and object formats for tasks
+      const formatTask = (task) => {
+        if (typeof task === 'string') {
+          return itemRow('✅', task);
+        } else if (task && task.task) {
+          const taskText = task.task;
+          if (task.url) {
+            return `<div class="item"><span class="badge">✅</span><span><a href="${task.url}" target="_blank" style="color:#6ee7b7;text-decoration:underline;">${taskText}</a></span></div>`;
+          }
+          return itemRow('✅', taskText);
+        }
+        return '';
+      };
+
+      const done = (p.done || []).map(t => formatTask(t)).join('');
+      const todo = (p.todo || []).map(t => itemRow('⬜', typeof t === 'string' ? t : t.task || '')).join('');
       const blockers = (p.blockers || []).length
         ? (p.blockers || []).map(t => itemRow('🚫', t)).join('')
         : itemRow('✅', 'No active blockers');
