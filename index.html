@@ -73,7 +73,7 @@
     
     async function loadData(manual) {
       try {
-        const url = 'https://lil-ai-operator.github.io/mobile-dashboard/mission-control-data.json?t=' + Date.now();
+        const url = 'https://raw.githubusercontent.com/lil-ai-operator/mobile-dashboard/main/mission-control-data.json?t=' + Date.now();
         const res = await fetch(url, { cache: 'no-store' });
         if (!res.ok) throw new Error('Failed to load');
         cached = await res.json();
