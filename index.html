@@ -21,12 +21,7 @@
     
     .stats { display: flex; gap: 16px; font-size: 13px; color: #8b949e; margin-bottom: 8px; }
     .stat span { color: #fff; font-weight: 600; }
-    
     .summary { font-size: 14px; color: #8b949e; margin-bottom: 12px; line-height: 1.4; }
-    
-    .files { margin-top: 12px; }
-    .file-link { display: inline-block; background: #21262d; border: 1px solid #30363d; border-radius: 6px; padding: 6px 10px; margin: 0 6px 6px 0; font-size: 12px; color: #58a6ff; text-decoration: none; }
-    .file-link:hover { background: #30363d; }
     
     .blocker { background: #3d1f1f; border-left: 3px solid #ef4444; padding: 10px 12px; border-radius: 0 8px 8px 0; margin-top: 8px; font-size: 13px; }
     .blocker-label { color: #ef4444; font-weight: 600; margin-right: 6px; }
@@ -47,15 +42,12 @@
     .modal-task:last-child { border-bottom: none; }
     .modal-task a { color: #58a6ff; text-decoration: none; }
     .modal-task a:hover { text-decoration: underline; }
-    
-    .refresh { position: fixed; bottom: 20px; right: 20px; background: #238636; color: #fff; border: none; border-radius: 50%; width: 50px; height: 50px; font-size: 20px; cursor: pointer; box-shadow: 0 4px 12px rgba(0,0,0,0.3); }
   </style>
 </head>
 <body>
   <h1>🚀 Mission Control</h1>
-  <div class="updated" id="updated">Loading...</div>
+  <div class="updated" id="updated"></div>
   <div id="projects"></div>
-  <button class="refresh" onclick="loadData(true)">↻</button>
   
   <div class="modal" id="modal" onclick="closeModal(event)">
     <div class="modal-content" onclick="event.stopPropagation()">
@@ -69,28 +61,9 @@
   </div>
 
   <script>
-    let cached = null;
-    
-    async function loadData(manual) {
-      try {
-        const url = 'https://lil-ai-operator.github.io/mobile-dashboard/mission-control-data.json?t=' + Date.now();
-        console.log('Fetching:', url);
-        const res = await fetch(url, { cache: 'no-store' });
-        console.log('Response:', res.status, res.ok);
-        if (!res.ok) throw new Error('Failed to load: ' + res.status);
-        cached = await res.json();
-        console.log('Data loaded:', cached.projects?.length, 'projects');
-        render();
-      } catch (err) {
-        console.error('Load error:', err);
-        if (manual) alert('Could not load data: ' + err);
-        document.getElementById('updated').textContent = 'Error: ' + err.message;
-      }
-    }
-    
+    const cached = {"updatedAt": "2026-03-07T13:23:15Z", "projects": [{"key": "autobookr_suite", "name": "📞 AutoBookr Suite (App + Landing)", "status": "green", "summary": "Logical merge: app backend + public landing tracked together.", "done": [{"task": "Define product offer and pricing", "path": null, "url": null, "completedAt": "2026-03-07"}, {"task": "Create AutoBookr plan file (projects/AutoBookr/PLAN.md)", "path": "projects/AutoBookr/PLAN", "url": "https://github.com/lil-ai-operator/notification-service/blob/main/projects/AutoBookr/PLAN", "completedAt": "2026-03-07"}, {"task": "Build MVP skeleton/webhook endpoint", "path": null, "url": null, "completedAt": "2026-03-07"}, {"task": "Confirm deployment target (Render/Railway/Fly/VPS)", "path": null, "url": null, "completedAt": "2026-03-07"}, {"task": "Deploy app and verify health endpoint", "path": null, "url": null, "completedAt": "2026-03-07"}], "todo": ["First real pilot user onboarded", "5 paying users acquired", "Live URL stable"], "blockers": ["Manual live checkout/SMS verification"]}, {"key": "mission_control", "name": "🚀 Mission Control", "status": "green", "summary": "Mobile dashboard for live progress.", "done": [{"task": "Status cards layout created", "path": null, "url": null, "completedAt": "2026-03-07"}, {"task": "Publish live URL", "path": null, "url": null, "completedAt": "2026-03-07"}], "todo": ["Wayne can open one link and understand status in <30 seconds"], "blockers": []}, {"key": "system_backup", "name": "🛟 System Backup + Recovery", "status": "yellow", "summary": "Recovery safety net with local + offsite backup readiness.", "done": [{"task": "Local backup script working", "path": null, "url": null, "completedAt": "2026-03-07"}, {"task": "Google Drive selected", "path": null, "url": null, "completedAt": "2026-03-07"}], "todo": ["Complete Google Drive OAuth flow", "Run first offsite backup"], "blockers": ["OAuth flow pending"]}, {"key": "neuronet", "name": "🧠 NeuroNet Agent Team", "status": "green", "summary": "Specialized agent regions with contracts and routing.", "done": [{"task": "Draft regions", "path": null, "url": null, "completedAt": "2026-03-07"}, {"task": "Define handoff format", "path": null, "url": null, "completedAt": "2026-03-07"}], "todo": ["Approve final region architecture"], "blockers": []}, {"key": "aavegotchi_bot", "name": "👻 Aavegotchi Petting Bot", "status": "red", "summary": "Idea pipeline project.", "done": [], "todo": ["Chain/network + wallet handling model"], "blockers": ["Policy/compliance approval needed"]}, {"key": "etsy_business", "name": "🛍️ Etsy Business", "status": "red", "summary": "Idea pipeline project.", "done": [], "todo": ["Product niche to target first"], "blockers": ["Niche + direction needed"]}, {"key": "clare_reiki", "name": "✨ Clare Reiki/Spiritual Business", "status": "red", "summary": "Idea pipeline project.", "done": [], "todo": ["Exact service menu + pricing"], "blockers": ["Service/package preferences needed"]}]};
+
     function render() {
-      if (!cached) return;
-      
       document.getElementById('updated').textContent = 'Updated: ' + new Date(cached.updatedAt).toLocaleString();
       
       const container = document.getElementById('projects');
@@ -101,19 +74,7 @@
         const todo = p.todo?.length || 0;
         const blockers = p.blockers?.length || 0;
         
-        // Get file/task links
-        let filesHtml = '';
-        const tasks = p.done?.slice(0, 5) || [];
-        for (const task of tasks) {
-          const taskText = typeof task === 'string' ? task : task.task || '';
-          if (task.url || task.path) {
-            const url = task.url || '#';
-            const name = taskText.substring(0, 30) + (taskText.length > 30 ? '...' : '');
-            filesHtml += '<a class="file-link" href="' + url + '" target="_blank">' + name + '</a>';
-          }
-        }
-        
-        let html = '<div class="project" onclick="openModal(\\'' + p.key + '\\')">';
+        let html = '<div class="project" onclick="openModal(\'' + p.key + '\')">';
         html += '<div class="project-header">';
         html += '<span class="project-name">' + p.name + '</span>';
         html += '<div class="status-dot ' + p.status + '"></div></div>';
@@ -123,10 +84,6 @@
         if (blockers > 0) html += '<div class="stat" style="color:#ef4444;"><span>' + blockers + '</span> blockers</div>';
         html += '</div>';
         html += '<div class="summary">' + (p.summary || '') + '</div>';
-        
-        if (filesHtml) {
-          html += '<div class="files">' + filesHtml + '</div>';
-        }
         
         if (blockers > 0) {
           html += '<div class="blocker"><span class="blocker-label">⚠️</span>' + p.blockers[0] + '</div>';
@@ -138,7 +95,6 @@
     }
     
     function openModal(key) {
-      if (!cached) return;
       const p = cached.projects.find(x => x.key === key);
       if (!p) return;
       
@@ -147,10 +103,9 @@
       
       let html = '';
       
-      // Done
       html += '<div class="section-title section-done">✅ Done (' + (p.done?.length || 0) + ')</div>';
       for (const task of (p.done || [])) {
-        const taskText = typeof task === 'string' ? task : task.task || '';
+        const taskText = task.task || task;
         if (task.url) {
           html += '<div class="modal-task">✅ <a href="' + task.url + '" target="_blank">' + taskText + '</a></div>';
         } else {
@@ -158,14 +113,12 @@
         }
       }
       
-      // Todo
       html += '<div class="section-title section-todo">⬜ To Do (' + (p.todo?.length || 0) + ')</div>';
       for (const task of (p.todo || [])) {
-        const taskText = typeof task === 'string' ? task : task.task || '';
+        const taskText = task.task || task;
         html += '<div class="modal-task">⬜ ' + taskText + '</div>';
       }
       
-      // Blockers
       if (p.blockers?.length) {
         html += '<div class="section-title section-blocker">🚫 Blockers (' + p.blockers.length + ')</div>';
         for (const task of p.blockers) {
@@ -184,8 +137,7 @@
       document.body.style.overflow = '';
     }
     
-    loadData(false);
-    setInterval(() => loadData(false), 120000);
+    render();
   </script>
 </body>
 </html>
