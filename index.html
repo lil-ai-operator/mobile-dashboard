@@ -1,7 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Mission Control</title>
   <style>
@@ -42,12 +44,15 @@
     .modal-task:last-child { border-bottom: none; }
     .modal-task a { color: #58a6ff; text-decoration: none; }
     .modal-task a:hover { text-decoration: underline; }
+    
+    .refresh { position: fixed; bottom: 20px; right: 20px; background: #238636; color: #fff; border: none; border-radius: 50%; width: 50px; height: 50px; font-size: 20px; cursor: pointer; box-shadow: 0 4px 12px rgba(0,0,0,0.3); }
   </style>
 </head>
 <body>
   <h1>🚀 Mission Control</h1>
   <div class="updated" id="updated"></div>
   <div id="projects"></div>
+  <button class="refresh" onclick="location.reload()">↻</button>
   
   <div class="modal" id="modal" onclick="closeModal(event)">
     <div class="modal-content" onclick="event.stopPropagation()">
