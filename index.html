@@ -199,6 +199,7 @@
     
     .files-container { background: #1E293B; border: 1px solid #334155; border-radius: 8px; padding: 8px; max-height: 100px; overflow-y: auto; }
     .project-file { font-size: 11px; color: #94a3b8; padding: 4px 0; border-bottom: 1px solid #334155; }
+    .project-file a:hover { color: #79c0ff; text-decoration: underline; }
     .project-file:last-child { border-bottom: none; }
     
     .task-section { margin-bottom: 10px; }
@@ -763,7 +764,7 @@
       
       const knownFiles = projectFilesMap[p.key] || [];
       const filesHtml = knownFiles.length 
-        ? knownFiles.map(f => `<div class="project-file">📄 ${f}</div>`).join('')
+        ? knownFiles.map(f => `<div class="project-file"><a href="https://github.com/lil-ai-operator/notification-service/blob/main/${f}" target="_blank" style="color:#58a6ff;text-decoration:none;">📄 ${f}</a></div>`).join('')
         : '<span style="color:#64748b;font-size:11px;">No files tracked</span>';
       
       // Wayne's tasks for this project (from blockers + todo)
