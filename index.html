@@ -247,8 +247,8 @@
   </div>
   <p class="hint">Auto-updates every 60s • Tap a project for full tasks <button class="notif-enable-btn" id="enableNotifBtn" onclick="requestNotifPerm()">🔔 Enable Notifications</button></p>
 
-  <div class="section" id="tasksCompleted"></div>
-  <div class="section" id="quickActions"></div>
+  <!-- <div class="section" id="tasksCompleted"></div> -->
+  <!-- <div class="section" id="quickActions"></div> -->
   <!--   <div class="section" id="readQueue"></div> -->
   <div id="projectList"></div>
 
@@ -683,7 +683,7 @@
       const dt = data.updatedAt ? new Date(data.updatedAt) : new Date();
       updatedEl.textContent = `Updated: ${dt.toLocaleString()}`;
 
-      renderTasksCompleted(data);
+      
       // renderReadQueue removed - files now in project folders
 
       const list = document.getElementById('projectList');
