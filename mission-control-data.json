@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-03-07T12:13:38Z",
+  "updatedAt": "2026-03-07T12:15:23Z",
   "projects": [
     {
       "key": "autobookr_suite",
@@ -7,31 +7,156 @@
       "status": "green",
       "summary": "Logical merge: app backend + public landing tracked together.",
       "done": [
-        "Define product offer and pricing",
-        "Create AutoBookr plan file (`projects/AutoBookr/PLAN.md`)",
-        "Build MVP skeleton/webhook endpoint",
-        "Confirm deployment target (Render/Railway/Fly/VPS)",
-        "Deploy app and verify health endpoint (verified locally 2026-02-26)",
-        "Get Twilio credentials (Account SID, Auth Token, phone number)",
-        "Configure Twilio env vars in deployment (.env verified 2026-02-27 - CREDS_SET)",
-        "Set Twilio webhook URL for missed-call + SMS flow",
-        "Implement + verify SMS auto-reply logic (code path wired)",
-        "Test: missed call triggers correct SMS in live deploy (UNBLOCKED 2026-02-27 - credentials verified)",
-        "Get Stripe secret key + webhook secret",
-        "Create products/prices: Starter £19 monthly, Growth £49 monthly, Pro £99 monthly",
-        "Build checkout links/pages (plan-mapped checkout wired)",
-        "Add Stripe webhook for subscription status",
-        "Test: successful payment updates customer to active (UNBLOCKED 2026-02-27 - credentials verified)",
-        "Add customer onboarding form (name, trade, phone, area)",
-        "Store customer config safely",
-        "Add simple dashboard: calls/SMS activity",
-        "Add basic error handling + retry policy",
-        "End-to-end test: call -> SMS -> signup -> active status (UNBLOCKED 2026-02-27 - credentials verified, code ready)",
-        "Add simple support/runbook notes (created 2026-02-27)",
-        "Publish live URL and quick-start guide",
-        "Landing site published",
-        "Landing animations + dark mode added",
-        "Mobile nav alignment fixes pushed"
+        {
+          "task": "Define product offer and pricing",
+          "path": null,
+          "url": null,
+          "completedAt": "2026-03-07"
+        },
+        {
+          "task": "Create AutoBookr plan file (`projects/AutoBookr/PLAN.md`)",
+          "path": "projects/AutoBookr/PLAN",
+          "url": "https://raw.githubusercontent.com/lil-ai-operator/notification-service/main/projects/AutoBookr/PLAN",
+          "completedAt": "2026-03-07"
+        },
+        {
+          "task": "Build MVP skeleton/webhook endpoint",
+          "path": null,
+          "url": null,
+          "completedAt": "2026-03-07"
+        },
+        {
+          "task": "Confirm deployment target (Render/Railway/Fly/VPS)",
+          "path": null,
+          "url": null,
+          "completedAt": "2026-03-07"
+        },
+        {
+          "task": "Deploy app and verify health endpoint (verified locally 2026-02-26)",
+          "path": null,
+          "url": null,
+          "completedAt": "2026-03-07"
+        },
+        {
+          "task": "Get Twilio credentials (Account SID, Auth Token, phone number)",
+          "path": null,
+          "url": null,
+          "completedAt": "2026-03-07"
+        },
+        {
+          "task": "Configure Twilio env vars in deployment (.env verified 2026-02-27 - CREDS_SET)",
+          "path": null,
+          "url": null,
+          "completedAt": "2026-03-07"
+        },
+        {
+          "task": "Set Twilio webhook URL for missed-call + SMS flow",
+          "path": null,
+          "url": null,
+          "completedAt": "2026-03-07"
+        },
+        {
+          "task": "Implement + verify SMS auto-reply logic (code path wired)",
+          "path": null,
+          "url": null,
+          "completedAt": "2026-03-07"
+        },
+        {
+          "task": "Test: missed call triggers correct SMS in live deploy (UNBLOCKED 2026-02-27 - credentials verified)",
+          "path": null,
+          "url": null,
+          "completedAt": "2026-03-07"
+        },
+        {
+          "task": "Get Stripe secret key + webhook secret",
+          "path": null,
+          "url": null,
+          "completedAt": "2026-03-07"
+        },
+        {
+          "task": "Create products/prices: Starter £19 monthly, Growth £49 monthly, Pro £99 monthly",
+          "path": null,
+          "url": null,
+          "completedAt": "2026-03-07"
+        },
+        {
+          "task": "Build checkout links/pages (plan-mapped checkout wired)",
+          "path": null,
+          "url": null,
+          "completedAt": "2026-03-07"
+        },
+        {
+          "task": "Add Stripe webhook for subscription status",
+          "path": null,
+          "url": null,
+          "completedAt": "2026-03-07"
+        },
+        {
+          "task": "Test: successful payment updates customer to active (UNBLOCKED 2026-02-27 - credentials verified)",
+          "path": null,
+          "url": null,
+          "completedAt": "2026-03-07"
+        },
+        {
+          "task": "Add customer onboarding form (name, trade, phone, area)",
+          "path": null,
+          "url": null,
+          "completedAt": "2026-03-07"
+        },
+        {
+          "task": "Store customer config safely",
+          "path": null,
+          "url": null,
+          "completedAt": "2026-03-07"
+        },
+        {
+          "task": "Add simple dashboard: calls/SMS activity",
+          "path": null,
+          "url": null,
+          "completedAt": "2026-03-07"
+        },
+        {
+          "task": "Add basic error handling + retry policy",
+          "path": null,
+          "url": null,
+          "completedAt": "2026-03-07"
+        },
+        {
+          "task": "End-to-end test: call -> SMS -> signup -> active status (UNBLOCKED 2026-02-27 - credentials verified, code ready)",
+          "path": null,
+          "url": null,
+          "completedAt": "2026-03-07"
+        },
+        {
+          "task": "Add simple support/runbook notes (created 2026-02-27)",
+          "path": null,
+          "url": null,
+          "completedAt": "2026-03-07"
+        },
+        {
+          "task": "Publish live URL and quick-start guide",
+          "path": null,
+          "url": null,
+          "completedAt": "2026-03-07"
+        },
+        {
+          "task": "Landing site published",
+          "path": null,
+          "url": null,
+          "completedAt": "2026-03-07"
+        },
+        {
+          "task": "Landing animations + dark mode added",
+          "path": null,
+          "url": null,
+          "completedAt": "2026-03-07"
+        },
+        {
+          "task": "Mobile nav alignment fixes pushed",
+          "path": null,
+          "url": null,
+          "completedAt": "2026-03-07"
+        }
       ],
       "todo": [
         "First real pilot user onboarded",
@@ -50,17 +175,72 @@
       "status": "green",
       "summary": "Mobile dashboard for live progress, blockers, and tasks.",
       "done": [
-        "Status cards layout created",
-        "Last updated timestamp added",
-        "Core project sections added",
-        "Key artifact links added",
-        "Approve publish mode (GitHub Pages / static link)",
-        "Publish live URL",
-        "Add link to Telegram pinned reference",
-        "Confirm page loads cleanly on mobile",
-        "Define auto-refresh/update method",
-        "Ensure status fields map to real source files",
-        "Add blocker summary and top 3 next actions"
+        {
+          "task": "Status cards layout created",
+          "path": null,
+          "url": null,
+          "completedAt": "2026-03-07"
+        },
+        {
+          "task": "Last updated timestamp added",
+          "path": null,
+          "url": null,
+          "completedAt": "2026-03-07"
+        },
+        {
+          "task": "Core project sections added",
+          "path": null,
+          "url": null,
+          "completedAt": "2026-03-07"
+        },
+        {
+          "task": "Key artifact links added",
+          "path": null,
+          "url": null,
+          "completedAt": "2026-03-07"
+        },
+        {
+          "task": "Approve publish mode (GitHub Pages / static link)",
+          "path": null,
+          "url": null,
+          "completedAt": "2026-03-07"
+        },
+        {
+          "task": "Publish live URL",
+          "path": null,
+          "url": null,
+          "completedAt": "2026-03-07"
+        },
+        {
+          "task": "Add link to Telegram pinned reference",
+          "path": null,
+          "url": null,
+          "completedAt": "2026-03-07"
+        },
+        {
+          "task": "Confirm page loads cleanly on mobile",
+          "path": null,
+          "url": null,
+          "completedAt": "2026-03-07"
+        },
+        {
+          "task": "Define auto-refresh/update method",
+          "path": null,
+          "url": null,
+          "completedAt": "2026-03-07"
+        },
+        {
+          "task": "Ensure status fields map to real source files",
+          "path": null,
+          "url": null,
+          "completedAt": "2026-03-07"
+        },
+        {
+          "task": "Add blocker summary and top 3 next actions",
+          "path": null,
+          "url": null,
+          "completedAt": "2026-03-07"
+        }
       ],
       "todo": [
         "Wayne can open one link and understand status in <30 seconds",
@@ -74,12 +254,42 @@
       "status": "yellow",
       "summary": "Recovery safety net with local + offsite backup readiness.",
       "done": [
-        "Local backup script working",
-        "Rolling retention (4 backups)",
-        "Restore guide created",
-        "Restore test completed successfully",
-        "A) Google Drive",
-        "Configure chosen destination script"
+        {
+          "task": "Local backup script working",
+          "path": null,
+          "url": null,
+          "completedAt": "2026-03-07"
+        },
+        {
+          "task": "Rolling retention (4 backups)",
+          "path": null,
+          "url": null,
+          "completedAt": "2026-03-07"
+        },
+        {
+          "task": "Restore guide created",
+          "path": null,
+          "url": null,
+          "completedAt": "2026-03-07"
+        },
+        {
+          "task": "Restore test completed successfully",
+          "path": null,
+          "url": null,
+          "completedAt": "2026-03-07"
+        },
+        {
+          "task": "A) Google Drive",
+          "path": null,
+          "url": null,
+          "completedAt": "2026-03-07"
+        },
+        {
+          "task": "Configure chosen destination script",
+          "path": null,
+          "url": null,
+          "completedAt": "2026-03-07"
+        }
       ],
       "todo": [
         "Choose destination:",
@@ -103,19 +313,84 @@
       "status": "green",
       "summary": "Specialized agent regions with contracts and routing.",
       "done": [
-        "Draft regions:",
-        "Creativity Lab",
-        "Marketing Ops",
-        "Research Ops",
-        "Build Ops",
-        "Risk & QA",
-        "Assign default model per region",
-        "Assign fallback model per region",
-        "Define cost-first rules for routine work",
-        "Define escalation rules for complex work",
-        "Define when region should be used",
-        "Define handoff format between regions",
-        "Add region prompts/checklists"
+        {
+          "task": "Draft regions:",
+          "path": null,
+          "url": null,
+          "completedAt": "2026-03-07"
+        },
+        {
+          "task": "Creativity Lab",
+          "path": null,
+          "url": null,
+          "completedAt": "2026-03-07"
+        },
+        {
+          "task": "Marketing Ops",
+          "path": null,
+          "url": null,
+          "completedAt": "2026-03-07"
+        },
+        {
+          "task": "Research Ops",
+          "path": null,
+          "url": null,
+          "completedAt": "2026-03-07"
+        },
+        {
+          "task": "Build Ops",
+          "path": null,
+          "url": null,
+          "completedAt": "2026-03-07"
+        },
+        {
+          "task": "Risk & QA",
+          "path": null,
+          "url": null,
+          "completedAt": "2026-03-07"
+        },
+        {
+          "task": "Assign default model per region",
+          "path": null,
+          "url": null,
+          "completedAt": "2026-03-07"
+        },
+        {
+          "task": "Assign fallback model per region",
+          "path": null,
+          "url": null,
+          "completedAt": "2026-03-07"
+        },
+        {
+          "task": "Define cost-first rules for routine work",
+          "path": null,
+          "url": null,
+          "completedAt": "2026-03-07"
+        },
+        {
+          "task": "Define escalation rules for complex work",
+          "path": null,
+          "url": null,
+          "completedAt": "2026-03-07"
+        },
+        {
+          "task": "Define when region should be used",
+          "path": null,
+          "url": null,
+          "completedAt": "2026-03-07"
+        },
+        {
+          "task": "Define handoff format between regions",
+          "path": null,
+          "url": null,
+          "completedAt": "2026-03-07"
+        },
+        {
+          "task": "Add region prompts/checklists",
+          "path": null,
+          "url": null,
+          "completedAt": "2026-03-07"
+        }
       ],
       "todo": [
         "Approve final region architecture",
