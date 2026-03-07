@@ -1,815 +1,174 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
-  <meta http-equiv="Pragma" content="no-cache" />
-  <meta http-equiv="Expires" content="0" />
-  <title>Mission Control - Mobile</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mission Control</title>
   <style>
-    /* Animations */
-    @keyframes pulse-green {
-      0%, 100% { box-shadow: 0 0 5px #00FF88; }
-      50% { box-shadow: 0 0 20px #00FF88, 0 0 30px #00FF88; }
-    }
-    @keyframes float {
-      0%, 100% { transform: translateY(0px); }
-      50% { transform: translateY(-5px); }
-    }
-    @keyframes glow-border {
-      0%, 100% { border-color: #00FF88; }
-      50% { border-color: #8B5CF6; }
-    }
-    @keyframes slide-in {
-      from { opacity: 0; transform: translateX(-20px); }
-      to { opacity: 1; transform: translateX(0); }
-    }
-    @keyframes fade-in {
-      from { opacity: 0; }
-      to { opacity: 1; }
-    }
-    @keyframes spin-slow {
-      from { transform: rotate(0deg); }
-      to { transform: rotate(360deg); }
-    }
-    
     * { box-sizing: border-box; margin: 0; padding: 0; }
-    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: linear-gradient(135deg, #0D0D0D 0%, #1A1A2E 100%); color: #e2e8f0; padding: 16px; min-height: 100vh; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #0d1117; color: #e6edf3; padding: 16px; min-height: 100vh; }
+    h1 { font-size: 24px; margin-bottom: 16px; color: #fff; }
+    .updated { font-size: 12px; color: #8b949e; margin-bottom: 20px; }
     
-    /* Header with avatar */
-    .mc-header { display: flex; align-items: center; gap: 12px; margin-bottom: 8px; animation: slide-in 0.5s ease-out; }
-    .mc-avatar { width: 48px; height: 48px; border-radius: 50%; background: linear-gradient(135deg, #00FF88 0%, #8B5CF6 100%); display: flex; align-items: center; justify-content: center; font-size: 24px; flex-shrink: 0; overflow: hidden; animation: float 3s ease-in-out infinite; border: 2px solid #00FF88; }
-    .status-dot.green { background: #00FF88; animation: pulse-green 2s infinite; }
-    .status-dot.yellow { background: #FFB347; }
-    .status-dot.red { background: #FF6B6B; }
-    .mc-title h1 { font-size: 20px; margin-bottom: 2px; color: #fff; }
+    .project { background: #161b22; border-radius: 12px; padding: 16px; margin-bottom: 12px; cursor: pointer; transition: transform 0.1s; }
+    .project:active { transform: scale(0.98); }
+    .project-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+    .project-name { font-size: 18px; font-weight: 700; color: #fff; }
+    .status-dot { width: 12px; height: 12px; border-radius: 50%; }
+    .green { background: #22c55e; box-shadow: 0 0 10px #22c55e; }
+    .yellow { background: #eab308; box-shadow: 0 0 10px #eab308; }
+    .red { background: #ef4444; box-shadow: 0 0 10px #ef4444; }
     
-    h1 { font-size: 20px; margin-bottom: 6px; color: #fff; }
-    .timestamp { font-size: 12px; color: #00FF88; margin-bottom: 10px; animation: fade-in 0.5s ease-out; }
-    .hint { font-size: 12px; color: #64748b; margin-bottom: 14px; }
-
-    .section { background: #1E293B; border: 1px solid #00FF88; border-radius: 12px; padding: 12px; margin-bottom: 12px; animation: fade-in 0.5s ease-out; animation-fill-mode: both; }
-    .section:nth-child(2) { animation-delay: 0.1s; }
-    .section:nth-child(3) { animation-delay: 0.2s; }
-    .section:nth-child(4) { animation-delay: 0.3s; }
-    .section h2 { font-size: 13px; margin-bottom: 8px; color: #00FF88; }
+    .stats { display: flex; gap: 16px; font-size: 13px; color: #8b949e; margin-bottom: 8px; }
+    .stat span { color: #fff; font-weight: 600; }
     
-    /* Collapsible sections */
-    .collapsible-header { display: flex; justify-content: space-between; align-items: center; padding: 12px 14px; background: linear-gradient(135deg, #1E293B 0%, #2D1B4E 100%); border: 1px solid #00FF88; border-radius: 10px; cursor: pointer; margin-bottom: 8px; transition: all 0.3s ease; animation: glow-border 3s infinite; }
-    .collapsible-header:hover { background: linear-gradient(135deg, #2D1B4E 0%, #3D2B5E 100%); transform: scale(1.02); }
-    .collapsible-header:hover { background: linear-gradient(135deg, #2D1B4E 0%, #3D2B5E 100%); }
-    .collapsible-title { font-size: 14px; font-weight: 600; color: #fff; }
-    .collapsible-chevron { font-size: 12px; color: #94a3b8; }
-    .collapsible-content { margin-bottom: 8px; }
-    .qa-item { font-size: 12px; color: #cbd5e1; padding: 6px 0; border-bottom: 1px solid #334155; }
-    .qa-item:last-child { border-bottom: none; }
-    .qa-tag { color: #94a3b8; margin-right: 6px; }
-
-    .queue-top { display: flex; justify-content: space-between; align-items: center; gap: 8px; margin-bottom: 8px; flex-wrap: wrap; }
-    .queue-meta { font-size: 11px; color: #94a3b8; }
-    .queue-controls { display: flex; gap: 6px; }
-    .mini-btn { border: 1px solid #475569; background: #0f172a; color: #cbd5e1; border-radius: 999px; padding: 5px 9px; font-size: 10px; cursor: pointer; }
-    .mini-btn.active { border-color: #00FF88; color: #00FF88; }
-    .queue-group { margin-top: 8px; }
-    .queue-group-title { font-size: 11px; color: #00FF88; letter-spacing: .4px; text-transform: uppercase; margin: 8px 0; }
-    .queue-header { display: flex; justify-content: space-between; align-items: center; padding: 10px 12px; background: linear-gradient(135deg, #1E293B 0%, #2D1B4E 100%); border: 1px solid #00FF88; border-radius: 10px; margin-bottom: 6px; cursor: pointer; transition: all 0.3s ease; }
-    .queue-header:active { background: linear-gradient(135deg, #2D1B4E 0%, #4D3B6E 100%); }
-    .queue-header.collapsed .queue-chevron { transform: rotate(-90deg); }
-    .queue-items { display: none; padding: 0 4px; }
-    .queue-items.open { display: block; }
-    .queue-header-left { display: flex; align-items: center; gap: 8px; }
-    .queue-header-title { font-size: 13px; color: #fff; font-weight: 600; }
-    .queue-badge { font-size: 10px; background: #00FF88; color: #0D0D0D; border-radius: 999px; padding: 2px 6px; font-weight: 700; }
-    .queue-chevron { font-size: 12px; color: #64748b; transition: transform 0.2s; }
-    .queue-chevron.open { transform: rotate(180deg); }
-    .queue-item { display: flex; justify-content: space-between; gap: 8px; align-items: center; border: 1px solid #00FF88; border-radius: 8px; padding: 8px; margin-bottom: 6px; background: #1E293B; transition: all 0.3s ease; animation: slide-in 0.3s ease-out; }
-    .queue-item:hover { border-color: #00FF88; box-shadow: 0 0 15px rgba(0,255,136,0.2); transform: translateX(5px); }
-    .queue-item:last-child { margin-bottom: 0; }
-    .queue-left { min-width: 0; }
-    .queue-title { font-size: 12px; color: #fff; font-weight: 600; line-height: 1.3; }
-    .queue-note { font-size: 10px; color: #94a3b8; margin-top: 2px; }
-    .queue-tags { display: flex; gap: 4px; margin-top: 4px; flex-wrap: wrap; }
-    .pill { font-size: 9px; border-radius: 999px; padding: 2px 5px; border: 1px solid #8B5CF6; color: #8B5CF6; }
-    .pill.new { background: #0D0D0D; border-color: #00FF88; color: #00FF88; font-weight: 700; }
-    .pill.priority { background: #2D1B4E; border-color: #FF6B6B; color: #FF6B6B; }
-    .queue-btn { border: 1px solid #00FF88; border-radius: 6px; background: #00FF88; color: #0D0D0D; text-decoration: none; font-size: 11px; padding: 6px 8px; white-space: nowrap; font-weight: 600; }
-
-    .project-card { background: linear-gradient(135deg, #1E293B 0%, #2D1B4E 100%); border: 2px solid #00FF88; border-radius: 12px; padding: 14px; margin-bottom: 12px; cursor: pointer; transition: all 0.3s ease; }
-    .project-card:hover { border-color: #00FF88; transform: scale(1.03); box-shadow: 0 0 20px rgba(0,255,136,0.3); }
-    .project-header { display: flex; justify-content: space-between; gap: 8px; align-items: center; margin-bottom: 8px; }
-    .project-name { font-size: 15px; font-weight: 700; color: #fff; }
-    .status-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
-    .green { background: #00FF88; box-shadow: 0 0 8px #00FF88; }
-    .yellow { background: #FFB347; box-shadow: 0 0 8px #FFB347; }
-    .red { background: #FF6B6B; box-shadow: 0 0 8px #FF6B6B; }
-    .summary { font-size: 12px; color: #94a3b8; margin-bottom: 8px; }
-    .track { display: flex; align-items: center; gap: 8px; }
-    .track-bg { flex: 1; height: 7px; background: #334155; border-radius: 8px; overflow: hidden; border: 1px solid #8B5CF6; }
-    .track-fill { height: 100%; border-radius: 8px; }
-    .pct { min-width: 40px; text-align: right; font-size: 12px; font-weight: 700; }
-
-    .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,.9); z-index: 50; overflow-y: auto; padding: 18px; }
-    .modal-overlay.active { display: block; animation: fadeIn 0.3s ease-out; }
-    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-    .modal { max-width: 450px; margin: 10px auto 30px; background: linear-gradient(135deg, #1E293B 0%, #2D1B4E 100%); border: 2px solid #00FF88; border-radius: 14px; padding: 16px; animation: slide-in 0.3s ease-out; }
-    .modal-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
-    .modal-title { font-size: 17px; font-weight: 700; color: #fff; }
-    .close-btn { background: none; border: none; color: #00FF88; font-size: 24px; line-height: 1; cursor: pointer; }
-    h3 { font-size: 12px; text-transform: uppercase; letter-spacing: .5px; margin: 14px 0 8px; color: #94a3b8; }
-    .done-h { color: #00FF88; font-size: 14px; margin: 16px 0 8px; cursor: pointer; display: flex; align-items: center; gap: 6px; }
-    .done-h:hover { text-shadow: 0 0 10px #00FF88; }
-    .todo-h { color: #FFB347; font-size: 14px; margin: 16px 0 8px; }
-    .block-h { color: #FF6B6B; font-size: 14px; margin: 16px 0 8px; }
+    .summary { font-size: 14px; color: #8b949e; margin-bottom: 12px; line-height: 1.4; }
     
-    /* Enhanced Modal Styles */
-    @keyframes modalPop {
-      0% { opacity: 0; transform: scale(0.8) translateY(20px); }
-      50% { transform: scale(1.05) translateY(-5px); }
-      100% { opacity: 1; transform: scale(1) translateY(0); }
-    }
-    @keyframes modalSlide {
-      0% { opacity: 0; transform: translateX(-50px); }
-      100% { opacity: 1; transform: translateX(0); }
-    }
-    @keyframes borderGlow {
-      0%, 100% { border-color: #00FF88; box-shadow: 0 0 20px rgba(0,255,136,0.3); }
-      50% { border-color: #8B5CF6; box-shadow: 0 0 30px rgba(139,92,246,0.4); }
-    }
-    @keyframes scaleIn {
-      0% { opacity: 0; transform: scale(0.9); }
-      100% { opacity: 1; transform: scale(1); }
-    }
-    @keyframes fadeUp {
-      0% { opacity: 0; transform: translateY(10px); }
-      100% { opacity: 1; transform: translateY(0); }
-    }
-    @keyframes spinIn {
-      0% { opacity: 0; transform: rotate(-10deg) scale(0.8); }
-      100% { opacity: 1; transform: rotate(0) scale(1); }
-    }
+    .blocker { background: #3d1f1f; border-left: 3px solid #ef4444; padding: 10px 12px; border-radius: 0 8px 8px 0; margin-top: 8px; font-size: 13px; }
+    .blocker-label { color: #ef4444; font-weight: 600; margin-right: 6px; }
     
-    .modal { max-width: 450px; margin: 10px auto 30px; background: linear-gradient(135deg, #1E293B 0%, #2D1B4E 100%); border: 2px solid #00FF88; border-radius: 14px; padding: 16px; animation: modalPop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), borderGlow 2s infinite; }
+    .tasks { margin-top: 12px; }
+    .task { font-size: 13px; color: #8b949e; padding: 6px 0; border-bottom: 1px solid #21262d; }
+    .task:last-child { border-bottom: none; }
+    .task-done { color: #238636; }
+    .task-todo { color: #eab308; }
+    .task-link { color: #58a6ff; text-decoration: none; }
+    .task-link:hover { text-decoration: underline; }
     
-    .project-progress { background: linear-gradient(135deg, #1E293B 0%, #2D1B4E 100%); border: 1px solid #00FF88; border-radius: 10px; padding: 14px; margin-bottom: 12px; animation: fadeUp 0.4s ease-out 0.1s both; }
-    .progress-label { font-size: 13px; font-weight: 600; color: #fff; margin-bottom: 8px; }
-    .progress-bar { height: 8px; background: #334155; border-radius: 4px; overflow: hidden; }
-    .progress-fill { height: 100%; border-radius: 4px; transition: width 0.5s ease; }
-    .progress-stats { font-size: 11px; color: #94a3b8; margin-top: 6px; }
+    .modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.9); z-index: 100; overflow-y: auto; padding: 20px; }
+    .modal.active { display: block; }
+    .modal-content { max-width: 600px; margin: 0 auto; background: #161b22; border-radius: 16px; padding: 20px; }
+    .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
+    .modal-title { font-size: 22px; font-weight: 700; color: #fff; }
+    .close-btn { background: none; border: none; color: #8b949e; font-size: 28px; cursor: pointer; }
     
-    .project-stats { display: flex; gap: 12px; margin-bottom: 12px; }
-    .stat { flex: 1; text-align: center; background: #1E293B; border: 1px solid #334155; border-radius: 8px; padding: 10px; }
-    .stat-num { display: block; font-size: 20px; font-weight: 700; }
-    .stat-label { font-size: 10px; color: #64748b; text-transform: uppercase; }
+    .section-title { font-size: 12px; text-transform: uppercase; letter-spacing: 1px; color: #8b949e; margin: 16px 0 8px; }
+    .section-done { color: #238636; }
+    .section-todo { color: #eab308; }
+    .section-blocker { color: #ef4444; }
     
-    .project-section { margin-bottom: 12px; }
-    .section-label { font-size: 11px; color: #00FF88; text-transform: uppercase; margin-bottom: 6px; }
-    .links-container { display: flex; gap: 8px; flex-wrap: wrap; }
-    .project-link { background: linear-gradient(135deg, #00FF88 0%, #00CC6A 100%); color: #0D0D0D; padding: 8px 12px; border-radius: 6px; text-decoration: none; font-size: 12px; font-weight: 600; }
-    .project-link:hover { transform: scale(1.05); }
+    .modal-task { padding: 8px 0; border-bottom: 1px solid #21262d; font-size: 14px; }
+    .modal-task:last-child { border-bottom: none; }
+    .modal-task a { color: #58a6ff; text-decoration: none; }
+    .modal-task a:hover { text-decoration: underline; }
     
-    .files-container { background: #1E293B; border: 1px solid #334155; border-radius: 8px; padding: 8px; max-height: 100px; overflow-y: auto; }
-    .project-file { font-size: 11px; color: #94a3b8; padding: 4px 0; border-bottom: 1px solid #334155; }
-    .project-file:last-child { border-bottom: none; }
-    
-    .task-section { margin-bottom: 10px; }
-    .task-header { background: linear-gradient(135deg, #1E293B 0%, #2D1B4E 100%); border: 1px solid #00FF88; border-radius: 8px; padding: 10px 12px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; font-size: 13px; font-weight: 600; }
-    .task-header .chevron { font-size: 10px; transition: transform 0.3s ease; display: inline-block; }
-    .task-list { background: #1E293B; border: 1px solid #334155; border-top: none; border-radius: 0 0 8px 8px; padding: 8px; max-height: 150px; overflow-y: auto; }
-    .task-item { font-size: 12px; color: #94a3b8; padding: 5px 0; border-bottom: 1px solid #334155; }
-    .task-item:last-child { border-bottom: none; }
-    .task-item.done { color: #00FF88; }
-    .task-item.blocker { color: #FF6B6B; }
-    .item { font-size: 13px; border-bottom: 1px solid #334155; padding: 7px 0; display: flex; gap: 8px; background: rgba(0,255,136,0.03); border-radius: 6px; margin-bottom: 4px; transition: all 0.2s; }
-    .item:hover { border-color: #00FF88; background: rgba(0,255,136,0.08); }
-    .item:last-child { border-bottom: none; }
-    .badge { width: 18px; text-align: center; flex-shrink: 0; }
-
-    .refresh-pill { position: fixed; right: 16px; bottom: 16px; border: 1px solid #3b82f6; background: #1d4ed8; color: #fff; border-radius: 999px; padding: 10px 14px; font-size: 12px; cursor: pointer; }
-
-    /* Gallery swipe */
-    .gallery-full { display: none; position: fixed; inset: 0; background: #000; z-index: 100; }
-    .gallery-full.active { display: flex; align-items: center; justify-content: center; }
-    .gallery-full img { max-width: 95%; max-height: 90%; object-fit: contain; touch-action: pan-y; }
-    .gallery-nav { display: none; }
-    .gallery-close { position: absolute; top: 16px; right: 16px; background: rgba(0,0,0,0.6); border: none; color: #fff; font-size: 24px; width: 44px; height: 44px; border-radius: 50%; cursor: pointer; z-index: 10; }
-    .gallery-counter { position: absolute; bottom: 24px; left: 50%; transform: translateX(-50%); color: #fff; font-size: 14px; background: rgba(0,0,0,0.6); padding: 8px 20px; border-radius: 20px; font-weight: 600; }
-    .gallery-hint { position: absolute; bottom: 60px; left: 50%; transform: translateX(-50%); color: rgba(255,255,255,0.6); font-size: 12px; }
+    .refresh { position: fixed; bottom: 20px; right: 20px; background: #238636; color: #fff; border: none; border-radius: 50%; width: 50px; height: 50px; font-size: 20px; cursor: pointer; box-shadow: 0 4px 12px rgba(0,0,0,0.3); }
   </style>
 </head>
 <body>
-  <div class="mc-header">
-    <div class="mc-avatar" id="mc-avatar"><img src="01_PEPE4-export.gif" style="width:100%;height:100%;border-radius:50%;object-fit:cover;"></div>
-    <div class="mc-title">
-      <h1>🚀 Mission Control</h1>
-      <p class="timestamp" id="updated">Updated: loading…</p>
+  <h1>🚀 Mission Control</h1>
+  <div class="updated" id="updated">Loading...</div>
+  <div id="projects"></div>
+  <button class="refresh" onclick="loadData(true)">↻</button>
+  
+  <div class="modal" id="modal" onclick="closeModal(event)">
+    <div class="modal-content" onclick="event.stopPropagation()">
+      <div class="modal-header">
+        <div class="modal-title" id="modalTitle"></div>
+        <button class="close-btn" onclick="closeModal()">×</button>
+      </div>
+      <div class="summary" id="modalSummary"></div>
+      <div id="modalBody"></div>
     </div>
   </div>
-  <p class="hint">Auto-updates every 60s • Tap a project for full tasks</p>
-
-  <div class="section" id="tasksCompleted"></div>
-  <div class="section" id="quickActions"></div>
-  <!--   <div class="section" id="readQueue"></div> -->
-  <div id="projectList"></div>
-
-  <div class="modal-overlay" id="overlay" onclick="closeModal(event)">
-    <div class="modal" id="modal"></div>
-  </div>
-
-
 
   <script>
-    const READ_STATE_KEY = 'mc-read-state-v1';
-    const READ_PREFS_KEY = 'mc-read-prefs-v1';
     let cached = null;
-
-    function getReadState() {
-      try { return JSON.parse(localStorage.getItem(READ_STATE_KEY) || '{}'); }
-      catch { return {}; }
-    }
-
-    function setReadState(state) {
-      localStorage.setItem(READ_STATE_KEY, JSON.stringify(state));
-    }
-
-    function getReadPrefs() {
-      try { return JSON.parse(localStorage.getItem(READ_PREFS_KEY) || '{"newOnly":false,"sort":"newest"}'); }
-      catch { return { newOnly: false, sort: 'newest' }; }
-    }
-
-    function setReadPrefs(prefs) {
-      localStorage.setItem(READ_PREFS_KEY, JSON.stringify(prefs));
-    }
-
-    function markRead(id) {
-      const state = getReadState();
-      state[id] = new Date().toISOString();
-      setReadState(state);
-      // renderReadQueue removed
-    }
-
-    function markAllRead() {
-      if (!cached) return;
-      const state = getReadState();
-      const now = new Date().toISOString();
-      (cached.readQueue || []).forEach(item => { state[item.id] = now; });
-      setReadState(state);
-      // renderReadQueue removed
-    }
-
-    function toggleNewOnly() {
-      const prefs = getReadPrefs();
-      prefs.newOnly = !prefs.newOnly;
-      setReadPrefs(prefs);
-      // renderReadQueue removed
-    }
-
-    function toggleSort() {
-      const prefs = getReadPrefs();
-      prefs.sort = prefs.sort === 'newest' ? 'alpha' : 'newest';
-      setReadPrefs(prefs);
-      // renderReadQueue removed
-    }
-
-    function toggleGroup(id) {
-      const header = document.getElementById('queue-header-' + id);
-      const el = document.getElementById('queue-items-' + id);
-      const chev = document.getElementById('queue-chev-' + id);
-      if (el.classList.contains('open')) {
-        el.classList.remove('open');
-        chev.classList.remove('open');
-        header.classList.add('collapsed');
-      } else {
-        el.classList.add('open');
-        chev.classList.add('open');
-        header.classList.remove('collapsed');
+    
+    async function loadData(manual) {
+      try {
+        const url = 'https://lil-ai-operator.github.io/mobile-dashboard/mission-control-data.json?t=' + Date.now();
+        const res = await fetch(url, { cache: 'no-store' });
+        if (!res.ok) throw new Error('Failed to load');
+        cached = await res.json();
+        render();
+      } catch (err) {
+        if (manual) alert('Could not load data');
       }
-    }
-
-    function calcProgress(p) {
-      const done = (p.done || []).length;
-      const todo = (p.todo || []).length;
-      const total = done + todo;
-      if (!total) return 0;
-      return Math.round((done / total) * 100);
-    }
-
-    function progressColor(pct) {
-      if (pct > 75) return '#00FF88';
-      if (pct >= 30) return '#FFB347';
-      return '#FF6B6B';
-    }
-
-    function itemRow(icon, text) {
-      return `<div class="item"><span class="badge">${icon}</span><span>${text}</span></div>`;
-    }
-
-    function toggleSection(sectionId, header) {
-      const content = header.nextElementSibling;
-      const isOpen = content.style.display === 'block';
-      content.style.display = isOpen ? 'none' : 'block';
-      header.classList.toggle('open', !isOpen);
-      header.querySelector('.collapsible-chevron').textContent = isOpen ? '▶' : '▼';
-      localStorage.setItem('mc-' + sectionId + '-open', !isOpen);
-    }
-
-    function renderTasksCompleted(data) {
-      const container = document.getElementById('tasksCompleted');
-      const today = new Date();
-      const todayStr = today.toISOString().split('T')[0];
-      const weekAgo = new Date(today);
-      weekAgo.setDate(weekAgo.getDate() - 7);
-      const weekStr = weekAgo.toISOString().split('T')[0];
-      
-      let todayCount = 0, weekCount = 0, totalCount = 0;
-      let todayTasks = [], weekTasks = [], olderTasks = [];
-      
-      (data.projects || []).forEach(p => {
-        (p.done || []).forEach(item => {
-          totalCount++;
-          const taskStr = typeof item === 'string' ? item : (item.task || '');
-          const completedAt = typeof item === 'object' ? (item.completedAt || '') : '';
-          
-          if (completedAt === todayStr) {
-            todayCount++;
-            weekCount++;
-            todayTasks.push(taskStr);
-          } else if (completedAt >= weekStr) {
-            weekCount++;
-            weekTasks.push(taskStr);
-          } else {
-            olderTasks.push(taskStr);
-          }
-        });
-      });
-      
-      const formatTasks = (tasks, title, color) => {
-        if (tasks.length === 0) return '';
-        return `<div style="margin-top:8px;">
-          <div style="font-size:11px;color:${color};margin-bottom:4px;">${title}</div>
-          ${tasks.slice(0, 10).map(t => `<div class="item" style="font-size:11px;padding:4px;">✓ ${t.substring(0, 50)}${t.length > 50 ? '...' : ''}</div>`).join('')}
-          ${tasks.length > 10 ? `<div style="font-size:10px;color:#64748b;padding:4px;">+${tasks.length - 10} more...</div>` : ''}
-        </div>`;
-      };
-      
-      container.innerHTML = `
-        <div class="Collapsible-header open" onclick="toggleCompletedDetails()">
-          <span class="Collapsible-title">✅ Completed</span>
-          <span class="Collapsible-chevron" style="color: #00FF88;">${totalCount} total</span>
-        </div>
-        <div class="Collapsible-content" style="display: block;">
-          <div class="qa-item" style="color: #00FF88; font-size: 12px; cursor:pointer;" onclick="event.stopPropagation();toggleCompletedDetails()">
-            📅 Today: ${todayCount} | 📆 This week: ${weekCount}
-          </div>
-          <div id="completed-details" style="display:none;">
-            ${formatTasks(todayTasks, '📅 TODAY', '#00FF88')}
-            ${formatTasks(weekTasks, '📆 THIS WEEK', '#FFB347')}
-            ${formatTasks(olderTasks, '📚 OLDER', '#64748b')}
-          </div>
-        </div>
-      `;
     }
     
-    function toggleCompletedDetails() {
-      const el = document.getElementById('completed-details');
-      el.style.display = el.style.display === 'none' ? 'block' : 'none';
-    }
-
-    function renderQuickActions(data) {
-      const container = document.getElementById('quickActions');
-      const wayneTasks = [];
-      (data.projects || []).forEach(p => {
-        // Find tasks that need Wayne action
-        (p.todo || []).forEach(t => {
-          if (t.toLowerCase().includes('pilot') || t.toLowerCase().includes('onboard') || 
-              t.toLowerCase().includes('approve') || t.toLowerCase().includes('auth') ||
-              t.toLowerCase().includes('research') || t.toLowerCase().includes('direction') ||
-              t.toLowerCase().includes('needs you') || t.toLowerCase().includes('preference')) {
-            wayneTasks.push({ project: p.name, task: t });
-          }
-        });
-        // Also add blockers
-        (p.blockers || []).forEach(b => {
-          wayneTasks.push({ project: p.name, task: b, isBlocker: true });
-        });
-      });
-
-      const isOpen = localStorage.getItem('mc-tasks-open') === 'true';
-      container.innerHTML = `
-        <div class="collapsible-header ${isOpen ? 'open' : ''}" onclick="toggleSection('tasks', this)">
-          <span class="collapsible-title">📋 Your Tasks</span>
-          <span class="collapsible-chevron">${isOpen ? '▼' : '▶'}</span>
-        </div>
-        <div class="collapsible-content" style="display: ${isOpen ? 'block' : 'none'}">
-          ${wayneTasks.length
-            ? wayneTasks.slice(0, 8).map(a => `<div class="qa-item"><span class="qa-tag">${a.isBlocker ? '🚫' : '▶️'} ${a.project.replace(/[^A-Z]/g, '')}:</span>${a.task.substring(0, 60)}${a.task.length > 60 ? '...' : ''}</div>`).join('')
-            : '<div class="qa-item">✅ All caught up! No tasks waiting on you.</div>'}
-        </div>
-      `;
-    }
-
-    function renderReadQueue(data) {
-      const container = document.getElementById('readQueue');
-      const state = getReadState();
-      const prefs = getReadPrefs();
-      const items = (data.readQueue || []).map(item => {
-        const readAt = state[item.id];
-        const isNew = !readAt || (item.updatedAt && new Date(item.updatedAt).getTime() > new Date(readAt).getTime());
-        return { ...item, isNew };
-      });
-
-      const unreadCount = items.filter(i => i.isNew).length;
-
-      let list = [...items];
-      if (prefs.newOnly) list = list.filter(i => i.isNew);
-      if (prefs.sort === 'newest') {
-        list.sort((a, b) => (new Date(b.updatedAt || 0).getTime()) - (new Date(a.updatedAt || 0).getTime()));
-      } else {
-        list.sort((a, b) => (a.title || '').localeCompare((b.title || '')));
+    function render() {
+      if (!cached) return;
+      
+      document.getElementById('updated').textContent = 'Updated: ' + new Date(cached.updatedAt).toLocaleString();
+      
+      const container = document.getElementById('projects');
+      container.innerHTML = '';
+      
+      for (const p of cached.projects) {
+        const done = p.done?.length || 0;
+        const todo = p.todo?.length || 0;
+        const blockers = p.blockers?.length || 0;
+        
+        let html = '<div class="project" onclick="openModal(\\'' + p.key + '\\')">';
+        html += '<div class="project-header">';
+        html += '<span class="project-name">' + p.name + '</span>';
+        html += '<div class="status-dot ' + p.status + '"></div></div>';
+        html += '<div class="stats">';
+        html += '<div class="stat"><span>' + done + '</span> done</div>';
+        html += '<div class="stat"><span>' + todo + '</span> todo</div>';
+        if (blockers > 0) html += '<div class="stat" style="color:#ef4444;"><span>' + blockers + '</span> blockers</div>';
+        html += '</div>';
+        html += '<div class="summary">' + (p.summary || '') + '</div>';
+        
+        if (blockers > 0) {
+          html += '<div class="blocker"><span class="blocker-label">⚠️</span>' + p.blockers[0] + '</div>';
+        }
+        
+        html += '</div>';
+        container.innerHTML += html;
       }
-
-      const grouped = list.reduce((acc, item) => {
-        const g = item.group || 'Other';
-        if (!acc[g]) acc[g] = [];
-        acc[g].push(item);
-        return acc;
-      }, {});
-
-      const rows = Object.entries(grouped).map(([groupName, groupItems], idx) => {
-        const newCount = groupItems.filter(i => i.isNew).length;
-        const groupId = 'g' + idx;
-        const inner = groupItems.map(item => {
-          const href = item.url || item.path || '#';
-          const updated = item.updatedAt ? new Date(item.updatedAt).toLocaleString() : 'unknown';
-          const isImage = item.title.match(/\.(png|jpg|jpeg|gif)$/i);
-          const btnText = isImage ? 'View' : 'Open';
-          const btnHtml = isImage 
-            ? `<button class="queue-btn" data-url="${href}" onclick="openGalleryFromBtn(this)">${btnText}</button>`
-            : `<a class="queue-btn" href="${href}" target="_blank" rel="noopener" onclick="markRead('${item.id}')">${btnText}</a>`;
-          return `
-            <div class="queue-item">
-              <div class="queue-left">
-                <div class="queue-title">${item.title}</div>
-                <div class="queue-note">${item.note || ''}</div>
-                <div class="queue-tags">
-                  ${item.project ? `<span class="pill">${item.project}</span>` : ''}
-                  ${item.priority === 'high' ? '<span class="pill priority">HIGH</span>' : ''}
-                  ${item.isNew ? '<span class="pill new">NEW</span>' : ''}
-                  <span class="pill">${updated}</span>
-                </div>
-              </div>
-              ${btnHtml}
-            </div>
-          `;
-        }).join('');
-        return `
-          <div class="queue-group">
-            <div class="queue-header collapsed" id="queue-header-${groupId}" onclick="toggleGroup('${groupId}')">
-              <div class="queue-header-left">
-                <span class="queue-header-title">${groupName}</span>
-                ${newCount > 0 ? `<span class="queue-badge">${newCount}</span>` : ''}
-              </div>
-              <span class="queue-chevron" id="queue-chev-${groupId}">▼</span>
-            </div>
-            <div class="queue-items" id="queue-items-${groupId}">${inner}</div>
-          </div>`;
-      }).join('');
-
-      // Files now in project folders - removed Files Hub
-      container.innerHTML = rows;
     }
-
-    function render(data) {
-      cached = data;
-      const updatedEl = document.getElementById('updated');
-      const dt = data.updatedAt ? new Date(data.updatedAt) : new Date();
-      updatedEl.textContent = `Updated: ${dt.toLocaleString()}`;
-
-      renderTasksCompleted(data);
-      // renderReadQueue removed - files now in project folders
-
-      const list = document.getElementById('projectList');
-      list.innerHTML = '';
-
-      (data.projects || []).forEach((p, i) => {
-        const pct = calcProgress(p);
-        const color = progressColor(pct);
-
-        const card = document.createElement('div');
-        card.className = 'project-card';
-        card.style.animation = `fadeUp 0.4s ease-out ${i * 0.1}s both`;
-        card.innerHTML = `
-          <div class="project-header">
-            <div class="project-name">${p.name}</div>
-            <span class="status-dot ${p.status || 'yellow'}"></span>
-          </div>
-          <p class="summary">${p.summary || ''}</p>
-          <div class="track">
-            <div class="track-bg"><div class="track-fill" style="width:${pct}%; background:${color}"></div></div>
-            <div class="pct" style="color:${color}">${pct}%</div>
-          </div>
-        `;
-        card.onclick = () => openModal(p.key);
-        list.appendChild(card);
-      });
-    }
-
+    
     function openModal(key) {
       if (!cached) return;
-      const p = (cached.projects || []).find(x => x.key === key);
+      const p = cached.projects.find(x => x.key === key);
       if (!p) return;
-
-      // Get project links based on key
-      const projectLinks = {
-        'autobookr_suite': [
-          {label: '🌐 Landing', url: 'https://lil-ai-operator.github.io/autobookr-landing/'},
-          {label: '📱 Dashboard', url: 'https://lil-ai-operator.github.io/mobile-dashboard/'},
-        ],
-        'mission_control': [
-          {label: '🌐 Dashboard', url: 'https://lil-ai-operator.github.io/mobile-dashboard/'},
-          {label: '📊 Data JSON', url: 'https://lil-ai-operator.github.io/mobile-dashboard/mission-control-data.json'},
-        ],
-        'system_backup': [
-          {label: '📁 Backups', url: 'https://drive.google.com/drive/folders/1X8K4'},
-        ],
-        'neuronet': [
-          {label: '📖 Docs', url: 'https://github.com/lil-ai-operator/NeuroNetAgentTeam/tree/main/docs'},
-        ],
-        'divineflow': [
-          {label: '🌐 Website', url: 'https://lil-ai-operator.github.io/divineflow/'},
-        ],
-        'etsy_business': [
-          {label: '🎨 Designs', url: 'https://canva.com'},
-        ],
-        'aavegotchi_bot': [],
-        'aavegotchi': [],
-      };
       
-      const links = projectLinks[p.key] || [];
-      const linksHtml = links.length ? links.map(l => `<a href="${l.url}" target="_blank" class="project-link">${l.label}</a>`).join('') : '<span style="color:#64748b;font-size:11px;">No links</span>';
+      document.getElementById('modalTitle').textContent = p.name;
+      document.getElementById('modalSummary').textContent = p.summary || '';
       
-      // Calculate progress
-      const doneCount = (p.done || []).length;
-      const todoCount = (p.todo || []).length;
-      const totalCount = doneCount + todoCount;
-      const pct = totalCount > 0 ? Math.round((doneCount / totalCount) * 100) : 0;
-      const color = pct > 75 ? '#00FF88' : pct >= 30 ? '#FFB347' : '#FF6B6B';
+      let html = '';
       
-      // Get project files based on project key
-      const projectFilesMap = {
-        'autobookr_suite': ['brand-style-guide.md', 'brand-board.html', 'brand-compare.html', 'competitor-report.md', 'PLAN.md', 'RUNBOOK.md', 'index.html'],
-        'mission_control': ['mission-control-data.json', 'index.html', 'generated/ops/mission-control.md'],
-        'system_backup': ['scripts/backup*.sh', 'README.md'],
-        'neuronet': ['handoff-protocol.md', 'region-*.md', 'docs/'],
-      };
-      
-      const knownFiles = projectFilesMap[p.key] || [];
-      const filesHtml = knownFiles.length 
-        ? knownFiles.map(f => `<div class="project-file">📄 ${f}</div>`).join('')
-        : '<span style="color:#64748b;font-size:11px;">No files tracked</span>';
-      
-      // Wayne's tasks for this project (from blockers + todo)
-      const wayneTasks = [...(p.blockers || []), ...(p.todo || [])].slice(0, 5);
-      const myTasksHtml = wayneTasks.length
-        ? wayneTasks.map(t => `<div class="task-item" style="color:#FFB347;">⏳ ${t.substring(0, 50)}${t.length > 50 ? '...' : ''}</div>`).join('')
-        : '<div class="task-item done">🎉 All caught up!</div>';
-      
-      // Today's tasks
-      const today = new Date().toISOString().split('T')[0];
-      const weekAgo = new Date();
-      weekAgo.setDate(weekAgo.getDate() - 7);
-      const weekStr = weekAgo.toISOString().split('T')[0];
-      
-      let todayCount = 0, weekCount = 0;
-      let todayTasks = [], weekTasks = [];
-      (p.done || []).forEach(item => {
-        const task = typeof item === 'object' ? item.task : item;
-        const completedAt = typeof item === 'object' ? (item.completedAt || '') : '';
-        if (completedAt === today) { 
-          todayCount++; 
-          weekCount++;
-          todayTasks.push(task);
+      // Done
+      html += '<div class="section-title section-done">✅ Done (' + (p.done?.length || 0) + ')</div>';
+      for (const task of (p.done || [])) {
+        const taskText = typeof task === 'string' ? task : task.task || '';
+        if (task.url) {
+          html += '<div class="modal-task">✅ <a href="' + task.url + '" target="_blank">' + taskText + '</a></div>';
+        } else {
+          html += '<div class="modal-task">✅ ' + taskText + '</div>';
         }
-        else if (completedAt >= weekStr) { 
-          weekCount++;
-          weekTasks.push(task);
+      }
+      
+      // Todo
+      html += '<div class="section-title section-todo">⬜ To Do (' + (p.todo?.length || 0) + ')</div>';
+      for (const task of (p.todo || [])) {
+        const taskText = typeof task === 'string' ? task : task.task || '';
+        html += '<div class="modal-task">⬜ ' + taskText + '</div>';
+      }
+      
+      // Blockers
+      if (p.blockers?.length) {
+        html += '<div class="section-title section-blocker">🚫 Blockers (' + p.blockers.length + ')</div>';
+        for (const task of p.blockers) {
+          html += '<div class="modal-task">🚫 ' + task + '</div>';
         }
-      });
-
-      // Format today's tasks for display
-      const todayTasksHtml = todayTasks.length > 0 
-        ? `<div style="margin-top:6px;max-height:80px;overflow-y:auto;">
-            ${todayTasks.slice(0,5).map(t => `<div class="task-item done" style="font-size:10px;">✓ ${t.substring(0,40)}${t.length>40?'...':''}</div>`).join('')}
-            ${todayTasks.length > 5 ? `<div style="font-size:9px;color:#64748b;">+${todayTasks.length-5} more</div>` : ''}
-           </div>`
-        : '';
-        
-      // Format this week's tasks for display  
-      const weekTasksHtml = weekTasks.length > 0
-        ? `<div style="margin-top:6px;max-height:80px;overflow-y:auto;">
-            ${weekTasks.slice(0,5).map(t => `<div class="task-item done" style="font-size:10px;color:#FFB347;">✓ ${t.substring(0,40)}${t.length>40?'...':''}</div>`).join('')}
-            ${weekTasks.length > 5 ? `<div style="font-size:9px;color:#64748b;">+${weekTasks.length-5} more</div>` : ''}
-           </div>`
-        : '';
-
-      document.getElementById('modal').innerHTML = `
-        <div class="modal-head">
-          <div class="modal-title">${p.name}</div>
-          <button class="close-btn" onclick="closeModal()">&times;</button>
-        </div>
-        
-        <!-- Progress -->
-        <div class="project-progress">
-          <div class="progress-label">📊 Progress: ${pct}%</div>
-          <div class="progress-bar"><div class="progress-fill" style="width:${pct}%;background:${color}"></div></div>
-          <div class="progress-stats">${doneCount} done | ${todoCount} to go</div>
-        </div>
-        
-        <!-- Stats with task names -->
-        <div class="project-stats" style="animation: fadeUp 0.4s ease-out 0.1s both;">
-          <div class="stat"><span class="stat-num" style="color:#00FF88">${todayCount}</span><span class="stat-label">Today</span></div>
-          <div class="stat"><span class="stat-num" style="color:#FFB347">${weekCount}</span><span class="stat-label">This Week</span></div>
-          <div class="stat"><span class="stat-num">${doneCount}</span><span class="stat-label">Total</span></div>
-        </div>
-        
-        <!-- Today's tasks inline -->
-        ${todayTasksHtml}
-        
-        <!-- This week's tasks inline -->
-        ${weekTasksHtml}
-        
-        <!-- Links -->
-        <div class="project-section" style="animation: fadeUp 0.4s ease-out 0.15s both;">
-          <div class="section-label">🔗 Links</div>
-          <div class="links-container">${linksHtml}</div>
-        </div>
-        
-        <!-- Files -->
-        <div class="project-section" style="animation: fadeUp 0.4s ease-out 0.2s both;">
-          <div class="section-label">📁 Files</div>
-          <div class="files-container">${filesHtml}</div>
-        </div>
-        
-        <!-- My Tasks -->
-        <div class="task-section" style="animation: fadeUp 0.4s ease-out 0.25s both;">
-          <div class="task-header" onclick="toggleSection('mytasks')">
-            <span style="color:#FFB347;">👤 My Tasks (${wayneTasks.length})</span>
-            <span class="chevron">▶</span>
-          </div>
-          <div class="task-list" id="mytasks-list" style="display:none;">
-            ${myTasksHtml}
-          </div>
-        </div>
-        
-        <!-- Done -->
-        <div class="task-section" style="animation: fadeUp 0.4s ease-out 0.3s both;">
-          <div class="task-header" onclick="toggleSection('done')">
-            <span>✅ Done (${doneCount})</span>
-            <span class="chevron">▶</span>
-          </div>
-          <div class="task-list" id="done-list" style="display:none;">
-            ${(p.done || []).slice(0, 20).map(t => {
-              const task = typeof t === 'string' ? t : t.task || '';
-              return `<div class="task-item done">✓ ${task.substring(0, 60)}${task.length > 60 ? '...' : ''}</div>`;
-            }).join('') || '<div class="task-item">None yet</div>'}
-          </div>
-        </div>
-        
-        <!-- To Do -->
-        <div class="task-section" style="animation: fadeUp 0.4s ease-out 0.45s both;">
-          <div class="task-header" onclick="toggleSection('todo')">
-            <span>⬜ To Do (${todoCount})</span>
-            <span class="chevron">▶</span>
-          </div>
-          <div class="task-list" id="todo-list" style="display:none;">
-            ${(p.todo || []).map(t => `<div class="task-item">○ ${t.substring(0, 60)}${t.length > 60 ? '...' : ''}</div>`).join('') || '<div class="task-item">All done! 🎉</div>'}
-          </div>
-        </div>
-        
-        <!-- Blockers -->
-        <div class="task-section" style="animation: fadeUp 0.4s ease-out 0.6s both;">
-          <div class="task-header" onclick="toggleSection('blockers')">
-            <span>🚫 Blockers (${(p.blockers || []).length})</span>
-            <span class="chevron">▶</span>
-          </div>
-          <div class="task-list" id="blockers-list" style="display:none;">
-            ${(p.blockers || []).map(t => `<div class="task-item blocker">⚠ ${t}</div>`).join('') || '<div class="task-item done">No blockers! ✅</div>'}
-          </div>
-        </div>
-      `;
-
-      document.getElementById('overlay').classList.add('active');
+      }
+      
+      document.getElementById('modalBody').innerHTML = html;
+      document.getElementById('modal').classList.add('active');
       document.body.style.overflow = 'hidden';
     }
     
-    function toggleSection(id) {
-      const el = document.getElementById(id + '-list');
-      const isHidden = el.style.display === 'none';
-      el.style.display = isHidden ? 'block' : 'none';
-      // Animate the content when opening
-      if (isHidden) {
-        el.style.animation = 'scaleIn 0.3s ease-out';
-      }
-      // Rotate chevron
-      const header = el.previousElementSibling;
-      const chev = header.querySelector('.chevron');
-      chev.style.transform = isHidden ? 'rotate(90deg)' : 'rotate(0)';
-    }
-
     function closeModal(e) {
       if (e && e.target !== e.currentTarget) return;
-      document.getElementById('overlay').classList.remove('active');
+      document.getElementById('modal').classList.remove('active');
       document.body.style.overflow = '';
     }
-
-    async function loadData(manual) {
-      try {
-        // Try GitHub Pages first
-        let url = `https://lil-ai-operator.github.io/mobile-dashboard/mission-control-data.json`;
-        
-        const res = await fetch(url);
-        if (!res.ok) throw new Error('Failed');
-        const data = await res.json();
-        render(data);
-        
-        // Also try raw GitHub as backup
-        fetch('https://raw.githubusercontent.com/lil-ai-operator/mobile-dashboard/main/mission-control-data.json')
-          .then(r => r.json())
-          .then(backupData => { if (backupData.updatedAt > data.updatedAt) render(backupData); })
-          .catch(() => {});
-      } catch (err) {
-        // Try backup URL
-        try {
-          const backup = await fetch('https://raw.githubusercontent.com/lil-ai-operator/mobile-dashboard/main/mission-control-data.json');
-          const data = await backup.json();
-          render(data);
-        } catch (e) {
-          if (manual) alert('Could not load dashboard. Please try again.');
-        }
-      }
-    }
-
+    
     loadData(false);
-    setInterval(() => loadData(false), 60000);
-
-    // Gallery swipe with touch gestures
-    let galleryImages = [], currentGalleryIndex = 0, touchStartX = 0;
-    
-    function openGalleryFromBtn(btn) {
-      const url = btn.getAttribute('data-url');
-      
-      galleryImages = [];
-      document.querySelectorAll('.queue-item').forEach(item => {
-        const titleEl = item.querySelector('.queue-title');
-        const btnEl = item.querySelector('.queue-btn');
-        if (titleEl && btnEl) {
-          const t = titleEl.textContent;
-          if (t.match(/\.(png|jpg|jpeg|gif)$/i)) {
-            const btnhref = btnEl.getAttribute('data-url') || btnEl.getAttribute('href');
-            if (btnhref && btnhref.startsWith('http')) {
-              galleryImages.push({ title: t, url: btnhref });
-            }
-          }
-        }
-      });
-      
-      currentGalleryIndex = galleryImages.findIndex(img => img.url === url);
-      if (currentGalleryIndex === -1) currentGalleryIndex = 0;
-      
-      if (galleryImages.length > 0) {
-        const modal = document.getElementById('gallery-modal');
-        modal.classList.add('active');
-        modal.ontouchstart = e => touchStartX = e.touches[0].clientX;
-        modal.ontouchend = e => {
-          const diff = touchStartX - e.changedTouches[0].clientX;
-          if (Math.abs(diff) > 50) diff > 0 ? nextGallery() : prevGallery();
-        };
-        updateGalleryImage();
-      }
-    }
-    
-    function updateGalleryImage() {
-      document.getElementById('gallery-img').src = galleryImages[currentGalleryIndex].url;
-      document.getElementById('gallery-counter').textContent = `${currentGalleryIndex + 1} / ${galleryImages.length}`;
-    }
-    
-    function prevGallery() {
-      currentGalleryIndex = (currentGalleryIndex - 1 + galleryImages.length) % galleryImages.length;
-      updateGalleryImage();
-    }
-    function nextGallery() {
-      currentGalleryIndex = (currentGalleryIndex + 1) % galleryImages.length;
-      updateGalleryImage();
-    }
-    function closeGallery() { document.getElementById('gallery-modal').classList.remove('active'); }
+    setInterval(() => loadData(false), 120000);
   </script>
-
-  <div class="gallery-full" id="gallery-modal" onclick="closeGallery()">
-    <button class="gallery-close" onclick="closeGallery()">×</button>
-    <img id="gallery-img" src="" style="touch-action: pan-y pinch-zoom;" />
-    <div class="gallery-counter" id="gallery-counter">1 / 1</div>
-    <div class="gallery-hint">← Swipe to browse →</div>
-  </div>
 </body>
 </html>
-<!-- 2026-03-06 v6 cache fix -->
