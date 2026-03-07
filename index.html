@@ -756,15 +756,28 @@
       
       // Get project files based on project key
       const projectFilesMap = {
-        'autobookr_suite': ['brand-style-guide.md', 'brand-board.html', 'brand-compare.html', 'competitor-report.md', 'PLAN.md', 'RUNBOOK.md', 'index.html'],
-        'mission_control': ['mission-control-data.json', 'index.html', 'generated/ops/mission-control.md'],
-        'system_backup': ['scripts/backup*.sh', 'README.md'],
-        'neuronet': ['handoff-protocol.md', 'region-*.md', 'docs/'],
+        'autobookr_suite': ['brand-board.html', 'brand-compare.html', 'brand-style-guide.md'],
+        'mission_control': ['index.html', 'mobile-dashboard.html'],
+        'system_backup': [],
+        'neuronet': [],
+        'aavegotchi_bot': [],
+        'etsy_business': [],
+        'clare_reiki': [],
       };
       
       const knownFiles = projectFilesMap[p.key] || [];
       const filesHtml = knownFiles.length 
-        ? knownFiles.map(f => `<div class="project-file"><a href="https://github.com/lil-ai-operator/mobile-dashboard/blob/main/${f}" target="_blank" style="color:#58a6ff;text-decoration:none;">📄 ${f}</a></div>`).join('')
+        ? knownFiles.map(f => {
+          let url;
+          if (f.endsWith('.html')) {
+            url = 'https://lil-ai-operator.github.io/mobile-dashboard/' + f;
+          } else if (f.endsWith('.json')) {
+            url = 'https://lil-ai-operator.github.io/mobile-dashboard/' + f;
+          } else {
+            url = 'https://raw.githubusercontent.com/lil-ai-operator/mobile-dashboard/main/' + f;
+          }
+          return `<div class="project-file"><a href="${url}" target="_blank" style="color:#58a6ff;text-decoration:none;">📄 ${f}</a></div>`;
+        }).join('')
         : '<span style="color:#64748b;font-size:11px;">No files tracked</span>';
       
       // Wayne's tasks for this project (from blockers + todo)

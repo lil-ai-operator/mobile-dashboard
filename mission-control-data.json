@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-03-07T16:22:10Z",
+  "updatedAt": "2026-03-07T21:20:24Z",
   "projects": [
     {
       "key": "autobookr_suite",
@@ -31,7 +31,13 @@
         "Publish live URL and quick-start guide",
         "Landing site published",
         "Landing animations + dark mode added",
-        "Mobile nav alignment fixes pushed"
+        "Mobile nav alignment fixes pushed",
+        "projects/AutoBookr/brand-style-guide.md",
+        "projects/AutoBookr/brand-board.html",
+        "projects/AutoBookr/brand-compare.html",
+        "projects/AutoBookr/competitor-report.md",
+        "projects/AutoBookr/PLAN.md",
+        "projects/AutoBookr/RUNBOOK.md"
       ],
       "todo": [
         "First real pilot user onboarded",
@@ -60,11 +66,14 @@
         "Confirm page loads cleanly on mobile",
         "Define auto-refresh/update method",
         "Ensure status fields map to real source files",
-        "Add blocker summary and top 3 next actions"
+        "Add blocker summary and top 3 next actions",
+        {
+          "task": "Wire sweep output to auto-write this JSON each run",
+          "completedAt": "2026-03-07"
+        }
       ],
       "todo": [
-        "Wayne can open one link and understand status in <30 seconds",
-        "Wire sweep output to auto-write this JSON each run"
+        "Wayne can open one link and understand status in <30 seconds"
       ],
       "blockers": []
     },
@@ -79,14 +88,17 @@
         "Restore guide created",
         "Restore test completed successfully",
         "A) Google Drive",
-        "Configure chosen destination script"
+        "Configure chosen destination script",
+        {
+          "task": "Verify restore from offsite backup",
+          "completedAt": "2026-03-07"
+        }
       ],
       "todo": [
         "Choose destination:",
         "B) GitHub private backup repo",
         "C) External drive",
         "Run first offsite backup successfully",
-        "Verify restore from offsite backup",
         "Set weekly scheduled backup cron",
         "Add backup success/failure log",
         "Add monthly restore test reminder",
@@ -115,7 +127,8 @@
         "Define escalation rules for complex work",
         "Define when region should be used",
         "Define handoff format between regions",
-        "Add region prompts/checklists"
+        "Add region prompts/checklists",
+        "projects/NeuroNetAgentTeam/docs/handoff-protocol.md"
       ],
       "todo": [
         "Approve final region architecture",
