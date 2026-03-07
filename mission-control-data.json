@@ -1,53 +1,26 @@
 {
-  "updatedAt": "2026-03-07T23:23:44Z",
+  "updatedAt": "2026-03-07T23:24:31Z",
   "projects": [
     {
       "key": "autobookr_suite",
       "name": "📞 AutoBookr Suite (App + Landing)",
       "status": "green",
-      "summary": "Logical merge: app backend + public landing tracked together.",
+      "summary": "AI receptionist for tradies - landing live, credentials verified.",
       "done": [
-        "Define product offer and pricing",
-        "Create AutoBookr plan file (`projects/AutoBookr/PLAN.md`)",
-        "Build MVP skeleton/webhook endpoint",
-        "Confirm deployment target (Render/Railway/Fly/VPS)",
-        "Deploy app and verify health endpoint (verified locally 2026-02-26)",
-        "Get Twilio credentials (Account SID, Auth Token, phone number)",
-        "Configure Twilio env vars in deployment (.env verified 2026-02-27 - CREDS_SET)",
-        "Set Twilio webhook URL for missed-call + SMS flow",
-        "Implement + verify SMS auto-reply logic (code path wired)",
-        "Test: missed call triggers correct SMS in live deploy (UNBLOCKED 2026-02-27 - credentials verified)",
-        "Get Stripe secret key + webhook secret",
-        "Create products/prices: Starter £19 monthly, Growth £49 monthly, Pro £99 monthly",
-        "Build checkout links/pages (plan-mapped checkout wired)",
-        "Add Stripe webhook for subscription status",
-        "Test: successful payment updates customer to active (UNBLOCKED 2026-02-27 - credentials verified)",
-        "Add customer onboarding form (name, trade, phone, area)",
-        "Store customer config safely",
-        "Add simple dashboard: calls/SMS activity",
-        "Add basic error handling + retry policy",
-        "End-to-end test: call -> SMS -> signup -> active status (UNBLOCKED 2026-02-27 - credentials verified, code ready)",
-        "Add simple support/runbook notes (created 2026-02-27)",
-        "Publish live URL and quick-start guide",
-        "Landing site published",
-        "Landing animations + dark mode added",
-        "Mobile nav alignment fixes pushed",
-        "projects/AutoBookr/brand-style-guide.md",
-        "projects/AutoBookr/brand-board.html",
-        "projects/AutoBookr/brand-compare.html",
-        "projects/AutoBookr/competitor-report.md",
-        "projects/AutoBookr/PLAN.md",
-        "projects/AutoBookr/RUNBOOK.md"
+        "Define pricing tiers (£19/£49/£99)",
+        "Build landing page",
+        "Connect Stripe payment",
+        "Connect Twilio SMS",
+        "Create brand assets",
+        "Free trial outreach template"
       ],
       "todo": [
-        "First real pilot user onboarded",
-        "5 paying users acquired",
-        "Live URL stable",
-        "Twilio + Stripe fully working in production",
-        "5 paying customers active"
+        "Get first paying customer",
+        "Scale to 5 customers",
+        "Add more integrations"
       ],
       "blockers": [
-        "Manual live checkout/SMS verification"
+        "Manual live verification needed"
       ]
     },
     {
@@ -56,24 +29,14 @@
       "status": "green",
       "summary": "Mobile dashboard for live progress, blockers, and tasks.",
       "done": [
-        "Status cards layout created",
-        "Last updated timestamp added",
-        "Core project sections added",
-        "Key artifact links added",
-        "Approve publish mode (GitHub Pages / static link)",
-        "Publish live URL",
-        "Add link to Telegram pinned reference",
-        "Confirm page loads cleanly on mobile",
-        "Define auto-refresh/update method",
-        "Ensure status fields map to real source files",
-        "Add blocker summary and top 3 next actions",
-        {
-          "task": "Wire sweep output to auto-write this JSON each run",
-          "completedAt": "2026-03-07"
-        }
+        "Build dashboard v2",
+        "Add files section",
+        "Add search & filters",
+        "Deploy to GitHub"
       ],
       "todo": [
-        "Wayne can open one link and understand status in <30 seconds"
+        "Add charts",
+        "Add activity feed"
       ],
       "blockers": []
     },
@@ -83,30 +46,15 @@
       "status": "yellow",
       "summary": "Recovery safety net with local + offsite backup readiness.",
       "done": [
-        "Local backup script working",
-        "Rolling retention (4 backups)",
-        "Restore guide created",
-        "Restore test completed successfully",
-        "A) Google Drive",
-        "Configure chosen destination script",
-        {
-          "task": "Verify restore from offsite backup",
-          "completedAt": "2026-03-07"
-        }
+        "Local backup working",
+        "Google Drive selected"
       ],
       "todo": [
-        "Choose destination:",
-        "B) GitHub private backup repo",
-        "C) External drive",
-        "Run first offsite backup successfully",
-        "Set weekly scheduled backup cron",
-        "Add backup success/failure log",
-        "Add monthly restore test reminder",
-        "Weekly automated offsite backups run reliably",
-        "Full restore tested and documented"
+        "Complete OAuth",
+        "Run first offsite backup"
       ],
       "blockers": [
-        "Destination/auth confirmation needed"
+        "OAuth flow pending"
       ]
     },
     {
@@ -127,8 +75,7 @@
         "Define escalation rules for complex work",
         "Define when region should be used",
         "Define handoff format between regions",
-        "Add region prompts/checklists",
-        "projects/NeuroNetAgentTeam/docs/handoff-protocol.md"
+        "Add region prompts/checklists"
       ],
       "todo": [
         "Approve final region architecture",
@@ -183,172 +130,6 @@
       ]
     }
   ],
-  "dailyCompleted": {
-    "2026-03-07_autobookr_suite": {
-      "date": "2026-03-07",
-      "project": "autobookr_suite",
-      "projectName": "📞 AutoBookr Suite (App + Landing)",
-      "count": 25,
-      "tasks": [
-        "Add simple support/runbook notes (created 2026-02-27)",
-        "Publish live URL and quick-start guide",
-        "Landing site published",
-        "Landing animations + dark mode added",
-        "Mobile nav alignment fixes pushed"
-      ]
-    },
-    "2026-03-07_mission_control": {
-      "date": "2026-03-07",
-      "project": "mission_control",
-      "projectName": "🚀 Mission Control",
-      "count": 11,
-      "tasks": [
-        "Add link to Telegram pinned reference",
-        "Confirm page loads cleanly on mobile",
-        "Define auto-refresh/update method",
-        "Ensure status fields map to real source files",
-        "Add blocker summary and top 3 next actions"
-      ]
-    },
-    "2026-03-07_system_backup": {
-      "date": "2026-03-07",
-      "project": "system_backup",
-      "projectName": "🛟 System Backup + Recovery",
-      "count": 6,
-      "tasks": [
-        "Rolling retention (4 backups)",
-        "Restore guide created",
-        "Restore test completed successfully",
-        "A) Google Drive",
-        "Configure chosen destination script"
-      ]
-    },
-    "2026-03-07_neuronet": {
-      "date": "2026-03-07",
-      "project": "neuronet",
-      "projectName": "🧠 NeuroNet Agent Team",
-      "count": 13,
-      "tasks": [
-        "Define cost-first rules for routine work",
-        "Define escalation rules for complex work",
-        "Define when region should be used",
-        "Define handoff format between regions",
-        "Add region prompts/checklists"
-      ]
-    },
-    "2026-03-07_aavegotchi_bot": {
-      "date": "2026-03-07",
-      "project": "aavegotchi_bot",
-      "projectName": "👻 Aavegotchi Petting Bot",
-      "count": 0,
-      "tasks": []
-    },
-    "2026-03-07_etsy_business": {
-      "date": "2026-03-07",
-      "project": "etsy_business",
-      "projectName": "🛍️ Etsy Business",
-      "count": 0,
-      "tasks": []
-    },
-    "2026-03-07_clare_reiki": {
-      "date": "2026-03-07",
-      "project": "clare_reiki",
-      "projectName": "✨ Clare Reiki/Spiritual Business",
-      "count": 0,
-      "tasks": []
-    }
-  },
-  "weeklyCompleted": {
-    "2026-W09_autobookr_suite": {
-      "week": "2026-W09",
-      "project": "autobookr_suite",
-      "projectName": "📞 AutoBookr Suite (App + Landing)",
-      "count": 25,
-      "tasks": [
-        "Add customer onboarding form (name, trade, phone, area)",
-        "Store customer config safely",
-        "Add simple dashboard: calls/SMS activity",
-        "Add basic error handling + retry policy",
-        "End-to-end test: call -> SMS -> signup -> active status (UNBLOCKED 2026-02-27 - credentials verified, code ready)",
-        "Add simple support/runbook notes (created 2026-02-27)",
-        "Publish live URL and quick-start guide",
-        "Landing site published",
-        "Landing animations + dark mode added",
-        "Mobile nav alignment fixes pushed"
-      ]
-    },
-    "2026-W09_mission_control": {
-      "week": "2026-W09",
-      "project": "mission_control",
-      "projectName": "🚀 Mission Control",
-      "count": 11,
-      "tasks": [
-        "Last updated timestamp added",
-        "Core project sections added",
-        "Key artifact links added",
-        "Approve publish mode (GitHub Pages / static link)",
-        "Publish live URL",
-        "Add link to Telegram pinned reference",
-        "Confirm page loads cleanly on mobile",
-        "Define auto-refresh/update method",
-        "Ensure status fields map to real source files",
-        "Add blocker summary and top 3 next actions"
-      ]
-    },
-    "2026-W09_system_backup": {
-      "week": "2026-W09",
-      "project": "system_backup",
-      "projectName": "🛟 System Backup + Recovery",
-      "count": 6,
-      "tasks": [
-        "Local backup script working",
-        "Rolling retention (4 backups)",
-        "Restore guide created",
-        "Restore test completed successfully",
-        "A) Google Drive",
-        "Configure chosen destination script"
-      ]
-    },
-    "2026-W09_neuronet": {
-      "week": "2026-W09",
-      "project": "neuronet",
-      "projectName": "🧠 NeuroNet Agent Team",
-      "count": 13,
-      "tasks": [
-        "Research Ops",
-        "Build Ops",
-        "Risk & QA",
-        "Assign default model per region",
-        "Assign fallback model per region",
-        "Define cost-first rules for routine work",
-        "Define escalation rules for complex work",
-        "Define when region should be used",
-        "Define handoff format between regions",
-        "Add region prompts/checklists"
-      ]
-    },
-    "2026-W09_aavegotchi_bot": {
-      "week": "2026-W09",
-      "project": "aavegotchi_bot",
-      "projectName": "👻 Aavegotchi Petting Bot",
-      "count": 0,
-      "tasks": []
-    },
-    "2026-W09_etsy_business": {
-      "week": "2026-W09",
-      "project": "etsy_business",
-      "projectName": "🛍️ Etsy Business",
-      "count": 0,
-      "tasks": []
-    },
-    "2026-W09_clare_reiki": {
-      "week": "2026-W09",
-      "project": "clare_reiki",
-      "projectName": "✨ Clare Reiki/Spiritual Business",
-      "count": 0,
-      "tasks": []
-    }
-  },
   "readQueue": [
     {
       "id": "session-start",
