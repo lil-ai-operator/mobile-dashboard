@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>🚀 Mission Control</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <style>
     :root {
       --bg-primary: #0a0a0f;
@@ -70,6 +71,11 @@
     @keyframes float {
       0%, 100% { transform: translateY(0); }
       50% { transform: translateY(-3px); }
+    }
+    
+    @keyframes spin {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
     }
     
     .logo-text h1 {
@@ -709,6 +715,19 @@
     </div>
   </div>
   
+  <!-- Analytics -->
+  <div class="analytics-section" style="padding: 20px;">
+    <h3 style="color: var(--text-secondary); margin-bottom: 15px; font-size: 14px; text-transform: uppercase; letter-spacing: 1px;">📊 Analytics</h3>
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+      <div style="background: var(--bg-card); border-radius: 12px; padding: 15px;">
+        <canvas id="statusChart" height="150"></canvas>
+      </div>
+      <div style="background: var(--bg-card); border-radius: 12px; padding: 15px;">
+        <canvas id="tasksChart" height="150"></canvas>
+      </div>
+    </div>
+  </div>
+  
   <!-- Filters -->
   <div class="filter-tabs">
     <div class="filter-tab active" onclick="setFilter('all', this)">All</div>
@@ -774,6 +793,64 @@
     // Project files mapping
     const projectFiles = {"autobookr_suite": [{"name": "Landing", "url": "https://lil-ai-operator.github.io/autobookr-landing/"}, {"name": "Pricing", "url": "https://lil-ai-operator.github.io/autobookr-landing/pricing.html"}, {"name": "FAQ", "url": "https://lil-ai-operator.github.io/autobookr-landing/faq.html"}, {"name": "How it Works", "url": "https://lil-ai-operator.github.io/autobookr-landing/how-it-works.html"}, {"name": "Sales Script", "url": "https://lil-ai-operator.github.io/mobile-dashboard/generated/ops/autobookr-sales-script.md"}, {"name": "Outreach", "url": "https://lil-ai-operator.github.io/mobile-dashboard/generated/ops/autobookr-pilot-outreach.md"}, {"name": "Free Trial", "url": "https://lil-ai-operator.github.io/mobile-dashboard/generated/ops/autobookr-outreach-free-trial.md"}, {"name": "Competitor", "url": "https://lil-ai-operator.github.io/mobile-dashboard/generated/ops/autobookr-competitor-analysis.md"}], "mission_control": [{"name": "Dashboard", "url": "https://lil-ai-operator.github.io/mobile-dashboard/"}, {"name": "Data JSON", "url": "https://lil-ai-operator.github.io/mobile-dashboard/mission-control-data.json"}], "system_backup": [], "neuronet": [], "aavegotchi_bot": [], "etsy_business": [], "clare_reiki": []};
     
+    // Charts
+    let statusChart, tasksChart;
+    
+    function updateCharts(data, green, yellow, red) {
+      const isDark = !document.body.classList.contains('light-mode');
+      const textColor = isDark ? '#9ca3af' : '#4b5563';
+      const gridColor = isDark ? '#2a2a3a' : '#e5e7eb';
+      
+      // Status donut chart
+      const statusCtx = document.getElementById('statusChart').getContext('2d');
+      if (statusChart) statusChart.destroy();
+      statusChart = new Chart(statusCtx, {
+        type: 'doughnut',
+        data: {
+          labels: ['Active', 'In Progress', 'Blocked'],
+          datasets: [{
+            data: [green, yellow, red],
+            backgroundColor: ['#00d68f', '#ffaa00', '#ff4757'],
+            borderWidth: 0
+          }]
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            legend: { position: 'bottom', labels: { color: textColor, padding: 10, font: { size: 10 } } }
+          }
+        }
+      });
+      
+      // Tasks bar chart
+      const tasksCtx = document.getElementById('tasksChart').getContext('2d');
+      const projectNames = data.projects.slice(0, 5).map(p => p.name.substring(0, 10));
+      const projectDone = data.projects.slice(0, 5).map(p => p.done?.length || 0);
+      const projectTodo = data.projects.slice(0, 5).map(p => p.todo?.length || 0);
+      
+      if (tasksChart) tasksChart.destroy();
+      tasksChart = new Chart(tasksCtx, {
+        type: 'bar',
+        data: {
+          labels: projectNames,
+          datasets: [
+            { label: 'Done', data: projectDone, backgroundColor: '#00d68f' },
+            { label: 'Todo', data: projectTodo, backgroundColor: '#3b82f6' }
+          ]
+        },
+        options: {
+          responsive: true,
+          scales: {
+            x: { stacked: true, ticks: { color: textColor, font: { size: 9 } }, grid: { color: gridColor } },
+            y: { stacked: true, ticks: { color: textColor, font: { size: 9 } }, grid: { color: gridColor } }
+          },
+          plugins: {
+            legend: { position: 'bottom', labels: { color: textColor, padding: 5, font: { size: 9 } } }
+          }
+        }
+      });
+    }
+    
     function render() {
       const data = window.missionData;
       document.getElementById('lastUpdated').textContent = 'Updated: ' + new Date(data.updatedAt).toLocaleString();
@@ -791,6 +868,9 @@
       document.getElementById('statYellow').textContent = yellow;
       document.getElementById('statRed').textContent = red;
       document.getElementById('statTasks').textContent = tasks;
+      
+      // Update Charts
+      updateCharts(data, green, yellow, red);
       
       // Render projects
       const container = document.getElementById('projectsContainer');

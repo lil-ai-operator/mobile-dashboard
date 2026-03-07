@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-03-07T23:26:48Z",
+  "updatedAt": "2026-03-07T23:33:29Z",
   "projects": [
     {
       "key": "autobookr_suite",
@@ -12,7 +12,13 @@
         "Connect Stripe payment",
         "Connect Twilio SMS",
         "Create brand assets",
-        "Free trial outreach template"
+        "Free trial outreach template",
+        "projects/AutoBookr/brand-style-guide.md",
+        "projects/AutoBookr/brand-board.html",
+        "projects/AutoBookr/brand-compare.html",
+        "projects/AutoBookr/competitor-report.md",
+        "projects/AutoBookr/PLAN.md",
+        "projects/AutoBookr/RUNBOOK.md"
       ],
       "todo": [
         "Get first paying customer",
@@ -74,7 +80,8 @@
         "Define escalation rules for complex work",
         "Define when region should be used",
         "Define handoff format between regions",
-        "Add region prompts/checklists"
+        "Add region prompts/checklists",
+        "projects/NeuroNetAgentTeam/docs/handoff-protocol.md"
       ],
       "todo": [
         "Approve final region architecture",
