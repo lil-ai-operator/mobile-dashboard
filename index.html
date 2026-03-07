@@ -780,6 +780,9 @@
           // AutoBookr landing files
           if (f === 'brand-board.html' || f === 'brand-compare.html' || f === 'brand-style-guide.md' || f === 'index.html' || f === 'pricing.html' || f === 'faq.html' || f === 'how-it-works.html') {
             url = 'https://lil-ai-operator.github.io/autobookr-landing/' + f;
+          // AutoBookr project files (PLAN.md, RUNBOOK.md, etc)
+          } else if (f === 'PLAN.md' || f === 'RUNBOOK.md' || f === 'competitor-report.md' || f === 'ACCOUNT_SETUP_STEP_BY_STEP.md' || f === 'DEPLOYMENT.md') {
+            url = 'https://raw.githubusercontent.com/lil-ai-operator/notification-service/main/projects/AutoBookr/' + f;
           // Dashboard files
           } else if (f === 'index.html' || f === 'mobile-dashboard.html' || f === 'mission-control-data.json') {
             url = 'https://lil-ai-operator.github.io/mobile-dashboard/' + f;
@@ -869,8 +872,8 @@
         
         <!-- Files -->
         <div class="project-section" style="animation: fadeUp 0.4s ease-out 0.2s both;">
-          <div class="section-label">📁 Files</div>
-          <div class="files-container">${filesHtml}</div>
+          <div class="section-label" onclick="toggleFiles('files-${p.key}')" style="cursor:pointer;">📁 Files (${knownFiles.length}) <span id="files-${p.key}-icon">▶</span></div>
+          <div class="files-container" id="files-${p.key}" style="display:none;">${filesHtml}</div>
         </div>
         
         <!-- My Tasks -->
@@ -1034,7 +1037,17 @@
       updateGalleryImage();
     }
     function closeGallery() { document.getElementById('gallery-modal').classList.remove('active'); }
-  </script>
+  function toggleFiles(id) {
+      var el = document.getElementById(id);
+      var icon = document.getElementById(id + '-icon');
+      if (el.style.display === 'none') {
+        el.style.display = 'block';
+        icon.textContent = '▼';
+      } else {
+        el.style.display = 'none';
+        icon.textContent = '▶';
+      }
+    }</script>
 
   <div class="gallery-full" id="gallery-modal" onclick="closeGallery()">
     <button class="gallery-close" onclick="closeGallery()">×</button>
