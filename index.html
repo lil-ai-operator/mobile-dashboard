@@ -647,6 +647,16 @@
     .files-grid::-webkit-scrollbar { width: 6px; }
     .files-grid::-webkit-scrollbar-track { background: var(--bg-secondary); }
     .files-grid::-webkit-scrollbar-thumb { background: var(--border-color); border-radius: 3px; }
+
+    /* Header - always dark */
+    .header {
+      background: #0a0a0f !important;
+      border-bottom: 1px solid #2a2a3a !important;
+    }
+    
+    .logo-text h1 { color: #ffffff !important; }
+    .logo-text span { color: #6b7280 !important; }
+    .live-status { color: #9ca3af !important; }
 </style>
 </head>
 <body>
@@ -762,23 +772,7 @@
     let currentFilter = 'all';
     
     // Project files mapping
-    const projectFiles = {
-      'autobookr_suite': [
-        {name: 'index.html', url: 'https://lil-ai-operator.github.io/autobookr-landing/'},
-        {name: 'pricing.html', url: 'https://lil-ai-operator.github.io/autobookr-landing/pricing.html'},
-        {name: 'faqs.md', url: 'https://lil-ai-operator.github.io/mobile-dashboard/generated/ops/autobookr-faqs.md'},
-        {name: 'sales-script.md', url: 'https://lil-ai-operator.github.io/mobile-dashboard/generated/ops/autobookr-sales-script.md'}
-      ],
-      'mission_control': [
-        {name: 'Dashboard', url: 'https://lil-ai-operator.github.io/mobile-dashboard/'},
-        {name: 'Data JSON', url: 'https://lil-ai-operator.github.io/mobile-dashboard/mission-control-data.json'}
-      ],
-      'system_backup': [],
-      'neuronet': [],
-      'aavegotchi_bot': [],
-      'etsy_business': [],
-      'clare_reiki': []
-    };
+    const projectFiles = {"autobookr_suite": [{"name": "Landing", "url": "https://lil-ai-operator.github.io/autobookr-landing/"}, {"name": "Pricing", "url": "https://lil-ai-operator.github.io/autobookr-landing/pricing.html"}, {"name": "FAQ", "url": "https://lil-ai-operator.github.io/autobookr-landing/faq.html"}, {"name": "How it Works", "url": "https://lil-ai-operator.github.io/autobookr-landing/how-it-works.html"}, {"name": "Sales Script", "url": "https://lil-ai-operator.github.io/mobile-dashboard/generated/ops/autobookr-sales-script.md"}, {"name": "Outreach", "url": "https://lil-ai-operator.github.io/mobile-dashboard/generated/ops/autobookr-pilot-outreach.md"}, {"name": "Free Trial", "url": "https://lil-ai-operator.github.io/mobile-dashboard/generated/ops/autobookr-outreach-free-trial.md"}, {"name": "Competitor", "url": "https://lil-ai-operator.github.io/mobile-dashboard/generated/ops/autobookr-competitor-analysis.md"}], "mission_control": [{"name": "Dashboard", "url": "https://lil-ai-operator.github.io/mobile-dashboard/"}, {"name": "Data JSON", "url": "https://lil-ai-operator.github.io/mobile-dashboard/mission-control-data.json"}], "system_backup": [], "neuronet": [], "aavegotchi_bot": [], "etsy_business": [], "clare_reiki": []};
     
     function render() {
       document.getElementById('lastUpdated').textContent = 'Updated: ' + new Date(cachedData.updatedAt).toLocaleString();
