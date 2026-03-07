@@ -1,539 +1,174 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
-  <meta http-equiv="Pragma" content="no-cache" />
-  <meta http-equiv="Expires" content="0" />
-  <title>Mission Control - Mobile</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mission Control</title>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
-    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #0f172a; color: #e2e8f0; padding: 16px; min-height: 100vh; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #0d1117; color: #e6edf3; padding: 16px; min-height: 100vh; }
+    h1 { font-size: 24px; margin-bottom: 16px; color: #fff; }
+    .updated { font-size: 12px; color: #8b949e; margin-bottom: 20px; }
     
-    /* Header with avatar */
-    .mc-header { display: flex; align-items: center; gap: 12px; margin-bottom: 8px; }
-    .mc-avatar { width: 48px; height: 48px; border-radius: 50%; background: linear-gradient(135deg, #22c55e 0%, #14b8a6 100%); display: flex; align-items: center; justify-content: center; font-size: 24px; flex-shrink: 0; }
-    .mc-title h1 { font-size: 20px; margin-bottom: 2px; color: #fff; }
+    .project { background: #161b22; border-radius: 12px; padding: 16px; margin-bottom: 12px; cursor: pointer; transition: transform 0.1s; }
+    .project:active { transform: scale(0.98); }
+    .project-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+    .project-name { font-size: 18px; font-weight: 700; color: #fff; }
+    .status-dot { width: 12px; height: 12px; border-radius: 50%; }
+    .green { background: #22c55e; box-shadow: 0 0 10px #22c55e; }
+    .yellow { background: #eab308; box-shadow: 0 0 10px #eab308; }
+    .red { background: #ef4444; box-shadow: 0 0 10px #ef4444; }
     
-    h1 { font-size: 20px; margin-bottom: 6px; color: #fff; }
-    .timestamp { font-size: 12px; color: #94a3b8; margin-bottom: 10px; }
-    .hint { font-size: 12px; color: #64748b; margin-bottom: 14px; }
-
-    .section { background: #172033; border: 1px solid #334155; border-radius: 12px; padding: 12px; margin-bottom: 12px; }
-    .section h2 { font-size: 13px; margin-bottom: 8px; color: #93c5fd; }
+    .stats { display: flex; gap: 16px; font-size: 13px; color: #8b949e; margin-bottom: 8px; }
+    .stat span { color: #fff; font-weight: 600; }
     
-    /* Collapsible sections */
-    .collapsible-header { display: flex; justify-content: space-between; align-items: center; padding: 12px 14px; background: #1e3a5f; border: 1px solid #334155; border-radius: 10px; cursor: pointer; margin-bottom: 8px; }
-    .collapsible-header:hover { background: #234567; }
-    .collapsible-title { font-size: 14px; font-weight: 600; color: #fff; }
-    .collapsible-chevron { font-size: 12px; color: #94a3b8; }
-    .collapsible-content { margin-bottom: 8px; }
-    .qa-item { font-size: 12px; color: #cbd5e1; padding: 6px 0; border-bottom: 1px solid #334155; }
-    .qa-item:last-child { border-bottom: none; }
-    .qa-tag { color: #94a3b8; margin-right: 6px; }
-
-    .queue-top { display: flex; justify-content: space-between; align-items: center; gap: 8px; margin-bottom: 8px; flex-wrap: wrap; }
-    .queue-meta { font-size: 11px; color: #94a3b8; }
-    .queue-controls { display: flex; gap: 6px; }
-    .mini-btn { border: 1px solid #475569; background: #0f172a; color: #cbd5e1; border-radius: 999px; padding: 5px 9px; font-size: 10px; cursor: pointer; }
-    .mini-btn.active { border-color: #22c55e; color: #86efac; }
-    .queue-group { margin-top: 8px; }
-    .queue-group-title { font-size: 11px; color: #93c5fd; letter-spacing: .4px; text-transform: uppercase; margin: 8px 0; }
-    .queue-header { display: flex; justify-content: space-between; align-items: center; padding: 10px 12px; background: #172033; border: 1px solid #334155; border-radius: 10px; margin-bottom: 6px; cursor: pointer; }
-    .queue-header:active { background: #1e293b; }
-    .queue-header.collapsed .queue-chevron { transform: rotate(-90deg); }
-    .queue-items { display: none; padding: 0 4px; }
-    .queue-items.open { display: block; }
-    .queue-header-left { display: flex; align-items: center; gap: 8px; }
-    .queue-header-title { font-size: 13px; color: #fff; font-weight: 600; }
-    .queue-badge { font-size: 10px; background: #22c55e; color: #fff; border-radius: 999px; padding: 2px 6px; font-weight: 700; }
-    .queue-chevron { font-size: 12px; color: #64748b; transition: transform 0.2s; }
-    .queue-chevron.open { transform: rotate(180deg); }
-    .queue-item { display: flex; justify-content: space-between; gap: 8px; align-items: center; border: 1px solid #334155; border-radius: 8px; padding: 8px; margin-bottom: 6px; background: #1e293b; }
-    .queue-item:last-child { margin-bottom: 0; }
-    .queue-left { min-width: 0; }
-    .queue-title { font-size: 12px; color: #fff; font-weight: 600; line-height: 1.3; }
-    .queue-note { font-size: 10px; color: #94a3b8; margin-top: 2px; }
-    .queue-tags { display: flex; gap: 4px; margin-top: 4px; flex-wrap: wrap; }
-    .pill { font-size: 9px; border-radius: 999px; padding: 2px 5px; border: 1px solid #475569; color: #cbd5e1; }
-    .pill.new { background: #14532d; border-color: #22c55e; color: #86efac; font-weight: 700; }
-    .pill.priority { background: #3b0764; border-color: #a855f7; color: #d8b4fe; }
-    .queue-btn { border: 1px solid #3b82f6; border-radius: 6px; background: #1d4ed8; color: #fff; text-decoration: none; font-size: 11px; padding: 6px 8px; white-space: nowrap; }
-
-    .project-card { background: #1e293b; border: 1px solid #334155; border-radius: 12px; padding: 14px; margin-bottom: 12px; cursor: pointer; }
-    .project-header { display: flex; justify-content: space-between; gap: 8px; align-items: center; margin-bottom: 8px; }
-    .project-name { font-size: 15px; font-weight: 700; color: #fff; }
-    .status-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
-    .green { background: #22c55e; box-shadow: 0 0 8px #22c55e; }
-    .yellow { background: #eab308; box-shadow: 0 0 8px #eab308; }
-    .red { background: #ef4444; box-shadow: 0 0 8px #ef4444; }
-    .summary { font-size: 12px; color: #94a3b8; margin-bottom: 8px; }
-    .track { display: flex; align-items: center; gap: 8px; }
-    .track-bg { flex: 1; height: 7px; background: #334155; border-radius: 8px; overflow: hidden; }
-    .track-fill { height: 100%; border-radius: 8px; }
-    .pct { min-width: 40px; text-align: right; font-size: 12px; font-weight: 700; }
-
-    .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,.8); z-index: 50; overflow-y: auto; padding: 18px; }
-    .modal-overlay.active { display: block; }
-    .modal { max-width: 450px; margin: 10px auto 30px; background: #1e293b; border: 1px solid #334155; border-radius: 14px; padding: 16px; }
-    .modal-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
-    .modal-title { font-size: 17px; font-weight: 700; color: #fff; }
-    .close-btn { background: none; border: none; color: #cbd5e1; font-size: 24px; line-height: 1; }
-    h3 { font-size: 12px; text-transform: uppercase; letter-spacing: .5px; margin: 14px 0 8px; color: #94a3b8; }
-    .done-h { color: #6ee7b7; }
-    .todo-h { color: #fcd34d; }
-    .block-h { color: #fca5a5; }
-    .item { font-size: 13px; border-bottom: 1px solid #334155; padding: 7px 0; display: flex; gap: 8px; }
-    .item:last-child { border-bottom: none; }
-    .badge { width: 18px; text-align: center; flex-shrink: 0; }
-
-    .refresh-pill { position: fixed; right: 16px; bottom: 16px; border: 1px solid #3b82f6; background: #1d4ed8; color: #fff; border-radius: 999px; padding: 10px 14px; font-size: 12px; cursor: pointer; }
-
-    /* Gallery swipe */
-    .gallery-full { display: none; position: fixed; inset: 0; background: #000; z-index: 100; }
-    .gallery-full.active { display: flex; align-items: center; justify-content: center; }
-    .gallery-full img { max-width: 95%; max-height: 90%; object-fit: contain; touch-action: pan-y; }
-    .gallery-nav { display: none; }
-    .gallery-close { position: absolute; top: 16px; right: 16px; background: rgba(0,0,0,0.6); border: none; color: #fff; font-size: 24px; width: 44px; height: 44px; border-radius: 50%; cursor: pointer; z-index: 10; }
-    .gallery-counter { position: absolute; bottom: 24px; left: 50%; transform: translateX(-50%); color: #fff; font-size: 14px; background: rgba(0,0,0,0.6); padding: 8px 20px; border-radius: 20px; font-weight: 600; }
-    .gallery-hint { position: absolute; bottom: 60px; left: 50%; transform: translateX(-50%); color: rgba(255,255,255,0.6); font-size: 12px; }
+    .summary { font-size: 14px; color: #8b949e; margin-bottom: 12px; line-height: 1.4; }
+    
+    .blocker { background: #3d1f1f; border-left: 3px solid #ef4444; padding: 10px 12px; border-radius: 0 8px 8px 0; margin-top: 8px; font-size: 13px; }
+    .blocker-label { color: #ef4444; font-weight: 600; margin-right: 6px; }
+    
+    .tasks { margin-top: 12px; }
+    .task { font-size: 13px; color: #8b949e; padding: 6px 0; border-bottom: 1px solid #21262d; }
+    .task:last-child { border-bottom: none; }
+    .task-done { color: #238636; }
+    .task-todo { color: #eab308; }
+    .task-link { color: #58a6ff; text-decoration: none; }
+    .task-link:hover { text-decoration: underline; }
+    
+    .modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.9); z-index: 100; overflow-y: auto; padding: 20px; }
+    .modal.active { display: block; }
+    .modal-content { max-width: 600px; margin: 0 auto; background: #161b22; border-radius: 16px; padding: 20px; }
+    .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
+    .modal-title { font-size: 22px; font-weight: 700; color: #fff; }
+    .close-btn { background: none; border: none; color: #8b949e; font-size: 28px; cursor: pointer; }
+    
+    .section-title { font-size: 12px; text-transform: uppercase; letter-spacing: 1px; color: #8b949e; margin: 16px 0 8px; }
+    .section-done { color: #238636; }
+    .section-todo { color: #eab308; }
+    .section-blocker { color: #ef4444; }
+    
+    .modal-task { padding: 8px 0; border-bottom: 1px solid #21262d; font-size: 14px; }
+    .modal-task:last-child { border-bottom: none; }
+    .modal-task a { color: #58a6ff; text-decoration: none; }
+    .modal-task a:hover { text-decoration: underline; }
+    
+    .refresh { position: fixed; bottom: 20px; right: 20px; background: #238636; color: #fff; border: none; border-radius: 50%; width: 50px; height: 50px; font-size: 20px; cursor: pointer; box-shadow: 0 4px 12px rgba(0,0,0,0.3); }
   </style>
 </head>
 <body>
-  <div class="mc-header">
-    <div class="mc-avatar" id="mc-avatar"></div>
-    <div class="mc-title">
-      <h1>🚀 Mission Control</h1>
-      <p class="timestamp" id="updated">Updated: loading…</p>
+  <h1>🚀 Mission Control</h1>
+  <div class="updated" id="updated">Loading...</div>
+  <div id="projects"></div>
+  <button class="refresh" onclick="loadData(true)">↻</button>
+  
+  <div class="modal" id="modal" onclick="closeModal(event)">
+    <div class="modal-content" onclick="event.stopPropagation()">
+      <div class="modal-header">
+        <div class="modal-title" id="modalTitle"></div>
+        <button class="close-btn" onclick="closeModal()">×</button>
+      </div>
+      <div class="summary" id="modalSummary"></div>
+      <div id="modalBody"></div>
     </div>
   </div>
-  <p class="hint">Auto-updates every 60s • Tap a project for full tasks</p>
-
-  <div class="section" id="tasksCompleted"></div>
-  <div class="section" id="quickActions"></div>
-  <!--   <div class="section" id="readQueue"></div> -->
-  <div id="projectList"></div>
-
-  <div class="modal-overlay" id="overlay" onclick="closeModal(event)">
-    <div class="modal" id="modal"></div>
-  </div>
-
-
 
   <script>
-    const READ_STATE_KEY = 'mc-read-state-v1';
-    const READ_PREFS_KEY = 'mc-read-prefs-v1';
     let cached = null;
-
-    function getReadState() {
-      try { return JSON.parse(localStorage.getItem(READ_STATE_KEY) || '{}'); }
-      catch { return {}; }
-    }
-
-    function setReadState(state) {
-      localStorage.setItem(READ_STATE_KEY, JSON.stringify(state));
-    }
-
-    function getReadPrefs() {
-      try { return JSON.parse(localStorage.getItem(READ_PREFS_KEY) || '{"newOnly":false,"sort":"newest"}'); }
-      catch { return { newOnly: false, sort: 'newest' }; }
-    }
-
-    function setReadPrefs(prefs) {
-      localStorage.setItem(READ_PREFS_KEY, JSON.stringify(prefs));
-    }
-
-    function markRead(id) {
-      const state = getReadState();
-      state[id] = new Date().toISOString();
-      setReadState(state);
-      // renderReadQueue removed
-    }
-
-    function markAllRead() {
-      if (!cached) return;
-      const state = getReadState();
-      const now = new Date().toISOString();
-      (cached.readQueue || []).forEach(item => { state[item.id] = now; });
-      setReadState(state);
-      // renderReadQueue removed
-    }
-
-    function toggleNewOnly() {
-      const prefs = getReadPrefs();
-      prefs.newOnly = !prefs.newOnly;
-      setReadPrefs(prefs);
-      // renderReadQueue removed
-    }
-
-    function toggleSort() {
-      const prefs = getReadPrefs();
-      prefs.sort = prefs.sort === 'newest' ? 'alpha' : 'newest';
-      setReadPrefs(prefs);
-      // renderReadQueue removed
-    }
-
-    function toggleGroup(id) {
-      const header = document.getElementById('queue-header-' + id);
-      const el = document.getElementById('queue-items-' + id);
-      const chev = document.getElementById('queue-chev-' + id);
-      if (el.classList.contains('open')) {
-        el.classList.remove('open');
-        chev.classList.remove('open');
-        header.classList.add('collapsed');
-      } else {
-        el.classList.add('open');
-        chev.classList.add('open');
-        header.classList.remove('collapsed');
-      }
-    }
-
-    function calcProgress(p) {
-      const done = (p.done || []).length;
-      const todo = (p.todo || []).length;
-      const total = done + todo;
-      if (!total) return 0;
-      return Math.round((done / total) * 100);
-    }
-
-    function progressColor(pct) {
-      if (pct > 75) return '#22c55e';
-      if (pct >= 30) return '#eab308';
-      return '#ef4444';
-    }
-
-    function itemRow(icon, text) {
-      return `<div class="item"><span class="badge">${icon}</span><span>${text}</span></div>`;
-    }
-
-    function toggleSection(sectionId, header) {
-      const content = header.nextElementSibling;
-      const isOpen = content.style.display === 'block';
-      content.style.display = isOpen ? 'none' : 'block';
-      header.classList.toggle('open', !isOpen);
-      header.querySelector('.collapsible-chevron').textContent = isOpen ? '▶' : '▼';
-      localStorage.setItem('mc-' + sectionId + '-open', !isOpen);
-    }
-
-    function renderTasksCompleted(data) {
-      const container = document.getElementById('tasksCompleted');
-      const today = new Date().toISOString().split('T')[0];
-      const weekAgo = new Date();
-      weekAgo.setDate(weekAgo.getDate() - 7);
-      const weekAgoStr = weekAgo.toISOString().split('T')[0];
-      
-      const todayTasks = [];
-      const weekTasks = [];
-      
-      (data.projects || []).forEach(p => {
-        (p.done || []).forEach(task => {
-          const date = task.completedAt || '';
-          if (date === today) {
-            todayTasks.push({ project: p.name, task: task.task });
-          } else if (date >= weekAgoStr) {
-            weekTasks.push({ project: p.name, task: task.task });
-          }
-        });
-      });
-      
-      let html = `
-        <div class="Collapsible-header open">
-          <span class="Collapsible-title">✅ Completed</span>
-          <span class="Collapsible-chevron" style="color: #22c55e;">${todayTasks.length + weekTasks.length} recent</span>
-        </div>
-        <div class="Collapsible-content" style="display: block;">
-      `;
-      
-      if (todayTasks.length > 0) {
-        html += `<div style="color: #4ade80; font-size: 11px; margin-bottom: 4px; font-weight: 600;">📅 TODAY (${todayTasks.length})</div>`;
-        todayTasks.forEach(t => {
-          html += `<div class="qa-item" style="padding: 4px 0; border-bottom: 1px solid #1e293b;">
-            <span style="color: #64748b; font-size: 10px;">${t.project.replace(/[^A-Z]/g, '').slice(0,2)}</span>
-            <span style="color: #e2e8f0; font-size: 11px;">${t.task.length > 50 ? t.task.slice(0,50) + '...' : t.task}</span>
-          </div>`;
-        });
-      }
-      
-      if (weekTasks.length > 0) {
-        html += `<div style="color: #60a5fa; font-size: 11px; margin: 8px 0 4px; font-weight: 600;">📆 THIS WEEK (${weekTasks.length})</div>`;
-        weekTasks.forEach(t => {
-          html += `<div class="qa-item" style="padding: 4px 0; border-bottom: 1px solid #1e293b;">
-            <span style="color: #64748b; font-size: 10px;">${t.project.replace(/[^A-Z]/g, '').slice(0,2)}</span>
-            <span style="color: #94a3b8; font-size: 11px;">${t.task.length > 50 ? t.task.slice(0,50) + '...' : t.task}</span>
-          </div>`;
-        });
-      }
-      
-      if (todayTasks.length === 0 && weekTasks.length === 0) {
-        html += `<div class="qa-item" style="color: #64748b; font-size: 12px;">No tasks completed recently</div>`;
-      }
-      
-      html += `</div>`;
-      container.innerHTML = html;
-    }
-
-    function renderQuickActions(data) {
-      const container = document.getElementById('quickActions');
-      const wayneTasks = [];
-      (data.projects || []).forEach(p => {
-        // Find tasks that need Wayne action
-        (p.todo || []).forEach(t => {
-          if (t.toLowerCase().includes('pilot') || t.toLowerCase().includes('onboard') || 
-              t.toLowerCase().includes('approve') || t.toLowerCase().includes('auth') ||
-              t.toLowerCase().includes('research') || t.toLowerCase().includes('direction') ||
-              t.toLowerCase().includes('needs you') || t.toLowerCase().includes('preference')) {
-            wayneTasks.push({ project: p.name, task: t });
-          }
-        });
-        // Also add blockers
-        (p.blockers || []).forEach(b => {
-          wayneTasks.push({ project: p.name, task: b, isBlocker: true });
-        });
-      });
-
-      const isOpen = localStorage.getItem('mc-tasks-open') === 'true';
-      container.innerHTML = `
-        <div class="collapsible-header ${isOpen ? 'open' : ''}" onclick="toggleSection('tasks', this)">
-          <span class="collapsible-title">📋 Your Tasks</span>
-          <span class="collapsible-chevron">${isOpen ? '▼' : '▶'}</span>
-        </div>
-        <div class="collapsible-content" style="display: ${isOpen ? 'block' : 'none'}">
-          ${wayneTasks.length
-            ? wayneTasks.slice(0, 8).map(a => `<div class="qa-item"><span class="qa-tag">${a.isBlocker ? '🚫' : '▶️'} ${a.project.replace(/[^A-Z]/g, '')}:</span>${a.task.substring(0, 60)}${a.task.length > 60 ? '...' : ''}</div>`).join('')
-            : '<div class="qa-item">✅ All caught up! No tasks waiting on you.</div>'}
-        </div>
-      `;
-    }
-
-    function renderReadQueue(data) {
-      const container = document.getElementById('readQueue');
-      const state = getReadState();
-      const prefs = getReadPrefs();
-      const items = (data.readQueue || []).map(item => {
-        const readAt = state[item.id];
-        const isNew = !readAt || (item.updatedAt && new Date(item.updatedAt).getTime() > new Date(readAt).getTime());
-        return { ...item, isNew };
-      });
-
-      const unreadCount = items.filter(i => i.isNew).length;
-
-      let list = [...items];
-      if (prefs.newOnly) list = list.filter(i => i.isNew);
-      if (prefs.sort === 'newest') {
-        list.sort((a, b) => (new Date(b.updatedAt || 0).getTime()) - (new Date(a.updatedAt || 0).getTime()));
-      } else {
-        list.sort((a, b) => (a.title || '').localeCompare((b.title || '')));
-      }
-
-      const grouped = list.reduce((acc, item) => {
-        const g = item.group || 'Other';
-        if (!acc[g]) acc[g] = [];
-        acc[g].push(item);
-        return acc;
-      }, {});
-
-      const rows = Object.entries(grouped).map(([groupName, groupItems], idx) => {
-        const newCount = groupItems.filter(i => i.isNew).length;
-        const groupId = 'g' + idx;
-        const inner = groupItems.map(item => {
-          const href = item.url || item.path || '#';
-          const updated = item.updatedAt ? new Date(item.updatedAt).toLocaleString() : 'unknown';
-          const isImage = item.title.match(/\.(png|jpg|jpeg|gif)$/i);
-          const btnText = isImage ? 'View' : 'Open';
-          const btnHtml = isImage 
-            ? `<button class="queue-btn" data-url="${href}" onclick="openGalleryFromBtn(this)">${btnText}</button>`
-            : `<a class="queue-btn" href="${href}" target="_blank" rel="noopener" onclick="markRead('${item.id}')">${btnText}</a>`;
-          return `
-            <div class="queue-item">
-              <div class="queue-left">
-                <div class="queue-title">${item.title}</div>
-                <div class="queue-note">${item.note || ''}</div>
-                <div class="queue-tags">
-                  ${item.project ? `<span class="pill">${item.project}</span>` : ''}
-                  ${item.priority === 'high' ? '<span class="pill priority">HIGH</span>' : ''}
-                  ${item.isNew ? '<span class="pill new">NEW</span>' : ''}
-                  <span class="pill">${updated}</span>
-                </div>
-              </div>
-              ${btnHtml}
-            </div>
-          `;
-        }).join('');
-        return `
-          <div class="queue-group">
-            <div class="queue-header collapsed" id="queue-header-${groupId}" onclick="toggleGroup('${groupId}')">
-              <div class="queue-header-left">
-                <span class="queue-header-title">${groupName}</span>
-                ${newCount > 0 ? `<span class="queue-badge">${newCount}</span>` : ''}
-              </div>
-              <span class="queue-chevron" id="queue-chev-${groupId}">▼</span>
-            </div>
-            <div class="queue-items" id="queue-items-${groupId}">${inner}</div>
-          </div>`;
-      }).join('');
-
-      // Removed Files Hub section - files now live in project folders
-      container.innerHTML = rows;
-    }
-
-    function render(data) {
-      cached = data;
-      const updatedEl = document.getElementById('updated');
-      const dt = data.updatedAt ? new Date(data.updatedAt) : new Date();
-      updatedEl.textContent = `Updated: ${dt.toLocaleString()}`;
-
-      renderTasksCompleted(data);
-      renderQuickActions(data);
-      // renderReadQueue removed
-
-      const list = document.getElementById('projectList');
-      list.innerHTML = '';
-
-      (data.projects || []).forEach(p => {
-        const pct = calcProgress(p);
-        const color = progressColor(pct);
-
-        const card = document.createElement('div');
-        card.className = 'project-card';
-        card.innerHTML = `
-          <div class="project-header">
-            <div class="project-name">${p.name}</div>
-            <span class="status-dot ${p.status || 'yellow'}"></span>
-          </div>
-          <p class="summary">${p.summary || ''}</p>
-          <div class="track">
-            <div class="track-bg"><div class="track-fill" style="width:${pct}%; background:${color}"></div></div>
-            <div class="pct" style="color:${color}">${pct}%</div>
-          </div>
-        `;
-        card.onclick = () => openModal(p.key);
-        list.appendChild(card);
-      });
-    }
-
-    function openModal(key) {
-      if (!cached) return;
-      const p = (cached.projects || []).find(x => x.key === key);
-      if (!p) return;
-
-      // Handle both string and object formats for tasks
-      const formatTask = (task) => {
-        if (typeof task === 'string') {
-          return itemRow('✅', task);
-        } else if (task && task.task) {
-          const taskText = task.task;
-          if (task.url) {
-            return `<div class="item"><span class="badge">✅</span><span><a href="${task.url}" target="_blank" style="color:#6ee7b7;text-decoration:underline;">${taskText}</a></span></div>`;
-          }
-          return itemRow('✅', taskText);
-        }
-        return '';
-      };
-
-      const done = (p.done || []).map(t => formatTask(t)).join('');
-      const todo = (p.todo || []).map(t => itemRow('⬜', typeof t === 'string' ? t : t.task || '')).join('');
-      const blockers = (p.blockers || []).length
-        ? (p.blockers || []).map(t => itemRow('🚫', t)).join('')
-        : itemRow('✅', 'No active blockers');
-
-      document.getElementById('modal').innerHTML = `
-        <div class="modal-head">
-          <div class="modal-title">${p.name}</div>
-          <button class="close-btn" onclick="closeModal()">&times;</button>
-        </div>
-        <p class="summary">${p.summary || ''}</p>
-        <h3 class="done-h">Done</h3>
-        ${done || itemRow('•', 'None yet')}
-        <h3 class="todo-h">To Do</h3>
-        ${todo || itemRow('•', 'None')}
-        <h3 class="block-h">Blockers</h3>
-        ${blockers}
-      `;
-
-      document.getElementById('overlay').classList.add('active');
-      document.body.style.overflow = 'hidden';
-    }
-
-    function closeModal(e) {
-      if (e && e.target !== e.currentTarget) return;
-      document.getElementById('overlay').classList.remove('active');
-      document.body.style.overflow = '';
-    }
-
+    
     async function loadData(manual) {
       try {
-        // Use raw.githack.com for proper HTML rendering + live JSON
-        const url = `https://lil-ai-operator.github.io/mobile-dashboard/mission-control-data.json?t=${Date.now()}`;
+        const url = 'https://lil-ai-operator.github.io/mobile-dashboard/mission-control-data.json?t=' + Date.now();
         const res = await fetch(url, { cache: 'no-store' });
-        if (!res.ok) throw new Error('Failed to load dashboard data');
-        const data = await res.json();
-        render(data);
+        if (!res.ok) throw new Error('Failed to load');
+        cached = await res.json();
+        render();
       } catch (err) {
-        if (manual) alert('Could not refresh dashboard data right now.');
+        if (manual) alert('Could not load data');
       }
     }
-
-    loadData(false);
-    setInterval(() => loadData(false), 60000);
-
-    // Gallery swipe with touch gestures
-    let galleryImages = [], currentGalleryIndex = 0, touchStartX = 0;
     
-    function openGalleryFromBtn(btn) {
-      const url = btn.getAttribute('data-url');
+    function render() {
+      if (!cached) return;
       
-      galleryImages = [];
-      document.querySelectorAll('.queue-item').forEach(item => {
-        const titleEl = item.querySelector('.queue-title');
-        const btnEl = item.querySelector('.queue-btn');
-        if (titleEl && btnEl) {
-          const t = titleEl.textContent;
-          if (t.match(/\.(png|jpg|jpeg|gif)$/i)) {
-            const btnhref = btnEl.getAttribute('data-url') || btnEl.getAttribute('href');
-            if (btnhref && btnhref.startsWith('http')) {
-              galleryImages.push({ title: t, url: btnhref });
-            }
-          }
+      document.getElementById('updated').textContent = 'Updated: ' + new Date(cached.updatedAt).toLocaleString();
+      
+      const container = document.getElementById('projects');
+      container.innerHTML = '';
+      
+      for (const p of cached.projects) {
+        const done = p.done?.length || 0;
+        const todo = p.todo?.length || 0;
+        const blockers = p.blockers?.length || 0;
+        
+        let html = '<div class="project" onclick="openModal(\\'' + p.key + '\\')">';
+        html += '<div class="project-header">';
+        html += '<span class="project-name">' + p.name + '</span>';
+        html += '<div class="status-dot ' + p.status + '"></div></div>';
+        html += '<div class="stats">';
+        html += '<div class="stat"><span>' + done + '</span> done</div>';
+        html += '<div class="stat"><span>' + todo + '</span> todo</div>';
+        if (blockers > 0) html += '<div class="stat" style="color:#ef4444;"><span>' + blockers + '</span> blockers</div>';
+        html += '</div>';
+        html += '<div class="summary">' + (p.summary || '') + '</div>';
+        
+        if (blockers > 0) {
+          html += '<div class="blocker"><span class="blocker-label">⚠️</span>' + p.blockers[0] + '</div>';
         }
-      });
-      
-      currentGalleryIndex = galleryImages.findIndex(img => img.url === url);
-      if (currentGalleryIndex === -1) currentGalleryIndex = 0;
-      
-      if (galleryImages.length > 0) {
-        const modal = document.getElementById('gallery-modal');
-        modal.classList.add('active');
-        modal.ontouchstart = e => touchStartX = e.touches[0].clientX;
-        modal.ontouchend = e => {
-          const diff = touchStartX - e.changedTouches[0].clientX;
-          if (Math.abs(diff) > 50) diff > 0 ? nextGallery() : prevGallery();
-        };
-        updateGalleryImage();
+        
+        html += '</div>';
+        container.innerHTML += html;
       }
     }
     
-    function updateGalleryImage() {
-      document.getElementById('gallery-img').src = galleryImages[currentGalleryIndex].url;
-      document.getElementById('gallery-counter').textContent = `${currentGalleryIndex + 1} / ${galleryImages.length}`;
+    function openModal(key) {
+      if (!cached) return;
+      const p = cached.projects.find(x => x.key === key);
+      if (!p) return;
+      
+      document.getElementById('modalTitle').textContent = p.name;
+      document.getElementById('modalSummary').textContent = p.summary || '';
+      
+      let html = '';
+      
+      // Done
+      html += '<div class="section-title section-done">✅ Done (' + (p.done?.length || 0) + ')</div>';
+      for (const task of (p.done || [])) {
+        const taskText = typeof task === 'string' ? task : task.task || '';
+        if (task.url) {
+          html += '<div class="modal-task">✅ <a href="' + task.url + '" target="_blank">' + taskText + '</a></div>';
+        } else {
+          html += '<div class="modal-task">✅ ' + taskText + '</div>';
+        }
+      }
+      
+      // Todo
+      html += '<div class="section-title section-todo">⬜ To Do (' + (p.todo?.length || 0) + ')</div>';
+      for (const task of (p.todo || [])) {
+        const taskText = typeof task === 'string' ? task : task.task || '';
+        html += '<div class="modal-task">⬜ ' + taskText + '</div>';
+      }
+      
+      // Blockers
+      if (p.blockers?.length) {
+        html += '<div class="section-title section-blocker">🚫 Blockers (' + p.blockers.length + ')</div>';
+        for (const task of p.blockers) {
+          html += '<div class="modal-task">🚫 ' + task + '</div>';
+        }
+      }
+      
+      document.getElementById('modalBody').innerHTML = html;
+      document.getElementById('modal').classList.add('active');
+      document.body.style.overflow = 'hidden';
     }
     
-    function prevGallery() {
-      currentGalleryIndex = (currentGalleryIndex - 1 + galleryImages.length) % galleryImages.length;
-      updateGalleryImage();
+    function closeModal(e) {
+      if (e && e.target !== e.currentTarget) return;
+      document.getElementById('modal').classList.remove('active');
+      document.body.style.overflow = '';
     }
-    function nextGallery() {
-      currentGalleryIndex = (currentGalleryIndex + 1) % galleryImages.length;
-      updateGalleryImage();
-    }
-    function closeGallery() { document.getElementById('gallery-modal').classList.remove('active'); }
+    
+    loadData(false);
+    setInterval(() => loadData(false), 120000);
   </script>
-
-  <div class="gallery-full" id="gallery-modal" onclick="closeGallery()">
-    <button class="gallery-close" onclick="closeGallery()">×</button>
-    <img id="gallery-img" src="" style="touch-action: pan-y pinch-zoom;" />
-    <div class="gallery-counter" id="gallery-counter">1 / 1</div>
-    <div class="gallery-hint">← Swipe to browse →</div>
-  </div>
 </body>
 </html>

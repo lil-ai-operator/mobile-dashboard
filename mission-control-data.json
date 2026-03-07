@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-03-07T12:18:26Z",
+  "updatedAt": "2026-03-07T12:34:00Z",
   "projects": [
     {
       "key": "autobookr_suite",
@@ -452,11 +452,36 @@
       "completed": [],
       "count": 25,
       "tasks": [
-        "Add simple support/runbook notes (created 2026-02-27)",
-        "Publish live URL and quick-start guide",
-        "Landing site published",
-        "Landing animations + dark mode added",
-        "Mobile nav alignment fixes pushed"
+        {
+          "task": "Add simple support/runbook notes (created 2026-02-27)",
+          "path": null,
+          "url": null,
+          "completedAt": "2026-03-07"
+        },
+        {
+          "task": "Publish live URL and quick-start guide",
+          "path": null,
+          "url": null,
+          "completedAt": "2026-03-07"
+        },
+        {
+          "task": "Landing site published",
+          "path": null,
+          "url": null,
+          "completedAt": "2026-03-07"
+        },
+        {
+          "task": "Landing animations + dark mode added",
+          "path": null,
+          "url": null,
+          "completedAt": "2026-03-07"
+        },
+        {
+          "task": "Mobile nav alignment fixes pushed",
+          "path": null,
+          "url": null,
+          "completedAt": "2026-03-07"
+        }
       ]
     },
     "2026-03-07_mission_control": {
@@ -465,11 +490,36 @@
       "completed": [],
       "count": 11,
       "tasks": [
-        "Add link to Telegram pinned reference",
-        "Confirm page loads cleanly on mobile",
-        "Define auto-refresh/update method",
-        "Ensure status fields map to real source files",
-        "Add blocker summary and top 3 next actions"
+        {
+          "task": "Add link to Telegram pinned reference",
+          "path": null,
+          "url": null,
+          "completedAt": "2026-03-07"
+        },
+        {
+          "task": "Confirm page loads cleanly on mobile",
+          "path": null,
+          "url": null,
+          "completedAt": "2026-03-07"
+        },
+        {
+          "task": "Define auto-refresh/update method",
+          "path": null,
+          "url": null,
+          "completedAt": "2026-03-07"
+        },
+        {
+          "task": "Ensure status fields map to real source files",
+          "path": null,
+          "url": null,
+          "completedAt": "2026-03-07"
+        },
+        {
+          "task": "Add blocker summary and top 3 next actions",
+          "path": null,
+          "url": null,
+          "completedAt": "2026-03-07"
+        }
       ]
     },
     "2026-03-07_system_backup": {
@@ -478,11 +528,36 @@
       "completed": [],
       "count": 6,
       "tasks": [
-        "Rolling retention (4 backups)",
-        "Restore guide created",
-        "Restore test completed successfully",
-        "A) Google Drive",
-        "Configure chosen destination script"
+        {
+          "task": "Rolling retention (4 backups)",
+          "path": null,
+          "url": null,
+          "completedAt": "2026-03-07"
+        },
+        {
+          "task": "Restore guide created",
+          "path": null,
+          "url": null,
+          "completedAt": "2026-03-07"
+        },
+        {
+          "task": "Restore test completed successfully",
+          "path": null,
+          "url": null,
+          "completedAt": "2026-03-07"
+        },
+        {
+          "task": "A) Google Drive",
+          "path": null,
+          "url": null,
+          "completedAt": "2026-03-07"
+        },
+        {
+          "task": "Configure chosen destination script",
+          "path": null,
+          "url": null,
+          "completedAt": "2026-03-07"
+        }
       ]
     },
     "2026-03-07_neuronet": {
@@ -491,11 +566,36 @@
       "completed": [],
       "count": 13,
       "tasks": [
-        "Define cost-first rules for routine work",
-        "Define escalation rules for complex work",
-        "Define when region should be used",
-        "Define handoff format between regions",
-        "Add region prompts/checklists"
+        {
+          "task": "Define cost-first rules for routine work",
+          "path": null,
+          "url": null,
+          "completedAt": "2026-03-07"
+        },
+        {
+          "task": "Define escalation rules for complex work",
+          "path": null,
+          "url": null,
+          "completedAt": "2026-03-07"
+        },
+        {
+          "task": "Define when region should be used",
+          "path": null,
+          "url": null,
+          "completedAt": "2026-03-07"
+        },
+        {
+          "task": "Define handoff format between regions",
+          "path": null,
+          "url": null,
+          "completedAt": "2026-03-07"
+        },
+        {
+          "task": "Add region prompts/checklists",
+          "path": null,
+          "url": null,
+          "completedAt": "2026-03-07"
+        }
       ]
     },
     "2026-03-07_aavegotchi_bot": {
@@ -527,16 +627,66 @@
       "completed": [],
       "count": 25,
       "tasks": [
-        "Add customer onboarding form (name, trade, phone, area)",
-        "Store customer config safely",
-        "Add simple dashboard: calls/SMS activity",
-        "Add basic error handling + retry policy",
-        "End-to-end test: call -> SMS -> signup -> active status (UNBLOCKED 2026-02-27 - credentials verified, code ready)",
-        "Add simple support/runbook notes (created 2026-02-27)",
-        "Publish live URL and quick-start guide",
-        "Landing site published",
-        "Landing animations + dark mode added",
-        "Mobile nav alignment fixes pushed"
+        {
+          "task": "Add customer onboarding form (name, trade, phone, area)",
+          "path": null,
+          "url": null,
+          "completedAt": "2026-03-07"
+        },
+        {
+          "task": "Store customer config safely",
+          "path": null,
+          "url": null,
+          "completedAt": "2026-03-07"
+        },
+        {
+          "task": "Add simple dashboard: calls/SMS activity",
+          "path": null,
+          "url": null,
+          "completedAt": "2026-03-07"
+        },
+        {
+          "task": "Add basic error handling + retry policy",
+          "path": null,
+          "url": null,
+          "completedAt": "2026-03-07"
+        },
+        {
+          "task": "End-to-end test: call -> SMS -> signup -> active status (UNBLOCKED 2026-02-27 - credentials verified, code ready)",
+          "path": null,
+          "url": null,
+          "completedAt": "2026-03-07"
+        },
+        {
+          "task": "Add simple support/runbook notes (created 2026-02-27)",
+          "path": null,
+          "url": null,
+          "completedAt": "2026-03-07"
+        },
+        {
+          "task": "Publish live URL and quick-start guide",
+          "path": null,
+          "url": null,
+          "completedAt": "2026-03-07"
+        },
+        {
+          "task": "Landing site published",
+          "path": null,
+          "url": null,
+          "completedAt": "2026-03-07"
+        },
+        {
+          "task": "Landing animations + dark mode added",
+          "path": null,
+          "url": null,
+          "completedAt": "2026-03-07"
+        },
+        {
+          "task": "Mobile nav alignment fixes pushed",
+          "path": null,
+          "url": null,
+          "completedAt": "2026-03-07"
+        }
       ]
     },
     "2026-W09_mission_control": {
@@ -545,16 +695,66 @@
       "completed": [],
       "count": 11,
       "tasks": [
-        "Last updated timestamp added",
-        "Core project sections added",
-        "Key artifact links added",
-        "Approve publish mode (GitHub Pages / static link)",
-        "Publish live URL",
-        "Add link to Telegram pinned reference",
-        "Confirm page loads cleanly on mobile",
-        "Define auto-refresh/update method",
-        "Ensure status fields map to real source files",
-        "Add blocker summary and top 3 next actions"
+        {
+          "task": "Last updated timestamp added",
+          "path": null,
+          "url": null,
+          "completedAt": "2026-03-07"
+        },
+        {
+          "task": "Core project sections added",
+          "path": null,
+          "url": null,
+          "completedAt": "2026-03-07"
+        },
+        {
+          "task": "Key artifact links added",
+          "path": null,
+          "url": null,
+          "completedAt": "2026-03-07"
+        },
+        {
+          "task": "Approve publish mode (GitHub Pages / static link)",
+          "path": null,
+          "url": null,
+          "completedAt": "2026-03-07"
+        },
+        {
+          "task": "Publish live URL",
+          "path": null,
+          "url": null,
+          "completedAt": "2026-03-07"
+        },
+        {
+          "task": "Add link to Telegram pinned reference",
+          "path": null,
+          "url": null,
+          "completedAt": "2026-03-07"
+        },
+        {
+          "task": "Confirm page loads cleanly on mobile",
+          "path": null,
+          "url": null,
+          "completedAt": "2026-03-07"
+        },
+        {
+          "task": "Define auto-refresh/update method",
+          "path": null,
+          "url": null,
+          "completedAt": "2026-03-07"
+        },
+        {
+          "task": "Ensure status fields map to real source files",
+          "path": null,
+          "url": null,
+          "completedAt": "2026-03-07"
+        },
+        {
+          "task": "Add blocker summary and top 3 next actions",
+          "path": null,
+          "url": null,
+          "completedAt": "2026-03-07"
+        }
       ]
     },
     "2026-W09_system_backup": {
@@ -563,12 +763,42 @@
       "completed": [],
       "count": 6,
       "tasks": [
-        "Local backup script working",
-        "Rolling retention (4 backups)",
-        "Restore guide created",
-        "Restore test completed successfully",
-        "A) Google Drive",
-        "Configure chosen destination script"
+        {
+          "task": "Local backup script working",
+          "path": null,
+          "url": null,
+          "completedAt": "2026-03-07"
+        },
+        {
+          "task": "Rolling retention (4 backups)",
+          "path": null,
+          "url": null,
+          "completedAt": "2026-03-07"
+        },
+        {
+          "task": "Restore guide created",
+          "path": null,
+          "url": null,
+          "completedAt": "2026-03-07"
+        },
+        {
+          "task": "Restore test completed successfully",
+          "path": null,
+          "url": null,
+          "completedAt": "2026-03-07"
+        },
+        {
+          "task": "A) Google Drive",
+          "path": null,
+          "url": null,
+          "completedAt": "2026-03-07"
+        },
+        {
+          "task": "Configure chosen destination script",
+          "path": null,
+          "url": null,
+          "completedAt": "2026-03-07"
+        }
       ]
     },
     "2026-W09_neuronet": {
@@ -577,16 +807,66 @@
       "completed": [],
       "count": 13,
       "tasks": [
-        "Research Ops",
-        "Build Ops",
-        "Risk & QA",
-        "Assign default model per region",
-        "Assign fallback model per region",
-        "Define cost-first rules for routine work",
-        "Define escalation rules for complex work",
-        "Define when region should be used",
-        "Define handoff format between regions",
-        "Add region prompts/checklists"
+        {
+          "task": "Research Ops",
+          "path": null,
+          "url": null,
+          "completedAt": "2026-03-07"
+        },
+        {
+          "task": "Build Ops",
+          "path": null,
+          "url": null,
+          "completedAt": "2026-03-07"
+        },
+        {
+          "task": "Risk & QA",
+          "path": null,
+          "url": null,
+          "completedAt": "2026-03-07"
+        },
+        {
+          "task": "Assign default model per region",
+          "path": null,
+          "url": null,
+          "completedAt": "2026-03-07"
+        },
+        {
+          "task": "Assign fallback model per region",
+          "path": null,
+          "url": null,
+          "completedAt": "2026-03-07"
+        },
+        {
+          "task": "Define cost-first rules for routine work",
+          "path": null,
+          "url": null,
+          "completedAt": "2026-03-07"
+        },
+        {
+          "task": "Define escalation rules for complex work",
+          "path": null,
+          "url": null,
+          "completedAt": "2026-03-07"
+        },
+        {
+          "task": "Define when region should be used",
+          "path": null,
+          "url": null,
+          "completedAt": "2026-03-07"
+        },
+        {
+          "task": "Define handoff format between regions",
+          "path": null,
+          "url": null,
+          "completedAt": "2026-03-07"
+        },
+        {
+          "task": "Add region prompts/checklists",
+          "path": null,
+          "url": null,
+          "completedAt": "2026-03-07"
+        }
       ]
     },
     "2026-W09_aavegotchi_bot": {
