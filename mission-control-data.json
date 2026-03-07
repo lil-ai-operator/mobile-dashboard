@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-03-07T12:01:30Z",
+  "updatedAt": "2026-03-07T12:13:38Z",
   "projects": [
     {
       "key": "autobookr_suite",
@@ -170,6 +170,172 @@
       ]
     }
   ],
+  "dailyCompleted": {
+    "2026-03-07_autobookr_suite": {
+      "date": "2026-03-07",
+      "project": "autobookr_suite",
+      "completed": [],
+      "count": 25,
+      "tasks": [
+        "Add simple support/runbook notes (created 2026-02-27)",
+        "Publish live URL and quick-start guide",
+        "Landing site published",
+        "Landing animations + dark mode added",
+        "Mobile nav alignment fixes pushed"
+      ]
+    },
+    "2026-03-07_mission_control": {
+      "date": "2026-03-07",
+      "project": "mission_control",
+      "completed": [],
+      "count": 11,
+      "tasks": [
+        "Add link to Telegram pinned reference",
+        "Confirm page loads cleanly on mobile",
+        "Define auto-refresh/update method",
+        "Ensure status fields map to real source files",
+        "Add blocker summary and top 3 next actions"
+      ]
+    },
+    "2026-03-07_system_backup": {
+      "date": "2026-03-07",
+      "project": "system_backup",
+      "completed": [],
+      "count": 6,
+      "tasks": [
+        "Rolling retention (4 backups)",
+        "Restore guide created",
+        "Restore test completed successfully",
+        "A) Google Drive",
+        "Configure chosen destination script"
+      ]
+    },
+    "2026-03-07_neuronet": {
+      "date": "2026-03-07",
+      "project": "neuronet",
+      "completed": [],
+      "count": 13,
+      "tasks": [
+        "Define cost-first rules for routine work",
+        "Define escalation rules for complex work",
+        "Define when region should be used",
+        "Define handoff format between regions",
+        "Add region prompts/checklists"
+      ]
+    },
+    "2026-03-07_aavegotchi_bot": {
+      "date": "2026-03-07",
+      "project": "aavegotchi_bot",
+      "completed": [],
+      "count": 0,
+      "tasks": []
+    },
+    "2026-03-07_etsy_business": {
+      "date": "2026-03-07",
+      "project": "etsy_business",
+      "completed": [],
+      "count": 0,
+      "tasks": []
+    },
+    "2026-03-07_clare_reiki": {
+      "date": "2026-03-07",
+      "project": "clare_reiki",
+      "completed": [],
+      "count": 0,
+      "tasks": []
+    }
+  },
+  "weeklyCompleted": {
+    "2026-W09_autobookr_suite": {
+      "week": "2026-W09",
+      "project": "autobookr_suite",
+      "completed": [],
+      "count": 25,
+      "tasks": [
+        "Add customer onboarding form (name, trade, phone, area)",
+        "Store customer config safely",
+        "Add simple dashboard: calls/SMS activity",
+        "Add basic error handling + retry policy",
+        "End-to-end test: call -> SMS -> signup -> active status (UNBLOCKED 2026-02-27 - credentials verified, code ready)",
+        "Add simple support/runbook notes (created 2026-02-27)",
+        "Publish live URL and quick-start guide",
+        "Landing site published",
+        "Landing animations + dark mode added",
+        "Mobile nav alignment fixes pushed"
+      ]
+    },
+    "2026-W09_mission_control": {
+      "week": "2026-W09",
+      "project": "mission_control",
+      "completed": [],
+      "count": 11,
+      "tasks": [
+        "Last updated timestamp added",
+        "Core project sections added",
+        "Key artifact links added",
+        "Approve publish mode (GitHub Pages / static link)",
+        "Publish live URL",
+        "Add link to Telegram pinned reference",
+        "Confirm page loads cleanly on mobile",
+        "Define auto-refresh/update method",
+        "Ensure status fields map to real source files",
+        "Add blocker summary and top 3 next actions"
+      ]
+    },
+    "2026-W09_system_backup": {
+      "week": "2026-W09",
+      "project": "system_backup",
+      "completed": [],
+      "count": 6,
+      "tasks": [
+        "Local backup script working",
+        "Rolling retention (4 backups)",
+        "Restore guide created",
+        "Restore test completed successfully",
+        "A) Google Drive",
+        "Configure chosen destination script"
+      ]
+    },
+    "2026-W09_neuronet": {
+      "week": "2026-W09",
+      "project": "neuronet",
+      "completed": [],
+      "count": 13,
+      "tasks": [
+        "Research Ops",
+        "Build Ops",
+        "Risk & QA",
+        "Assign default model per region",
+        "Assign fallback model per region",
+        "Define cost-first rules for routine work",
+        "Define escalation rules for complex work",
+        "Define when region should be used",
+        "Define handoff format between regions",
+        "Add region prompts/checklists"
+      ]
+    },
+    "2026-W09_aavegotchi_bot": {
+      "week": "2026-W09",
+      "project": "aavegotchi_bot",
+      "completed": [],
+      "count": 0,
+      "tasks": []
+    },
+    "2026-W09_etsy_business": {
+      "week": "2026-W09",
+      "project": "etsy_business",
+      "completed": [],
+      "count": 0,
+      "tasks": []
+    },
+    "2026-W09_clare_reiki": {
+      "week": "2026-W09",
+      "project": "clare_reiki",
+      "completed": [],
+      "count": 0,
+      "tasks": []
+    }
+  },
   "readQueue": [
     {
       "id": "session-start",
