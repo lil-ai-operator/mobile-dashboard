@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-03-08T15:50:51Z",
+  "updatedAt": "2026-03-08T16:49:27Z",
   "projects": [
     {
       "key": "autobookr_suite",
@@ -342,7 +342,7 @@
       "date": "2026-03-08",
       "project": "autobookr_suite",
       "projectName": "📞 AutoBookr Suite (App + Landing)",
-      "count": 18,
+      "count": 20,
       "tasks": [
         {
           "task": "Implement waitlist for overcapacity periods",
@@ -382,7 +382,7 @@
       "date": "2026-03-08",
       "project": "system_backup",
       "projectName": "🛟 System Backup + Recovery",
-      "count": 10,
+      "count": 12,
       "tasks": [
         {
           "task": "Create backup status widget",
@@ -410,10 +410,13 @@
       "date": "2026-03-08",
       "project": "neuronet",
       "projectName": "🧠 NeuroNet Agent Team",
-      "count": 17,
+      "count": 18,
       "tasks": [
-        "Add region prompts/checklists",
         "projects/NeuroNetAgentTeam/docs/handoff-protocol.md",
+        {
+          "task": "Create region health monitoring",
+          "completedAt": "2026-03-08"
+        },
         {
           "task": "Create region health monitoring",
           "completedAt": "2026-03-08"
@@ -455,12 +458,18 @@
       "week": "2026-W09",
       "project": "autobookr_suite",
       "projectName": "📞 AutoBookr Suite (App + Landing)",
-      "count": 18,
+      "count": 20,
       "tasks": [
-        "projects/AutoBookr/brand-compare.html",
-        "projects/AutoBookr/competitor-report.md",
         "projects/AutoBookr/PLAN.md",
         "projects/AutoBookr/RUNBOOK.md",
+        {
+          "task": "Add analytics dashboard with conversion funnels",
+          "completedAt": "2026-03-08"
+        },
+        {
+          "task": "Implement waitlist for overcapacity periods",
+          "completedAt": "2026-03-08"
+        },
         {
           "task": "Add analytics dashboard with conversion funnels",
           "completedAt": "2026-03-08"
@@ -503,12 +512,18 @@
       "week": "2026-W09",
       "project": "system_backup",
       "projectName": "🛟 System Backup + Recovery",
-      "count": 10,
+      "count": 12,
       "tasks": [
-        "Setup rclone",
-        "Configure Google Drive",
         "Test backup",
         "First backup completed",
+        {
+          "task": "Add incremental backup option",
+          "completedAt": "2026-03-08"
+        },
+        {
+          "task": "Create backup status widget",
+          "completedAt": "2026-03-08"
+        },
         {
           "task": "Add incremental backup option",
           "completedAt": "2026-03-08"
@@ -539,15 +554,18 @@
       "week": "2026-W09",
       "project": "neuronet",
       "projectName": "🧠 NeuroNet Agent Team",
-      "count": 17,
+      "count": 18,
       "tasks": [
-        "Assign fallback model per region",
         "Define cost-first rules for routine work",
         "Define escalation rules for complex work",
         "Define when region should be used",
         "Define handoff format between regions",
         "Add region prompts/checklists",
         "projects/NeuroNetAgentTeam/docs/handoff-protocol.md",
+        {
+          "task": "Create region health monitoring",
+          "completedAt": "2026-03-08"
+        },
         {
           "task": "Create region health monitoring",
           "completedAt": "2026-03-08"

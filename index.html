@@ -275,17 +275,15 @@
       }
     }
     
-    // Swipe handlers - swipe anywhere to toggle
+    // Swipe handlers - tap to open, swipe to close
     let touchStartX = 0;
     function handleTouchStart(e){touchStartX = e.touches[0].clientX}
     function handleTouchMove(e){e.preventDefault()}
     function handleTouchEnd(e){
       const touchEndX = e.changedTouches[0].clientX;
       const diff = touchStartX - touchEndX;
-      // Swipe left (>30px) to open, swipe right to close
-      if(diff > 30 && !document.getElementById('notifPanel').classList.contains('open')){
-        toggleNotifs();
-      }else if(diff < -30 && document.getElementById('notifPanel').classList.contains('open')){
+      // Swipe right (>40px) to close
+      if(diff < -40 && document.getElementById('notifPanel').classList.contains('open')){
         toggleNotifs();
       }
     }
