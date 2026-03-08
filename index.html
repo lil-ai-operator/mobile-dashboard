@@ -7,21 +7,27 @@
   <style>
     body { font-family: sans-serif; background: #111; color: #fff; padding: 20px; margin: 0; }
     h1 { color: #00d68f; margin: 0 0 20px 0; }
-    .project { background: #222; padding: 15px; margin: 10px 0; border-radius: 8px; cursor: pointer; }
+    .project { background: #222; padding: 15px; margin: 10px 0; border-radius: 8px; }
     .green { border-left: 4px solid #00d68f; }
     .red { border-left: 4px solid #ff4757; }
     .yellow { border-left: 4px solid #ffaa00; }
-    .header { display: flex; justify-content: space-between; align-items: center; }
+    .header { display: flex; justify-content: space-between; align-items: center; cursor: pointer; }
     .name { font-size: 18px; font-weight: bold; }
     .status { padding: 4px 8px; border-radius: 4px; font-size: 12px; }
     .status.green { background: #00d68f; color: #000; }
     .status.red { background: #ff4757; color: #fff; }
     .status.yellow { background: #ffaa00; color: #000; }
+    .summary { color: #888; margin: 10px 0; }
     .details { display: none; margin-top: 15px; padding-top: 15px; border-top: 1px solid #444; }
     .details.open { display: block; }
-    .done { color: #00d68f; }
-    .todo { color: #ffaa00; }
-    .blocker { background: #3d1f1f; padding: 10px; border-radius: 4px; margin-top: 10px; }
+    .section { margin: 15px 0; cursor: pointer; }
+    .section-header { color: #00d68f; font-weight: bold; margin-bottom: 8px; }
+    .section-header.todo { color: #ffaa00; }
+    .task { padding: 8px; background: #333; margin: 5px 0; border-radius: 4px; display: flex; align-items: center; gap: 8px; }
+    .task-check { width: 16px; height: 16px; border-radius: 3px; display: inline-block; }
+    .task-check.done { background: #00d68f; }
+    .task-check.todo { border: 2px solid #666; }
+    .blocker { background: #3d1f1f; padding: 10px; border-radius: 4px; margin: 10px 0; }
   </style>
 </head>
 <body>
@@ -32,20 +38,45 @@
       const el = document.getElementById('d-' + id);
       el.classList.toggle('open');
     }
+    function toggleSection(id) {
+      const el = document.getElementById('s-' + id);
+      el.classList.toggle('open');
+    }
     fetch('mission-control-data.json').then(r=>r.json()).then(data=>{
       let html = '';
-      data.projects.forEach(p=>{
-        html += '<div class="project '+p.status+'" onclick="toggle(\''+p.key+'\')">';
-        html += '<div class="header"><span class="name">'+p.name+'</span><span class="status '+p.status+'">'+p.status+'</span></div>';
-        html += '<div id="d-'+p.key+'" class="details">';
-        if(p.summary) html += '<p>'+p.summary+'</p>';
+      data.projects.forEach((p, i)=>{
+        const pid = p.key || 'p' + i;
+        html += '<div class="project '+p.status+'">';
+        html += '<div class="header" onclick="toggle(\''+pid+'\')">';
+        html += '<span class="name">'+p.name+'</span>';
+        html += '<span class="status '+p.status+'">'+p.status+'</span></div>';
+        if(p.summary) html += '<div class="summary">'+p.summary+'</div>';
+        html += '<div id="d-'+pid+'" class="details">';
         if(p.blockers && p.blockers.length) {
           p.blockers.forEach(b=>{
             html += '<div class="blocker">🚫 '+b+'</div>';
           });
         }
-        if(p.done && p.done.length) html += '<p class="done">✓ '+p.done.length+' done</p>';
-        if(p.todo && p.todo.length) html += '<p class="todo">○ '+p.todo.length+' to do</p>';
+        if(p.done && p.done.length) {
+          html += '<div class="section" onclick="toggleSection(\''+pid+'-done\')">';
+          html += '<div class="section-header">✅ Done ('+p.done.length+')</div>';
+          html += '<div id="s-'+pid+'-done" class="task-list">';
+          p.done.forEach(t=>{
+            const taskName = typeof t === 'string' ? t : (t.task || '');
+            html += '<div class="task"><span class="task-check done">✓</span> '+taskName+'</div>';
+          });
+          html += '</div></div>';
+        }
+        if(p.todo && p.todo.length) {
+          html += '<div class="section" onclick="toggleSection(\''+pid+'-todo\')">';
+          html += '<div class="section-header todo">⬜ To Do ('+p.todo.length+')</div>';
+          html += '<div id="s-'+pid+'-todo" class="task-list">';
+          p.todo.forEach(t=>{
+            const taskName = typeof t === 'string' ? t : (t.task || '');
+            html += '<div class="task"><span class="task-check todo"></span> '+taskName+'</div>';
+          });
+          html += '</div></div>';
+        }
         html += '</div></div>';
       });
       document.getElementById('projects').innerHTML = html;
