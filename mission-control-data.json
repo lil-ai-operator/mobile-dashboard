@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-03-08T23:24:05Z",
+  "updatedAt": "2026-03-08T23:30:11Z",
   "projects": [
     {
       "key": "autobookr_suite",
@@ -63,7 +63,9 @@
       "todo": [
         "Get first paying customer",
         "Scale to 5 customers",
-        "Add more integrations"
+        "Add more integrations",
+        "Add analytics dashboard with conversion funnels",
+        "Implement waitlist for overcapacity periods"
       ],
       "blockers": [
         "Manual live verification needed"
@@ -140,7 +142,9 @@
         }
       ],
       "todo": [
-        "Schedule automatic backups"
+        "Schedule automatic backups",
+        "Add incremental backup option",
+        "Create backup status widget"
       ],
       "blockers": []
     },
@@ -189,7 +193,8 @@
         "Approve final region architecture",
         "Test 2 full workflows using region handoffs",
         "Regions are active with clear model routing and handoff rules",
-        "Add usage metrics per region"
+        "Add usage metrics per region",
+        "Create region health monitoring"
       ],
       "blockers": []
     },
