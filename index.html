@@ -5,30 +5,48 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Mission Control</title>
   <style>
-    body { font-family: sans-serif; background: #111; color: #fff; padding: 20px; }
-    h1 { color: #00d68f; }
-    .project { background: #222; padding: 15px; margin: 10px 0; border-radius: 8px; }
+    body { font-family: sans-serif; background: #111; color: #fff; padding: 20px; margin: 0; }
+    h1 { color: #00d68f; margin: 0 0 20px 0; }
+    .project { background: #222; padding: 15px; margin: 10px 0; border-radius: 8px; cursor: pointer; }
     .green { border-left: 4px solid #00d68f; }
     .red { border-left: 4px solid #ff4757; }
-    .status { float: right; }
+    .yellow { border-left: 4px solid #ffaa00; }
+    .header { display: flex; justify-content: space-between; align-items: center; }
+    .name { font-size: 18px; font-weight: bold; }
+    .status { padding: 4px 8px; border-radius: 4px; font-size: 12px; }
+    .status.green { background: #00d68f; color: #000; }
+    .status.red { background: #ff4757; color: #fff; }
+    .status.yellow { background: #ffaa00; color: #000; }
+    .details { display: none; margin-top: 15px; padding-top: 15px; border-top: 1px solid #444; }
+    .details.open { display: block; }
     .done { color: #00d68f; }
     .todo { color: #ffaa00; }
+    .blocker { background: #3d1f1f; padding: 10px; border-radius: 4px; margin-top: 10px; }
   </style>
 </head>
 <body>
   <h1>🐸 Mission Control</h1>
   <div id="projects">Loading...</div>
   <script>
+    function toggle(id) {
+      const el = document.getElementById('d-' + id);
+      el.classList.toggle('open');
+    }
     fetch('mission-control-data.json').then(r=>r.json()).then(data=>{
       let html = '';
       data.projects.forEach(p=>{
-        html += '<div class="project '+p.status+'">';
-        html += '<span class="status">'+p.status.toUpperCase()+'</span>';
-        html += '<h3>'+p.name+'</h3>';
-        html += '<p>'+(p.summary||'')+'</p>';
+        html += '<div class="project '+p.status+'" onclick="toggle(\''+p.key+'\')">';
+        html += '<div class="header"><span class="name">'+p.name+'</span><span class="status '+p.status+'">'+p.status+'</span></div>';
+        html += '<div id="d-'+p.key+'" class="details">';
+        if(p.summary) html += '<p>'+p.summary+'</p>';
+        if(p.blockers && p.blockers.length) {
+          p.blockers.forEach(b=>{
+            html += '<div class="blocker">🚫 '+b+'</div>';
+          });
+        }
         if(p.done && p.done.length) html += '<p class="done">✓ '+p.done.length+' done</p>';
         if(p.todo && p.todo.length) html += '<p class="todo">○ '+p.todo.length+' to do</p>';
-        html += '</div>';
+        html += '</div></div>';
       });
       document.getElementById('projects').innerHTML = html;
     }).catch(e=>{
