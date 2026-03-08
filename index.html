@@ -157,10 +157,10 @@
     <div class="fil" onclick="setF('red',this)">Blocked</div>
   </div>
   <div class="st">
-    <div class="stat g" onclick="openStats('active')"><div class="stat-n" id="g">0</div><div class="stat-l">ACTIVE</div></div>
-    <div class="stat y" onclick="openStats('progress')"><div class="stat-n" id="y">0</div><div class="stat-l">IN PROGRESS</div></div>
-    <div class="stat r" onclick="openStats('blocked')"><div class="stat-n" id="r">0</div><div class="stat-l">BLOCKED</div></div>
-    <div class="stat blu" onclick="openStats('tasks')"><div class="stat-n" id="t">0</div><div class="stat-l">TASKS</div></div>
+    <div class="stat g" onclick="this.classList.toggle('on');openStats('active')"><div class="stat-n" id="g">0</div><div class="stat-l">ACTIVE</div></div>
+    <div class="stat y" onclick="this.classList.toggle('on');openStats('progress')"><div class="stat-n" id="y">0</div><div class="stat-l">IN PROGRESS</div></div>
+    <div class="stat r" onclick="this.classList.toggle('on');openStats('blocked')"><div class="stat-n" id="r">0</div><div class="stat-l">BLOCKED</div></div>
+    <div class="stat blu" onclick="this.classList.toggle('on');openStats('tasks')"><div class="stat-n" id="t">0</div><div class="stat-l">TASKS</div></div>
   </div>
   <div class="prog">
     <div class="prog-h"><span class="prog-l">Weekly Progress</span><span class="prog-r" id="progPct">0%</span></div>
