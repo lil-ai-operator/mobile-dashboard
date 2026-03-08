@@ -183,80 +183,47 @@
     </div>
   </div>
   <script>
-    // Zen Peaceful Sound Engine
+    // Distinct Zen Sound Palette
     let soundOn = false;
     let audioCtx = null;
     
     function initAudio() {
       try {
-        if (!audioCtx) {
-          audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-        }
-        if (audioCtx.state === 'suspended') {
-          audioCtx.resume();
-        }
+        if (!audioCtx) { audioCtx = new (window.AudioContext || window.webkitAudioContext)(); }
+        if (audioCtx.state === 'suspended') { audioCtx.resume(); }
       } catch(e) {}
     }
     
     function playSound(type) {
       try {
-        if (!soundOn) return;
-        initAudio();
-        if (!audioCtx) return;
-        
+        if (!soundOn || !audioCtx) return;
         const now = audioCtx.currentTime;
-        
-        // Zen frequencies - peaceful harmonics
         switch(type) {
-          case 'pop': // Soft gentle tap
-            zenTone(523, 0.1, 0.1); // C5 soft
-            break;
-          case 'success': // Joyful cascade
-            zenTone(523, 0.15, 0);    // C5
-            setTimeout(() => zenTone(659, 0.15, 0.08), 80);
-            setTimeout(() => zenTone(784, 0.15, 0.16), 160);
-            setTimeout(() => zenTone(1047, 0.3, 0.24), 240);
-            break;
-          case 'whoosh': // Peaceful breeze
-            zenTone(330, 0.12, 0);
-            setTimeout(() => zenTone(220, 0.15, 0.08), 60);
-            break;
-          case 'modal': // Calm opening
-            zenTone(392, 0.15, 0);  // G4
-            setTimeout(() => zenTone(523, 0.2, 0.1), 100);
-            break;
-          case 'toggle': // Gentle switch
-            zenTone(440, 0.08, 0); // A4
-            break;
-          case 'send': // Uplifting release
-            zenTone(440, 0.12, 0);
-            setTimeout(() => zenTone(554, 0.12, 0.1), 100);
-            setTimeout(() => zenTone(659, 0.25, 0.2), 200);
-            break;
-          case 'complete': // Deep satisfaction
-            zenTone(392, 0.15, 0);
-            setTimeout(() => zenTone(523, 0.15, 0.1), 100);
-            setTimeout(() => zenTone(659, 0.2, 0.2), 200);
-            setTimeout(() => zenTone(784, 0.35, 0.3), 300);
-            break;
-          default:
-            zenTone(440, 0.08, 0);
+          case 'tap': t(880, 0.04, 0, 0.04); break;
+          case 'open': t(440, 0.06, 0); setTimeout(() => t(554, 0.06, 0.03), 30); setTimeout(() => t(659, 0.1, 0.06), 60); break;
+          case 'close': t(554, 0.05, 0); setTimeout(() => t(440, 0.08, 0.03), 30); break;
+          case 'fab': t(392, 0.06, 0); setTimeout(() => t(523, 0.06, 0.04), 40); setTimeout(() => t(659, 0.1, 0.08), 80); break;
+          case 'modal': t(349, 0.08, 0); setTimeout(() => t(440, 0.1, 0.05), 50); break;
+          case 'send': t(523, 0.06, 0); setTimeout(() => t(659, 0.06, 0.05), 50); setTimeout(() => t(784, 0.15, 0.1), 100); break;
+          case 'done': t(880, 0.04, 0, 0.04); break;
+          case 'complete': t(523, 0.1, 0); setTimeout(() => t(659, 0.1, 0.05), 50); setTimeout(() => t(784, 0.1, 0.1), 100); setTimeout(() => t(1047, 0.2, 0.15), 150); break;
+          case 'swipe': t(294, 0.06, 0); setTimeout(() => t(220, 0.08, 0.03), 30); break;
+          case 'toggle': t(698, 0.04, 0, 0.03); break;
+          case 'filter': t(587, 0.05, 0, 0.04); break;
+          default: t(440, 0.05, 0, 0.04);
         }
       } catch(e) {}
     }
     
-    function zenTone(freq, duration, delay) {
+    function t(freq, dur, dely, vol) {
       const osc = audioCtx.createOscillator();
       const gain = audioCtx.createGain();
-      osc.type = 'sine';
-      osc.connect(gain);
-      gain.connect(audioCtx.destination);
-      const now = audioCtx.currentTime + (delay || 0);
+      osc.type = 'sine'; osc.connect(gain); gain.connect(audioCtx.destination);
+      const now = audioCtx.currentTime + (dely || 0);
       osc.frequency.setValueAtTime(freq, now);
-      gain.gain.setValueAtTime(0.08, now); // Very soft
-      gain.gain.exponentialRampToValueAtTime(0.001, now + duration);
-      osc.start(now);
-      osc.stop(now + duration);
+      gain.gain.setValueAtTime(vol || 0.05, now);
+      gain.gain.exponentialRampToValueAtTime(0.001, now + dur);
+      osc.start(now); osc.stop(now + dur);
     }
     
     function toggleSound() {
@@ -275,13 +242,13 @@
     function init(){const pSelect=document.getElementById('modalProject');data.forEach(p=>{const o=document.createElement('option');o.value=p.key||p.name;o.textContent=p.name;pSelect.appendChild(o)})}
     function load(){fetch('mission-control-data.json?t='+Date.now()).then(r=>r.json()).then(d=>{data=d.projects||[];const up=new Date(d.updatedAt);document.getElementById('time').textContent=up.toLocaleTimeString();document.getElementById('syncStatus').textContent='● Synced '+up.toLocaleTimeString();init();render()})}
     function theme(){const t=document.documentElement.getAttribute('data-theme')==='light'?'dark':'light';document.documentElement.setAttribute('data-theme',t);localStorage.setItem('mc_th',t);playSound('toggle')}
-    function setF(x,btn){f=x;document.querySelectorAll('.fil').forEach(b=>b.classList.remove('on'));btn.classList.add('on');render();playSound('pop')}
-    function toggle(id){document.querySelectorAll('.p-bd').forEach(el=>{if(el.id!=='b-'+id)el.classList.remove('on')});document.getElementById('b-'+id).classList.toggle('on');playSound('pop')}
-    function toggS(el){el.nextElementSibling.classList.toggle('on');el.querySelector('.arr').classList.toggle('on');playSound('pop')}
-    function chk(pid,i){const k=pid+'-'+i;checked[k]=!checked[k];localStorage.setItem('mc_chk',JSON.stringify(checked));render();if(checked[k]){const p=data.find(x=>(x.key||'')===pid);if(p&&p.done?.every((t,j)=>checked[pid+'-'+j])){showC();playSound('complete')}};playSound('pop')}
+    function setF(x,btn){f=x;document.querySelectorAll('.fil').forEach(b=>b.classList.remove('on'));btn.classList.add('on');render();playSound('tap')}
+    function toggle(id){document.querySelectorAll('.p-bd').forEach(el=>{if(el.id!=='b-'+id)el.classList.remove('on')});document.getElementById('b-'+id).classList.toggle('on');playSound('tap')}
+    function toggS(el){el.nextElementSibling.classList.toggle('on');el.querySelector('.arr').classList.toggle('on');playSound('tap')}
+    function chk(pid,i){const k=pid+'-'+i;checked[k]=!checked[k];localStorage.setItem('mc_chk',JSON.stringify(checked));render();if(checked[k]){const p=data.find(x=>(x.key||'')===pid);if(p&&p.done?.every((t,j)=>checked[pid+'-'+j])){showC();playSound('complete')}};playSound('tap')}
     function showC(){['🎉','⭐','🔥','✨'].forEach((e,i)=>{const d=document.createElement('div');d.className='conf';d.textContent=e;d.style.left=(30+Math.random()*40)+'%';d.style.animationDelay=i*0.1+'s';document.body.appendChild(d);setTimeout(()=>d.remove(),1000)})}
     function sendToG(project,task){const text=encodeURIComponent('🐸 '+project+'\n\n📝 '+task+'\n\nLet\'s go! 🔥');navigator.clipboard.writeText(project+': '+task);window.open('https://t.me/lilPepeG_bot?text='+text,'_blank');playSound('send')}
-    function share(){const g=data.filter(p=>p.status==='green').length,r=data.filter(p=>p.status==='red').length;const t='🐸 Mission Control:\n\n✅ '+g+' Active\n🔴 '+r+' Blocked';navigator.clipboard.writeText(t).then(()=>alert('Copied!'));playSound('pop')}
+    function share(){const g=data.filter(p=>p.status==='green').length,r=data.filter(p=>p.status==='red').length;const t='🐸 Mission Control:\n\n✅ '+g+' Active\n🔴 '+r+' Blocked';navigator.clipboard.writeText(t).then(()=>alert('Copied!'));playSound('tap')}
     function toggleFab(){document.getElementById('fabSub').classList.toggle('show');document.querySelector('.fab-btn').textContent=document.getElementById('fabSub').classList.contains('show')?'✕':'+';playSound('modal')}
     function openModal(type){modalType=type;document.getElementById('modal').classList.add('show');document.getElementById('modalTitle').textContent=type==='task'?'Add Task':type==='note'?'Quick Note':'💡 Add Idea';document.getElementById('modalInput').value='';document.getElementById('modalText').value='';document.getElementById('modalProject').value='';document.getElementById('modalProject').style.display=type==='task'?'block':'none';playSound('modal')}
     function closeModal(){document.getElementById('modal').classList.remove('show')}
@@ -292,7 +259,7 @@
     function onTouchEnd(e){if(!panel)return;if(isSwiping){panel.style.transition='';const tx=e.changedTouches[0].pageX,dx=tx-touchStartX;dx>80?(panel.style.right='-300px',panel.classList.remove('open'),detachSwipe()):panel.style.right='0px'}touchStartX=0;touchStartY=0;isSwiping=false;panel=null}
     function attachSwipe(){if(!swipeAttached){document.addEventListener('touchstart',onTouchStart,{passive:true});document.addEventListener('touchmove',onTouchMove,{passive:false});document.addEventListener('touchend',onTouchEnd,{passive:true});swipeAttached=true}}
     function detachSwipe(){if(swipeAttached){document.removeEventListener('touchstart',onTouchStart);document.removeEventListener('touchmove',onTouchMove);document.removeEventListener('touchend',onTouchEnd);swipeAttached=false}}
-    function toggleNotifs(){const p=document.getElementById('notifPanel'),t=document.getElementById('notifTab'),o=p.classList.contains('open');if(o){p.classList.remove('open');p.style.right='-300px';detachSwipe();playSound('whoosh')}else{p.classList.add('open');p.style.right='0px';attachSwipe();t.classList.remove('has-new');playSound('modal')}}
+    function toggleNotifs(){const p=document.getElementById('notifPanel'),t=document.getElementById('notifTab'),o=p.classList.contains('open');if(o){p.classList.remove('open');p.style.right='-300px';detachSwipe();playSound('swipe')}else{p.classList.add('open');p.style.right='0px';attachSwipe();t.classList.remove('has-new');playSound('modal')}}
     const notifs=[{t:'Mission Control updated',d:'Just now'},{t:'AutoBookr landing ready',d:'5 min ago'},{t:'Backup scripts ready',d:'1 hour ago'},{t:'NeuroNet needs approval',d:'2 hours ago'}];
     function renderNotifs(){document.getElementById('notifList').innerHTML=notifs.map(n=>'<div class="notif-item">'+n.t+'<div class="time">'+n.d+'</div></div>').join('')}
     renderNotifs();
