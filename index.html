@@ -277,7 +277,7 @@
       }
     }
     
-    // Swipe handlers - smooth follow + scroll-friendly
+    // Swipe handlers - only intercept horizontal swipes when panel open
     let touchStartX = 0;
     let touchStartY = 0;
     let isSwiping = false;
@@ -291,6 +291,7 @@
     }, {passive: true});
     
     document.addEventListener('touchmove', function(e) {
+      // Always allow scrolling when panel is closed
       if(!panel || !panel.classList.contains('open')) return;
       
       const currentX = e.touches[0].pageX;
@@ -298,12 +299,12 @@
       const diffX = Math.abs(currentX - touchStartX);
       const diffY = Math.abs(currentY - touchStartY);
       
-      // Only hijack if horizontal swipe > vertical
-      if(diffX > diffY && diffX > 10) {
+      // Only hijack for clear horizontal swipe
+      if(diffX > diffY + 20 && diffX > 30) {
         isSwiping = true;
         e.preventDefault();
         
-        // Follow finger - swipe RIGHT closes (panel moves right)
+        // Follow finger horizontally
         const moveX = currentX - touchStartX;
         if(moveX > 0) {
           panel.style.right = (-moveX) + 'px';
@@ -318,7 +319,7 @@
         const touchEndX = e.changedTouches[0].pageX;
         const diffX = touchEndX - touchStartX;
         
-        // Swipe RIGHT (>80px) to close
+        // Swipe RIGHT > 80px to close
         if(diffX > 80) {
           panel.style.right = '-300px';
           toggleNotifs();
