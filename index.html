@@ -303,10 +303,10 @@
         isSwiping = true;
         e.preventDefault(); // Stop page scroll
         
-        // Follow finger - move panel
-        const moveX = currentX - touchStartX;
+        // Follow finger - swipe RIGHT closes (moves panel right)
+        const moveX = touchStartX - currentX;
         if(moveX > 0) {
-          panel.style.right = (-300 + moveX) + 'px';
+          panel.style.right = (-300 - moveX) + 'px';
         }
       }
     }, {passive: false});
@@ -316,11 +316,11 @@
       
       if(isSwiping) {
         const touchEndX = e.changedTouches[0].pageX;
-        const diffX = touchEndX - touchStartX;
+        const diffX = touchStartX - touchEndX;
         
-        // If swiped right > 100px, close; otherwise snap back
+        // Swipe left (>100px) to close - swipe right to open
         if(diffX > 100) {
-          panel.style.right = '0px';
+          panel.style.right = '-300px';
           toggleNotifs();
         } else {
           panel.style.right = '0px';
