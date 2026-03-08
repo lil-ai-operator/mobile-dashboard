@@ -314,14 +314,15 @@
       if(!panel) return;
       
       if(isSwiping) {
-        panel.style.transition = '';
         const touchEndX = e.changedTouches[0].pageX;
         const diffX = touchEndX - touchStartX;
         
         if(diffX > 80) {
+          panel.style.transition = 'none';
+          panel.style.right = '-300px';
           panel.classList.remove('open');
-          toggleNotifs();
         } else {
+          panel.style.transition = '';
           panel.style.right = '0px';
         }
       }
