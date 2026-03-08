@@ -20,11 +20,14 @@
     .summary { color: #888; margin: 10px 0; }
     .details { display: none; margin-top: 15px; padding-top: 15px; border-top: 1px solid #444; }
     .details.open { display: block; }
-    .section { margin: 15px 0; cursor: pointer; }
-    .section-header { color: #00d68f; font-weight: bold; margin-bottom: 8px; }
+    .section { margin: 10px 0; }
+    .section-header { color: #00d68f; font-weight: bold; padding: 10px; background: #333; border-radius: 4px; cursor: pointer; }
+    .section-header:hover { background: #444; }
     .section-header.todo { color: #ffaa00; }
+    .task-list { display: none; padding: 10px 0; }
+    .task-list.open { display: block; }
     .task { padding: 8px; background: #333; margin: 5px 0; border-radius: 4px; display: flex; align-items: center; gap: 8px; }
-    .task-check { width: 16px; height: 16px; border-radius: 3px; display: inline-block; }
+    .task-check { width: 16px; height: 16px; border-radius: 3px; flex-shrink: 0; }
     .task-check.done { background: #00d68f; }
     .task-check.todo { border: 2px solid #666; }
     .blocker { background: #3d1f1f; padding: 10px; border-radius: 4px; margin: 10px 0; }
@@ -34,12 +37,11 @@
   <h1>🐸 Mission Control</h1>
   <div id="projects">Loading...</div>
   <script>
-    function toggle(id) {
+    function toggleProject(id) {
       const el = document.getElementById('d-' + id);
       el.classList.toggle('open');
     }
-    function toggleSection(id) {
-      const el = document.getElementById('s-' + id);
+    function toggleSection(el) {
       el.classList.toggle('open');
     }
     fetch('mission-control-data.json').then(r=>r.json()).then(data=>{
@@ -47,7 +49,7 @@
       data.projects.forEach((p, i)=>{
         const pid = p.key || 'p' + i;
         html += '<div class="project '+p.status+'">';
-        html += '<div class="header" onclick="toggle(\''+pid+'\')">';
+        html += '<div class="header" onclick="toggleProject(\''+pid+'\')">';
         html += '<span class="name">'+p.name+'</span>';
         html += '<span class="status '+p.status+'">'+p.status+'</span></div>';
         if(p.summary) html += '<div class="summary">'+p.summary+'</div>';
@@ -58,9 +60,9 @@
           });
         }
         if(p.done && p.done.length) {
-          html += '<div class="section" onclick="toggleSection(\''+pid+'-done\')">';
-          html += '<div class="section-header">✅ Done ('+p.done.length+')</div>';
-          html += '<div id="s-'+pid+'-done" class="task-list">';
+          html += '<div class="section">';
+          html += '<div class="section-header" onclick="toggleSection(this.nextElementSibling)">✅ Done ('+p.done.length+') ▼</div>';
+          html += '<div class="task-list">';
           p.done.forEach(t=>{
             const taskName = typeof t === 'string' ? t : (t.task || '');
             html += '<div class="task"><span class="task-check done">✓</span> '+taskName+'</div>';
@@ -68,9 +70,9 @@
           html += '</div></div>';
         }
         if(p.todo && p.todo.length) {
-          html += '<div class="section" onclick="toggleSection(\''+pid+'-todo\')">';
-          html += '<div class="section-header todo">⬜ To Do ('+p.todo.length+')</div>';
-          html += '<div id="s-'+pid+'-todo" class="task-list">';
+          html += '<div class="section">';
+          html += '<div class="section-header todo" onclick="toggleSection(this.nextElementSibling)">⬜ To Do ('+p.todo.length+') ▼</div>';
+          html += '<div class="task-list">';
           p.todo.forEach(t=>{
             const taskName = typeof t === 'string' ? t : (t.task || '');
             html += '<div class="task"><span class="task-check todo"></span> '+taskName+'</div>';
