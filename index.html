@@ -183,7 +183,7 @@
     </div>
   </div>
   <script>
-    // Futuristic Sound Engine using Web Audio API
+    // Calming & Inspiring Sound Engine
     let soundOn = false;
     let audioCtx = null;
     
@@ -195,63 +195,67 @@
         if (audioCtx.state === 'suspended') {
           audioCtx.resume();
         }
-      } catch(e) { console.log('Audio error:', e); }
+      } catch(e) {}
     }
     
     function playSound(type) {
-      type = type || 'pop';
       try {
         if (!soundOn) return;
         initAudio();
         if (!audioCtx) return;
         
-        const osc = audioCtx.createOscillator();
-        const gain = audioCtx.createGain();
-        osc.connect(gain);
-        gain.connect(audioCtx.destination);
-        
         const now = audioCtx.currentTime;
         
         switch(type) {
-          case 'pop':
-            osc.type = 'sine';
-            osc.frequency.setValueAtTime(800, now);
-            osc.frequency.exponentialRampToValueAtTime(400, now + 0.1);
-            gain.gain.setValueAtTime(0.3, now);
-            gain.gain.exponentialRampToValueAtTime(0.01, now + 0.1);
-            osc.start(now);
-            osc.stop(now + 0.1);
+          case 'pop': // Soft click - gentle sine
+            playTone(600, 0.08, 0.15, 'sine');
             break;
-          case 'success':
-            osc.type = 'sine';
-            osc.frequency.setValueAtTime(523, now);
-            osc.frequency.setValueAtTime(659, now + 0.1);
-            osc.frequency.setValueAtTime(784, now + 0.2);
-            gain.gain.setValueAtTime(0.2, now);
-            gain.gain.exponentialRampToValueAtTime(0.01, now + 0.4);
-            osc.start(now);
-            osc.stop(now + 0.4);
+          case 'success': // Inspiring chord
+            playTone(523, 0.3, 0.15, 'sine'); // C5
+            playTone(659, 0.3, 0.2, 'sine');  // E5
+            playTone(784, 0.3, 0.25, 'sine');  // G5
+            playTone(1047, 0.4, 0.35, 'sine');  // C6
             break;
-          case 'whoosh':
-            osc.type = 'triangle';
-            osc.frequency.setValueAtTime(300, now);
-            osc.frequency.exponentialRampToValueAtTime(100, now + 0.15);
-            gain.gain.setValueAtTime(0.15, now);
-            gain.gain.exponentialRampToValueAtTime(0.01, now + 0.15);
-            osc.start(now);
-            osc.stop(now + 0.15);
+          case 'whoosh': // Soft swoosh
+            playTone(400, 0.1, 0.1, 'sine');
+            setTimeout(() => playTone(200, 0.1, 0.15, 'sine'), 50);
             break;
-          case 'modal':
-            osc.type = 'sine';
-            osc.frequency.setValueAtTime(440, now);
-            osc.frequency.exponentialRampToValueAtTime(880, now + 0.15);
-            gain.gain.setValueAtTime(0.2, now);
-            gain.gain.exponentialRampToValueAtTime(0.01, now + 0.2);
-            osc.start(now);
-            osc.stop(now + 0.2);
+          case 'modal': // Calming open
+            playTone(330, 0.15, 0, 'sine');
+            setTimeout(() => playTone(440, 0.2, 0.1, 'sine'), 80);
+            setTimeout(() => playTone(550, 0.25, 0.15, 'sine'), 160);
             break;
+          case 'toggle': // Soft switch
+            playTone(500, 0.1, 0, 'triangle');
+            break;
+          case 'send': // Uplifting send
+            playTone(440, 0.15, 0, 'sine');
+            setTimeout(() => playTone(554, 0.15, 0.1, 'sine'), 100);
+            setTimeout(() => playTone(659, 0.25, 0.2, 'sine'), 200);
+            break;
+          case 'complete': // Satisfying done
+            playTone(587, 0.15, 0, 'sine');
+            setTimeout(() => playTone(784, 0.2, 0.1, 'sine'), 100);
+            setTimeout(() => playTone(988, 0.35, 0.2, 'sine'), 200);
+            break;
+          default: // Default soft blip
+            playTone(440, 0.1, 0, 'sine');
         }
-      } catch(e) { console.log('Sound error:', e); }
+      } catch(e) {}
+    }
+    
+    function playTone(freq, duration, delay, type) {
+      const osc = audioCtx.createOscillator();
+      const gain = audioCtx.createGain();
+      osc.type = type;
+      osc.connect(gain);
+      gain.connect(audioCtx.destination);
+      const now = audioCtx.currentTime + (delay || 0);
+      osc.frequency.setValueAtTime(freq, now);
+      gain.gain.setValueAtTime(0.15, now);
+      gain.gain.exponentialRampToValueAtTime(0.001, now + duration);
+      osc.start(now);
+      osc.stop(now + duration);
     }
     
     function toggleSound() {
@@ -269,25 +273,25 @@
     document.addEventListener('keydown',e=>{if(e.key==='/'&&document.activeElement.tagName!=='INPUT'){e.preventDefault();document.getElementById('s').focus()}if(e.key==='r')load()});
     function init(){const pSelect=document.getElementById('modalProject');data.forEach(p=>{const o=document.createElement('option');o.value=p.key||p.name;o.textContent=p.name;pSelect.appendChild(o)})}
     function load(){fetch('mission-control-data.json?t='+Date.now()).then(r=>r.json()).then(d=>{data=d.projects||[];const up=new Date(d.updatedAt);document.getElementById('time').textContent=up.toLocaleTimeString();document.getElementById('syncStatus').textContent='● Synced '+up.toLocaleTimeString();init();render()})}
-    function theme(){const t=document.documentElement.getAttribute('data-theme')==='light'?'dark':'light';document.documentElement.setAttribute('data-theme',t);localStorage.setItem('mc_th',t);playSound()}
-    function setF(x,btn){f=x;document.querySelectorAll('.fil').forEach(b=>b.classList.remove('on'));btn.classList.add('on');render();playSound()}
+    function theme(){const t=document.documentElement.getAttribute('data-theme')==='light'?'dark':'light';document.documentElement.setAttribute('data-theme',t);localStorage.setItem('mc_th',t);playSound('toggle')}
+    function setF(x,btn){f=x;document.querySelectorAll('.fil').forEach(b=>b.classList.remove('on'));btn.classList.add('on');render();playSound('pop')}
     function toggle(id){document.querySelectorAll('.p-bd').forEach(el=>{if(el.id!=='b-'+id)el.classList.remove('on')});document.getElementById('b-'+id).classList.toggle('on')}
     function toggS(el){el.nextElementSibling.classList.toggle('on');el.querySelector('.arr').classList.toggle('on')}
-    function chk(pid,i){const k=pid+'-'+i;checked[k]=!checked[k];localStorage.setItem('mc_chk',JSON.stringify(checked));render();if(checked[k]){const p=data.find(x=>(x.key||'')===pid);if(p&&p.done?.every((t,j)=>checked[pid+'-'+j]))showC()};playSound()}
+    function chk(pid,i){const k=pid+'-'+i;checked[k]=!checked[k];localStorage.setItem('mc_chk',JSON.stringify(checked));render();if(checked[k]){const p=data.find(x=>(x.key||'')===pid);if(p&&p.done?.every((t,j)=>checked[pid+'-'+j])){showC();playSound('complete')}};playSound('pop')}
     function showC(){['🎉','⭐','🔥','✨'].forEach((e,i)=>{const d=document.createElement('div');d.className='conf';d.textContent=e;d.style.left=(30+Math.random()*40)+'%';d.style.animationDelay=i*0.1+'s';document.body.appendChild(d);setTimeout(()=>d.remove(),1000)})}
-    function sendToG(project,task){const text=encodeURIComponent('🐸 '+project+'\n\n📝 '+task+'\n\nLet\'s go! 🔥');navigator.clipboard.writeText(project+': '+task);window.open('https://t.me/lilPepeG_bot?text='+text,'_blank');playSound()}
-    function share(){const g=data.filter(p=>p.status==='green').length,r=data.filter(p=>p.status==='red').length;const t='🐸 Mission Control:\n\n✅ '+g+' Active\n🔴 '+r+' Blocked';navigator.clipboard.writeText(t).then(()=>alert('Copied!'));playSound()}
-    function toggleFab(){document.getElementById('fabSub').classList.toggle('show');document.querySelector('.fab-btn').textContent=document.getElementById('fabSub').classList.contains('show')?'✕':'+';playSound()}
-    function openModal(type){modalType=type;document.getElementById('modal').classList.add('show');document.getElementById('modalTitle').textContent=type==='task'?'Add Task':type==='note'?'Quick Note':'💡 Add Idea';document.getElementById('modalInput').value='';document.getElementById('modalText').value='';document.getElementById('modalProject').value='';document.getElementById('modalProject').style.display=type==='task'?'block':'none';playSound()}
+    function sendToG(project,task){const text=encodeURIComponent('🐸 '+project+'\n\n📝 '+task+'\n\nLet\'s go! 🔥');navigator.clipboard.writeText(project+': '+task);window.open('https://t.me/lilPepeG_bot?text='+text,'_blank');playSound('send')}
+    function share(){const g=data.filter(p=>p.status==='green').length,r=data.filter(p=>p.status==='red').length;const t='🐸 Mission Control:\n\n✅ '+g+' Active\n🔴 '+r+' Blocked';navigator.clipboard.writeText(t).then(()=>alert('Copied!'));playSound('pop')}
+    function toggleFab(){document.getElementById('fabSub').classList.toggle('show');document.querySelector('.fab-btn').textContent=document.getElementById('fabSub').classList.contains('show')?'✕':'+';playSound('modal')}
+    function openModal(type){modalType=type;document.getElementById('modal').classList.add('show');document.getElementById('modalTitle').textContent=type==='task'?'Add Task':type==='note'?'Quick Note':'💡 Add Idea';document.getElementById('modalInput').value='';document.getElementById('modalText').value='';document.getElementById('modalProject').value='';document.getElementById('modalProject').style.display=type==='task'?'block':'none';playSound('modal')}
     function closeModal(){document.getElementById('modal').classList.remove('show')}
-    function saveModal(){const proj=document.getElementById('modalProject').value,inp=document.getElementById('modalInput').value,txt=document.getElementById('modalText').value;if(!inp){alert('Please enter something!');return}const msg=modalType==='idea'?'💡 NEW IDEA\n\n'+inp+'\n\n'+txt:modalType==='note'?'📝 QUICK NOTE\n\n'+inp+'\n\n'+txt:'✅ TASK: '+proj+'\n\n'+inp+'\n\n'+txt;const encoded=encodeURIComponent(msg);window.open('https://t.me/lilPepeG_bot?text='+encoded,'_blank');closeModal();playSound();showC()}
+    function saveModal(){const proj=document.getElementById('modalProject').value,inp=document.getElementById('modalInput').value,txt=document.getElementById('modalText').value;if(!inp){alert('Please enter something!');return}const msg=modalType==='idea'?'💡 NEW IDEA\n\n'+inp+'\n\n'+txt:modalType==='note'?'📝 QUICK NOTE\n\n'+inp+'\n\n'+txt:'✅ TASK: '+proj+'\n\n'+inp+'\n\n'+txt;const encoded=encodeURIComponent(msg);window.open('https://t.me/lilPepeG_bot?text='+encoded,'_blank');closeModal();playSound('send');showC()}
     let touchStartX=0,touchStartY=0,isSwiping=false,panel=null,swipeAttached=false;
     function onTouchStart(e){touchStartX=e.touches[0].pageX;touchStartY=e.touches[0].pageY;panel=document.getElementById('notifPanel');isSwiping=false}
     function onTouchMove(e){if(!panel||!panel.classList.contains('open'))return;const cx=e.touches[0].pageX,cy=e.touches[0].pageY,dx=Math.abs(cx-touchStartX),dy=Math.abs(cy-touchStartY);if(dx>dy+20&&dx>30){isSwiping=true;e.preventDefault();const mx=cx-touchStartX;if(mx>0){panel.style.transition='none';panel.style.right=(-mx)+'px'}}}
     function onTouchEnd(e){if(!panel)return;if(isSwiping){panel.style.transition='';const tx=e.changedTouches[0].pageX,dx=tx-touchStartX;dx>80?(panel.style.right='-300px',panel.classList.remove('open'),detachSwipe()):panel.style.right='0px'}touchStartX=0;touchStartY=0;isSwiping=false;panel=null}
     function attachSwipe(){if(!swipeAttached){document.addEventListener('touchstart',onTouchStart,{passive:true});document.addEventListener('touchmove',onTouchMove,{passive:false});document.addEventListener('touchend',onTouchEnd,{passive:true});swipeAttached=true}}
     function detachSwipe(){if(swipeAttached){document.removeEventListener('touchstart',onTouchStart);document.removeEventListener('touchmove',onTouchMove);document.removeEventListener('touchend',onTouchEnd);swipeAttached=false}}
-    function toggleNotifs(){const p=document.getElementById('notifPanel'),t=document.getElementById('notifTab'),o=p.classList.contains('open');if(o){p.classList.remove('open');p.style.right='-300px';detachSwipe()}else{p.classList.add('open');p.style.right='0px';attachSwipe();t.classList.remove('has-new')}}
+    function toggleNotifs(){const p=document.getElementById('notifPanel'),t=document.getElementById('notifTab'),o=p.classList.contains('open');if(o){p.classList.remove('open');p.style.right='-300px';detachSwipe();playSound('whoosh')}else{p.classList.add('open');p.style.right='0px';attachSwipe();t.classList.remove('has-new');playSound('modal')}}
     const notifs=[{t:'Mission Control updated',d:'Just now'},{t:'AutoBookr landing ready',d:'5 min ago'},{t:'Backup scripts ready',d:'1 hour ago'},{t:'NeuroNet needs approval',d:'2 hours ago'}];
     function renderNotifs(){document.getElementById('notifList').innerHTML=notifs.map(n=>'<div class="notif-item">'+n.t+'<div class="time">'+n.d+'</div></div>').join('')}
     renderNotifs();
