@@ -3,38 +3,158 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Mission Control</title>
+  <title>🚀 Mission Control</title>
   <style>
-    body { font-family: sans-serif; background: #111; color: #fff; padding: 20px; margin: 0; }
-    h1 { color: #00d68f; margin: 0 0 20px 0; }
-    .project { background: #222; padding: 15px; margin: 10px 0; border-radius: 8px; cursor: pointer; }
-    .project:hover { background: #2a2a2a; }
+    * { box-sizing: border-box; }
+    body { 
+      font-family: 'Segoe UI', system-ui, sans-serif; 
+      background: linear-gradient(135deg, #0a0a0f 0%, #1a1a24 100%); 
+      color: #fff; 
+      padding: 20px; 
+      margin: 0; 
+      min-height: 100vh;
+    }
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-5px); }
+    }
+    @keyframes glow {
+      0%, 100% { box-shadow: 0 0 20px rgba(0,214,143,0.3); }
+      50% { box-shadow: 0 0 40px rgba(139,92,246,0.5); }
+    }
+    @keyframes slideIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+    }
+    h1 { 
+      color: #fff; 
+      margin: 0 0 20px 0; 
+      display: flex; 
+      align-items: center; 
+      gap: 12px;
+      animation: float 3s ease-in-out infinite;
+    }
+    h1 img {
+      animation: glow 2s ease-in-out infinite;
+      border-radius: 12px;
+    }
+    .project { 
+      background: linear-gradient(135deg, #1a1a24 0%, #22222e 100%); 
+      padding: 20px; 
+      margin: 15px 0; 
+      border-radius: 16px; 
+      cursor: pointer; 
+      transition: all 0.3s ease;
+      animation: slideIn 0.5s ease-out forwards;
+      opacity: 0;
+    }
+    .project:nth-child(1) { animation-delay: 0.1s; }
+    .project:nth-child(2) { animation-delay: 0.2s; }
+    .project:nth-child(3) { animation-delay: 0.3s; }
+    .project:nth-child(4) { animation-delay: 0.4s; }
+    .project:nth-child(5) { animation-delay: 0.5s; }
+    .project:nth-child(6) { animation-delay: 0.6s; }
+    .project:nth-child(7) { animation-delay: 0.7s; }
+    .project:hover { 
+      transform: translateY(-3px); 
+      box-shadow: 0 10px 40px rgba(0,0,0,0.4);
+    }
     .green { border-left: 4px solid #00d68f; }
     .red { border-left: 4px solid #ff4757; }
     .yellow { border-left: 4px solid #ffaa00; }
     .header { display: flex; justify-content: space-between; align-items: center; }
-    .name { font-size: 18px; font-weight: bold; }
-    .status { padding: 4px 8px; border-radius: 4px; font-size: 12px; }
-    .status.green { background: #00d68f; color: #000; }
-    .status.red { background: #ff4757; color: #fff; }
-    .status.yellow { background: #ffaa00; color: #000; }
-    .summary { color: #888; margin: 10px 0; }
-    .details { display: none; margin-top: 15px; padding-top: 15px; border-top: 1px solid #444; }
-    .details.open { display: block; }
-    .section-header { color: #00d68f; font-weight: bold; padding: 10px; background: #333; border-radius: 4px; cursor: pointer; margin: 10px 0; }
-    .section-header:hover { background: #444; }
+    .name { font-size: 20px; font-weight: bold; }
+    .status { 
+      padding: 6px 12px; 
+      border-radius: 20px; 
+      font-size: 12px; 
+      font-weight: bold;
+      text-transform: uppercase;
+    }
+    .status.green { 
+      background: linear-gradient(135deg, #00d68f, #00b87a); 
+      color: #000; 
+    }
+    .status.red { 
+      background: linear-gradient(135deg, #ff4757, #ff3344); 
+      color: #fff; 
+    }
+    .status.yellow { 
+      background: linear-gradient(135deg, #ffaa00, #ff9900); 
+      color: #000; 
+    }
+    .summary { 
+      color: #9ca3af; 
+      margin: 12px 0; 
+      line-height: 1.5;
+    }
+    .details { display: none; margin-top: 15px; padding-top: 15px; border-top: 1px solid #333; }
+    .details.open { display: block; animation: slideIn 0.3s ease; }
+    .section-header { 
+      font-weight: bold; 
+      padding: 12px 16px; 
+      background: linear-gradient(135deg, #2a2a3a, #333); 
+      border-radius: 8px; 
+      cursor: pointer; 
+      margin: 10px 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      transition: all 0.2s;
+    }
+    .section-header:hover { 
+      background: linear-gradient(135deg, #3a3a4a, #444); 
+    }
+    .section-header.done { color: #00d68f; }
     .section-header.todo { color: #ffaa00; }
     .task-list { display: none; padding: 10px 0; }
-    .task-list.open { display: block; }
-    .task { padding: 8px; background: #333; margin: 5px 0; border-radius: 4px; display: flex; align-items: center; gap: 8px; }
-    .task-check { width: 16px; height: 16px; border-radius: 3px; flex-shrink: 0; }
-    .task-check.done { background: #00d68f; }
-    .task-check.todo { border: 2px solid #666; }
-    .blocker { background: #3d1f1f; padding: 10px; border-radius: 4px; margin: 10px 0; }
+    .task-list.open { display: block; animation: slideIn 0.3s ease; }
+    .task { 
+      padding: 12px 16px; 
+      background: #2a2a3a; 
+      margin: 8px 0; 
+      border-radius: 8px; 
+      display: flex; 
+      align-items: center; 
+      gap: 12px;
+      transition: all 0.2s;
+    }
+    .task:hover { background: #333; }
+    .task-check { 
+      width: 20px; 
+      height: 20px; 
+      border-radius: 4px; 
+      flex-shrink: 0; 
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+    }
+    .task-check.done { 
+      background: linear-gradient(135deg, #00d68f, #00b87a); 
+      color: #000;
+    }
+    .task-check.todo { 
+      border: 2px solid #666; 
+    }
+    .blocker { 
+      background: linear-gradient(135deg, #3d1f1f, #4a2525); 
+      padding: 14px; 
+      border-radius: 8px; 
+      margin: 10px 0;
+      border-left: 3px solid #ff4757;
+      animation: pulse 2s infinite;
+    }
+    .arrow { transition: transform 0.3s; }
+    .arrow.open { transform: rotate(180deg); }
   </style>
 </head>
 <body>
-  <h1><img src="01_PEPE4-export.gif" style="width:40px;vertical-align:middle;margin-right:10px;border-radius:8px;"> Mission Control</h1>
+  <h1><img src="01_PEPE4-export.gif" style="width:48px;vertical-align:middle;border-radius:12px;"> Mission Control</h1>
   <div id="projects">Loading...</div>
   <script>
     function toggleProject(id) {
@@ -43,6 +163,8 @@
     }
     function toggleSection(el) {
       el.classList.toggle('open');
+      el.nextElementSibling.classList.toggle('open');
+      el.querySelector('.arrow').classList.toggle('open');
     }
     fetch('mission-control-data.json').then(r=>r.json()).then(data=>{
       let html = '';
@@ -60,7 +182,9 @@
           });
         }
         if(p.done && p.done.length) {
-          html += '<div class="section-header" onclick="event.stopPropagation();toggleSection(this.nextElementSibling)">✅ Done ('+p.done.length+') ▼</div>';
+          html += '<div class="section-header done" onclick="event.stopPropagation();toggleSection(this)">';
+          html += '<span>✅ Done ('+p.done.length+')</span>';
+          html += '<span class="arrow">▼</span></div>';
           html += '<div class="task-list">';
           p.done.forEach(t=>{
             const taskName = typeof t === 'string' ? t : (t.task || '');
@@ -69,7 +193,9 @@
           html += '</div>';
         }
         if(p.todo && p.todo.length) {
-          html += '<div class="section-header todo" onclick="event.stopPropagation();toggleSection(this.nextElementSibling)">⬜ To Do ('+p.todo.length+') ▼</div>';
+          html += '<div class="section-header todo" onclick="event.stopPropagation();toggleSection(this)">';
+          html += '<span>⬜ To Do ('+p.todo.length+')</span>';
+          html += '<span class="arrow">▼</span></div>';
           html += '<div class="task-list">';
           p.todo.forEach(t=>{
             const taskName = typeof t === 'string' ? t : (t.task || '');
