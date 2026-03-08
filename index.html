@@ -186,7 +186,6 @@
       <span class="time" id="time"></span>
     </div>
     <div class="ctrl">
-      <button class="btn" onclick="toggleNotifs()">🔔</button>
       <button class="btn" onclick="theme()">🌙</button>
       <button class="btn" onclick="share()">📤</button>
       <button class="btn btn-g" onclick="load()">↻</button>
@@ -207,7 +206,7 @@
   </div>
   <div class="projs" id="p"></div>
   <div class="notif-backdrop" id="notifBackdrop" onclick="toggleNotifs()"></div>
-  <div class="notif-tab" id="notifTab" onclick="toggleNotifs()">🔔 Notifications</div>
+  <div class="notif-tab has-new" id="notifTab" ontouchstart="handleTouchStart(evt)" ontouchmove="handleTouchMove(evt)" ontouchend="handleTouchEnd(evt)" onclick="toggleNotifs()">🔔 Notifications</div>
   <div class="notif-panel" id="notifPanel">
     <div class="notif-header">
       <h2>🔔 Notifications</h2>
@@ -273,6 +272,22 @@
       panel.classList.toggle('open');
       if(panel.classList.contains('open')){
         tab.classList.remove('has-new');
+      }
+    }
+    
+    // Swipe handlers
+    let touchStartX = 0;
+    function handleTouchStart(e){touchStartX = e.touches[0].clientX}
+    function handleTouchMove(e){}
+    function handleTouchEnd(e){
+      const touchEndX = e.changedTouches[0].clientX;
+      const diff = touchStartX - touchEndX;
+      if(Math.abs(diff) > 50){
+        if(diff > 0 && !document.getElementById('notifPanel').classList.contains('open')){
+          toggleNotifs();
+        }else if(diff < 0 && document.getElementById('notifPanel').classList.contains('open')){
+          toggleNotifs();
+        }
       }
     }
     
