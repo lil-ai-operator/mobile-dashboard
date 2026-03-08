@@ -163,8 +163,8 @@
     @keyframes cf{0%{transform:translate(-50%,0) scale(0) rotate(0);opacity:1}50%{transform:translate(-50%,-30%) scale(1.2) rotate(180deg)}100%{transform:translate(-50%,-80px) scale(0.5) rotate(360deg);opacity:0}}
     
     /* Notifications Panel */
-    .notif-panel{position:fixed;top:0;right:-320px;width:300px;height:100vh;background:var(--bg-card);border-left:2px solid var(--primary);z-index:1000;transition:right 0.3s ease;box-shadow:-10px 0 30px rgba(0,0,0,0.5);overflow-y:auto}
-    .notif-panel.open{right:0}
+    .notif-panel{position:fixed;top:60px;right:10px;width:280px;max-height:60vh;background:var(--bg-card);border:2px solid var(--primary);border-radius:16px;z-index:1000;transition:all 0.3s ease;box-shadow:0 10px 40px rgba(0,0,0,0.5);overflow:hidden;opacity:0;visibility:hidden;transform:translateY(-10px)}
+    .notif-panel.open{opacity:1;visibility:visible;transform:translateY(0)}
     .notif-header{display:flex;justify-content:space-between;align-items:center;padding:16px;border-bottom:1px solid var(--border);position:sticky;top:0;background:var(--bg-card)}
     .notif-header h2{font-size:16px;color:var(--primary)}
     .notif-close{background:none;border:none;color:var(--text);font-size:24px;cursor:pointer}
