@@ -150,6 +150,8 @@
     .t-c.o{border:2px solid #555}
     .t.o .t-c.o{background:var(--secondary)}
     
+    .send-btn{background:var(--primary);border:none;border-radius:6px;padding:6px 10px;font-size:12px;cursor:pointer;margin-left:8px}
+    
     .blk{background:var(--bg-hover);border-left:3px solid var(--red);padding:12px;border-radius:0 10px 10px 0;font-size:13px;margin-bottom:8px;font-weight:600}
     [data-theme="light"] .blk{background:#fef2f2;color:var(--text-bright)}
     
@@ -369,6 +371,14 @@
     function renderNotifs(){
       document.getElementById('notifList').innerHTML = notifs.map(n => '<div class="notif-item">'+n.t+'<div class="time">'+n.d+'</div></div>').join('');
     }
+    
+    function sendToG(project, task) {
+      const text = encodeURIComponent('🐸 ' + project + '\n\n📝 ' + task + '\n\nLet\'s go! 🔥');
+      // Copy to clipboard
+      navigator.clipboard.writeText(project + ': ' + task);
+      // Open Telegram with pre-filled text
+      window.open('https://t.me/lilPepeG_bot?text=' + text, '_blank');
+    }
     renderNotifs();
     
     function render(){
@@ -382,7 +392,7 @@
         h+=`<div class="proj ${p.status}"><div class="proj-inner"><div class="p-h" onclick="toggle('${id}')"><div class="p-l"><div class="p-i"></div><span class="p-n">${p.name}</span></div><span class="p-b">${p.status}</span></div><div class="p-bar"><div class="p-f" style="width:${pc}%"></div></div><div class="p-m"><span>${d}/${tot}</span><span>${pc}%</span></div><div class="p-bd" id="b-${id}">`;
         if(p.blockers?.length)p.blockers.forEach(b=>h+=`<div class="blk">🚫 ${b}</div>`);
         if(p.done?.length){h+=`<div class="sec"><div class="s-h" onclick="toggS(this)">✅ Done (${p.done.length}) <span class="arr">▼</span></div><div class="s-l">`;p.done.forEach((t,j)=>{const k=id+'-'+j,ck=checked[k]?' o':'';h+=`<div class="t${ck}" onclick="chk('${id}',${j})"><span class="t-c d">✓</span> ${typeof t==='string'?t:t.task||''}</div>`});h+='</div></div>'}
-        if(p.todo?.length){h+=`<div class="sec"><div class="s-h y" onclick="toggS(this)">⬜ To Do (${p.todo.length}) <span class="arr">▼</span></div><div class="s-l">`;p.todo.forEach((t,j)=>{h+=`<div class="t"><span class="t-c o"></span> ${typeof t==='string'?t:t.task||''}</div>`});h+='</div></div>'}
+        if(p.todo?.length){h+=`<div class="sec"><div class="s-h y" onclick="toggS(this)">⬜ To Do (${p.todo.length}) <span class="arr">▼</span></div><div class="s-l">`;p.todo.forEach((t,j)=>{const taskText=typeof t==='string'?t:t.task||'';h+=`<div class="t"><span class="t-c o"></span> <span style="flex:1">${taskText}</span> <button class="send-btn" onclick="event.stopPropagation();sendToG('${p.name}','${taskText}')">📱</button></div>`});h+='</div></div>'}
         if(fs.length){h+=`<div class="sec"><div class="s-h" onclick="toggS(this)">📁 Files (${fs.length}) <span class="arr">▼</span></div><div class="s-l"><div class="fils">`;fs.forEach(f=>h+=`<a class="file" href="${f.u}" target="_blank">${f.n}</a>`);h+='</div></div></div>'}
         h+='</div></div></div>'});
       document.getElementById('p').innerHTML=h;
