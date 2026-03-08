@@ -349,9 +349,11 @@
       
       if(isOpen) {
         panel.classList.remove('open');
+        panel.style.right = '-300px';
         detachSwipe();
       } else {
         panel.classList.add('open');
+        panel.style.right = '0px';
         attachSwipe();
         tab.classList.remove('has-new');
       }
