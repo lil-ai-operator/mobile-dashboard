@@ -167,8 +167,8 @@
     .notif-tab:hover{transform:translateY(-50%);border-color:var(--primary)}
     .notif-tab.has-new{border-color:var(--primary);box-shadow:0 0 20px var(--primary),-4px 0 15px rgba(0,0,0,0.3);color:var(--primary);animation:notifPulse 2s infinite}
     @keyframes notifPulse{0%,100%{box-shadow:0 0 20px var(--primary)}50%{box-shadow:0 0 35px var(--primary)}}
-    .notif-panel{position:fixed;top:10%;right:-300px;width:300px;height:80vh;background:var(--bg-card);border:2px solid var(--primary);border-right:none;border-radius:16px 0 0 16px;z-index:1000;transition:none;box-shadow:-10px 0 30px rgba(0,0,0,0.5);overflow-y:auto}
-    .notif-panel.open{right:0;transition:none}
+    .notif-panel{position:fixed;top:10%;right:-300px;width:300px;height:80vh;background:var(--bg-card);border:2px solid var(--primary);border-right:none;border-radius:16px 0 0 16px;z-index:1000;transition:right 0.35s cubic-bezier(0.25, 0.8, 0.25, 1);box-shadow:-10px 0 30px rgba(0,0,0,0.5);overflow-y:auto}
+    .notif-panel.open{right:0;transition:right 0.35s cubic-bezier(0.25, 0.8, 0.25, 1)}
     .notif-header{display:flex;justify-content:space-between;align-items:center;padding:16px;border-bottom:1px solid var(--border)}
     .notif-header h2{font-size:16px;color:var(--primary)}
     .notif-close{background:none;border:none;color:var(--text);font-size:24px;cursor:pointer}
@@ -271,7 +271,6 @@
       const panel = document.getElementById('notifPanel');
       const tab = document.getElementById('notifTab');
       panel.classList.toggle('open');
-      panel.style.right = panel.classList.contains('open') ? '0' : '-300px';
       if(panel.classList.contains('open')){
         tab.classList.remove('has-new');
       }
@@ -305,6 +304,7 @@
         
         const moveX = currentX - touchStartX;
         if(moveX > 0) {
+          panel.style.transition = 'none';
           panel.style.right = (-moveX) + 'px';
         }
       }
@@ -314,11 +314,12 @@
       if(!panel) return;
       
       if(isSwiping) {
+        panel.style.transition = '';
         const touchEndX = e.changedTouches[0].pageX;
         const diffX = touchEndX - touchStartX;
         
         if(diffX > 80) {
-          panel.style.right = '-300px';
+          panel.classList.remove('open');
           toggleNotifs();
         } else {
           panel.style.right = '0px';
