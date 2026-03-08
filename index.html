@@ -168,7 +168,7 @@
     async function loadData() {
       try {
         const fab = document.querySelector('.fab'); fab.innerHTML = '<i class="fas fa-spinner"></i>';
-        const res = await fetch('https://lil-ai-operator.github.io/mobile-dashboard/mission-control-data.json?t=' + Date.now());
+        const res = await fetch('mission-control-data.json?t=' + Date.now());
         const data = await res.json();
         allProjects = data.projects || [];
         document.getElementById('updated').textContent = 'Updated: ' + new Date(data.updatedAt).toLocaleString();
