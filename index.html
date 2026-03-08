@@ -178,7 +178,7 @@
     .notif-backdrop.show{display:block}
   </style>
 </head>
-<body>
+<body ontouchstart="handleTouchStart(evt)" ontouchmove="handleTouchMove(evt)" ontouchend="handleTouchEnd(evt)">
   <div class="hdr">
     <div class="logo">
       <img src="01_PEPE4-export.gif">
@@ -206,7 +206,7 @@
   </div>
   <div class="projs" id="p"></div>
   <div class="notif-backdrop" id="notifBackdrop" onclick="toggleNotifs()"></div>
-  <div class="notif-tab has-new" id="notifTab" ontouchstart="handleTouchStart(evt)" ontouchmove="handleTouchMove(evt)" ontouchend="handleTouchEnd(evt)" onclick="toggleNotifs()">🔔 Notifications</div>
+  <div class="notif-tab has-new" id="notifTab" onclick="toggleNotifs()">🔔 Notifications</div>
   <div class="notif-panel" id="notifPanel">
     <div class="notif-header">
       <h2>🔔 Notifications</h2>
