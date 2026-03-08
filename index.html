@@ -3,158 +3,198 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>🐸 Mission Control</title>
+  <title>🚀 Mission Control</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
-    :root { --bg-primary: #0d1117; --bg-secondary: #161b22; --bg-card: #21262d; --bg-hover: #30363d; --accent-green: #238636; --accent-yellow: #eab308; --accent-red: #da3633; --accent-blue: #58a6ff; --accent-purple: #a371f7; --text-primary: #e6edf3; --text-secondary: #8b949e; --text-muted: #6e7681; --border-color: #30363d; }
-    [data-theme="light"] { --bg-primary: #ffffff; --bg-secondary: #f6f8fa; --bg-card: #f3f4f6; --bg-hover: #e5e7eb; --text-primary: #1f2937; --text-secondary: #4b5563; --text-muted: #9ca3af; --border-color: #d1d5db; }
+    :root {
+      --bg-primary: #0a0a0f;
+      --bg-secondary: #12121a;
+      --bg-card: #1a1a24;
+      --bg-hover: #22222e;
+      --accent-green: #00d68f;
+      --accent-yellow: #ffaa00;
+      --accent-red: #ff4757;
+      --accent-blue: #3b82f6;
+      --accent-purple: #8b5cf6;
+      --text-primary: #ffffff;
+      --text-secondary: #9ca3af;
+      --text-muted: #6b7280;
+      --border-color: #2a2a3a;
+    }
+    [data-theme="light"] {
+      --bg-primary: #f8fafc;
+      --bg-secondary: #f1f5f9;
+      --bg-card: #ffffff;
+      --bg-hover: #e2e8f0;
+      --text-primary: #1e293b;
+      --text-secondary: #64748b;
+      --border-color: #e2e8f0;
+    }
     * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: var(--bg-primary); color: var(--text-primary); min-height: 100vh; padding-bottom: 80px; transition: all 0.3s; }
-    .header { background: var(--bg-secondary); padding: 16px 20px; border-bottom: 1px solid var(--border-color); position: sticky; top: 0; z-index: 100; }
+    body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; background: var(--bg-primary); color: var(--text-primary); min-height: 100vh; padding-bottom: 80px; transition: all 0.3s; }
+    .header { background: linear-gradient(135deg, #1a1a24 0%, #0a0a0f 100%); padding: 20px; border-bottom: 1px solid var(--border-color); position: sticky; top: 0; z-index: 100; }
     .header-top { display: flex; justify-content: space-between; align-items: center; }
     .logo { display: flex; align-items: center; gap: 12px; }
-    .logo-img { width: 40px; height: 40px; border-radius: 10px; }
-    .logo h1 { font-size: 18px; font-weight: 700; }
-    .logo span { font-size: 11px; color: var(--text-secondary); }
+    .logo-icon { width: 44px; height: 44px; background: linear-gradient(135deg, var(--accent-green), var(--accent-purple)); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 22px; animation: float 3s ease-in-out infinite; }
+    @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-3px); } }
+    .logo-text h1 { font-size: 20px; font-weight: 700; }
+    .logo-text span { font-size: 11px; color: var(--text-muted); }
     .header-actions { display: flex; gap: 8px; }
-    .icon-btn { background: var(--bg-card); border: 1px solid var(--border-color); color: var(--text-secondary); width: 36px; height: 36px; border-radius: 8px; cursor: pointer; display: flex; align-items: center; justify-content: center; }
-    .icon-btn:hover { background: var(--bg-hover); }
-    .stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; padding: 12px 20px; background: var(--bg-secondary); }
-    .stat { background: var(--bg-card); border-radius: 8px; padding: 12px; text-align: center; }
-    .stat-num { font-size: 20px; font-weight: 700; }
-    .stat-label { font-size: 10px; color: var(--text-secondary); margin-top: 2px; }
-    .green .stat-num { color: var(--accent-green); }
-    .yellow .stat-num { color: var(--accent-yellow); }
-    .red .stat-num { color: var(--accent-red); }
-    .blue .stat-num { color: var(--accent-blue); }
-    .filters { display: flex; gap: 8px; padding: 12px 20px; overflow-x: auto; background: var(--bg-secondary); }
-    .filter { background: var(--bg-card); border: 1px solid var(--border-color); color: var(--text-secondary); padding: 6px 14px; border-radius: 20px; font-size: 12px; white-space: nowrap; cursor: pointer; }
-    .filter.active { background: var(--accent-blue); color: #fff; border-color: var(--accent-blue); }
-    .search-bar { padding: 0 20px 12px; }
-    .search-bar input { width: 100%; padding: 10px 14px; background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 8px; color: var(--text-primary); font-size: 14px; }
-    .search-bar input:focus { outline: none; border-color: var(--accent-blue); }
-    .projects { padding: 12px 20px; }
-    .project { background: var(--bg-secondary); border: 1px solid var(--border-color); border-radius: 12px; margin-bottom: 12px; overflow: hidden; }
-    .project-header { padding: 14px 16px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; }
-    .project-name { font-size: 15px; font-weight: 600; display: flex; align-items: center; gap: 8px; }
-    .priority { font-size: 9px; padding: 2px 6px; border-radius: 4px; font-weight: 700; }
-    .p0 { background: var(--accent-red); color: #fff; }
-    .p1 { background: var(--accent-yellow); color: #000; }
-    .p2 { background: var(--text-muted); color: #fff; }
-    .status-dot { width: 12px; height: 12px; border-radius: 50%; }
-    .green { background: var(--accent-green); box-shadow: 0 0 8px var(--accent-green); }
-    .yellow { background: var(--accent-yellow); box-shadow: 0 0 8px var(--accent-yellow); }
-    .red { background: var(--accent-red); box-shadow: 0 0 8px var(--accent-red); }
-    .progress { padding: 0 16px 12px; }
-    .progress-bar { height: 4px; background: var(--bg-card); border-radius: 2px; overflow: hidden; }
-    .progress-fill { height: 100%; border-radius: 2px; }
+    .icon-btn { background: var(--bg-card); border: 1px solid var(--border-color); color: var(--text-secondary); width: 40px; height: 40px; border-radius: 10px; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 16px; transition: all 0.2s; }
+    .icon-btn:hover { background: var(--bg-hover); color: var(--text-primary); transform: scale(1.05); }
+    .live-status { display: flex; align-items: center; gap: 8px; font-size: 12px; color: var(--text-muted); margin-top: 8px; }
+    .live-dot { width: 8px; height: 8px; background: var(--accent-green); border-radius: 50%; animation: pulse 2s infinite; }
+    @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
+    .search-bar { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 12px; padding: 12px 16px; display: flex; align-items: center; gap: 10px; margin: 12px 20px; }
+    .search-bar i { color: var(--text-muted); }
+    .search-bar input { background: transparent; border: none; color: var(--text-primary); font-size: 14px; width: 100%; outline: none; }
+    .stats-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; padding: 16px 20px; background: var(--bg-secondary); }
+    .stat-card { background: var(--bg-card); border-radius: 12px; padding: 14px; text-align: center; border: 1px solid var(--border-color); }
+    .stat-card .number { font-size: 24px; font-weight: 700; }
+    .stat-card .label { font-size: 11px; color: var(--text-muted); margin-top: 4px; }
+    .stat-card.green .number { color: var(--accent-green); }
+    .stat-card.yellow .number { color: var(--accent-yellow); }
+    .stat-card.red .number { color: var(--accent-red); }
+    .stat-card.blue .number { color: var(--accent-blue); }
+    .filter-tabs { display: flex; gap: 8px; padding: 12px 20px; overflow-x: auto; }
+    .filter-tab { background: var(--bg-card); border: 1px solid var(--border-color); color: var(--text-secondary); padding: 8px 16px; border-radius: 20px; font-size: 13px; white-space: nowrap; cursor: pointer; transition: all 0.2s; }
+    .filter-tab:hover { background: var(--bg-hover); }
+    .filter-tab.active { background: var(--accent-blue); color: white; border-color: var(--accent-blue); }
+    .projects-container { padding: 0 20px 20px; }
+    .project-card { background: var(--bg-card); border-radius: 16px; margin-bottom: 16px; border: 1px solid var(--border-color); overflow: hidden; transition: all 0.3s; }
+    .project-card:hover { border-color: var(--accent-purple); transform: translateY(-2px); box-shadow: 0 8px 30px rgba(0,0,0,0.3); }
+    .project-header { padding: 16px; display: flex; justify-content: space-between; align-items: flex-start; cursor: pointer; }
+    .project-name { font-size: 16px; font-weight: 600; margin-bottom: 6px; display: flex; align-items: center; gap: 8px; }
+    .priority-tag { font-size: 10px; padding: 2px 8px; border-radius: 10px; font-weight: 600; }
+    .priority-p0 { background: var(--accent-red); color: white; }
+    .priority-p1 { background: var(--accent-yellow); color: black; }
+    .priority-p2 { background: var(--text-muted); color: white; }
+    .project-summary { font-size: 13px; color: var(--text-secondary); line-height: 1.4; }
+    .project-status { width: 14px; height: 14px; border-radius: 50%; flex-shrink: 0; }
+    .status-green { background: var(--accent-green); box-shadow: 0 0 15px var(--accent-green); }
+    .status-yellow { background: var(--accent-yellow); box-shadow: 0 0 15px var(--accent-yellow); }
+    .status-red { background: var(--accent-red); box-shadow: 0 0 15px var(--accent-red); }
+    .project-progress { padding: 0 16px 16px; }
+    .progress-bar { height: 6px; background: var(--bg-secondary); border-radius: 3px; overflow: hidden; }
+    .progress-fill { height: 100%; border-radius: 3px; transition: width 0.5s ease; }
     .progress-fill.green { background: var(--accent-green); }
     .progress-fill.yellow { background: var(--accent-yellow); }
     .progress-fill.red { background: var(--accent-red); }
-    .progress-text { display: flex; justify-content: space-between; font-size: 11px; color: var(--text-secondary); margin-top: 6px; }
-    .content { border-top: 1px solid var(--border-color); background: var(--bg-primary); }
-    .section { padding: 12px 16px; border-bottom: 1px solid var(--border-color); }
-    .section:last-child { border: none; }
-    .section-title { font-size: 11px; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px; display: flex; align-items: center; gap: 6px; cursor: pointer; }
-    .section-title i { transition: transform 0.2s; font-size: 10px; }
-    .section-title.collapsed i { transform: rotate(-90deg); }
-    .task { padding: 8px 10px; background: var(--bg-secondary); border-radius: 6px; margin-bottom: 6px; font-size: 13px; display: flex; align-items: center; gap: 8px; }
-    .task-icon { width: 16px; height: 16px; border-radius: 4px; display: flex; align-items: center; justify-content: center; font-size: 10px; }
-    .task-icon.done { background: var(--accent-green); color: #fff; }
-    .task-icon.todo { border: 2px solid var(--text-muted); }
-    .blocker { background: #3d1f1f; border-left: 3px solid var(--accent-red); padding: 10px 12px; border-radius: 0 6px 6px 0; font-size: 13px; }
-    .files-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 6px; }
-    .file { background: var(--bg-card); padding: 8px 10px; border-radius: 6px; font-size: 11px; }
-    .file a { color: var(--accent-blue); text-decoration: none; display: flex; align-items: center; gap: 6px; }
-    .fab { position: fixed; bottom: 20px; right: 20px; width: 50px; height: 50px; background: var(--accent-green); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 18px; color: #fff; box-shadow: 0 4px 12px rgba(0,0,0,0.3); cursor: pointer; z-index: 90; }
-    .loading { text-align: center; padding: 40px; color: var(--text-secondary); }
-    .summary { padding: 12px 16px; background: var(--bg-card); margin: 12px 20px; border-radius: 8px; font-size: 13px; color: var(--text-secondary); }
-    .modal { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.7); z-index: 200; align-items: center; justify-content: center; }
+    .progress-stats { display: flex; justify-content: space-between; margin-top: 8px; font-size: 12px; color: var(--text-muted); }
+    .project-content { display: none; border-top: 1px solid var(--border-color); padding: 16px; background: var(--bg-secondary); }
+    .project-content.open { display: block; }
+    .content-section { margin-bottom: 16px; }
+    .section-title { font-size: 11px; text-transform: uppercase; letter-spacing: 1px; color: var(--accent-purple); margin-bottom: 10px; display: flex; align-items: center; gap: 8px; cursor: pointer; }
+    .task-item { background: var(--bg-card); padding: 10px 12px; border-radius: 8px; font-size: 13px; display: flex; align-items: center; gap: 10px; border: 1px solid transparent; }
+    .task-status { width: 18px; height: 18px; border-radius: 4px; display: flex; align-items: center; justify-content: center; font-size: 10px; flex-shrink: 0; }
+    .task-status.done { background: var(--accent-green); color: black; }
+    .task-status.todo { border: 2px solid var(--text-muted); }
+    .files-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; }
+    .file-link { background: var(--bg-card); padding: 10px 12px; border-radius: 8px; font-size: 12px; color: var(--accent-blue); text-decoration: none; display: flex; align-items: center; gap: 8px; border: 1px solid var(--border-color); transition: all 0.2s; }
+    .file-link:hover { background: var(--bg-hover); border-color: var(--accent-blue); }
+    .blocker-item { background: rgba(255, 71, 87, 0.1); border-left: 3px solid var(--accent-red); padding: 10px 12px; border-radius: 0 8px 8px 0; font-size: 13px; display: flex; align-items: center; gap: 8px; }
+    .blocker-item i { color: var(--accent-red); }
+    .fab { position: fixed; bottom: 20px; right: 20px; width: 56px; height: 56px; background: linear-gradient(135deg, var(--accent-green), var(--accent-blue)); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 20px; color: white; box-shadow: 0 4px 20px rgba(0,214,143,0.4); cursor: pointer; z-index: 90; transition: transform 0.2s; }
+    .fab:hover { transform: scale(1.1); }
+    .loading { text-align: center; padding: 60px 20px; color: var(--text-muted); }
+    .loading i { font-size: 32px; margin-bottom: 16px; animation: spin 1s linear infinite; }
+    @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+    .modal { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.8); z-index: 200; align-items: center; justify-content: center; }
     .modal.open { display: flex; }
-    .modal-content { background: var(--bg-secondary); border-radius: 12px; padding: 20px; max-width: 400px; width: 90%; }
-    .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
-    .modal-close { background: none; border: none; color: var(--text-secondary); font-size: 20px; cursor: pointer; }
-    .setting { display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-bottom: 1px solid var(--border-color); }
-    .toggle { width: 44px; height: 24px; background: var(--bg-card); border-radius: 12px; position: relative; cursor: pointer; }
-    .toggle::after { content: ''; position: absolute; width: 20px; height: 20px; background: #fff; border-radius: 50%; top: 2px; left: 2px; transition: transform 0.2s; }
+    .modal-content { background: var(--bg-secondary); border-radius: 16px; padding: 24px; max-width: 400px; width: 90%; border: 1px solid var(--border-color); }
+    .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+    .modal-header h2 { font-size: 18px; }
+    .modal-close { background: none; border: none; color: var(--text-secondary); font-size: 24px; cursor: pointer; }
+    .setting { display: flex; justify-content: space-between; align-items: center; padding: 14px 0; border-bottom: 1px solid var(--border-color); }
+    .toggle { width: 48px; height: 26px; background: var(--bg-card); border-radius: 13px; position: relative; cursor: pointer; transition: background 0.2s; }
+    .toggle::after { content: ''; position: absolute; width: 22px; height: 22px; background: white; border-radius: 50%; top: 2px; left: 2px; transition: transform 0.2s; }
     .toggle.active { background: var(--accent-green); }
-    .toggle.active::after { transform: translateX(20px); }
-    @media (max-width: 500px) { .stats { grid-template-columns: repeat(2, 1fr); } .files-grid { grid-template-columns: 1fr; } }
+    .toggle.active::after { transform: translateX(22px); }
+    @media (max-width: 500px) { .stats-row { grid-template-columns: repeat(2, 1fr); } .files-grid { grid-template-columns: 1fr; } }
   </style>
 </head>
 <body>
   <div class="header">
     <div class="header-top">
-      <div class="logo"><img src="01_PEPE4-export.gif" class="logo-img"><div><h1>Mission Control</h1><span id="updated">Loading...</span></div></div>
+      <div class="logo">
+        <div class="logo-icon">🐸</div>
+        <div class="logo-text">
+          <h1>Mission Control</h1>
+          <div class="live-status"><div class="live-dot"></div><span id="updated">Loading...</span></div>
+        </div>
+      </div>
       <div class="header-actions">
         <button class="icon-btn" onclick="openSettings()" title="Settings"><i class="fas fa-cog"></i></button>
         <button class="icon-btn" onclick="loadData()" title="Refresh"><i class="fas fa-sync-alt"></i></button>
       </div>
     </div>
   </div>
-  <div class="stats">
-    <div class="stat green"><div class="stat-num" id="green">0</div><div class="stat-label">Active</div></div>
-    <div class="stat yellow"><div class="stat-num" id="yellow">0</div><div class="stat-label">In Progress</div></div>
-    <div class="stat red"><div class="stat-num" id="red">0</div><div class="stat-label">Blocked</div></div>
-    <div class="stat blue"><div class="stat-num" id="tasks">0</div><div class="stat-label">Tasks</div></div>
+  <div class="search-bar"><i class="fas fa-search"></i><input type="text" id="search" placeholder="Search projects..." oninput="render()"></div>
+  <div class="stats-row">
+    <div class="stat-card green"><div class="number" id="green">0</div><div class="label">Active</div></div>
+    <div class="stat-card yellow"><div class="number" id="yellow">0</div><div class="label">In Progress</div></div>
+    <div class="stat-card red"><div class="number" id="red">0</div><div class="label">Blocked</div></div>
+    <div class="stat-card blue"><div class="number" id="tasks">0</div><div class="label">Tasks</div></div>
   </div>
-  <div class="filters">
-    <div class="filter active" onclick="filter('all',this)">All</div>
-    <div class="filter" onclick="filter('green',this)">Active</div>
-    <div class="filter" onclick="filter('yellow',this)">In Progress</div>
-    <div class="filter" onclick="filter('red',this)">Blocked</div>
+  <div class="filter-tabs">
+    <div class="filter-tab active" onclick="filter('all',this)">All</div>
+    <div class="filter-tab" onclick="filter('green',this)">Active</div>
+    <div class="filter-tab" onclick="filter('yellow',this)">In Progress</div>
+    <div class="filter-tab" onclick="filter('red',this)">Blocked</div>
   </div>
-  <div class="search-bar"><input type="text" id="search" placeholder="🔍 Search..." oninput="render()"></div>
-  <div class="projects" id="projects"><div class="loading"><i class="fas fa-spinner fa-spin"></i><br>Loading...</div></div>
+  <div class="projects-container" id="projects"><div class="loading"><i class="fas fa-spinner"></i><br>Loading projects...</div></div>
   <div class="fab" onclick="loadData()"><i class="fas fa-sync-alt"></i></div>
   <div class="modal" id="settingsModal">
     <div class="modal-content">
       <div class="modal-header"><h2>⚙️ Settings</h2><button class="modal-close" onclick="closeSettings()">×</button></div>
-      <div class="setting"><span>🌙 Dark Mode</span><div class="toggle" id="darkModeToggle" onclick="toggleDarkMode()"></div></div>
-      <div class="setting"><span>📁 Files Expandable</span><div class="toggle" id="filesToggle" onclick="toggleFiles()"></div></div>
+      <div class="setting"><span>🌙 Dark Mode</span><div class="toggle" id="darkToggle" onclick="toggleDark()"></div></div>
     </div>
   </div>
   <script>
-    const savedTheme=localStorage.getItem('theme')||'dark';
-    document.documentElement.setAttribute('data-theme',savedTheme);
-    if(savedTheme==='light')document.getElementById('darkModeToggle').classList.add('active');
-    const projectFiles={
-      autobookr_suite:[{n:'Landing',u:'https://lil-ai-operator.github.io/autobookr-landing/'},{n:'Pricing',u:'https://lil-ai-operator.github.io/autobookr-landing/pricing.html'},{n:'FAQ',u:'https://lil-ai-operator.github.io/autobookr-landing/faq.html'},{n:'Sales Script',u:'https://lil-ai-operator.github.io/mobile-dashboard/generated/ops/autobookr-sales-script.md'},{n:'Outreach',u:'https://lil-ai-operator.github.io/mobile-dashboard/generated/ops/autobookr-pilot-outreach.md'}],
-      mission_control:[{n:'Dashboard',u:'https://lil-ai-operator.github.io/mobile-dashboard/'},{n:'Data',u:'https://lil-ai-operator.github.io/mobile-dashboard/mission-control-data.json'}],
-      system_backup:[{n:'Scripts',u:'https://lil-ai-operator.github.io/mobile-dashboard/generated/ops/backup-scripts/'}],
-      neuronet:[{n:'Regions',u:'https://lil-ai-operator.github.io/mobile-dashboard/generated/ops/brain-regions-plan.md'}],
-      aavegotchi_bot:[{n:'Wave 1',u:'https://lil-ai-operator.github.io/mobile-dashboard/generated/ops/aavegotchi-wave1.md'}],
-      etsy_business:[{n:'Plan',u:'https://lil-ai-operator.github.io/mobile-dashboard/generated/ops/etsy-project-plan.md'}],
-      clare_reiki:[{n:'Website',u:'https://lil-ai-operator.github.io/divineflow/'}]
+    const projectFiles = {
+      autobookr_suite: [{n:'Landing',u:'https://lil-ai-operator.github.io/autobookr-landing/'},{n:'Pricing',u:'https://lil-ai-operator.github.io/autobookr-landing/pricing.html'},{n:'FAQ',u:'https://lil-ai-operator.github.io/autobookr-landing/faq.html'},{n:'Sales Script',u:'https://lil-ai-operator.github.io/mobile-dashboard/generated/ops/autobookr-sales-script.md'}],
+      mission_control: [{n:'Dashboard',u:'https://lil-ai-operator.github.io/mobile-dashboard/'},{n:'Data',u:'https://lil-ai-operator.github.io/mobile-dashboard/mission-control-data.json'}],
+      system_backup: [{n:'Scripts',u:'https://lil-ai-operator.github.io/mobile-dashboard/generated/ops/backup-scripts/'}],
+      neuronet: [{n:'Regions',u:'https://lil-ai-operator.github.io/mobile-dashboard/generated/ops/brain-regions-plan.md'}],
+      aavegotchi_bot: [{n:'Wave 1',u:'https://lil-ai-operator.github.io/mobile-dashboard/generated/ops/aavegotchi-wave1.md'}],
+      etsy_business: [{n:'Plan',u:'https://lil-ai-operator.github.io/mobile-dashboard/generated/ops/etsy-project-plan.md'}],
+      clare_reiki: [{n:'Website',u:'https://lil-ai-operator.github.io/divineflow/'}]
     };
-    let allProjects=[],currentFilter='all';
-    async function loadData(){
-      try{
-        const res=await fetch('mission-control-data.json?t='+Date.now());
-        const data=await res.json();
-        allProjects=data.projects||[];
-        document.getElementById('updated').textContent='Updated: '+new Date(data.updatedAt).toLocaleString();
+    let allProjects = [], currentFilter = 'all';
+    const savedTheme = localStorage.getItem('theme') || 'dark';
+    document.documentElement.setAttribute('data-theme', savedTheme);
+    if(savedTheme === 'light') document.getElementById('darkToggle').classList.add('active');
+    async function loadData() {
+      try {
+        const fab = document.querySelector('.fab'); fab.innerHTML = '<i class="fas fa-spinner"></i>';
+        const res = await fetch('https://lil-ai-operator.github.io/mobile-dashboard/mission-control-data.json?t=' + Date.now());
+        const data = await res.json();
+        allProjects = data.projects || [];
+        document.getElementById('updated').textContent = 'Updated: ' + new Date(data.updatedAt).toLocaleString();
         render();
-      }catch(e){document.getElementById('projects').innerHTML='<div class="loading">Error</div>';}
+        fab.innerHTML = '<i class="fas fa-sync-alt"></i>';
+      } catch(e) {
+        document.getElementById('projects').innerHTML = '<div class="loading">Error loading data</div>';
+      }
     }
-    function render(){
-      const search=document.getElementById('search').value.toLowerCase();
-      let filtered=currentFilter==='all'?allProjects:allProjects.filter(p=>p.status===currentFilter);
-      if(search)filtered=filtered.filter(p=>p.name.toLowerCase().includes(search));
-      let green=yellow=red=tasks=0;
-      allProjects.forEach(p=>{if(p.status==='green')green++;if(p.status==='yellow')yellow++;if(p.status==='red')red++;tasks+=(p.done?.length||0)+(p.todo?.length||0);});
-      document.getElementById('green').textContent=green;document.getElementById('yellow').textContent=yellow;document.getElementById('red').textContent=red;document.getElementById('tasks').textContent=tasks;
-      const html=filtered.map(p=>{const done=p.done?.length||0,todo=p.todo?.length||0,total=done+todo,pct=total?Math.round(done/total*100):0,files=projectFiles[p.key]||[];
-        return`<div class="project"><div class="project-header" onclick="toggle('${p.key}')"><div class="project-name">${p.name}<span class="priority ${p.priority||'p2'}">${(p.priority||'p2').toUpperCase()}</span></div><div class="status-dot ${p.status}"></div></div><div class="progress"><div class="progress-bar"><div class="progress-fill ${p.status}" style="width:${pct}%"></div></div><div class="progress-text"><span>${done}/${total}</span><span>${pct}%</span></div></div><div class="content" id="c-${p.key}">${p.summary?`<div class="summary">${p.summary}</div>`:''}${p.blockers?.length?`<div class="section"><div class="section-title">🚫 Blockers</div>${p.blockers.map(b=>`<div class="blocker"><i class="fas fa-exclamation-circle"></i>${b}</div>`).join('')}</div>`:''}<div class="section"><div class="section-title" onclick="toggleSection(this)">✅ Done (${done}) <i class="fas fa-chevron-down"></i></div><div>${(p.done||[]).map(t=>`<div class="task"><span class="task-icon done">✓</span>${typeof t==='string'?t:t.task}</div>`).join('')}</div></div><div class="section"><div class="section-title" onclick="toggleSection(this)">⬜ To Do (${todo}) <i class="fas fa-chevron-down"></i></div><div>${(p.todo||[]).map(t=>`<div class="task"><span class="task-icon todo">○</span>${typeof t==='string'?t:t.task}</div>`).join('')}</div></div>${files.length?`<div class="section"><div class="section-title" onclick="toggleSection(this)">📁 Files (${files.length}) <i class="fas fa-chevron-down"></i></div><div class="files-grid">${files.map(f=>`<div class="file"><a href="${f.u}" target="_blank"><i class="fas fa-file-alt"></i>${f.n}</a></div>`).join('')}</div></div>`:''}</div></div>`;}).join('');
-      document.getElementById('projects').innerHTML=html||'<div class="loading">No projects</div>';
+    function render() {
+      const search = document.getElementById('search').value.toLowerCase();
+      let filtered = currentFilter === 'all' ? allProjects : allProjects.filter(p => p.status === currentFilter);
+      if(search) filtered = filtered.filter(p => p.name.toLowerCase().includes(search) || (p.summary||'').toLowerCase().includes(search));
+      let green = yellow = red = tasks = 0;
+      allProjects.forEach(p => { if(p.status === 'green') green++; if(p.status === 'yellow') yellow++; if(p.status === 'red') red++; tasks += (p.done?.length||0) + (p.todo?.length||0); });
+      document.getElementById('green').textContent = green; document.getElementById('yellow').textContent = yellow; document.getElementById('red').textContent = red; document.getElementById('tasks').textContent = tasks;
+      const html = filtered.map(p => {
+        const done = p.done?.length||0, todo = p.todo?.length||0, total = done+todo, pct = total ? Math.round(done/total*100) : 0, files = projectFiles[p.key]||[];
+        return `<div class="project-card"><div class="project-header" onclick="toggle('${p.key}')"><div class="project-info"><div class="project-name">${p.name}<span class="priority-tag priority-${p.priority||'p2'}">${(p.priority||'p2').toUpperCase()}</span></div><div class="project-summary">${p.summary||''}</div></div><div class="project-status status-${p.status}"></div></div><div class="project-progress"><div class="progress-bar"><div class="progress-fill ${p.status}" style="width:${pct}%"></div></div><div class="progress-stats"><span>${done}/${total} tasks</span><span>${pct}%</span></div></div><div class="project-content" id="c-${p.key}">${p.blockers?.length ? `<div class="content-section"><div class="section-title">🚫 Blockers</div>${p.blockers.map(b=>`<div class="blocker-item"><i class="fas fa-exclamation-circle"></i>${b}</div>`).join('')}</div>` : ''}<div class="content-section"><div class="section-title">✅ Done (${done})</div>${(p.done||[]).map(t=>`<div class="task-item"><span class="task-status done">✓</span>${typeof t==='string'?t:t.task}</div>`).join('')}</div><div class="content-section"><div class="section-title">⬜ To Do (${todo})</div>${(p.todo||[]).map(t=>`<div class="task-item"><span class="task-status todo"></span>${typeof t==='string'?t:t.task}</div>`).join('')}</div>${files.length ? `<div class="content-section"><div class="section-title">📁 Files (${files.length})</div><div class="files-grid">${files.map(f=>`<a class="file-link" href="${f.u}" target="_blank"><i class="fas fa-file-alt"></i>${f.n}</a>`).join('')}</div></div>` : ''}</div></div>`;
+      }).join('');
+      document.getElementById('projects').innerHTML = html || '<div class="loading">No projects found</div>';
     }
-    function toggle(key){const el=document.getElementById('c-'+key);el.style.display=el.style.display==='none'?'block':'none';}
-    function toggleSection(el){el.classList.toggle('collapsed');el.nextElementSibling.style.display=el.classList.contains('collapsed')?'none':'block';}
-    function filter(status,btn){currentFilter=status;document.querySelectorAll('.filter').forEach(b=>b.classList.remove('active'));btn.classList.add('active');render();}
-    function openSettings(){document.getElementById('settingsModal').classList.add('open');}
-    function closeSettings(){document.getElementById('settingsModal').classList.remove('open');}
-    function toggleDarkMode(){const t=document.getElementById('darkModeToggle');t.classList.toggle('active');const theme=t.classList.contains('active')?'light':'dark';document.documentElement.setAttribute('data-theme',theme);localStorage.setItem('theme',theme);}
-    function toggleFiles(){document.getElementById('filesToggle').classList.toggle('active');}
+    function toggle(key) { const el = document.getElementById('c-'+key); el.classList.toggle('open'); }
+    function filter(status, btn) { currentFilter = status; document.querySelectorAll('.filter-tab').forEach(b => b.classList.remove('active')); btn.classList.add('active'); render(); }
+    function openSettings() { document.getElementById('settingsModal').classList.add('open'); }
+    function closeSettings() { document.getElementById('settingsModal').classList.remove('open'); }
+    function toggleDark() { const t = document.getElementById('darkToggle'); t.classList.toggle('active'); const theme = t.classList.contains('active') ? 'light' : 'dark'; document.documentElement.setAttribute('data-theme', theme); localStorage.setItem('theme', theme); }
     loadData();
   </script>
 </body>
