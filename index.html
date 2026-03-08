@@ -301,12 +301,12 @@
       // Only hijack if horizontal swipe > vertical
       if(diffX > diffY && diffX > 10) {
         isSwiping = true;
-        e.preventDefault(); // Stop page scroll
+        e.preventDefault();
         
-        // Follow finger - swipe RIGHT closes (moves panel right)
-        const moveX = touchStartX - currentX;
+        // Follow finger - swipe RIGHT closes (panel moves right)
+        const moveX = currentX - touchStartX;
         if(moveX > 0) {
-          panel.style.right = (-300 - moveX) + 'px';
+          panel.style.right = (-moveX) + 'px';
         }
       }
     }, {passive: false});
@@ -316,10 +316,10 @@
       
       if(isSwiping) {
         const touchEndX = e.changedTouches[0].pageX;
-        const diffX = touchStartX - touchEndX;
+        const diffX = touchEndX - touchStartX;
         
-        // Swipe left (>100px) to close - swipe right to open
-        if(diffX > 100) {
+        // Swipe RIGHT (>80px) to close
+        if(diffX > 80) {
           panel.style.right = '-300px';
           toggleNotifs();
         } else {
