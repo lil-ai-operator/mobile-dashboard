@@ -174,7 +174,7 @@
         document.getElementById('updated').textContent = 'Updated: ' + new Date(data.updatedAt).toLocaleString();
         render();
         fab.innerHTML = '<i class="fas fa-sync-alt"></i>';
-      } catch(e) {
+      } catch(e) { console.error('Load error:', e); document.getElementById('projects').innerHTML = '<div class="loading">Error: ' + e.message + '<br><br><button onclick="loadData()">Retry</button></div>'; }
         document.getElementById('projects').innerHTML = '<div class="loading">Error loading data</div>';
       }
     }
