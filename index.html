@@ -267,15 +267,6 @@
     function showC(){['🎉','⭐','🔥','✨'].forEach((e,i)=>{const d=document.createElement('div');d.className='conf';d.textContent=e;d.style.left=(30+Math.random()*40)+'%';d.style.animationDelay=i*0.1+'s';document.body.appendChild(d);setTimeout(()=>d.remove(),1000)})}
     function share(){const g=data.filter(p=>p.status==='green').length,r=data.filter(p=>p.status==='red').length;const t=`🐸 Mission Control:\n\n✅ ${g} Active\n🔴 ${r} Blocked`;navigator.clipboard.writeText(t).then(()=>alert('Copied!'))}
     
-    function toggleNotifs(){
-      const panel = document.getElementById('notifPanel');
-      const tab = document.getElementById('notifTab');
-      panel.classList.toggle('open');
-      if(panel.classList.contains('open')){
-        tab.classList.remove('has-new');
-      }
-    }
-    
     // Swipe handlers - only active when panel open
     let touchStartX = 0;
     let touchStartY = 0;
