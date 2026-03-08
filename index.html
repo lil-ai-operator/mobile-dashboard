@@ -162,10 +162,14 @@
     .conf{position:fixed;top:40%;left:50%;font-size:35px;animation:cf 0.8s forwards;pointer-events:none}
     @keyframes cf{0%{transform:translate(-50%,0) scale(0) rotate(0);opacity:1}50%{transform:translate(-50%,-30%) scale(1.2) rotate(180deg)}100%{transform:translate(-50%,-80px) scale(0.5) rotate(360deg);opacity:0}}
     
-    /* Notifications Panel */
-    .notif-panel{position:fixed;top:60px;right:10px;width:280px;max-height:60vh;background:var(--bg-card);border:2px solid var(--primary);border-radius:16px;z-index:1000;transition:all 0.3s ease;box-shadow:0 10px 40px rgba(0,0,0,0.5);overflow:hidden;opacity:0;visibility:hidden;transform:translateY(-10px)}
-    .notif-panel.open{opacity:1;visibility:visible;transform:translateY(0)}
-    .notif-header{display:flex;justify-content:space-between;align-items:center;padding:16px;border-bottom:1px solid var(--border);position:sticky;top:0;background:var(--bg-card)}
+    /* Notifications - Side Tab */
+    .notif-tab{position:fixed;top:50%;right:0;transform:translateY(-50%);background:var(--bg-card);border:2px solid var(--border);border-right:none;border-radius:12px 0 0 12px;padding:12px 8px;cursor:pointer;z-index:999;transition:all 0.3s;writing-mode:vertical-rl;text-orientation:mixed;font-size:12px;font-weight:700;color:var(--text);box-shadow:-4px 0 15px rgba(0,0,0,0.3)}
+    .notif-tab:hover{transform:translateY(-50%);border-color:var(--primary)}
+    .notif-tab.has-new{border-color:var(--primary);box-shadow:0 0 20px var(--primary),-4px 0 15px rgba(0,0,0,0.3);color:var(--primary);animation:notifPulse 2s infinite}
+    @keyframes notifPulse{0%,100%{box-shadow:0 0 20px var(--primary)}50%{box-shadow:0 0 35px var(--primary)}}
+    .notif-panel{position:fixed;top:0;right:-300px;width:300px;height:100vh;background:var(--bg-card);border-left:2px solid var(--primary);z-index:1000;transition:right 0.3s ease;box-shadow:-10px 0 30px rgba(0,0,0,0.5);overflow-y:auto}
+    .notif-panel.open{right:0}
+    .notif-header{display:flex;justify-content:space-between;align-items:center;padding:16px;border-bottom:1px solid var(--border)}
     .notif-header h2{font-size:16px;color:var(--primary)}
     .notif-close{background:none;border:none;color:var(--text);font-size:24px;cursor:pointer}
     .notif-item{padding:14px;border-bottom:1px solid var(--border);font-size:13px}
@@ -203,6 +207,7 @@
   </div>
   <div class="projs" id="p"></div>
   <div class="notif-backdrop" id="notifBackdrop" onclick="toggleNotifs()"></div>
+  <div class="notif-tab" id="notifTab" onclick="toggleNotifs()">🔔 Notifications</div>
   <div class="notif-panel" id="notifPanel">
     <div class="notif-header">
       <h2>🔔 Notifications</h2>
@@ -263,8 +268,12 @@
     function share(){const g=data.filter(p=>p.status==='green').length,r=data.filter(p=>p.status==='red').length;const t=`🐸 Mission Control:\n\n✅ ${g} Active\n🔴 ${r} Blocked`;navigator.clipboard.writeText(t).then(()=>alert('Copied!'))}
     
     function toggleNotifs(){
-      document.getElementById('notifPanel').classList.toggle('open');
-      document.getElementById('notifBackdrop').classList.toggle('show');
+      const panel = document.getElementById('notifPanel');
+      const tab = document.getElementById('notifTab');
+      panel.classList.toggle('open');
+      if(panel.classList.contains('open')){
+        tab.classList.remove('has-new');
+      }
     }
     
     const notifs = [
