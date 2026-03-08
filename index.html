@@ -161,6 +161,17 @@
     .arr.on{transform:rotate(180deg)}
     .conf{position:fixed;top:40%;left:50%;font-size:35px;animation:cf 0.8s forwards;pointer-events:none}
     @keyframes cf{0%{transform:translate(-50%,0) scale(0) rotate(0);opacity:1}50%{transform:translate(-50%,-30%) scale(1.2) rotate(180deg)}100%{transform:translate(-50%,-80px) scale(0.5) rotate(360deg);opacity:0}}
+    
+    /* Notifications Panel */
+    .notif-panel{position:fixed;top:0;right:-320px;width:300px;height:100vh;background:var(--bg-card);border-left:2px solid var(--primary);z-index:1000;transition:right 0.3s ease;box-shadow:-10px 0 30px rgba(0,0,0,0.5);overflow-y:auto}
+    .notif-panel.open{right:0}
+    .notif-header{display:flex;justify-content:space-between;align-items:center;padding:16px;border-bottom:1px solid var(--border);position:sticky;top:0;background:var(--bg-card)}
+    .notif-header h2{font-size:16px;color:var(--primary)}
+    .notif-close{background:none;border:none;color:var(--text);font-size:24px;cursor:pointer}
+    .notif-item{padding:14px;border-bottom:1px solid var(--border);font-size:13px}
+    .notif-item .time{font-size:10px;color:var(--text);margin-top:6px}
+    .notif-backdrop{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.5);z-index:999;display:none}
+    .notif-backdrop.show{display:block}
   </style>
 </head>
 <body>
@@ -171,6 +182,7 @@
       <span class="time" id="time"></span>
     </div>
     <div class="ctrl">
+      <button class="btn" onclick="toggleNotifs()">🔔</button>
       <button class="btn" onclick="theme()">🌙</button>
       <button class="btn" onclick="share()">📤</button>
       <button class="btn btn-g" onclick="load()">↻</button>
@@ -190,6 +202,15 @@
     <div class="stat blu"><div class="stat-n" id="t">0</div><div class="stat-l">TASKS</div></div>
   </div>
   <div class="projs" id="p"></div>
+  <div class="notif-backdrop" id="notifBackdrop" onclick="toggleNotifs()"></div>
+  <div class="notif-panel" id="notifPanel">
+    <div class="notif-header">
+      <h2>🔔 Notifications</h2>
+      <button class="notif-close" onclick="toggleNotifs()">×</button>
+    </div>
+    <div id="notifList"></div>
+  </div>
+
   <script>
     const files = {
       autobookr_suite: [
@@ -240,6 +261,23 @@
     function chk(pid,i){const k=pid+'-'+i;checked[k]=!checked[k];localStorage.setItem('mc_chk',JSON.stringify(checked));render();if(checked[k]){const p=data.find(x=>(x.key||'')===pid);if(p&&p.done?.every((t,j)=>checked[pid+'-'+j]))showC()}}
     function showC(){['🎉','⭐','🔥','✨'].forEach((e,i)=>{const d=document.createElement('div');d.className='conf';d.textContent=e;d.style.left=(30+Math.random()*40)+'%';d.style.animationDelay=i*0.1+'s';document.body.appendChild(d);setTimeout(()=>d.remove(),1000)})}
     function share(){const g=data.filter(p=>p.status==='green').length,r=data.filter(p=>p.status==='red').length;const t=`🐸 Mission Control:\n\n✅ ${g} Active\n🔴 ${r} Blocked`;navigator.clipboard.writeText(t).then(()=>alert('Copied!'))}
+    
+    function toggleNotifs(){
+      document.getElementById('notifPanel').classList.toggle('open');
+      document.getElementById('notifBackdrop').classList.toggle('show');
+    }
+    
+    const notifs = [
+      {t:'Mission Control updated',d:'Just now'},
+      {t:'AutoBookr landing ready',d:'5 min ago'},
+      {t:'Backup scripts ready',d:'1 hour ago'},
+      {t:'NeuroNet needs approval',d:'2 hours ago'},
+    ];
+    
+    function renderNotifs(){
+      document.getElementById('notifList').innerHTML = notifs.map(n => '<div class="notif-item">'+n.t+'<div class="time">'+n.d+'</div></div>').join('');
+    }
+    renderNotifs();
     
     function render(){
       const q=document.getElementById('s').value.toLowerCase();
