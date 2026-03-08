@@ -277,21 +277,20 @@
       }
     }
     
-    // Swipe handlers - only intercept horizontal swipes when panel open
+    // Swipe handlers - only active when panel open
     let touchStartX = 0;
     let touchStartY = 0;
     let isSwiping = false;
     let panel = null;
     
-    document.addEventListener('touchstart', function(e) {
+    function onTouchStart(e) {
       touchStartX = e.touches[0].pageX;
       touchStartY = e.touches[0].pageY;
       panel = document.getElementById('notifPanel');
       isSwiping = false;
-    }, {passive: true});
+    }
     
-    document.addEventListener('touchmove', function(e) {
-      // Always allow scrolling when panel is closed
+    function onTouchMove(e) {
       if(!panel || !panel.classList.contains('open')) return;
       
       const currentX = e.touches[0].pageX;
@@ -304,22 +303,20 @@
         isSwiping = true;
         e.preventDefault();
         
-        // Follow finger horizontally
         const moveX = currentX - touchStartX;
         if(moveX > 0) {
           panel.style.right = (-moveX) + 'px';
         }
       }
-    }, {passive: false});
+    }
     
-    document.addEventListener('touchend', function(e) {
+    function onTouchEnd(e) {
       if(!panel) return;
       
       if(isSwiping) {
         const touchEndX = e.changedTouches[0].pageX;
         const diffX = touchEndX - touchStartX;
         
-        // Swipe RIGHT > 80px to close
         if(diffX > 80) {
           panel.style.right = '-300px';
           toggleNotifs();
@@ -332,7 +329,26 @@
       touchStartY = 0;
       isSwiping = false;
       panel = null;
-    }, {passive: true});
+    }
+    
+    // Only attach swipe handlers when panel opens
+    const originalToggle = toggleNotifs;
+    toggleNotifs = function() {
+      const panel = document.getElementById('notifPanel');
+      const isOpening = !panel.classList.contains('open');
+      
+      originalToggle();
+      
+      if(isOpening) {
+        document.addEventListener('touchstart', onTouchStart, {passive: true});
+        document.addEventListener('touchmove', onTouchMove, {passive: false});
+        document.addEventListener('touchend', onTouchEnd, {passive: true});
+      } else {
+        document.removeEventListener('touchstart', onTouchStart);
+        document.removeEventListener('touchmove', onTouchMove);
+        document.removeEventListener('touchend', onTouchEnd);
+      }
+    }
     
     const notifs = [
       {t:'Mission Control updated',d:'Just now'},
