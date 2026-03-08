@@ -6,149 +6,148 @@
   <title>🐸 Mission Control</title>
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700&display=swap" rel="stylesheet">
   <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    :root { --g: #00e5a0; --r: #ff5c5c; --y: #ffc107; --b: #4fc3f7; --bg: #08080c; --c: #111116; --h: #1a1a22; --bc: #222; --t: #888; }
-    [data-theme="light"] { --bg: #f5f5f7; --c: #fff; --h: #eee; --bc: #ddd; --t: #666; }
-    body { font-family: 'Outfit', sans-serif; background: var(--bg); color: #fff; padding: 12px; min-height: 100vh;
-      background: linear-gradient(180deg, #0a0a12 0%, #08080c 100%); }
-    [data-theme="light"] body { background: linear-gradient(180deg, #fff 0%, #f5f5f7 100%); }
+    *{box-sizing:border-box;margin:0;padding:0}
+    :root{--g:#00e676;--r:#ff5252;--y:#ffc107;--b:#40c4ff;--bg:#050508;--c:#0c0c10;--h:#141418;--bc:#1e1e24;--t:#666;--s:#222}
+    [data-theme="light"]{--bg:#f0f2f5;--c:#fff;--h:#f5f5f5;--bc:#e0e0e5;--t:#666;--s:#fff}
+    body{font-family:'Outfit',sans-serif;background:var(--bg);color:#fff;padding:8px;min-height:100vh;background:linear-gradient(180deg,#08080c 0%,#050508 100%)}
+    [data-theme="light"] body{background:linear-gradient(180deg,#fff 0%,#f0f2f5 100%)}
     
-    /* Header */
-    .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
-    .logo { display: flex; align-items: center; gap: 10px; }
-    .logo img { width: 36px; height: 36px; border-radius: 10px; animation: float 3s ease-in-out infinite; }
-    @keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-3px)} }
-    .logo h1 { font-size: 20px; font-weight: 700; background: linear-gradient(90deg, #00e5a0, #7c4dff); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-    .controls-r { display: flex; align-items: center; gap: 6px; }
-    .time { font-size: 10px; color: var(--t); margin-right: 4px; }
-    .btn { width: 34px; height: 34px; border-radius: 8px; border: 1px solid var(--bc); background: var(--c); color: #fff; cursor: pointer; font-size: 14px; transition: 0.2s; }
-    .btn:hover { border-color: var(--g); transform: scale(1.05); }
-    .btn-g { background: linear-gradient(135deg, var(--g), #00b880); color: #000; border: none; }
+    /* Ultra compact header */
+    .hdr{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;gap:8px;flex-wrap:wrap}
+    .logo{display:flex;align-items:center;gap:8px}
+    .logo img{width:32px;height:32px;border-radius:8px;animation:float 3s ease-in-out infinite}
+    @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-2px)}}
+    .logo h1{font-size:18px;font-weight:700;background:linear-gradient(90deg,#00e676,#7c4dff);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+    .ctrl{display:flex;align-items:center;gap:4px}
+    .time{font-size:9px;color:var(--t);margin-right:4px}
+    .btn{width:28px;height:28px;border-radius:6px;border:1px solid var(--bc);background:var(--c);color:#fff;cursor:pointer;font-size:12px;transition:0.15s}
+    .btn:hover{border-color:var(--g);transform:scale(1.05)}
+    .btn-g{background:linear-gradient(135deg,var(--g),#00c853);color:#000;border:none}
     
-    /* Search & Filter */
-    .sf { display: flex; gap: 6px; margin-bottom: 12px; flex-wrap: wrap; }
-    .search { flex: 1; min-width: 120px; padding: 10px 14px; background: var(--c); border: 1px solid var(--bc); border-radius: 10px; color: #fff; font-size: 13px; font-family: inherit; }
-    .search:focus { outline: none; border-color: var(--g); }
-    .filter { padding: 8px 14px; background: var(--c); border: 1px solid var(--bc); border-radius: 20px; color: var(--t); font-size: 12px; font-weight: 600; cursor: pointer; white-space: nowrap; }
-    .filter:hover { border-color: var(--g); }
-    .filter.on { background: var(--g); color: #000; border-color: var(--g); }
+    /* Inline search & filter */
+    .sf{display:flex;gap:4px;margin-bottom:8px;flex-wrap:wrap}
+    .sch{flex:1;min-width:100px;padding:8px 12px;background:var(--c);border:1px solid var(--bc);border-radius:8px;color:#fff;font-size:12px;font-family:inherit}
+    .sch:focus{outline:none;border-color:var(--g)}
+    .fil{padding:6px 12px;background:var(--c);border:1px solid var(--bc);border-radius:16px;color:var(--t);font-size:11px;font-weight:600;cursor:pointer;white-space:nowrap}
+    .fil:hover{border-color:var(--g)}
+    .fil.on{background:var(--g);color:#000;border-color:var(--g)}
     
-    /* Stats */
-    .stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-bottom: 14px; }
-    .stat { background: var(--c); border-radius: 12px; padding: 12px; text-align: center; border: 1px solid var(--bc); }
-    .stat-n { font-size: 22px; font-weight: 700; }
-    .stat-l { font-size: 10px; color: var(--t); margin-top: 2px; font-weight: 600; text-transform: uppercase; }
-    .g .stat-n { color: var(--g); }
-    .r .stat-n { color: var(--r); }
-    .y .stat-n { color: var(--y); }
-    .b .stat-n { color: var(--b); }
+    /* Compact inline stats */
+    .st{display:flex;gap:4px;margin-bottom:10px}
+    .st>.stat{flex:1;background:var(--c);border-radius:8px;padding:8px 4px;text-align:center;border:1px solid var(--bc)}
+    .st-n{font-size:18px;font-weight:700}
+    .st-l{font-size:9px;color:var(--t);margin-top:1px;font-weight:600}
+    .g .st-n{color:var(--g)}
+    .r .st-n{color:var(--r)}
+    .y .st-n{color:var(--y)}
+    .b .st-n{color:var(--b)}
     
-    /* Projects */
-    .projects { }
-    .proj { background: var(--c); border-radius: 14px; margin-bottom: 8px; border: 1px solid var(--bc); overflow: hidden; animation: in 0.4s forwards; opacity: 0; }
-    @keyframes in { from {opacity:0;transform:translateY(15px)} to {opacity:1;transform:translateY(0)} }
-    .proj:nth-child(1){animation-delay:0.05s} .proj:nth-child(2){animation-delay:0.1s} .proj:nth-child(3){animation-delay:0.15s}
-    .proj:nth-child(4){animation-delay:0.2s} .proj:nth-child(5){animation-delay:0.25s} .proj:nth-child(6){animation-delay:0.3s} .proj:nth-child(7){animation-delay:0.35s}
-    .proj:hover { border-color: #7c4dff; }
-    .p-head { padding: 14px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; }
-    .p-l { display: flex; align-items: center; gap: 10px; }
-    .p-icon { width: 10px; height: 10px; border-radius: 50%; }
-    .green .p-icon { background: var(--g); box-shadow: 0 0 10px var(--g); }
-    .red .p-icon { background: var(--r); box-shadow: 0 0 10px var(--r); }
-    .yellow .p-icon { background: var(--y); box-shadow: 0 0 10px var(--y); }
-    .p-name { font-size: 15px; font-weight: 700; }
-    .p-badge { padding: 4px 10px; border-radius: 12px; font-size: 10px; font-weight: 700; text-transform: uppercase; }
-    .green .p-badge { background: var(--g); color: #000; }
-    .red .p-badge { background: var(--r); color: #fff; }
-    .yellow .p-badge { background: var(--y); color: #000; }
-    .p-bar { height: 4px; background: var(--h); margin: 0 14px 10px; border-radius: 2px; }
-    .p-fill { height: 100%; border-radius: 2px; transition: width 0.5s; }
-    .green .p-fill { background: linear-gradient(90deg, var(--g), #00b880); }
-    .red .p-fill { background: linear-gradient(90deg, var(--r), #ff3333); }
-    .yellow .p-fill { background: linear-gradient(90deg, var(--y), #ffaa00); }
-    .p-meta { padding: 0 14px 12px; display: flex; justify-content: space-between; font-size: 11px; color: var(--t); font-weight: 600; }
-    .p-body { display: none; padding: 14px; border-top: 1px solid var(--bc); background: var(--h); }
-    .p-body.on { display: block; animation: in 0.3s; }
+    /* Ultra compact projects */
+    .projs{}
+    .proj{background:var(--c);border-radius:10px;margin-bottom:6px;border:1px solid var(--bc);overflow:hidden;animation:in 0.3s forwards;opacity:0}
+    @keyframes in{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+    .proj:nth-child(1){animation-delay:0.02s}.proj:nth-child(2){animation-delay:0.04s}.proj:nth-child(3){animation-delay:0.06s}.proj:nth-child(4){animation-delay:0.08s}.proj:nth-child(5){animation-delay:0.1s}.proj:nth-child(6){animation-delay:0.12s}.proj:nth-child(7){animation-delay:0.14s}
+    .proj:hover{border-color:#7c4dff}
+    .p-h{padding:10px 12px;display:flex;justify-content:space-between;align-items:center;cursor:pointer}
+    .p-l{display:flex;align-items:center;gap:8px}
+    .p-i{width:8px;height:8px;border-radius:50%}
+    .green .p-i{background:var(--g);box-shadow:0 0 8px var(--g)}
+    .red .p-i{background:var(--r);box-shadow:0 0 8px var(--r)}
+    .yellow .p-i{background:var(--y);box-shadow:0 0 8px var(--y)}
+    .p-n{font-size:13px;font-weight:700}
+    .p-b{padding:3px 8px;border-radius:10px;font-size:9px;font-weight:700;text-transform:uppercase}
+    .green .p-b{background:var(--g);color:#000}
+    .red .p-b{background:var(--r);color:#fff}
+    .yellow .p-b{background:var(--y);color:#000}
+    .p-bar{height:3px;background:var(--h);margin:0 12px 8px;border-radius:2px}
+    .p-f{height:100%;border-radius:2px;transition:width 0.4s}
+    .green .p-f{background:linear-gradient(90deg,var(--g),#00c853)}
+    .red .p-f{background:linear-gradient(90deg,var(--r),#ff1744)}
+    .yellow .p-f{background:linear-gradient(90deg,var(--y),#ffab00)}
+    .p-m{padding:0 12px 10px;display:flex;justify-content:space-between;font-size:10px;color:var(--t);font-weight:600}
+    .p-bd{display:none;padding:10px;border-top:1px solid var(--bc);background:var(--h)}
+    .p-bd.on{display:block;animation:in 0.2s}
     
-    /* Sections */
-    .sect { margin-bottom: 12px; }
-    .s-head { font-size: 12px; font-weight: 700; color: var(--g); padding: 8px 12px; background: var(--c); border-radius: 8px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; }
-    .s-head.y { color: var(--y); }
-    .s-head.b { color: var(--b); }
-    .s-head:hover { background: var(--bc); }
-    .s-list { display: none; padding-left: 6px; }
-    .s-list.on { display: block; }
-    .task { padding: 8px 12px; background: var(--c); border-radius: 8px; margin-bottom: 4px; font-size: 13px; display: flex; align-items: center; gap: 10px; cursor: pointer; }
-    .task:hover { background: var(--bc); }
-    .task-d { width: 16px; height: 16px; border-radius: 4px; display: flex; align-items: center; justify-content: center; font-size: 10px; flex-shrink: 0; }
-    .task-d.d { background: var(--g); color: #000; }
-    .task-d.o { border: 2px solid #555; }
-    .task-d.o::after { content: '✓'; opacity: 0; }
-    .task.o .task-d.o { background: var(--g); border-color: var(--g); }
-    .task.o .task-d.o::after { opacity: 1; }
-    .task.o { opacity: 0.5; text-decoration: line-through; }
-    .blk { background: #1a1010; border-left: 3px solid var(--r); padding: 10px 12px; border-radius: 0 8px 8px 0; font-size: 13px; margin-bottom: 8px; }
+    /* Inline sections */
+    .sec{margin-bottom:8px}
+    .s-h{font-size:11px;font-weight:700;padding:6px 10px;background:var(--c);border-radius:6px;cursor:pointer;display:flex;justify-content:space-between;align-items:center;margin-bottom:4px}
+    .s-h.y{color:var(--y)}
+    .s-h.b{color:var(--b)}
+    .s-h:hover{background:var(--bc)}
+    .s-l{display:none;padding-left:4px}
+    .s-l.on{display:block}
+    .t{padding:6px 10px;background:var(--c);border-radius:6px;margin-bottom:3px;font-size:12px;display:flex;align-items:center;gap:8px;cursor:pointer}
+    .t:hover{background:var(--bc)}
+    .t.o{opacity:0.4;text-decoration:line-through}
+    .t-c{width:14px;height:14px;border-radius:3px;display:flex;align-items:center;justify-content:center;font-size:9px;flex-shrink:0}
+    .t-c.d{background:var(--g);color:#000}
+    .t-c.o{border:2px solid #555}
+    .t-c.o::after{content:'✓';opacity:0}
+    .t.o .t-c.o{background:var(--g);border-color:var(--g)}
+    .t.o .t-c.o::after{opacity:1}
+    .blk{background:#1a0f0f;border-left:3px solid var(--r);padding:8px;border-radius:0 6px 6px 0;font-size:12px;margin-bottom:6px}
     
-    /* Files Grid */
-    .files { display: grid; grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); gap: 6px; margin-top: 6px; }
-    .file { background: var(--c); padding: 10px 12px; border-radius: 8px; font-size: 11px; color: var(--b); text-decoration: none; text-align: center; border: 1px solid var(--bc); transition: 0.2s; font-weight: 600; }
-    .file:hover { border-color: var(--b); background: var(--bc); transform: translateY(-2px); }
-    .arrow { transition: transform 0.3s; font-size: 10px; }
-    .arrow.on { transform: rotate(180deg); }
-    .confetti { position: fixed; top: 40%; left: 50%; font-size: 30px; animation: conf 1s forwards; pointer-events: none; z-index: 999; }
-    @keyframes conf { 0%{transform:translate(-50%,0) rotate(0);opacity:1} 100%{transform:translate(-50%,-100px) rotate(720deg);opacity:0} }
-    @media(max-width:450px){ .stats{grid-template-columns:repeat(2,1fr)} }
+    /* Compact files grid */
+    .fils{display:grid;grid-template-columns:repeat(auto-fill,min-width:90px));gap:4px;margin-top:4px}
+    .fil{background:var(--c);padding:6px 10px;border-radius:6px;font-size:10px;color:var(--b);text-decoration:none;border:1px solid var(--bc);transition:0.15s;font-weight:600;text-align:center}
+    .fil:hover{border-color:var(--b);background:var(--bc);transform:translateY(-1px)}
+    .arr{transition:transform 0.2s;font-size:9px}
+    .arr.on{transform:rotate(180deg)}
+    .conf{position:fixed;top:40%;left:50%;font-size:24px;animation:cf 0.8s forwards;pointer-events:none;z-index:999}
+    @keyframes cf{0%{transform:translate(-50%,0) rotate(0);opacity:1}100%{transform:translate(-50%,-80px) rotate(540deg);opacity:0}}
   </style>
 </head>
 <body>
-  <div class="header">
+  <div class="hdr">
     <div class="logo"><img src="01_PEPE4-export.gif"><h1>Mission Control</h1></div>
-    <div class="controls-r">
+    <div class="ctrl">
       <span class="time" id="time"></span>
-      <button class="btn" onclick="toggleTheme()">🌙</button>
+      <button class="btn" onclick="theme()">🌙</button>
       <button class="btn" onclick="share()">📤</button>
       <button class="btn btn-g" onclick="load()">↻</button>
     </div>
   </div>
   <div class="sf">
-    <input class="search" id="s" placeholder="🔍 Search..." oninput="render()">
-    <div class="filter on" onclick="setF('all',this)">All</div>
-    <div class="filter" onclick="setF('green',this)">Active</div>
-    <div class="filter" onclick="setF('red',this)">Blocked</div>
+    <input class="sch" id="s" placeholder="🔍 Search..." oninput="render()">
+    <div class="fil on" onclick="setF('all',this)">All</div>
+    <div class="fil" onclick="setF('green',this)">Active</div>
+    <div class="fil" onclick="setF('red',this)">Blocked</div>
   </div>
-  <div class="stats">
-    <div class="stat g"><div class="stat-n" id="g">0</div><div class="stat-l">Active</div></div>
-    <div class="stat y"><div class="stat-n" id="y">0</div><div class="stat-l">In Progress</div></div>
-    <div class="stat r"><div class="stat-n" id="r">0</div><div class="stat-l">Blocked</div></div>
-    <div class="stat b"><div class="stat-n" id="t">0</div><div class="stat-l">Tasks</div></div>
+  <div class="st">
+    <div class="stat g"><div class="st-n" id="g">0</div><div class="st-l">ACTIVE</div></div>
+    <div class="stat y"><div class="st-n" id="y">0</div><div class="st-l">IN PROGRESS</div></div>
+    <div class="stat r"><div class="st-n" id="r">0</div><div class="st-l">BLOCKED</div></div>
+    <div class="stat b"><div class="st-n" id="t">0</div><div class="st-l">TASKS</div></div>
   </div>
-  <div class="projects" id="p"></div>
+  <div class="projs" id="p"></div>
   <script>
-    // ALL PROJECT FILES - Comprehensive mapping
+    // ALL AutoBookr files + all projects
     const files = {
       autobookr_suite: [
         {n:'📱 Landing',u:'https://lil-ai-operator.github.io/autobookr-landing/'},
         {n:'💰 Pricing',u:'https://lil-ai-operator.github.io/autobookr-landing/pricing.html'},
         {n:'❓ FAQ',u:'https://lil-ai-operator.github.io/autobookr-landing/faq.html'},
+        {n:'📞 Sales Script',u:'https://lil-ai-operator.github.io/mobile-dashboard/generated/ops/autobookr-sales-script.md'},
+        {n:'🎨 Brand Kit',u:'https://lil-ai-operator.github.io/mobile-dashboard/generated/ops/autobookr-brand-kit-v1.md'},
+        {n:'📊 Competitors',u:'https://lil-ai-operator.github.io/mobile-dashboard/generated/ops/autobookr-competitor-analysis.md'},
+        {n:'✉️ Email Seq',u:'https://lil-ai-operator.github.io/mobile-dashboard/generated/ops/autobookr-email-sequence.md'},
+        {n:'🎯 Pilot Outreach',u:'https://lil-ai-operator.github.io/mobile-dashboard/generated/ops/autobookr-pilot-outreach.md'},
+        {n:'📋 Content',u:'https://lil-ai-operator.github.io/mobile-dashboard/generated/ops/autobookr-content.md'},
+        {n:'🚀 Expansion',u:'https://lil-ai-operator.github.io/mobile-dashboard/generated/ops/autobookr-expansion.md'},
+        {n:'🎤 Demo Script',u:'https://lil-ai-operator.github.io/mobile-dashboard/generated/ops/autobookr-demo-script.md'},
       ],
       mission_control: [
         {n:'📊 Dashboard',u:'https://lil-ai-operator.github.io/mobile-dashboard/'},
-        {n:'📋 Data JSON',u:'https://lil-ai-operator.github.io/mobile-dashboard/mission-control-data.json'},
+        {n:'📋 Data',u:'https://lil-ai-operator.github.io/mobile-dashboard/mission-control-data.json'},
       ],
       system_backup: [
         {n:'💾 Scripts',u:'https://lil-ai-operator.github.io/mobile-dashboard/generated/ops/backup-scripts/'},
         {n:'📖 Runbook',u:'https://lil-ai-operator.github.io/mobile-dashboard/generated/ops/backup-first-offsite-runbook.md'},
         {n:'🔄 Recovery',u:'https://lil-ai-operator.github.io/mobile-dashboard/generated/ops/backup-recovery-plan.md'},
       ],
-      neuronet: [
-        {n:'🧠 Regions',u:'https://lil-ai-operator.github.io/mobile-dashboard/generated/ops/brain-regions-plan.md'},
-      ],
-      aavegotchi_bot: [
-        {n:'👻 Info',u:'https://lil-ai-operator.github.io/mobile-dashboard/generated/ops/aavegotchi-wave1.md'},
-      ],
-      etsy_business: [
-        {n:'🛍️ Etsy',u:'https://lil-ai-operator.github.io/mobile-dashboard/generated/ops/etsy-project-plan.md'},
-      ],
+      neuronet: [{n:'🧠 Regions',u:'https://lil-ai-operator.github.io/mobile-dashboard/generated/ops/brain-regions-plan.md'}],
+      aavegotchi_bot: [{n:'👻 Info',u:'https://lil-ai-operator.github.io/mobile-dashboard/generated/ops/aavegotchi-wave1.md'}],
+      etsy_business: [{n:'🛍️ Plan',u:'https://lil-ai-operator.github.io/mobile-dashboard/generated/ops/etsy-project-plan.md'}],
       clare_reiki: [
         {n:'✨ Website',u:'https://lil-ai-operator.github.io/divineflow/'},
         {n:'❓ FAQ',u:'https://lil-ai-operator.github.io/divineflow/faq.html'},
@@ -156,67 +155,35 @@
       ]
     };
     
-    let data = [], f = 'all', checked = JSON.parse(localStorage.getItem('mc_check') || '{}');
-    document.documentElement.setAttribute('data-theme', localStorage.getItem('mc_theme') || 'dark');
+    let data=[],f='all',checked=JSON.parse(localStorage.getItem('mc_chk')||'{}');
+    document.documentElement.setAttribute('data-theme',localStorage.getItem('mc_th')||'dark');
+    setInterval(load,30000);
+    document.addEventListener('keydown',e=>{if(e.key==='/'&&document.activeElement.tagName!=='INPUT'){e.preventDefault();document.getElementById('s').focus()}if(e.key==='r')load()});
     
-    setInterval(load, 30000);
-    document.addEventListener('keydown', e => { if(e.key === '/' && document.activeElement.tagName !== 'INPUT') { e.preventDefault(); document.getElementById('s').focus(); } if(e.key === 'r') load(); });
+    function theme(){const t=document.documentElement.getAttribute('data-theme')==='light'?'dark':'light';document.documentElement.setAttribute('data-theme',t);localStorage.setItem('mc_th',t)}
+    function load(){fetch('mission-control-data.json?t='+Date.now()).then(r=>r.json()).then(d=>{data=d.projects||[];document.getElementById('time').textContent=new Date(d.updatedAt).toLocaleTimeString();render()})}
+    function setF(x,btn){f=x;document.querySelectorAll('.fil').forEach(b=>b.classList.remove('on'));btn.classList.add('on');render()}
+    function toggle(id){document.getElementById('b-'+id).classList.toggle('on')}
+    function toggS(el){el.nextElementSibling.classList.toggle('on');el.querySelector('.arr').classList.toggle('on')}
+    function chk(pid,i){const k=pid+'-'+i;checked[k]=!checked[k];localStorage.setItem('mc_chk',JSON.stringify(checked));render();if(checked[k]){const p=data.find(x=>(x.key||'')===pid);if(p&&p.done?.every((t,j)=>checked[pid+'-'+j]))showC()}}
+    function showC(){['🎉','⭐','🔥','✨'].forEach((e,i)=>{const d=document.createElement('div');d.className='conf';d.textContent=e;d.style.left=(30+Math.random()*40)+'%';d.style.animationDelay=i*0.1+'s';document.body.appendChild(d);setTimeout(()=>d.remove(),900)})}
+    function share(){const g=data.filter(p=>p.status==='green').length,r=data.filter(p=>p.status==='red').length;const t=`🐸 Mission Control:\n\n✅ ${g} Active\n🔴 ${r} Blocked`;navigator.clipboard.writeText(t).then(()=>alert('Copied!'))}
     
-    function toggleTheme() {
-      const t = document.documentElement.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
-      document.documentElement.setAttribute('data-theme', t);
-      localStorage.setItem('mc_theme', t);
-    }
-    
-    function load() {
-      fetch('mission-control-data.json?t='+Date.now()).then(r=>r.json()).then(d => {
-        data = d.projects || [];
-        document.getElementById('time').textContent = new Date(d.updatedAt).toLocaleTimeString();
-        render();
-      });
-    }
-    
-    function setF(x, btn) { f = x; document.querySelectorAll('.filter').forEach(b => b.on = false); btn.on = true; render(); }
-    
-    function toggle(id) { document.getElementById('b-'+id).classList.toggle('on'); document.getElementById('a-'+id).classList.toggle('on'); }
-    function toggS(el) { el.nextElementSibling.classList.toggle('on'); el.querySelector('.arrow').classList.toggle('on'); }
-    function check(pid, i, isDone) {
-      const k = pid + '-' + i;
-      checked[k] = !checked[k];
-      localStorage.setItem('mc_check', JSON.stringify(checked));
-      render();
-      if(checked[k]) {
-        const p = data.find(x => (x.key||'') === pid);
-        if(p && p.done?.every((t, j) => checked[pid + '-' + j])) showConf();
-      }
-    }
-    function showConf() { ['🎉','⭐','🔥','✨','🎊'].forEach((e,i) => { const d=document.createElement('div');d.className='confetti';d.textContent=e;d.style.left=(30+Math.random()*40)+'%';d.style.animationDelay=i*0.1+'s';document.body.appendChild(d);setTimeout(()=>d.remove(),1200); }); }
-    function share() { const g=data.filter(p=>p.status==='green').length, r=data.filter(p=>p.status==='red').length; const t=`🐸 Mission Control:\n\n✅ ${g} Active\n🔴 ${r} Blocked`; navigator.clipboard.writeText(t).then(()=>alert('Copied!')); }
-    
-    function render() {
-      const q = document.getElementById('s').value.toLowerCase();
-      let pf = f === 'all' ? data : data.filter(p => p.status === f);
-      if(q) pf = pf.filter(p => p.name.toLowerCase().includes(q) || (p.summary||'').toLowerCase().includes(q));
-      
-      let g = y = r = tt = 0;
-      data.forEach(p => { if(p.status==='green')g++; if(p.status==='yellow')y++; if(p.status==='red')r++; tt+=(p.done?.length||0)+(p.todo?.length||0); });
-      document.getElementById('g').textContent=g; document.getElementById('y').textContent=y; document.getElementById('r').textContent=r; document.getElementById('t').textContent=tt;
-      
-      if(!pf.length) { document.getElementById('p').innerHTML='<div style="padding:40px;text-align:center;color:#666">No projects</div>'; return; }
-      
-      let h = '';
-      pf.forEach((p,i) => {
-        const d = p.done?.length||0, td = p.todo?.length||0, tot = d+td, pc = tot?Math.round(d/tot*100):0;
-        const fs = files[p.key]||[];
-        const id = p.key || 'p'+i;
-        h += `<div class="proj ${p.status}"><div class="p-head" onclick="toggle('${id}')"><div class="p-l"><div class="p-icon"></div><span class="p-name">${p.name}</span></div><div class="p-badge">${p.status}</div></div><div class="p-bar"><div class="p-fill" style="width:${pc}%"></div></div><div class="p-meta"><span>${d}/${tot} tasks</span><span>${pc}%</span></div><div class="p-body" id="b-${id}">`;
-        if(p.blockers?.length) p.blockers.forEach(b => h += `<div class="blk">🚫 ${b}</div>`);
-        if(p.done?.length) { h += `<div class="sect"><div class="s-head" onclick="toggS(this)">✅ Done (${p.done.length}) <span class="arrow" id="a-${id}-d">▼</span></div><div class="s-list">`; p.done.forEach((t,i) => { const k=id+'-'+i, ck=checked[k]?' o':''; h += `<div class="task${ck}" onclick="check('${id}',${i})"><span class="task-d d">✓</span> ${typeof t==='string'?t:t.task||''}</div>`; }); h += '</div></div>'; }
-        if(p.todo?.length) { h += `<div class="sect"><div class="s-head y" onclick="toggS(this)">⬜ To Do (${p.todo.length}) <span class="arrow">▼</span></div><div class="s-list">`; p.todo.forEach((t,i) => { h += `<div class="task"><span class="task-d o"></span> ${typeof t==='string'?t:t.task||''}</div>`; }); h += '</div></div>'; }
-        if(fs.length) { h += `<div class="sect"><div class="s-head b" onclick="toggS(this)">📁 Files (${fs.length}) <span class="arrow">▼</span></div><div class="s-list"><div class="files">`; fs.forEach(f => h += `<a class="file" href="${f.u}" target="_blank">${f.n}</a>`); h += '</div></div></div>'; }
-        h += '</div></div>';
-      });
-      document.getElementById('p').innerHTML = h;
+    function render(){
+      const q=document.getElementById('s').value.toLowerCase();
+      let pf=f==='all'?data:data.filter(p=>p.status===f);
+      if(q)pf=pf.filter(p=>p.name.toLowerCase().includes(q)||(p.summary||'').toLowerCase().includes(q));
+      let g=y=r=tt=0;data.forEach(p=>{if(p.status==='green')g++;if(p.status==='yelly')y++;if(p.status==='red')r++;tt+=(p.done?.length||0)+(p.todo?.length||0)});
+      document.getElementById('g').textContent=g;document.getElementById('y').textContent=y;document.getElementById('r').textContent=r;document.getElementById('t').textContent=tt;
+      if(!pf.length){document.getElementById('p').innerHTML='<div style="padding:30px;text-align:center;color:#555;font-size:13px">No projects</div>';return}
+      let h='';pf.forEach((p,i)=>{const d=p.done?.length||0,td=p.todo?.length||0,tot=d+td,pc=tot?Math.round(d/tot*100):0;const fs=files[p.key]||[];const id=p.key||'p'+i;
+        h+=`<div class="proj ${p.status}"><div class="p-h" onclick="toggle('${id}')"><div class="p-l"><div class="p-i"></div><span class="p-n">${p.name}</span></div><span class="p-b">${p.status}</span></div><div class="p-bar"><div class="p-f" style="width:${pc}%"></div></div><div class="p-m"><span>${d}/${tot} tasks</span><span>${pc}%</span></div><div class="p-bd" id="b-${id}">`;
+        if(p.blockers?.length)p.blockers.forEach(b=>h+=`<div class="blk">🚫 ${b}</div>`);
+        if(p.done?.length){h+=`<div class="sec"><div class="s-h" onclick="toggS(this)">✅ Done (${p.done.length}) <span class="arr">▼</span></div><div class="s-l">`;p.done.forEach((t,j)=>{const k=id+'-'+j,ck=checked[k]?' o':'';h+=`<div class="t${ck}" onclick="chk('${id}',${j})"><span class="t-c d">✓</span> ${typeof t==='string'?t:t.task||''}</div>`});h+='</div></div>'}
+        if(p.todo?.length){h+=`<div class="sec"><div class="s-h y" onclick="toggS(this)">⬜ To Do (${p.todo.length}) <span class="arr">▼</span></div><div class="s-l">`;p.todo.forEach((t,j)=>{h+=`<div class="t"><span class="t-c o"></span> ${typeof t==='string'?t:t.task||''}</div>`});h+='</div></div>'}
+        if(fs.length){h+=`<div class="sec"><div class="s-h b" onclick="toggS(this)">📁 Files (${fs.length}) <span class="arr">▼</span></div><div class="s-l"><div class="fils">`;fs.forEach(f=>h+=`<a class="fil" href="${f.u}" target="_blank">${f.n}</a>`);h+='</div></div></div>'}
+        h+='</div></div>'});
+      document.getElementById('p').innerHTML=h;
     }
     load();
   </script>
