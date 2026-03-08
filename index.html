@@ -183,10 +183,80 @@
     </div>
   </div>
   <script>
-    let soundOn=false;
-    function playSound(){if(soundOn){const a=new Audio('data:audio/wav;base64,UklGRnoGAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQoGAACBhYqFbF0');a.volume=0.3;a.play()}}
-    function toggleSound(){soundOn=!soundOn;document.getElementById('soundToggle').textContent=soundOn?'🔊':'🔇';document.getElementById('soundToggle').classList.toggle('on',soundOn);localStorage.setItem('mc_sound',soundOn)}
-    if(localStorage.getItem('mc_sound')==='true')toggleSound();
+    // Futuristic Sound Engine using Web Audio API
+    let soundOn = false;
+    let audioCtx = null;
+    
+    function initAudio() {
+      if (!audioCtx) {
+        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      }
+    }
+    
+    function playSound(type) {
+      if (!soundOn) return;
+      initAudio();
+      
+      const osc = audioCtx.createOscillator();
+      const gain = audioCtx.createGain();
+      osc.connect(gain);
+      gain.connect(audioCtx.destination);
+      
+      const now = audioCtx.currentTime;
+      
+      // Different futuristic sounds
+      switch(type) {
+        case 'pop': // Button click
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(800, now);
+          osc.frequency.exponentialRampToValueAtTime(400, now + 0.1);
+          gain.gain.setValueAtTime(0.3, now);
+          gain.gain.exponentialRampToValueAtTime(0.01, now + 0.1);
+          osc.start(now);
+          osc.stop(now + 0.1);
+          break;
+        case 'success': // Success/confetti
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(523, now); // C5
+          osc.frequency.setValueAtTime(659, now + 0.1); // E5
+          osc.frequency.setValueAtTime(784, now + 0.2); // G5
+          gain.gain.setValueAtTime(0.2, now);
+          gain.gain.exponentialRampToValueAtTime(0.01, now + 0.4);
+          osc.start(now);
+          osc.stop(now + 0.4);
+          break;
+        case 'whoosh': // Swipe
+          osc.type = 'triangle';
+          osc.frequency.setValueAtTime(300, now);
+          osc.frequency.exponentialRampToValueAtTime(100, now + 0.15);
+          gain.gain.setValueAtTime(0.15, now);
+          gain.gain.exponentialRampToValueAtTime(0.01, now + 0.15);
+          osc.start(now);
+          osc.stop(now + 0.15);
+          break;
+        case 'modal': // Modal open
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(440, now);
+          osc.frequency.exponentialRampToValueAtTime(880, now + 0.15);
+          gain.gain.setValueAtTime(0.2, now);
+          gain.gain.exponentialRampToValueAtTime(0.01, now + 0.2);
+          osc.start(now);
+          osc.stop(now + 0.2);
+          break;
+      }
+    }
+    
+    // Legacy support
+    function playSoundLegacy() { playSound('pop'); }
+    
+    function toggleSound() {
+      soundOn = !soundOn;
+      document.getElementById('soundToggle').textContent = soundOn ? '🔊' : '🔇';
+      document.getElementById('soundToggle').classList.toggle('on', soundOn);
+      localStorage.setItem('mc_sound', soundOn);
+      if(soundOn) initAudio();
+    }
+    if(localStorage.getItem('mc_sound') === 'true') toggleSound();
     const files = {autobookr_suite:[{n:'📱 Landing',u:'https://lil-ai-operator.github.io/autobookr-landing/'},{n:'💰 Pricing',u:'https://lil-ai-operator.github.io/autobookr-landing/pricing.html'},{n:'❓ FAQ',u:'https://lil-ai-operator.github.io/autobookr-landing/faq.html'},{n:'📞 Sales Script',u:'https://lil-ai-operator.github.io/mobile-dashboard/generated/ops/autobookr-sales-script.md'},{n:'🎨 Brand Kit',u:'https://lil-ai-operator.github.io/mobile-dashboard/generated/ops/autobookr-brand-kit-v1.md'},{n:'📊 Competitors',u:'https://lil-ai-operator.github.io/mobile-dashboard/generated/ops/autobookr-competitor-analysis.md'},{n:'✉️ Email Seq',u:'https://lil-ai-operator.github.io/mobile-dashboard/generated/ops/autobookr-email-sequence.md'},{n:'🎯 Pilot Outreach',u:'https://lil-ai-operator.github.io/mobile-dashboard/generated/ops/autobookr-pilot-outreach.md'},{n:'📋 Content',u:'https://lil-ai-operator.github.io/mobile-dashboard/generated/ops/autobookr-content.md'},{n:'🚀 Expansion',u:'https://lil-ai-operator.github.io/mobile-dashboard/generated/ops/autobookr-expansion.md'},{n:'🎤 Demo Script',u:'https://lil-ai-operator.github.io/mobile-dashboard/generated/ops/autobookr-demo-script.md'}],mission_control:[{n:'📊 Dashboard',u:'https://lil-ai-operator.github.io/mobile-dashboard/'},{n:'📋 Data',u:'https://lil-ai-operator.github.io/mobile-dashboard/mission-control-data.json'}],system_backup:[{n:'💾 Scripts',u:'https://lil-ai-operator.github.io/mobile-dashboard/generated/ops/backup-scripts/'},{n:'📖 Runbook',u:'https://lil-ai-operator.github.io/mobile-dashboard/generated/ops/backup-first-offsite-runbook.md'},{n:'🔄 Recovery',u:'https://lil-ai-operator.github.io/mobile-dashboard/generated/ops/backup-recovery-plan.md'}],neuronet:[{n:'🧠 Regions',u:'https://lil-ai-operator.github.io/mobile-dashboard/generated/ops/brain-regions-plan.md'}],aavegotchi_bot:[{n:'👻 Info',u:'https://lil-ai-operator.github.io/mobile-dashboard/generated/ops/aavegotchi-wave1.md'}],etsy_business:[{n:'🛍️ Plan',u:'https://lil-ai-operator.github.io/mobile-dashboard/generated/ops/etsy-project-plan.md'}],clare_reiki:[{n:'✨ Website',u:'https://lil-ai-operator.github.io/divineflow/'},{n:'❓ FAQ',u:'https://lil-ai-operator.github.io/divineflow/faq.html'},{n:'📦 Products',u:'https://lil-ai-operator.github.io/divineflow/products.html'}]};
     let data=[],f='all',checked=JSON.parse(localStorage.getItem('mc_chk')||'{}'),modalType='';
     document.documentElement.setAttribute('data-theme',localStorage.getItem('mc_th')||'dark');
