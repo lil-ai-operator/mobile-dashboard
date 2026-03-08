@@ -4,54 +4,93 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>🚀 Mission Control</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
   <style>
     * { box-sizing: border-box; }
+    :root {
+      --frog-green: #00d68f;
+      --frog-purple: #8b5cf6;
+      --bg-dark: #0a0a0f;
+      --bg-card: #12121a;
+      --bg-hover: #1a1a24;
+    }
     body { 
-      font-family: 'Segoe UI', system-ui, sans-serif; 
-      background: linear-gradient(135deg, #0a0a0f 0%, #1a1a24 100%); 
+      font-family: 'Inter', sans-serif; 
+      background: var(--bg-dark); 
       color: #fff; 
       padding: 20px; 
       margin: 0; 
       min-height: 100vh;
+      background-image: 
+        radial-gradient(ellipse at top, rgba(139,92,246,0.15) 0%, transparent 50%),
+        radial-gradient(ellipse at bottom right, rgba(0,214,143,0.1) 0%, transparent 50%);
     }
     @keyframes float {
-      0%, 100% { transform: translateY(0); }
-      50% { transform: translateY(-5px); }
+      0%, 100% { transform: translateY(0) rotate(0deg); }
+      25% { transform: translateY(-8px) rotate(2deg); }
+      75% { transform: translateY(-4px) rotate(-1deg); }
     }
-    @keyframes glow {
-      0%, 100% { box-shadow: 0 0 20px rgba(0,214,143,0.3); }
-      50% { box-shadow: 0 0 40px rgba(139,92,246,0.5); }
+    @keyframes glow-pulse {
+      0%, 100% { box-shadow: 0 0 20px rgba(0,214,143,0.4), 0 0 40px rgba(139,92,246,0.2); }
+      50% { box-shadow: 0 0 40px rgba(0,214,143,0.6), 0 0 80px rgba(139,92,246,0.4); }
     }
-    @keyframes slideIn {
-      from { opacity: 0; transform: translateY(20px); }
-      to { opacity: 1; transform: translateY(0); }
+    @keyframes slideInUp {
+      from { opacity: 0; transform: translateY(40px) scale(0.95); }
+      to { opacity: 1; transform: translateY(0) scale(1); }
     }
-    @keyframes pulse {
-      0%, 100% { transform: scale(1); }
-      50% { transform: scale(1.05); }
+    @keyframes shimmer {
+      0% { background-position: -200% 0; }
+      100% { background-position: 200% 0; }
+    }
+    @keyframes border-glow {
+      0%, 100% { border-color: rgba(0,214,143,0.3); }
+      50% { border-color: rgba(139,92,246,0.6); }
     }
     h1 { 
       color: #fff; 
-      margin: 0 0 20px 0; 
+      margin: 0 0 25px 0; 
       display: flex; 
       align-items: center; 
-      gap: 12px;
-      animation: float 3s ease-in-out infinite;
+      gap: 16px;
+      font-size: 28px;
+      font-weight: 700;
     }
     h1 img {
-      animation: glow 2s ease-in-out infinite;
-      border-radius: 12px;
+      animation: float 4s ease-in-out infinite, glow-pulse 3s ease-in-out infinite;
+      border-radius: 14px;
+      width: 52px;
+    }
+    h1 span {
+      background: linear-gradient(90deg, #00d68f, #8b5cf6, #00d68f);
+      background-size: 200% 100%;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: shimmer 3s linear infinite;
     }
     .project { 
-      background: linear-gradient(135deg, #1a1a24 0%, #22222e 100%); 
-      padding: 20px; 
-      margin: 15px 0; 
-      border-radius: 16px; 
+      background: linear-gradient(135deg, #1a1a24 0%, #0f0f14 100%); 
+      padding: 24px; 
+      margin: 16px 0; 
+      border-radius: 20px; 
       cursor: pointer; 
-      transition: all 0.3s ease;
-      animation: slideIn 0.5s ease-out forwards;
+      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      animation: slideInUp 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
       opacity: 0;
+      border: 1px solid transparent;
+      position: relative;
+      overflow: hidden;
     }
+    .project::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.05), transparent);
+      transition: left 0.5s;
+    }
+    .project:hover::before { left: 100%; }
     .project:nth-child(1) { animation-delay: 0.1s; }
     .project:nth-child(2) { animation-delay: 0.2s; }
     .project:nth-child(3) { animation-delay: 0.3s; }
@@ -60,101 +99,129 @@
     .project:nth-child(6) { animation-delay: 0.6s; }
     .project:nth-child(7) { animation-delay: 0.7s; }
     .project:hover { 
-      transform: translateY(-3px); 
-      box-shadow: 0 10px 40px rgba(0,0,0,0.4);
+      transform: translateY(-8px) scale(1.02);
+      box-shadow: 0 20px 60px rgba(0,0,0,0.5), 0 0 30px rgba(139,92,246,0.2);
+      border-color: rgba(139,92,246,0.3);
     }
-    .green { border-left: 4px solid #00d68f; }
-    .red { border-left: 4px solid #ff4757; }
-    .yellow { border-left: 4px solid #ffaa00; }
+    .green { 
+      border-left: 4px solid #00d68f;
+      box-shadow: -4px 0 20px rgba(0,214,143,0.2);
+    }
+    .red { 
+      border-left: 4px solid #ff4757;
+      box-shadow: -4px 0 20px rgba(255,71,87,0.2);
+    }
+    .yellow { 
+      border-left: 4px solid #ffaa00;
+      box-shadow: -4px 0 20px rgba(255,170,0,0.2);
+    }
     .header { display: flex; justify-content: space-between; align-items: center; }
-    .name { font-size: 20px; font-weight: bold; }
+    .name { font-size: 22px; font-weight: 700; }
     .status { 
-      padding: 6px 12px; 
-      border-radius: 20px; 
-      font-size: 12px; 
-      font-weight: bold;
+      padding: 8px 16px; 
+      border-radius: 25px; 
+      font-size: 13px; 
+      font-weight: 700;
       text-transform: uppercase;
+      letter-spacing: 1px;
     }
     .status.green { 
       background: linear-gradient(135deg, #00d68f, #00b87a); 
-      color: #000; 
+      color: #000;
+      box-shadow: 0 4px 15px rgba(0,214,143,0.4);
     }
     .status.red { 
       background: linear-gradient(135deg, #ff4757, #ff3344); 
-      color: #fff; 
+      color: #fff;
+      box-shadow: 0 4px 15px rgba(255,71,87,0.4);
     }
     .status.yellow { 
       background: linear-gradient(135deg, #ffaa00, #ff9900); 
-      color: #000; 
+      color: #000;
+      box-shadow: 0 4px 15px rgba(255,170,0,0.4);
     }
     .summary { 
       color: #9ca3af; 
-      margin: 12px 0; 
-      line-height: 1.5;
+      margin: 16px 0; 
+      line-height: 1.6;
+      font-size: 15px;
     }
-    .details { display: none; margin-top: 15px; padding-top: 15px; border-top: 1px solid #333; }
-    .details.open { display: block; animation: slideIn 0.3s ease; }
+    .details { display: none; margin-top: 20px; padding-top: 20px; border-top: 1px solid #333; }
+    .details.open { display: block; animation: slideInUp 0.4s ease; }
     .section-header { 
-      font-weight: bold; 
-      padding: 12px 16px; 
-      background: linear-gradient(135deg, #2a2a3a, #333); 
-      border-radius: 8px; 
+      font-weight: 700; 
+      padding: 16px 20px; 
+      background: linear-gradient(135deg, #222, #1a1a24); 
+      border-radius: 12px; 
       cursor: pointer; 
-      margin: 10px 0;
+      margin: 12px 0;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      transition: all 0.2s;
+      transition: all 0.3s;
+      font-size: 15px;
     }
     .section-header:hover { 
-      background: linear-gradient(135deg, #3a3a4a, #444); 
+      background: linear-gradient(135deg, #2a2a34, #222); 
+      transform: translateX(5px);
     }
     .section-header.done { color: #00d68f; }
     .section-header.todo { color: #ffaa00; }
-    .task-list { display: none; padding: 10px 0; }
-    .task-list.open { display: block; animation: slideIn 0.3s ease; }
+    .task-list { display: none; padding: 12px 0; }
+    .task-list.open { display: block; animation: slideInUp 0.3s ease; }
     .task { 
-      padding: 12px 16px; 
-      background: #2a2a3a; 
-      margin: 8px 0; 
-      border-radius: 8px; 
+      padding: 14px 18px; 
+      background: linear-gradient(135deg, #1e1e28, #18181f); 
+      margin: 10px 0; 
+      border-radius: 12px; 
       display: flex; 
       align-items: center; 
-      gap: 12px;
-      transition: all 0.2s;
+      gap: 14px;
+      transition: all 0.3s;
+      font-size: 14px;
     }
-    .task:hover { background: #333; }
+    .task:hover { 
+      background: linear-gradient(135deg, #252530, #1e1e28); 
+      transform: translateX(8px);
+    }
     .task-check { 
-      width: 20px; 
-      height: 20px; 
-      border-radius: 4px; 
+      width: 24px; 
+      height: 24px; 
+      border-radius: 6px; 
       flex-shrink: 0; 
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 12px;
+      font-size: 14px;
+      font-weight: bold;
     }
     .task-check.done { 
       background: linear-gradient(135deg, #00d68f, #00b87a); 
       color: #000;
+      box-shadow: 0 3px 10px rgba(0,214,143,0.3);
     }
     .task-check.todo { 
-      border: 2px solid #666; 
+      border: 2px solid #555; 
+      background: transparent;
     }
     .blocker { 
-      background: linear-gradient(135deg, #3d1f1f, #4a2525); 
-      padding: 14px; 
-      border-radius: 8px; 
-      margin: 10px 0;
-      border-left: 3px solid #ff4757;
-      animation: pulse 2s infinite;
+      background: linear-gradient(135deg, #2a1515, #1f1010); 
+      padding: 16px; 
+      border-radius: 12px; 
+      margin: 12px 0;
+      border-left: 4px solid #ff4757;
+      font-size: 14px;
+      animation: border-glow 2s infinite;
     }
-    .arrow { transition: transform 0.3s; }
+    .arrow { 
+      transition: transform 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55); 
+      font-size: 12px;
+    }
     .arrow.open { transform: rotate(180deg); }
   </style>
 </head>
 <body>
-  <h1><img src="01_PEPE4-export.gif" style="width:48px;vertical-align:middle;border-radius:12px;"> Mission Control</h1>
+  <h1><img src="01_PEPE4-export.gif"> <span>Mission Control</span></h1>
   <div id="projects">Loading...</div>
   <script>
     function toggleProject(id) {
@@ -162,7 +229,8 @@
       el.classList.toggle('open');
     }
     function toggleSection(el) {
-      el.classList.toggle('open');
+      el.classList.toggle('done');
+      el.classList.toggle('todo');
       el.nextElementSibling.classList.toggle('open');
       el.querySelector('.arrow').classList.toggle('open');
     }
