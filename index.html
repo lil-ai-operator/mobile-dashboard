@@ -6,220 +6,155 @@
   <title>🐸 Mission Control</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
+    :root { --bg-primary: #0d1117; --bg-secondary: #161b22; --bg-card: #21262d; --bg-hover: #30363d; --accent-green: #238636; --accent-yellow: #eab308; --accent-red: #da3633; --accent-blue: #58a6ff; --accent-purple: #a371f7; --text-primary: #e6edf3; --text-secondary: #8b949e; --text-muted: #6e7681; --border-color: #30363d; }
+    [data-theme="light"] { --bg-primary: #ffffff; --bg-secondary: #f6f8fa; --bg-card: #f3f4f6; --bg-hover: #e5e7eb; --text-primary: #1f2937; --text-secondary: #4b5563; --text-muted: #9ca3af; --border-color: #d1d5db; }
     * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #0d1117; color: #e6edf3; min-height: 100vh; padding-bottom: 80px; }
-    
-    .header { background: #161b22; padding: 16px 20px; border-bottom: 1px solid #30363d; position: sticky; top: 0; z-index: 100; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: var(--bg-primary); color: var(--text-primary); min-height: 100vh; padding-bottom: 80px; transition: all 0.3s; }
+    .header { background: var(--bg-secondary); padding: 16px 20px; border-bottom: 1px solid var(--border-color); position: sticky; top: 0; z-index: 100; }
     .header-top { display: flex; justify-content: space-between; align-items: center; }
     .logo { display: flex; align-items: center; gap: 12px; }
-    .logo-img { width: 40px; height: 40px; border-radius: 10px; object-fit: cover; }
+    .logo-img { width: 40px; height: 40px; border-radius: 10px; }
     .logo h1 { font-size: 18px; font-weight: 700; }
-    .logo span { font-size: 11px; color: #8b949e; }
-    
-    .stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; padding: 12px 20px; background: #161b22; }
-    .stat { background: #21262d; border-radius: 8px; padding: 12px; text-align: center; }
+    .logo span { font-size: 11px; color: var(--text-secondary); }
+    .header-actions { display: flex; gap: 8px; }
+    .icon-btn { background: var(--bg-card); border: 1px solid var(--border-color); color: var(--text-secondary); width: 36px; height: 36px; border-radius: 8px; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+    .icon-btn:hover { background: var(--bg-hover); }
+    .stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; padding: 12px 20px; background: var(--bg-secondary); }
+    .stat { background: var(--bg-card); border-radius: 8px; padding: 12px; text-align: center; }
     .stat-num { font-size: 20px; font-weight: 700; }
-    .stat-label { font-size: 10px; color: #8b949e; margin-top: 2px; }
-    .green .stat-num { color: #238636; }
-    .yellow .stat-num { color: #eab308; }
-    .red .stat-num { color: #da3633; }
-    .blue .stat-num { color: #58a6ff; }
-    
-    .filters { display: flex; gap: 8px; padding: 12px 20px; overflow-x: auto; }
-    .filter { background: #21262d; border: 1px solid #30363d; color: #8b949e; padding: 6px 14px; border-radius: 20px; font-size: 12px; white-space: nowrap; cursor: pointer; }
-    .filter.active { background: #58a6ff; color: #fff; border-color: #58a6ff; }
-    
+    .stat-label { font-size: 10px; color: var(--text-secondary); margin-top: 2px; }
+    .green .stat-num { color: var(--accent-green); }
+    .yellow .stat-num { color: var(--accent-yellow); }
+    .red .stat-num { color: var(--accent-red); }
+    .blue .stat-num { color: var(--accent-blue); }
+    .filters { display: flex; gap: 8px; padding: 12px 20px; overflow-x: auto; background: var(--bg-secondary); }
+    .filter { background: var(--bg-card); border: 1px solid var(--border-color); color: var(--text-secondary); padding: 6px 14px; border-radius: 20px; font-size: 12px; white-space: nowrap; cursor: pointer; }
+    .filter.active { background: var(--accent-blue); color: #fff; border-color: var(--accent-blue); }
+    .search-bar { padding: 0 20px 12px; }
+    .search-bar input { width: 100%; padding: 10px 14px; background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 8px; color: var(--text-primary); font-size: 14px; }
+    .search-bar input:focus { outline: none; border-color: var(--accent-blue); }
     .projects { padding: 12px 20px; }
-    .project { background: #161b22; border: 1px solid #30363d; border-radius: 12px; margin-bottom: 12px; overflow: hidden; }
+    .project { background: var(--bg-secondary); border: 1px solid var(--border-color); border-radius: 12px; margin-bottom: 12px; overflow: hidden; }
     .project-header { padding: 14px 16px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; }
-    .project-header:active { background: #21262d; }
     .project-name { font-size: 15px; font-weight: 600; display: flex; align-items: center; gap: 8px; }
     .priority { font-size: 9px; padding: 2px 6px; border-radius: 4px; font-weight: 700; }
-    .p0 { background: #da3633; color: #fff; }
-    .p1 { background: #eab308; color: #000; }
-    .p2 { background: #484f58; color: #fff; }
+    .p0 { background: var(--accent-red); color: #fff; }
+    .p1 { background: var(--accent-yellow); color: #000; }
+    .p2 { background: var(--text-muted); color: #fff; }
     .status-dot { width: 12px; height: 12px; border-radius: 50%; }
-    .green { background: #238636; box-shadow: 0 0 8px #238636; }
-    .yellow { background: #eab308; box-shadow: 0 0 8px #eab308; }
-    .red { background: #da3633; box-shadow: 0 0 8px #da3633; }
-    
+    .green { background: var(--accent-green); box-shadow: 0 0 8px var(--accent-green); }
+    .yellow { background: var(--accent-yellow); box-shadow: 0 0 8px var(--accent-yellow); }
+    .red { background: var(--accent-red); box-shadow: 0 0 8px var(--accent-red); }
     .progress { padding: 0 16px 12px; }
-    .progress-bar { height: 4px; background: #21262d; border-radius: 2px; overflow: hidden; }
+    .progress-bar { height: 4px; background: var(--bg-card); border-radius: 2px; overflow: hidden; }
     .progress-fill { height: 100%; border-radius: 2px; }
-    .progress-fill.green { background: #238636; }
-    .progress-fill.yellow { background: #eab308; }
-    .progress-fill.red { background: #da3633; }
-    .progress-text { display: flex; justify-content: space-between; font-size: 11px; color: #8b949e; margin-top: 6px; }
-    
-    .content { display: none; border-top: 1px solid #30363d; background: #0d1117; }
-    .content.open { display: block; }
-    .section { padding: 12px 16px; border-bottom: 1px solid #21262d; }
+    .progress-fill.green { background: var(--accent-green); }
+    .progress-fill.yellow { background: var(--accent-yellow); }
+    .progress-fill.red { background: var(--accent-red); }
+    .progress-text { display: flex; justify-content: space-between; font-size: 11px; color: var(--text-secondary); margin-top: 6px; }
+    .content { border-top: 1px solid var(--border-color); background: var(--bg-primary); }
+    .section { padding: 12px 16px; border-bottom: 1px solid var(--border-color); }
     .section:last-child { border: none; }
-    .section-title { font-size: 11px; color: #8b949e; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px; display: flex; align-items: center; gap: 6px; cursor: pointer; }
-    .section-title i { transition: transform 0.2s; }
+    .section-title { font-size: 11px; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px; display: flex; align-items: center; gap: 6px; cursor: pointer; }
+    .section-title i { transition: transform 0.2s; font-size: 10px; }
     .section-title.collapsed i { transform: rotate(-90deg); }
-    
-    .task { padding: 8px 10px; background: #161b22; border-radius: 6px; margin-bottom: 6px; font-size: 13px; display: flex; align-items: center; gap: 8px; }
-    .task:last-child { margin: 0; }
+    .task { padding: 8px 10px; background: var(--bg-secondary); border-radius: 6px; margin-bottom: 6px; font-size: 13px; display: flex; align-items: center; gap: 8px; }
     .task-icon { width: 16px; height: 16px; border-radius: 4px; display: flex; align-items: center; justify-content: center; font-size: 10px; }
-    .task-icon.done { background: #238636; color: #fff; }
-    .task-icon.todo { border: 2px solid #484f58; }
-    .task-icon.blocked { background: #da3633; color: #fff; }
-    
-    .blocker { background: #3d1f1f; border-left: 3px solid #da3633; padding: 10px 12px; border-radius: 0 6px 6px 0; font-size: 13px; display: flex; align-items: center; gap: 8px; }
-    .blocker i { color: #da3633; }
-    
-    .files { display: grid; grid-template-columns: repeat(2, 1fr); gap: 6px; max-height: 150px; overflow-y: auto; }
-    .file { background: #21262d; padding: 8px 10px; border-radius: 6px; font-size: 11px; }
-    .file a { color: #58a6ff; text-decoration: none; display: flex; align-items: center; gap: 6px; }
-    .file a:hover { text-decoration: underline; }
-    
-    .fab { position: fixed; bottom: 20px; right: 20px; width: 50px; height: 50px; background: #238636; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 18px; color: #fff; box-shadow: 0 4px 12px rgba(0,0,0,0.3); cursor: pointer; z-index: 90; }
-    
-    .loading { text-align: center; padding: 40px; color: #8b949e; }
-    
-    @media (max-width: 500px) {
-      .stats { grid-template-columns: repeat(2, 1fr); }
-      .files { grid-template-columns: 1fr; }
-    }
+    .task-icon.done { background: var(--accent-green); color: #fff; }
+    .task-icon.todo { border: 2px solid var(--text-muted); }
+    .blocker { background: #3d1f1f; border-left: 3px solid var(--accent-red); padding: 10px 12px; border-radius: 0 6px 6px 0; font-size: 13px; }
+    .files-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 6px; }
+    .file { background: var(--bg-card); padding: 8px 10px; border-radius: 6px; font-size: 11px; }
+    .file a { color: var(--accent-blue); text-decoration: none; display: flex; align-items: center; gap: 6px; }
+    .fab { position: fixed; bottom: 20px; right: 20px; width: 50px; height: 50px; background: var(--accent-green); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 18px; color: #fff; box-shadow: 0 4px 12px rgba(0,0,0,0.3); cursor: pointer; z-index: 90; }
+    .loading { text-align: center; padding: 40px; color: var(--text-secondary); }
+    .summary { padding: 12px 16px; background: var(--bg-card); margin: 12px 20px; border-radius: 8px; font-size: 13px; color: var(--text-secondary); }
+    .modal { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.7); z-index: 200; align-items: center; justify-content: center; }
+    .modal.open { display: flex; }
+    .modal-content { background: var(--bg-secondary); border-radius: 12px; padding: 20px; max-width: 400px; width: 90%; }
+    .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
+    .modal-close { background: none; border: none; color: var(--text-secondary); font-size: 20px; cursor: pointer; }
+    .setting { display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-bottom: 1px solid var(--border-color); }
+    .toggle { width: 44px; height: 24px; background: var(--bg-card); border-radius: 12px; position: relative; cursor: pointer; }
+    .toggle::after { content: ''; position: absolute; width: 20px; height: 20px; background: #fff; border-radius: 50%; top: 2px; left: 2px; transition: transform 0.2s; }
+    .toggle.active { background: var(--accent-green); }
+    .toggle.active::after { transform: translateX(20px); }
+    @media (max-width: 500px) { .stats { grid-template-columns: repeat(2, 1fr); } .files-grid { grid-template-columns: 1fr; } }
   </style>
 </head>
 <body>
   <div class="header">
     <div class="header-top">
-      <div class="logo">
-        <img src="01_PEPE4-export.gif" class="logo-img" alt="🐸">
-        <div>
-          <h1>Mission Control</h1>
-          <span id="updated">Loading...</span>
-        </div>
+      <div class="logo"><img src="01_PEPE4-export.gif" class="logo-img"><div><h1>Mission Control</h1><span id="updated">Loading...</span></div></div>
+      <div class="header-actions">
+        <button class="icon-btn" onclick="openSettings()" title="Settings"><i class="fas fa-cog"></i></button>
+        <button class="icon-btn" onclick="loadData()" title="Refresh"><i class="fas fa-sync-alt"></i></button>
       </div>
     </div>
   </div>
-  
   <div class="stats">
     <div class="stat green"><div class="stat-num" id="green">0</div><div class="stat-label">Active</div></div>
     <div class="stat yellow"><div class="stat-num" id="yellow">0</div><div class="stat-label">In Progress</div></div>
     <div class="stat red"><div class="stat-num" id="red">0</div><div class="stat-label">Blocked</div></div>
     <div class="stat blue"><div class="stat-num" id="tasks">0</div><div class="stat-label">Tasks</div></div>
   </div>
-  
   <div class="filters">
-    <div class="filter active" onclick="filter('all', this)">All</div>
-    <div class="filter" onclick="filter('green', this)">Active</div>
-    <div class="filter" onclick="filter('yellow', this)">In Progress</div>
-    <div class="filter" onclick="filter('red', this)">Blocked</div>
+    <div class="filter active" onclick="filter('all',this)">All</div>
+    <div class="filter" onclick="filter('green',this)">Active</div>
+    <div class="filter" onclick="filter('yellow',this)">In Progress</div>
+    <div class="filter" onclick="filter('red',this)">Blocked</div>
   </div>
-  
-  <div class="projects" id="projects">
-    <div class="loading"><i class="fas fa-spinner fa-spin"></i> Loading...</div>
-  </div>
-  
+  <div class="search-bar"><input type="text" id="search" placeholder="🔍 Search..." oninput="render()"></div>
+  <div class="projects" id="projects"><div class="loading"><i class="fas fa-spinner fa-spin"></i><br>Loading...</div></div>
   <div class="fab" onclick="loadData()"><i class="fas fa-sync-alt"></i></div>
-
+  <div class="modal" id="settingsModal">
+    <div class="modal-content">
+      <div class="modal-header"><h2>⚙️ Settings</h2><button class="modal-close" onclick="closeSettings()">×</button></div>
+      <div class="setting"><span>🌙 Dark Mode</span><div class="toggle" id="darkModeToggle" onclick="toggleDarkMode()"></div></div>
+      <div class="setting"><span>📁 Files Expandable</span><div class="toggle" id="filesToggle" onclick="toggleFiles()"></div></div>
+    </div>
+  </div>
   <script>
-    // Project files
-    const projectFiles = {
-      autobookr_suite: [
-        {n:'Landing',u:'https://lil-ai-operator.github.io/autobookr-landing/'},
-        {n:'Pricing',u:'https://lil-ai-operator.github.io/autobookr-landing/pricing.html'},
-        {n:'FAQ',u:'https://lil-ai-operator.github.io/autobookr-landing/faq.html'},
-        {n:'Sales Script',u:'https://lil-ai-operator.github.io/mobile-dashboard/generated/ops/autobookr-sales-script.md'},
-        {n:'Outreach',u:'https://lil-ai-operator.github.io/mobile-dashboard/generated/ops/autobookr-pilot-outreach.md'},
-        {n:'Free Trial',u:'https://lil-ai-operator.github.io/mobile-dashboard/generated/ops/autobookr-outreach-free-trial.md'},
-      ],
-      mission_control: [
-        {n:'Dashboard',u:'https://lil-ai-operator.github.io/mobile-dashboard/'},
-        {n:'Data',u:'https://lil-ai-operator.github.io/mobile-dashboard/mission-control-data.json'},
-      ],
-      system_backup: [],
-      neuronet: [],
-      aavegotchi_bot: [],
-      etsy_business: [],
-      clare_reiki: []
+    const savedTheme=localStorage.getItem('theme')||'dark';
+    document.documentElement.setAttribute('data-theme',savedTheme);
+    if(savedTheme==='light')document.getElementById('darkModeToggle').classList.add('active');
+    const projectFiles={
+      autobookr_suite:[{n:'Landing',u:'https://lil-ai-operator.github.io/autobookr-landing/'},{n:'Pricing',u:'https://lil-ai-operator.github.io/autobookr-landing/pricing.html'},{n:'FAQ',u:'https://lil-ai-operator.github.io/autobookr-landing/faq.html'},{n:'Sales Script',u:'https://lil-ai-operator.github.io/mobile-dashboard/generated/ops/autobookr-sales-script.md'},{n:'Outreach',u:'https://lil-ai-operator.github.io/mobile-dashboard/generated/ops/autobookr-pilot-outreach.md'}],
+      mission_control:[{n:'Dashboard',u:'https://lil-ai-operator.github.io/mobile-dashboard/'},{n:'Data',u:'https://lil-ai-operator.github.io/mobile-dashboard/mission-control-data.json'}],
+      system_backup:[{n:'Scripts',u:'https://lil-ai-operator.github.io/mobile-dashboard/generated/ops/backup-scripts/'}],
+      neuronet:[{n:'Regions',u:'https://lil-ai-operator.github.io/mobile-dashboard/generated/ops/brain-regions-plan.md'}],
+      aavegotchi_bot:[{n:'Wave 1',u:'https://lil-ai-operator.github.io/mobile-dashboard/generated/ops/aavegotchi-wave1.md'}],
+      etsy_business:[{n:'Plan',u:'https://lil-ai-operator.github.io/mobile-dashboard/generated/ops/etsy-project-plan.md'}],
+      clare_reiki:[{n:'Website',u:'https://lil-ai-operator.github.io/divineflow/'}]
     };
-
-    let allProjects = [];
-    let currentFilter = 'all';
-
-    async function loadData() {
-      try {
-        const res = await fetch('https://lil-ai-operator.github.io/mobile-dashboard/mission-control-data.json?t=' + Date.now());
-        const data = await res.json();
-        allProjects = data.projects || [];
-        document.getElementById('updated').textContent = 'Updated: ' + new Date(data.updatedAt).toLocaleString();
+    let allProjects=[],currentFilter='all';
+    async function loadData(){
+      try{
+        const res=await fetch('mission-control-data.json?t='+Date.now());
+        const data=await res.json();
+        allProjects=data.projects||[];
+        document.getElementById('updated').textContent='Updated: '+new Date(data.updatedAt).toLocaleString();
         render();
-      } catch(e) {
-        document.getElementById('projects').innerHTML = '<div class="loading">Error loading data</div>';
-      }
+      }catch(e){document.getElementById('projects').innerHTML='<div class="loading">Error</div>';}
     }
-
-    function render() {
-      const filtered = currentFilter === 'all' ? allProjects : allProjects.filter(p => p.status === currentFilter);
-      
-      let green = 0, yellow = 0, red = 0, tasks = 0;
-      allProjects.forEach(p => {
-        if(p.status === 'green') green++;
-        if(p.status === 'yellow') yellow++;
-        if(p.status === 'red') red++;
-        tasks += (p.done?.length || 0) + (p.todo?.length || 0);
-      });
-      
-      document.getElementById('green').textContent = green;
-      document.getElementById('yellow').textContent = yellow;
-      document.getElementById('red').textContent = red;
-      document.getElementById('tasks').textContent = tasks;
-
-      const html = filtered.map(p => {
-        const done = p.done?.length || 0;
-        const todo = p.todo?.length || 0;
-        const total = done + todo;
-        const pct = total ? Math.round((done/total)*100) : 0;
-        const files = projectFiles[p.key] || [];
-        
-        return `
-          <div class="project">
-            <div class="project-header" onclick="toggle('${p.key}')">
-              <div class="project-name">
-                ${p.name}
-                <span class="priority ${p.priority || 'p2'}">${(p.priority || 'p2').toUpperCase()}</span>
-              </div>
-              <div class="status-dot ${p.status}"></div>
-            </div>
-            <div class="progress">
-              <div class="progress-bar"><div class="progress-fill ${p.status}" style="width:${pct}%"></div></div>
-              <div class="progress-text"><span>${done}/${total} tasks</span><span>${pct}%</span></div>
-            </div>
-            <div class="content" id="c-${p.key}">
-              ${p.blockers?.length ? `<div class="section"><div class="section-title">🚫 Blockers</div>${p.blockers.map(b => `<div class="blocker"><i class="fas fa-exclamation-circle"></i>${b}</div>`).join('')}</div>` : ''}
-              <div class="section">
-                <div class="section-title" onclick="this.classList.toggle('collapsed'); this.nextElementSibling.style.display=this.classList.contains('collapsed')?'none':'block'">✅ Done (${done}) <i class="fas fa-chevron-down"></i></div>
-                <div>${(p.done||[]).map(t => `<div class="task"><span class="task-icon done">✓</span>${typeof t==='string'?t:t.task}</div>`).join('')}</div>
-              </div>
-              <div class="section">
-                <div class="section-title" onclick="this.classList.toggle('collapsed'); this.nextElementSibling.style.display=this.classList.contains('collapsed')?'none':'block'">⬜ To Do (${todo}) <i class="fas fa-chevron-down"></i></div>
-                <div>${(p.todo||[]).map(t => `<div class="task"><span class="task-icon todo"></span>${t}</div>`).join('')}</div>
-              </div>
-              ${files.length ? `<div class="section"><div class="section-title">📁 Files</div><div class="files">${files.map(f => `<div class="file"><a href="${f.u}" target="_blank"><i class="fas fa-file-alt"></i>${f.n}</a></div>`).join('')}</div></div>` : ''}
-            </div>
-          </div>
-        `;
-      }).join('');
-      
-      document.getElementById('projects').innerHTML = html || '<div class="loading">No projects</div>';
+    function render(){
+      const search=document.getElementById('search').value.toLowerCase();
+      let filtered=currentFilter==='all'?allProjects:allProjects.filter(p=>p.status===currentFilter);
+      if(search)filtered=filtered.filter(p=>p.name.toLowerCase().includes(search));
+      let green=yellow=red=tasks=0;
+      allProjects.forEach(p=>{if(p.status==='green')green++;if(p.status==='yellow')yellow++;if(p.status==='red')red++;tasks+=(p.done?.length||0)+(p.todo?.length||0);});
+      document.getElementById('green').textContent=green;document.getElementById('yellow').textContent=yellow;document.getElementById('red').textContent=red;document.getElementById('tasks').textContent=tasks;
+      const html=filtered.map(p=>{const done=p.done?.length||0,todo=p.todo?.length||0,total=done+todo,pct=total?Math.round(done/total*100):0,files=projectFiles[p.key]||[];
+        return`<div class="project"><div class="project-header" onclick="toggle('${p.key}')"><div class="project-name">${p.name}<span class="priority ${p.priority||'p2'}">${(p.priority||'p2').toUpperCase()}</span></div><div class="status-dot ${p.status}"></div></div><div class="progress"><div class="progress-bar"><div class="progress-fill ${p.status}" style="width:${pct}%"></div></div><div class="progress-text"><span>${done}/${total}</span><span>${pct}%</span></div></div><div class="content" id="c-${p.key}">${p.summary?`<div class="summary">${p.summary}</div>`:''}${p.blockers?.length?`<div class="section"><div class="section-title">🚫 Blockers</div>${p.blockers.map(b=>`<div class="blocker"><i class="fas fa-exclamation-circle"></i>${b}</div>`).join('')}</div>`:''}<div class="section"><div class="section-title" onclick="toggleSection(this)">✅ Done (${done}) <i class="fas fa-chevron-down"></i></div><div>${(p.done||[]).map(t=>`<div class="task"><span class="task-icon done">✓</span>${typeof t==='string'?t:t.task}</div>`).join('')}</div></div><div class="section"><div class="section-title" onclick="toggleSection(this)">⬜ To Do (${todo}) <i class="fas fa-chevron-down"></i></div><div>${(p.todo||[]).map(t=>`<div class="task"><span class="task-icon todo">○</span>${typeof t==='string'?t:t.task}</div>`).join('')}</div></div>${files.length?`<div class="section"><div class="section-title" onclick="toggleSection(this)">📁 Files (${files.length}) <i class="fas fa-chevron-down"></i></div><div class="files-grid">${files.map(f=>`<div class="file"><a href="${f.u}" target="_blank"><i class="fas fa-file-alt"></i>${f.n}</a></div>`).join('')}</div></div>`:''}</div></div>`;}).join('');
+      document.getElementById('projects').innerHTML=html||'<div class="loading">No projects</div>';
     }
-
-    function toggle(key) {
-      document.getElementById('c-'+key).classList.toggle('open');
-    }
-
-    function filter(status, el) {
-      currentFilter = status;
-      document.querySelectorAll('.filter').forEach(f => f.classList.remove('active'));
-      el.classList.add('active');
-      render();
-    }
-
+    function toggle(key){const el=document.getElementById('c-'+key);el.style.display=el.style.display==='none'?'block':'none';}
+    function toggleSection(el){el.classList.toggle('collapsed');el.nextElementSibling.style.display=el.classList.contains('collapsed')?'none':'block';}
+    function filter(status,btn){currentFilter=status;document.querySelectorAll('.filter').forEach(b=>b.classList.remove('active'));btn.classList.add('active');render();}
+    function openSettings(){document.getElementById('settingsModal').classList.add('open');}
+    function closeSettings(){document.getElementById('settingsModal').classList.remove('open');}
+    function toggleDarkMode(){const t=document.getElementById('darkModeToggle');t.classList.toggle('active');const theme=t.classList.contains('active')?'light':'dark';document.documentElement.setAttribute('data-theme',theme);localStorage.setItem('theme',theme);}
+    function toggleFiles(){document.getElementById('filesToggle').classList.toggle('active');}
     loadData();
   </script>
 </body>
