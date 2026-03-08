@@ -281,6 +281,7 @@
     let touchStartY = 0;
     let isSwiping = false;
     let panel = null;
+    let swipeAttached = false;
     
     function onTouchStart(e) {
       touchStartX = e.touches[0].pageX;
@@ -297,7 +298,6 @@
       const diffX = Math.abs(currentX - touchStartX);
       const diffY = Math.abs(currentY - touchStartY);
       
-      // Only hijack for clear horizontal swipe
       if(diffX > diffY + 20 && diffX > 30) {
         isSwiping = true;
         e.preventDefault();
@@ -318,7 +318,7 @@
         const diffX = touchEndX - touchStartX;
         
         if(diffX > 80) {
-          panel.style.transition = 'none';
+          panel.style.transition = '';
           panel.style.right = '-300px';
           panel.classList.remove('open');
         } else {
@@ -333,22 +333,36 @@
       panel = null;
     }
     
-    // Only attach swipe handlers when panel opens
-    const originalToggle = toggleNotifs;
-    toggleNotifs = function() {
-      const panel = document.getElementById('notifPanel');
-      const isOpening = !panel.classList.contains('open');
-      
-      originalToggle();
-      
-      if(isOpening) {
+    function attachSwipe() {
+      if(!swipeAttached) {
         document.addEventListener('touchstart', onTouchStart, {passive: true});
         document.addEventListener('touchmove', onTouchMove, {passive: false});
         document.addEventListener('touchend', onTouchEnd, {passive: true});
-      } else {
+        swipeAttached = true;
+      }
+    }
+    
+    function detachSwipe() {
+      if(swipeAttached) {
         document.removeEventListener('touchstart', onTouchStart);
         document.removeEventListener('touchmove', onTouchMove);
         document.removeEventListener('touchend', onTouchEnd);
+        swipeAttached = false;
+      }
+    }
+    
+    function toggleNotifs(){
+      const panel = document.getElementById('notifPanel');
+      const tab = document.getElementById('notifTab');
+      const isOpen = panel.classList.contains('open');
+      
+      if(isOpen) {
+        panel.classList.remove('open');
+        detachSwipe();
+      } else {
+        panel.classList.add('open');
+        attachSwipe();
+        tab.classList.remove('has-new');
       }
     }
     
