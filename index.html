@@ -7,12 +7,12 @@
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700&display=swap" rel="stylesheet">
   <style>
     *{box-sizing:border-box;margin:0;padding:0}
-    :root{--g:#00e676;--r:#ff5252;--y:#ffc107;--b:#40c4ff;--bg:#050508;--c:#0c0c10;--h:#141418;--bc:#1e1e24;--t:#666;--s:#222}
+    :root{--g:#00e676;--r:#ff5252;--y:#ffc107;--b:#40c4ff;--bg:#050508;--c:#0c0c10;--h:#141418;--bc:#1e1e24;--t:#666;--s:#222;--purple:#7c4dff}
     [data-theme="light"]{--bg:#f0f2f5;--c:#fff;--h:#f5f5f5;--bc:#e0e0e5;--t:#666;--s:#fff}
     body{font-family:'Outfit',sans-serif;background:var(--bg);color:#fff;padding:8px;min-height:100vh;background:linear-gradient(180deg,#08080c 0%,#050508 100%)}
     [data-theme="light"] body{background:linear-gradient(180deg,#fff 0%,#f0f2f5 100%)}
     
-    /* Ultra compact header */
+    /* Header */
     .hdr{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;gap:8px;flex-wrap:wrap}
     .logo{display:flex;align-items:center;gap:8px}
     .logo img{width:32px;height:32px;border-radius:8px;animation:float 3s ease-in-out infinite}
@@ -32,7 +32,7 @@
     .fil:hover{border-color:var(--g)}
     .fil.on{background:var(--g);color:#000;border-color:var(--g)}
     
-    /* Compact inline stats */
+    /* Inline stats */
     .st{display:flex;gap:4px;margin-bottom:10px}
     .st>.stat{flex:1;background:var(--c);border-radius:8px;padding:8px 4px;text-align:center;border:1px solid var(--bc)}
     .st-n{font-size:18px;font-weight:700}
@@ -42,58 +42,72 @@
     .y .st-n{color:var(--y)}
     .b .st-n{color:var(--b)}
     
-    /* Ultra compact projects */
+    /* Stylish project cards */
     .projs{}
-    .proj{background:var(--c);border-radius:10px;margin-bottom:6px;border:1px solid var(--bc);overflow:hidden;animation:in 0.3s forwards;opacity:0}
+    .proj{background:linear-gradient(135deg,var(--c) 0%,#0a0a10 100%);border-radius:12px;margin-bottom:8px;border:1px solid #2a2a35;overflow:hidden;animation:in 0.3s forwards;opacity:0;position:relative;transition:all 0.3s}
+    .proj::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.1),transparent)}
+    .proj:hover{border-color:var(--purple);transform:translateY(-2px);box-shadow:0 8px 30px rgba(124,77,255,0.15),0 0 1px var(--purple)}
     @keyframes in{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
     .proj:nth-child(1){animation-delay:0.02s}.proj:nth-child(2){animation-delay:0.04s}.proj:nth-child(3){animation-delay:0.06s}.proj:nth-child(4){animation-delay:0.08s}.proj:nth-child(5){animation-delay:0.1s}.proj:nth-child(6){animation-delay:0.12s}.proj:nth-child(7){animation-delay:0.14s}
-    .proj:hover{border-color:#7c4dff}
-    .p-h{padding:10px 12px;display:flex;justify-content:space-between;align-items:center;cursor:pointer}
-    .p-l{display:flex;align-items:center;gap:8px}
-    .p-i{width:8px;height:8px;border-radius:50%}
-    .green .p-i{background:var(--g);box-shadow:0 0 8px var(--g)}
-    .red .p-i{background:var(--r);box-shadow:0 0 8px var(--r)}
-    .yellow .p-i{background:var(--y);box-shadow:0 0 8px var(--y)}
-    .p-n{font-size:13px;font-weight:700}
-    .p-b{padding:3px 8px;border-radius:10px;font-size:9px;font-weight:700;text-transform:uppercase}
-    .green .p-b{background:var(--g);color:#000}
-    .red .p-b{background:var(--r);color:#fff}
-    .yellow .p-b{background:var(--y);color:#000}
-    .p-bar{height:3px;background:var(--h);margin:0 12px 8px;border-radius:2px}
-    .p-f{height:100%;border-radius:2px;transition:width 0.4s}
+    
+    /* Status color accents */
+    .green{border-left:3px solid var(--g)}
+    .red{border-left:3px solid var(--r)}
+    .yellow{border-left:3px solid var(--y)}
+    .green::after{content:'';position:absolute;top:0;left:0;bottom:0;width:3px;background:var(--g);box-shadow:0 0 15px var(--g)}
+    .red::after{content:'';position:absolute;top:0;left:0;bottom:0;width:3px;background:var(--r);box-shadow:0 0 15px var(--r)}
+    .yellow::after{content:'';position:absolute;top:0;left:0;bottom:0;width:3px;background:var(--y);box-shadow:0 0 15px var(--y)}
+    
+    .p-h{padding:12px 14px;display:flex;justify-content:space-between;align-items:center;cursor:pointer}
+    .p-l{display:flex;align-items:center;gap:10px}
+    .p-i{width:10px;height:10px;border-radius:50%;flex-shrink:0}
+    .green .p-i{background:var(--g);box-shadow:0 0 12px var(--g)}
+    .red .p-i{background:var(--r);box-shadow:0 0 12px var(--r)}
+    .yellow .p-i{background:var(--y);box-shadow:0 0 12px var(--y)}
+    .p-n{font-size:14px;font-weight:700}
+    .p-b{padding:4px 10px;border-radius:12px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.5px}
+    .green .p-b{background:linear-gradient(135deg,var(--g),#00c853);color:#000;box-shadow:0 2px 10px rgba(0,230,118,0.4)}
+    .red .p-b{background:linear-gradient(135deg,var(--r),#ff1744);color:#fff;box-shadow:0 2px 10px rgba(255,82,82,0.4)}
+    .yellow .p-b{background:linear-gradient(135deg,var(--y),#ffab00);color:#000;box-shadow:0 2px 10px rgba(255,193,7,0.4)}
+    
+    .p-bar{height:4px;background:var(--h);margin:0 14px 10px;border-radius:2px;position:relative;overflow:hidden}
+    .p-bar::after{content:'';position:absolute;top:0;left:0;right:0;bottom:0;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.1),transparent)}
+    .p-f{height:100%;border-radius:2px;transition:width 0.5s;position:relative}
+    .p-f::after{content:'';position:absolute;right:0;top:0;bottom:0;width:4px;background:inherit;border-radius:2px;box-shadow:0 0 8px currentColor}
     .green .p-f{background:linear-gradient(90deg,var(--g),#00c853)}
     .red .p-f{background:linear-gradient(90deg,var(--r),#ff1744)}
     .yellow .p-f{background:linear-gradient(90deg,var(--y),#ffab00)}
-    .p-m{padding:0 12px 10px;display:flex;justify-content:space-between;font-size:10px;color:var(--t);font-weight:600}
-    .p-bd{display:none;padding:10px;border-top:1px solid var(--bc);background:var(--h)}
+    .p-m{padding:0 14px 12px;display:flex;justify-content:space-between;font-size:11px;color:var(--t);font-weight:600}
+    .p-m span:last-child{color:var(--g)}
+    .p-bd{display:none;padding:12px;border-top:1px solid var(--bc);background:var(--h)}
     .p-bd.on{display:block;animation:in 0.2s}
     
-    /* Inline sections */
-    .sec{margin-bottom:8px}
-    .s-h{font-size:11px;font-weight:700;padding:6px 10px;background:var(--c);border-radius:6px;cursor:pointer;display:flex;justify-content:space-between;align-items:center;margin-bottom:4px}
+    /* Sections */
+    .sec{margin-bottom:10px}
+    .s-h{font-size:11px;font-weight:700;padding:8px 12px;background:var(--c);border-radius:8px;cursor:pointer;display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;border:1px solid var(--bc)}
+    .s-h:hover{border-color:var(--purple)}
     .s-h.y{color:var(--y)}
     .s-h.b{color:var(--b)}
-    .s-h:hover{background:var(--bc)}
     .s-l{display:none;padding-left:4px}
     .s-l.on{display:block}
-    .t{padding:6px 10px;background:var(--c);border-radius:6px;margin-bottom:3px;font-size:12px;display:flex;align-items:center;gap:8px;cursor:pointer}
-    .t:hover{background:var(--bc)}
+    .t{padding:8px 12px;background:var(--c);border-radius:8px;margin-bottom:4px;font-size:12px;display:flex;align-items:center;gap:10px;cursor:pointer;border:1px solid transparent}
+    .t:hover{border-color:var(--bc);background:var(--bc)}
     .t.o{opacity:0.4;text-decoration:line-through}
-    .t-c{width:14px;height:14px;border-radius:3px;display:flex;align-items:center;justify-content:center;font-size:9px;flex-shrink:0}
-    .t-c.d{background:var(--g);color:#000}
+    .t-c{width:16px;height:16px;border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:10px;flex-shrink:0;font-weight:700}
+    .t-c.d{background:var(--g);color:#000;box-shadow:0 2px 8px rgba(0,230,118,0.3)}
     .t-c.o{border:2px solid #555}
     .t-c.o::after{content:'✓';opacity:0}
-    .t.o .t-c.o{background:var(--g);border-color:var(--g)}
+    .t.o .t-c.o{background:var(--g);border-color:var(--g);box-shadow:0 2px 8px rgba(0,230,118,0.3)}
     .t.o .t-c.o::after{opacity:1}
-    .blk{background:#1a0f0f;border-left:3px solid var(--r);padding:8px;border-radius:0 6px 6px 0;font-size:12px;margin-bottom:6px}
+    .blk{background:linear-gradient(135deg,#1a0f0f,#120a0a);border-left:3px solid var(--r);padding:10px;border-radius:0 8px 8px 0;font-size:12px;margin-bottom:8px;box-shadow:0 2px 10px rgba(255,82,82,0.1)}
     
-    /* Compact files grid */
-    .fils{display:grid;grid-template-columns:repeat(auto-fill,min-width:90px));gap:4px;margin-top:4px}
-    .fil{background:var(--c);padding:6px 10px;border-radius:6px;font-size:10px;color:var(--b);text-decoration:none;border:1px solid var(--bc);transition:0.15s;font-weight:600;text-align:center}
-    .fil:hover{border-color:var(--b);background:var(--bc);transform:translateY(-1px)}
+    /* Files */
+    .fils{display:grid;grid-template-columns:repeat(auto-fill,minmax:90px));gap:6px;margin-top:6px}
+    .file{background:var(--c);padding:8px 12px;border-radius:8px;font-size:10px;color:var(--b);text-decoration:none;border:1px solid var(--bc);transition:0.2s;font-weight:600;text-align:center}
+    .file:hover{border-color:var(--b);background:var(--bc);transform:translateY(-2px);box-shadow:0 4px 15px rgba(64,196,255,0.15)}
     .arr{transition:transform 0.2s;font-size:9px}
     .arr.on{transform:rotate(180deg)}
-    .conf{position:fixed;top:40%;left:50%;font-size:24px;animation:cf 0.8s forwards;pointer-events:none;z-index:999}
+    .conf{position:fixed;top:40%;left:50%;font-size:28px;animation:cf 0.8s forwards;pointer-events:none;z-index:999}
     @keyframes cf{0%{transform:translate(-50%,0) rotate(0);opacity:1}100%{transform:translate(-50%,-80px) rotate(540deg);opacity:0}}
   </style>
 </head>
@@ -121,7 +135,6 @@
   </div>
   <div class="projs" id="p"></div>
   <script>
-    // ALL AutoBookr files + all projects
     const files = {
       autobookr_suite: [
         {n:'📱 Landing',u:'https://lil-ai-operator.github.io/autobookr-landing/'},
@@ -173,7 +186,7 @@
       const q=document.getElementById('s').value.toLowerCase();
       let pf=f==='all'?data:data.filter(p=>p.status===f);
       if(q)pf=pf.filter(p=>p.name.toLowerCase().includes(q)||(p.summary||'').toLowerCase().includes(q));
-      let g=y=r=tt=0;data.forEach(p=>{if(p.status==='green')g++;if(p.status==='yelly')y++;if(p.status==='red')r++;tt+=(p.done?.length||0)+(p.todo?.length||0)});
+      let g=y=r=tt=0;data.forEach(p=>{if(p.status==='green')g++;if(p.status==='yellow')y++;if(p.status==='red')r++;tt+=(p.done?.length||0)+(p.todo?.length||0)});
       document.getElementById('g').textContent=g;document.getElementById('y').textContent=y;document.getElementById('r').textContent=r;document.getElementById('t').textContent=tt;
       if(!pf.length){document.getElementById('p').innerHTML='<div style="padding:30px;text-align:center;color:#555;font-size:13px">No projects</div>';return}
       let h='';pf.forEach((p,i)=>{const d=p.done?.length||0,td=p.todo?.length||0,tot=d+td,pc=tot?Math.round(d/tot*100):0;const fs=files[p.key]||[];const id=p.key||'p'+i;
@@ -181,7 +194,7 @@
         if(p.blockers?.length)p.blockers.forEach(b=>h+=`<div class="blk">🚫 ${b}</div>`);
         if(p.done?.length){h+=`<div class="sec"><div class="s-h" onclick="toggS(this)">✅ Done (${p.done.length}) <span class="arr">▼</span></div><div class="s-l">`;p.done.forEach((t,j)=>{const k=id+'-'+j,ck=checked[k]?' o':'';h+=`<div class="t${ck}" onclick="chk('${id}',${j})"><span class="t-c d">✓</span> ${typeof t==='string'?t:t.task||''}</div>`});h+='</div></div>'}
         if(p.todo?.length){h+=`<div class="sec"><div class="s-h y" onclick="toggS(this)">⬜ To Do (${p.todo.length}) <span class="arr">▼</span></div><div class="s-l">`;p.todo.forEach((t,j)=>{h+=`<div class="t"><span class="t-c o"></span> ${typeof t==='string'?t:t.task||''}</div>`});h+='</div></div>'}
-        if(fs.length){h+=`<div class="sec"><div class="s-h b" onclick="toggS(this)">📁 Files (${fs.length}) <span class="arr">▼</span></div><div class="s-l"><div class="fils">`;fs.forEach(f=>h+=`<a class="fil" href="${f.u}" target="_blank">${f.n}</a>`);h+='</div></div></div>'}
+        if(fs.length){h+=`<div class="sec"><div class="s-h b" onclick="toggS(this)">📁 Files (${fs.length}) <span class="arr">▼</span></div><div class="s-l"><div class="fils">`;fs.forEach(f=>h+=`<a class="file" href="${f.u}" target="_blank">${f.n}</a>`);h+='</div></div></div>'}
         h+='</div></div>'});
       document.getElementById('p').innerHTML=h;
     }
