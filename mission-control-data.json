@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-03-07T23:40:43Z",
+  "updatedAt": "2026-03-08T07:12:51Z",
   "projects": [
     {
       "key": "autobookr_suite",
@@ -18,7 +18,15 @@
         "projects/AutoBookr/brand-compare.html",
         "projects/AutoBookr/competitor-report.md",
         "projects/AutoBookr/PLAN.md",
-        "projects/AutoBookr/RUNBOOK.md"
+        "projects/AutoBookr/RUNBOOK.md",
+        {
+          "task": "Add analytics dashboard with conversion funnels",
+          "completedAt": "2026-03-08"
+        },
+        {
+          "task": "Implement waitlist for overcapacity periods",
+          "completedAt": "2026-03-08"
+        }
       ],
       "todo": [
         "Get first paying customer",
@@ -42,7 +50,9 @@
       ],
       "todo": [
         "Add charts",
-        "Add activity feed"
+        "Add activity feed",
+        "Add dark/light mode toggle",
+        "Add push notifications for urgent blockers"
       ],
       "blockers": []
     },
@@ -55,7 +65,15 @@
         "Setup rclone",
         "Configure Google Drive",
         "Test backup",
-        "First backup completed"
+        "First backup completed",
+        {
+          "task": "Add incremental backup option",
+          "completedAt": "2026-03-08"
+        },
+        {
+          "task": "Create backup status widget",
+          "completedAt": "2026-03-08"
+        }
       ],
       "todo": [
         "Schedule automatic backups"
@@ -81,12 +99,17 @@
         "Define when region should be used",
         "Define handoff format between regions",
         "Add region prompts/checklists",
-        "projects/NeuroNetAgentTeam/docs/handoff-protocol.md"
+        "projects/NeuroNetAgentTeam/docs/handoff-protocol.md",
+        {
+          "task": "Create region health monitoring",
+          "completedAt": "2026-03-08"
+        }
       ],
       "todo": [
         "Approve final region architecture",
         "Test 2 full workflows using region handoffs",
-        "Regions are active with clear model routing and handoff rules"
+        "Regions are active with clear model routing and handoff rules",
+        "Add usage metrics per region"
       ],
       "blockers": []
     },
@@ -99,7 +122,9 @@
       "todo": [
         "Chain/network + wallet handling model",
         "Security model for keys/signing",
-        "Allowed interaction cadence and ToS compliance"
+        "Allowed interaction cadence and ToS compliance",
+        "Research Aavegotchi API and interaction patterns",
+        "Draft security model for wallet handling"
       ],
       "blockers": [
         "Policy/compliance + key management approach to approve"
@@ -114,7 +139,9 @@
       "todo": [
         "Product niche to target first",
         "Physical vs digital product strategy",
-        "Fulfillment model and margin targets"
+        "Fulfillment model and margin targets",
+        "Research top-performing niches in UK market",
+        "Analyze competitor pricing strategies"
       ],
       "blockers": [
         "Niche + product direction needed"
@@ -129,7 +156,9 @@
       "todo": [
         "Exact service menu + pricing",
         "In-person vs remote sessions",
-        "Brand name + positioning style"
+        "Brand name + positioning style",
+        "Research competitor positioning in UK",
+        "Draft service menu with clear pricing"
       ],
       "blockers": [
         "Service/package preferences needed"
