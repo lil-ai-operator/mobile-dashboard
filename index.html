@@ -118,6 +118,17 @@
     .notif-close{background:none;border:none;color:var(--text);font-size:24px;cursor:pointer}
     .notif-item{padding:14px;border-bottom:1px solid var(--border);font-size:13px}
     .notif-item .time{font-size:10px;color:var(--text);margin-top:6px}
+  
+    .stats-panel{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.9);z-index:2000;display:none;align-items:center;justify-content:center;padding:20px}
+    .stats-panel.show{display:flex}
+    .stats-content{background:var(--bg-card);border:2px solid var(--primary);border-radius:20px;padding:24px;width:100%;max-width:350px;max-height:80vh;overflow-y:auto}
+    .stats-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:16px}
+    .stat-box{background:var(--bg-hover);border-radius:12px;padding:16px;text-align:center}
+    .stat-box-n{font-size:28px;font-weight:800;color:var(--primary)}
+    .stat-box-l{font-size:11px;color:var(--text);margin-top:4px}
+    .stat-bar{height:6px;background:var(--bg-hover);border-radius:3px;margin-top:8px;overflow:hidden}
+    .stat-bar-fill{height:100%;background:linear-gradient(90deg,var(--secondary),var(--primary));border-radius:3px}
+    .stats-close{position:absolute;top:20px;right:20px;background:none;border:none;color:#fff;font-size:32px;cursor:pointer}
   </style>
 </head>
 <body>
@@ -141,7 +152,7 @@
     <div class="fil" onclick="setF('red',this)">Blocked</div>
   </div>
   <div class="st">
-    <div class="stat g"><div class="stat-n" id="g">0</div><div class="stat-l">ACTIVE</div></div>
+    <div class="stat g" onclick="openStats()"><div class="stat-n" id="g">0</div><div class="stat-l">ACTIVE</div></div>
     <div class="stat y"><div class="stat-n" id="y">0</div><div class="stat-l">IN PROGRESS</div></div>
     <div class="stat r"><div class="stat-n" id="r">0</div><div class="stat-l">BLOCKED</div></div>
     <div class="stat blu"><div class="stat-n" id="t">0</div><div class="stat-l">TASKS</div></div>
@@ -285,6 +296,41 @@
       document.getElementById('p').innerHTML=h;
     }
     load();
+  
+    // Stats Panel
+    function openStats(){
+      document.getElementById('statsPanel').classList.add('show');
+      playSound('modal');
+      // Update stats
+      let completed=0,total=0,green=0;
+      data.forEach(p=>{completed+=p.done?.length||0;total+=(p.done?.length||0)+(p.todo?.length||0);if(p.status==='green')green++});
+      const pct=total?Math.round(completed/total*100):0;
+      document.getElementById('statActive').textContent=green;
+      document.getElementById('statProgress').textContent=pct+'%';
+      document.getElementById('statTasks').textContent=completed;
+      document.getElementById('statStreak').textContent=localStorage.getItem('mc_streak')||0;
+      document.getElementById('statWeek').textContent=completed+' tasks';
+      document.getElementById('statBarFill').style.width=pct+'%';
+    }
+    function closeStats(){document.getElementById('statsPanel').classList.remove('show');playSound('close')}
   </script>
-</body>
+
+  <div class="stats-panel" id="statsPanel" onclick="if(event.target===this)closeStats()">
+    <button class="stats-close" onclick="closeStats()">×</button>
+    <div class="stats-content">
+      <h2 style="color:var(--primary);font-size:18px;margin-bottom:8px">📊 Your Progress</h2>
+      <p style="color:var(--text);font-size:12px">Weekly overview</p>
+      <div class="stats-grid">
+        <div class="stat-box"><div class="stat-box-n" id="statActive">0</div><div class="stat-box-l">Active Projects</div></div>
+        <div class="stat-box"><div class="stat-box-n" id="statProgress">0%</div><div class="stat-box-l">Completed</div></div>
+        <div class="stat-box"><div class="stat-box-n" id="statTasks">0</div><div class="stat-box-l">Tasks Done</div></div>
+        <div class="stat-box"><div class="stat-box-n" id="statStreak">0</div><div class="stat-box-l">Day Streak 🔥</div></div>
+      </div>
+      <div style="margin-top:20px">
+        <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:6px"><span style="color:var(--text)">This Week</span><span style="color:var(--secondary)" id="statWeek">0 tasks</span></div>
+        <div class="stat-bar"><div class="stat-bar-fill" id="statBarFill" style="width:0%"></div></div>
+      </div>
+    </div>
+  </div>
+  </body>
 </html>
