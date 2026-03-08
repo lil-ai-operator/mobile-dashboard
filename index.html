@@ -119,16 +119,17 @@
     .notif-item{padding:14px;border-bottom:1px solid var(--border);font-size:13px}
     .notif-item .time{font-size:10px;color:var(--text);margin-top:6px}
   
-    .stats-panel{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.9);z-index:2000;display:none;align-items:center;justify-content:center;padding:20px}
+    .stats-panel{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.9);z-index:2000;display:none;align-items:center;justify-content:center;padding:20px;animation:fadeIn 0.3s}
     .stats-panel.show{display:flex}
-    .stats-content{background:var(--bg-card);border:2px solid var(--primary);border-radius:20px;padding:24px;width:100%;max-width:350px;max-height:80vh;overflow-y:auto}
-    .stats-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:16px}
-    .stat-box{background:var(--bg-hover);border-radius:12px;padding:16px;text-align:center}
-    .stat-box-n{font-size:28px;font-weight:800;color:var(--primary)}
-    .stat-box-l{font-size:11px;color:var(--text);margin-top:4px}
-    .stat-bar{height:6px;background:var(--bg-hover);border-radius:3px;margin-top:8px;overflow:hidden}
-    .stat-bar-fill{height:100%;background:linear-gradient(90deg,var(--secondary),var(--primary));border-radius:3px}
+    @keyframes fadeIn{from{opacity:0;transform:scale(0.9)}to{opacity:1;transform:scale(1)}}
+    .stats-content{background:var(--bg-card);border:2px solid var(--primary);border-radius:20px;padding:24px;width:100%;max-width:320px;max-height:80vh;overflow-y:auto;animation:slideUp 0.3s}
+    @keyframes slideUp{from{transform:translateY(20px);opacity:0}to{transform:translateY(0);opacity:1}}
     .stats-close{position:absolute;top:20px;right:20px;background:none;border:none;color:#fff;font-size:32px;cursor:pointer}
+    .stat-detail{text-align:center;padding:20px}
+    .stat-detail-n{font-size:48px;font-weight:800;margin:10px 0}
+    .stat-detail-l{font-size:14px;color:var(--text)}
+    .stat-list{text-align:left;margin-top:16px;max-height:200px;overflow-y:auto}
+    .stat-list-item{display:flex;justify-content:space-between;padding:10px;background:var(--bg-hover);border-radius:8px;margin-bottom:6px;font-size:13px}
   </style>
 </head>
 <body>
@@ -152,10 +153,10 @@
     <div class="fil" onclick="setF('red',this)">Blocked</div>
   </div>
   <div class="st">
-    <div class="stat g" onclick="openStats()"><div class="stat-n" id="g">0</div><div class="stat-l">ACTIVE</div></div>
-    <div class="stat y" onclick="openStats()"><div class="stat-n" id="y">0</div><div class="stat-l">IN PROGRESS</div></div>
-    <div class="stat r" onclick="openStats()"><div class="stat-n" id="r">0</div><div class="stat-l">BLOCKED</div></div>
-    <div class="stat blu" onclick="openStats()"><div class="stat-n" id="t">0</div><div class="stat-l">TASKS</div></div>
+    <div class="stat g" onclick="openStats('active')"><div class="stat-n" id="g">0</div><div class="stat-l">ACTIVE</div></div>
+    <div class="stat y" onclick="openStats('active')"><div class="stat-n" id="y">0</div><div class="stat-l">IN PROGRESS</div></div>
+    <div class="stat r" onclick="openStats('active')"><div class="stat-n" id="r">0</div><div class="stat-l">BLOCKED</div></div>
+    <div class="stat blu" onclick="openStats('active')"><div class="stat-n" id="t">0</div><div class="stat-l">TASKS</div></div>
   </div>
   <div class="prog">
     <div class="prog-h"><span class="prog-l">Weekly Progress</span><span class="prog-r" id="progPct">0%</span></div>
@@ -297,39 +298,58 @@
     }
     load();
   
-    // Stats Panel
-    function openStats(){
-      document.getElementById('statsPanel').classList.add('show');
+    // Stats Panel - unique for each box
+    function openStats(type){
+      const panel = document.getElementById('statsPanel');
+      const content = document.getElementById('statsContent');
+      panel.classList.add('show');
       playSound('modal');
-      // Update stats
-      let completed=0,total=0,green=0;
-      data.forEach(p=>{completed+=p.done?.length||0;total+=(p.done?.length||0)+(p.todo?.length||0);if(p.status==='green')green++});
-      const pct=total?Math.round(completed/total*100):0;
-      document.getElementById('statActive').textContent=green;
-      document.getElementById('statProgress').textContent=pct+'%';
-      document.getElementById('statTasks').textContent=completed;
-      document.getElementById('statStreak').textContent=localStorage.getItem('mc_streak')||0;
-      document.getElementById('statWeek').textContent=completed+' tasks';
-      document.getElementById('statBarFill').style.width=pct+'%';
+      
+      let html = '';
+      if(type === 'active') {
+        const active = data.filter(p => p.status === 'green');
+        html = '<div class="stat-detail"><div style="font-size:40px">✅</div><div class="stat-detail-n" style="color:var(--secondary)">'+active.length+'</div><div class="stat-detail-l">Active Projects</div></div>';
+        if(active.length) {
+          html += '<div class="stat-list">';
+          active.forEach(p => html += '<div class="stat-list-item"><span>'+p.name+'</span><span style="color:var(--secondary)">'+p.done?.length+'/'+((p.done?.length||0)+(p.todo?.length||0))+'</span></div>');
+          html += '</div>';
+        }
+      } else if(type === 'progress') {
+        const total = data.reduce((a,p) => a + (p.done?.length||0) + (p.todo?.length||0), 0);
+        const done = data.reduce((a,p) => a + (p.done?.length||0), 0);
+        const pct = total ? Math.round(done/total*100) : 0;
+        html = '<div class="stat-detail"><div style="font-size:40px">⏳</div><div class="stat-detail-n" style="color:var(--yellow)">'+pct+'%</div><div class="stat-detail-l">Overall Progress</div></div>';
+        html += '<div class="stat-bar" style="height:10px;margin-top:16px"><div style="width:'+pct+'%;height:100%;background:linear-gradient(90deg,var(--yellow),var(--secondary));border-radius:5px"></div></div>';
+        html += '<div style="text-align:center;margin-top:8px;color:var(--text);font-size:12px">'+done+' of '+total+' tasks complete</div>';
+      } else if(type === 'blocked') {
+        const blocked = data.filter(p => p.status === 'red');
+        html = '<div class="stat-detail"><div style="font-size:40px">🚫</div><div class="stat-detail-n" style="color:var(--red)">'+blocked.length+'</div><div class="stat-detail-l">Blocked Projects</div></div>';
+        if(blocked.length) {
+          html += '<div class="stat-list">';
+          blocked.forEach(p => {
+            html += '<div style="padding:10px;background:var(--bg-hover);border-radius:8px;margin-bottom:6px"><div style="font-size:13px;font-weight:700">'+p.name+'</div>';
+            if(p.blockers?.length) p.blockers.forEach(b => html += '<div style="font-size:11px;color:var(--red);margin-top:4px">• '+b+'</div>');
+            html += '</div>';
+          });
+          html += '</div>';
+        }
+      } else if(type === 'tasks') {
+        const total = data.reduce((a,p) => a + (p.done?.length||0) + (p.todo?.length||0), 0);
+        const done = data.reduce((a,p) => a + (p.done?.length||0), 0);
+        const todo = data.reduce((a,p) => a + (p.todo?.length||0), 0);
+        html = '<div class="stat-detail"><div style="font-size:40px">📋</div><div class="stat-detail-n" style="color:var(--blue)">'+total+'</div><div class="stat-detail-l">Total Tasks</div></div>';
+        html += '<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:16px"><div style="text-align:center;padding:12px;background:var(--bg-hover);border-radius:10px"><div style="font-size:20px;font-weight:800;color:var(--secondary)">'+done+'</div><div style="font-size:10px;color:var(--text)">Done</div></div><div style="text-align:center;padding:12px;background:var(--bg-hover);border-radius:10px"><div style="font-size:20px;font-weight:800;color:var(--yellow)">'+todo+'</div><div style="font-size:10px;color:var(--text)">To Do</div></div></div>';
+      }
+      
+      content.innerHTML = html;
     }
     function closeStats(){document.getElementById('statsPanel').classList.remove('show');playSound('close')}
   </script>
 
+
   <div class="stats-panel" id="statsPanel" onclick="if(event.target===this)closeStats()">
     <button class="stats-close" onclick="closeStats()">×</button>
-    <div class="stats-content">
-      <h2 style="color:var(--primary);font-size:18px;margin-bottom:8px">📊 Your Progress</h2>
-      <p style="color:var(--text);font-size:12px">Weekly overview</p>
-      <div class="stats-grid">
-        <div class="stat-box"><div class="stat-box-n" id="statActive">0</div><div class="stat-box-l">Active Projects</div></div>
-        <div class="stat-box"><div class="stat-box-n" id="statProgress">0%</div><div class="stat-box-l">Completed</div></div>
-        <div class="stat-box"><div class="stat-box-n" id="statTasks">0</div><div class="stat-box-l">Tasks Done</div></div>
-        <div class="stat-box"><div class="stat-box-n" id="statStreak">0</div><div class="stat-box-l">Day Streak 🔥</div></div>
-      </div>
-      <div style="margin-top:20px">
-        <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:6px"><span style="color:var(--text)">This Week</span><span style="color:var(--secondary)" id="statWeek">0 tasks</span></div>
-        <div class="stat-bar"><div class="stat-bar-fill" id="statBarFill" style="width:0%"></div></div>
-      </div>
+    <div class="stats-content" id="statsContent">
     </div>
   </div>
   </body>
