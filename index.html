@@ -178,7 +178,7 @@
     .notif-backdrop.show{display:block}
   </style>
 </head>
-<body ontouchstart="handleTouchStart(evt)" ontouchmove="handleTouchMove(evt)" ontouchend="handleTouchEnd(evt)">
+<body>
   <div class="hdr">
     <div class="logo">
       <img src="01_PEPE4-export.gif">
@@ -276,24 +276,27 @@
       }
     }
     
-    // Swipe handlers - tap tab to open, swipe panel to close
+    // Swipe handlers - document-level for better detection
     let touchStartX = 0;
-    function handleTouchStart(e){
-      touchStartX = e.touches[0].clientX;
-    }
-    function handleTouchMove(e){
-      e.preventDefault();
-    }
-    function handleTouchEnd(e){
+    let touchStartY = 0;
+    
+    document.addEventListener('touchstart', function(e) {
+      touchStartX = e.changedTouches[0].screenX;
+      touchStartY = e.changedTouches[0].screenY;
+    }, {passive: false});
+    
+    document.addEventListener('touchend', function(e) {
       if(!document.getElementById('notifPanel').classList.contains('open')) return;
-      const touchEndX = e.changedTouches[0].clientX;
-      const diff = touchStartX - touchEndX;
-      // Swipe right (>50px) to close
-      if(diff < -50){
+      const touchEndX = e.changedTouches[0].screenX;
+      const touchEndY = e.changedTouches[0].screenY;
+      const diffX = touchStartX - touchEndX;
+      const diffY = touchStartY - touchEndY;
+      // Horizontal swipe > 50px, more horizontal than vertical
+      if(Math.abs(diffX) > 50 && Math.abs(diffX) > Math.abs(diffY) * 1.5 && diffX < -50) {
         toggleNotifs();
       }
       touchStartX = 0;
-    }
+    }, {passive: false});
     
     const notifs = [
       {t:'Mission Control updated',d:'Just now'},
