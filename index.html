@@ -52,6 +52,7 @@
     @keyframes slideIn{from{opacity:0;transform:translateY(15px)}to{opacity:1;transform:translateY(0)}}
     .proj:nth-child(1){animation-delay:0.05s}.proj:nth-child(2){animation-delay:0.1s}.proj:nth-child(3){animation-delay:0.15s}.proj:nth-child(4){animation-delay:0.2s}.proj:nth-child(5){animation-delay:0.25s}.proj:nth-child(6){animation-delay:0.3s}.proj:nth-child(7){animation-delay:0.35s}
     .proj-inner{background:var(--bg-card);border-radius:14px;padding:14px;border:2px solid var(--border);box-shadow:0 4px 15px rgba(0,0,0,0.3);overflow:visible}
+    .proj-inner.on{border-radius:14px 14px 0 0}
     .proj:hover .proj-inner{transform:translateY(-2px);box-shadow:0 8px 25px rgba(0,0,0,0.4)}
     :root .green .proj-inner{border-color:var(--secondary);box-shadow:0 0 15px rgba(0,229,160,0.25),0 4px 15px rgba(0,0,0,0.3)}
     :root .red .proj-inner{border-color:var(--red);box-shadow:0 0 15px rgba(239,68,68,0.25),0 4px 15px rgba(0,0,0,0.3)}
@@ -68,12 +69,13 @@
     .p-f{height:100%;border-radius:2px}
     :root .green .p-f{background:var(--secondary)}:root .red .p-f{background:var(--red)}:root .yellow .p-f{background:var(--yellow)}
     .p-m{display:flex;justify-content:space-between;font-size:11px;color:var(--text);font-weight:600}
-    .p-bd{display:none;padding-top:12px;margin-top:12px}
-    .p-bd.on{display:block;animation:slideIn 0.3s;margin-top:12px;border-left:4px solid currentColor;background:var(--bg-hover);border-radius:8px;padding:16px;width:100%;box-sizing:border-box}
+    .p-bd{display:none;padding-top:12px}
+    .p-bd.on{display:block;animation:slideIn 0.3s;border-left:4px solid currentColor;background:var(--bg-card);border-radius:0 0 14px 14px;padding:16px;width:100%;box-sizing:border-box;margin-top:-2px}
     .p-bd .sec{margin-top:12px}
     .green .p-bd.on{border-left-color:var(--secondary)}
     .red .p-bd.on{border-left-color:var(--red)}
     .yellow .p-bd.on{border-left-color:var(--yellow)}
+    .blue .p-bd.on{border-left-color:var(--blue)}
     .sec{margin-bottom:16px}
     .s-h{font-size:13px;font-weight:700;padding:10px 12px;background:var(--bg-card);border-radius:8px;cursor:pointer;display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
     .s-h.y{color:var(--yellow)}.s-h.b{color:var(--blue)}
@@ -261,7 +263,7 @@
     function load(){fetch('mission-control-data.json?t='+Date.now()).then(r=>r.json()).then(d=>{data=d.projects||[];const up=new Date(d.updatedAt);document.getElementById('syncStatus').textContent='● Synced '+up.toLocaleTimeString();init();render()})}
     function theme(){const t=document.documentElement.getAttribute('data-theme')==='light'?'dark':'light';document.documentElement.setAttribute('data-theme',t);localStorage.setItem('mc_th',t);playSound('toggle')}
     function setF(x,btn){f=x;document.querySelectorAll('.fil').forEach(b=>b.classList.remove('on'));btn.classList.add('on');render();playSound('tap')}
-    function toggle(id){document.querySelectorAll('.p-bd').forEach(el=>{if(el.id!=='b-'+id)el.classList.remove('on')});document.getElementById('b-'+id).classList.toggle('on');playSound('tap')}
+    function toggle(id){const bd=document.getElementById('b-'+id),inner=bd?.previousElementSibling;document.querySelectorAll('.p-bd').forEach(el=>{if(el.id!=='b-'+id)el.classList.remove('on')});document.querySelectorAll('.proj-inner').forEach(el=>el.classList.remove('on'));bd.classList.toggle('on');if(bd.classList.contains('on'))inner?.classList.add('on');playSound('tap')}
     function toggS(el){el.nextElementSibling.classList.toggle('on');el.querySelector('.arr').classList.toggle('on');playSound('tap')}
     function chk(pid,i){const k=pid+'-'+i;checked[k]=!checked[k];localStorage.setItem('mc_chk',JSON.stringify(checked));render();if(checked[k]){const p=data.find(x=>(x.key||'')===pid);if(p&&p.done?.every((t,j)=>checked[pid+'-'+j])){showC();playSound('complete')}};playSound('tap')}
     function showC(){['🎉','⭐','🔥','✨'].forEach((e,i)=>{const d=document.createElement('div');d.className='conf';d.textContent=e;d.style.left=(30+Math.random()*40)+'%';d.style.animationDelay=i*0.1+'s';document.body.appendChild(d);setTimeout(()=>d.remove(),1000)})}
