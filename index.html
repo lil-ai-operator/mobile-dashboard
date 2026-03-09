@@ -33,11 +33,15 @@
     .st-tabs{display:flex;gap:4px;margin-bottom:0}
     .st-tab{flex:1;padding:12px 8px;background:var(--bg-card);border:2px solid var(--border);border-radius:12px;text-align:center;cursor:pointer;transition:all 0.3s cubic-bezier(0.4,0,0.2,1)}
     .st-tab:hover{transform:translateY(-2px)}
-    .st-tab.on{transform:scale(1.02);border-radius:12px 12px 0 0;border-bottom-color:transparent;background:var(--bg-card)}
-    .st-tab.g.on{border-color:var(--secondary);box-shadow:0 -4px 20px rgba(0,229,160,0.3)}
-    .st-tab.y.on{border-color:var(--yellow);box-shadow:0 -4px 20px rgba(245,158,11,0.3)}
-    .st-tab.r.on{border-color:var(--red);box-shadow:0 -4px 20px rgba(239,68,68,0.3)}
-    .st-tab.b.on{border-color:var(--blue);box-shadow:0 -4px 20px rgba(56,189,248,0.3)}
+    .st-tab.g{border-color:var(--secondary)}
+    .st-tab.y{border-color:var(--yellow)}
+    .st-tab.r{border-color:var(--red)}
+    .st-tab.b{border-color:var(--blue)}
+    .st-tab.on{transform:scale(1.02);border-radius:12px 12px 0 0;border-bottom-color:transparent!important}
+    .st-tab.g.on{box-shadow:0 -4px 20px rgba(0,229,160,0.3)}
+    .st-tab.y.on{box-shadow:0 -4px 20px rgba(245,158,11,0.3)}
+    .st-tab.r.on{box-shadow:0 -4px 20px rgba(239,68,68,0.3)}
+    .st-tab.b.on{box-shadow:0 -4px 20px rgba(56,189,248,0.3)}
     .st-tab-n{font-size:20px;font-weight:800}
     .st-tab-l{font-size:9px;color:var(--text);margin-top:2px;font-weight:600;text-transform:uppercase}
     .st-tab.g .st-tab-n{color:var(--secondary)}
