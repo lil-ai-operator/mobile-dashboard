@@ -30,6 +30,27 @@
     .fil:hover{border-color:var(--primary)}
     .fil.on{background:var(--primary);color:#fff;border-color:var(--primary)}
     .st{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:12px}
+    .st-tabs{display:flex;gap:4px;margin-bottom:12px}
+    .st-tab{flex:1;padding:12px 8px;background:var(--bg-card);border:2px solid var(--border);border-radius:12px;text-align:center;cursor:pointer;transition:all 0.3s cubic-bezier(0.4,0,0.2,1)}
+    .st-tab:hover{transform:translateY(-2px)}
+    .st-tab.on{transform:scale(1.02)}
+    .st-tab.g.on{border-color:var(--secondary);box-shadow:0 0 20px rgba(0,229,160,0.4)}
+    .st-tab.y.on{border-color:var(--yellow);box-shadow:0 0 20px rgba(245,158,11,0.4)}
+    .st-tab.r.on{border-color:var(--red);box-shadow:0 0 20px rgba(239,68,68,0.4)}
+    .st-tab.b.on{border-color:var(--blue);box-shadow:0 0 20px rgba(56,189,248,0.4)}
+    .st-tab-n{font-size:20px;font-weight:800}
+    .st-tab-l{font-size:9px;color:var(--text);margin-top:2px;font-weight:600;text-transform:uppercase}
+    .st-tab.g .st-tab-n{color:var(--secondary)}
+    .st-tab.y .st-tab-n{color:var(--yellow)}
+    .st-tab.r .st-tab-n{color:var(--red)}
+    .st-tab.b .st-tab-n{color:var(--blue)}
+    .st-panel{background:var(--bg-card);border-radius:16px;padding:16px;margin-bottom:12px;display:none;animation:slideUp 0.3s}
+    .st-panel.on{display:block}
+    .st-panel-h{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+    .st-panel-close{background:none;border:none;color:var(--text);font-size:20px;cursor:pointer;padding:4px}
+    .st-panel-list{max-height:200px;overflow-y:auto}
+    .st-panel-item{display:flex;justify-content:space-between;padding:10px;background:var(--bg-hover);border-radius:8px;margin-bottom:6px;font-size:13px;transition:transform 0.2s}
+    .st-panel-item:hover{transform:translateX(4px)}
     .stat{background:var(--bg-card);border-radius:12px;padding:12px 8px;text-align:center;border:2px solid var(--border);cursor:pointer;transition:all 0.3s cubic-bezier(0.4,0,0.2,1)}
     .stat.g{border-color:var(--secondary);box-shadow:0 0 15px rgba(0,229,160,0.3)}
     .stat.on{border-width:3px;padding:11px 7px;transform:scale(1.05);z-index:10}
@@ -166,7 +187,7 @@
     .notif-close{background:none;border:none;color:var(--text);font-size:24px;cursor:pointer}
     .notif-item{padding:14px;border-bottom:1px solid var(--border);font-size:13px}
     .notif-item .time{font-size:10px;color:var(--text);margin-top:6px}
-  
+
     .stats-panel{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0);z-index:2000;display:none;align-items:center;justify-content:center;padding:20px;transition:background 0.3s}
     .stats-panel.show{display:flex;background:rgba(0,0,0,0.8)}
     .stats-content{background:var(--bg-card);border-radius:20px;padding:24px;width:100%;max-width:320px;max-height:80vh;overflow-y:auto;transform:scale(0.9) translateY(20px);opacity:0;transition:all 0.3s cubic-bezier(0.4,0,0.2,1)}
@@ -207,12 +228,13 @@
     <div class="fil" onclick="setF('green',this)">Active</div>
     <div class="fil" onclick="setF('red',this)">Blocked</div>
   </div>
-  <div class="st">
-    <div class="stat g" onclick="this.classList.toggle('on');openStats('active','green')"><div class="stat-n" id="g">0</div><div class="stat-l">ACTIVE</div></div>
-    <div class="stat y" onclick="this.classList.toggle('on');openStats('progress','yellow')"><div class="stat-n" id="y">0</div><div class="stat-l">IN PROGRESS</div></div>
-    <div class="stat r" onclick="this.classList.toggle('on');openStats('blocked','red')"><div class="stat-n" id="r">0</div><div class="stat-l">BLOCKED</div></div>
-    <div class="stat blu" onclick="this.classList.toggle('on');openStats('tasks','blue')"><div class="stat-n" id="t">0</div><div class="stat-l">TASKS</div></div>
+  <div class="st-tabs">
+    <div class="st-tab g" onclick="toggleStatTab('active',this)"><div class="st-tab-n" id="g">0</div><div class="st-tab-l">ACTIVE</div></div>
+    <div class="st-tab y" onclick="toggleStatTab('progress',this)"><div class="st-tab-n" id="y">0</div><div class="st-tab-l">IN PROGRESS</div></div>
+    <div class="st-tab r" onclick="toggleStatTab('blocked',this)"><div class="st-tab-n" id="r">0</div><div class="st-tab-l">BLOCKED</div></div>
+    <div class="st-tab b" onclick="toggleStatTab('tasks',this)"><div class="st-tab-n" id="t">0</div><div class="st-tab-l">TASKS</div></div>
   </div>
+  <div class="st-panel" id="stPanel"></div>
   <div class="prog">
     <div class="prog-h"><span class="prog-l">Weekly Progress</span><span class="prog-r" id="progPct">0%</span></div>
     <div class="prog-bar"><div class="prog-fill" id="progFill" style="width:0%"></div></div>
@@ -253,14 +275,14 @@
     // Distinct Zen Sound Palette
     let soundOn = false;
     let audioCtx = null;
-    
+
     function initAudio() {
       try {
         if (!audioCtx) { audioCtx = new (window.AudioContext || window.webkitAudioContext)(); }
         if (audioCtx.state === 'suspended') { audioCtx.resume(); }
       } catch(e) {}
     }
-    
+
     function playSound(type) {
       try {
         if (!soundOn || !audioCtx) return;
@@ -281,7 +303,7 @@
         }
       } catch(e) {}
     }
-    
+
     function t(freq, dur, dely, vol) {
       const osc = audioCtx.createOscillator();
       const gain = audioCtx.createGain();
@@ -292,7 +314,7 @@
       gain.gain.exponentialRampToValueAtTime(0.001, now + dur);
       osc.start(now); osc.stop(now + dur);
     }
-    
+
     function toggleSound() {
       soundOn = !soundOn;
       document.getElementById('soundToggle').textContent = soundOn ? '🔊' : '🔇';
@@ -354,62 +376,43 @@
       document.getElementById('p').innerHTML=h;
     }
     load();
-  
+
     // Stats Panel - unique for each box
-    function openStats(type, color){
-      const panel = document.getElementById('statsPanel');
-      const content = document.getElementById('statsContent');
-      const colors = { green: 'var(--secondary)', yellow: 'var(--yellow)', red: 'var(--red)', blue: 'var(--blue)' };
-      content.style.border = '2px solid ' + (colors[color] || 'var(--primary)');
-      panel.classList.add('show');
-      playSound('modal');
-      
-      let html = '';
-      if(type === 'active') {
-        const active = data.filter(p => p.status === 'green');
-        html = '<div class="stat-detail"><div style="font-size:40px">✅</div><div class="stat-detail-n" style="color:var(--secondary)">'+active.length+'</div><div class="stat-detail-l">Active Projects</div></div>';
-        if(active.length) {
-          html += '<div class="stat-list">';
-          active.forEach(p => html += '<div class="stat-list-item"><span>'+p.name+'</span><span style="color:var(--secondary)">'+p.done?.length+'/'+((p.done?.length||0)+(p.todo?.length||0))+'</span></div>');
-          html += '</div>';
-        }
-      } else if(type === 'progress') {
-        const total = data.reduce((a,p) => a + (p.done?.length||0) + (p.todo?.length||0), 0);
-        const done = data.reduce((a,p) => a + (p.done?.length||0), 0);
-        const pct = total ? Math.round(done/total*100) : 0;
-        html = '<div class="stat-detail"><div style="font-size:40px">⏳</div><div class="stat-detail-n" style="color:var(--yellow)">'+pct+'%</div><div class="stat-detail-l">Overall Progress</div></div>';
-        html += '<div class="stat-bar" style="height:10px;margin-top:16px"><div style="width:'+pct+'%;height:100%;background:linear-gradient(90deg,var(--yellow),var(--secondary));border-radius:5px"></div></div>';
-        html += '<div style="text-align:center;margin-top:8px;color:var(--text);font-size:12px">'+done+' of '+total+' tasks complete</div>';
-      } else if(type === 'blocked') {
-        const blocked = data.filter(p => p.status === 'red');
-        html = '<div class="stat-detail"><div style="font-size:40px">🚫</div><div class="stat-detail-n" style="color:var(--red)">'+blocked.length+'</div><div class="stat-detail-l">Blocked Projects</div></div>';
-        if(blocked.length) {
-          html += '<div class="stat-list">';
-          blocked.forEach(p => {
-            html += '<div style="padding:10px;background:var(--bg-hover);border-radius:8px;margin-bottom:6px"><div style="font-size:13px;font-weight:700">'+p.name+'</div>';
-            if(p.blockers?.length) p.blockers.forEach(b => html += '<div style="font-size:11px;color:var(--red);margin-top:4px">• '+b+'</div>');
-            html += '</div>';
-          });
-          html += '</div>';
-        }
-      } else if(type === 'tasks') {
-        const total = data.reduce((a,p) => a + (p.done?.length||0) + (p.todo?.length||0), 0);
-        const done = data.reduce((a,p) => a + (p.done?.length||0), 0);
-        const todo = data.reduce((a,p) => a + (p.todo?.length||0), 0);
-        html = '<div class="stat-detail"><div style="font-size:40px">📋</div><div class="stat-detail-n" style="color:var(--blue)">'+total+'</div><div class="stat-detail-l">Total Tasks</div></div>';
-        html += '<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:16px"><div style="text-align:center;padding:12px;background:var(--bg-hover);border-radius:10px"><div style="font-size:20px;font-weight:800;color:var(--secondary)">'+done+'</div><div style="font-size:10px;color:var(--text)">Done</div></div><div style="text-align:center;padding:12px;background:var(--bg-hover);border-radius:10px"><div style="font-size:20px;font-weight:800;color:var(--yellow)">'+todo+'</div><div style="font-size:10px;color:var(--text)">To Do</div></div></div>';
+    let currentStatTab=null;
+    function toggleStatTab(type,el){
+      const panel=document.getElementById('stPanel');
+      const isSame=currentStatTab===type;
+      document.querySelectorAll('.st-tab').forEach(t=>t.classList.remove('on'));
+      if(isSame){panel.classList.remove('on');currentStatTab=null;return}
+      el.classList.add('on');
+      currentStatTab=type;
+      let html='';
+      if(type==='active'){
+        const active=data.filter(p=>p.status==='green');
+        html='<div class="st-panel-h"><div style="font-size:14px;font-weight:700;color:var(--secondary)">✅ Active Projects</div><button class="st-panel-close" onclick="closeStatTab()">×</button></div>';
+        if(active.length){html+='<div class="st-panel-list">';active.forEach(p=>html+='<div class="st-panel-item"><span>'+p.name+'</span><span style="color:var(--secondary)">'+(p.done?.length||0)+'/'+((p.done?.length||0)+(p.todo?.length||0))+'</span></div>');html+='</div>'}else{html+='<div style="text-align:center;color:var(--text);padding:20px">No active projects</div>'}
+      }else if(type==='progress'){
+        const total=data.reduce((a,p)=>a+(p.done?.length||0)+(p.todo?.length||0),0);
+        const done=data.reduce((a,p)=>a+(p.done?.length||0),0);
+        const pct=total?Math.round(done/total*100):0;
+        html='<div class="st-panel-h"><div style="font-size:14px;font-weight:700;color:var(--yellow)">⏳ Overall Progress</div><button class="st-panel-close" onclick="closeStatTab()">×</button></div>';
+        html+='<div style="text-align:center;padding:20px"><div style="font-size:48px;font-weight:800;color:var(--yellow)">'+pct+'%</div><div style="height:10px;background:var(--bg-hover);border-radius:5px;margin:16px 0"><div style="width:'+pct+'%;height:100%;background:linear-gradient(90deg,var(--yellow),var(--secondary));border-radius:5px"></div></div><div style="font-size:12px;color:var(--text)">'+done+' of '+total+' tasks complete</div></div>';
+      }else if(type==='blocked'){
+        const blocked=data.filter(p=>p.status==='red');
+        html='<div class="st-panel-h"><div style="font-size:14px;font-weight:700;color:var(--red)">🚫 Blocked Projects</div><button class="st-panel-close" onclick="closeStatTab()">×</button></div>';
+        if(blocked.length){html+='<div class="st-panel-list">';blocked.forEach(p=>{html+='<div class="st-panel-item" style="flex-direction:column;align-items:flex-start"><span style="font-weight:700">'+p.name+'</span>';if(p.blockers?.length)p.blockers.forEach(b=>html+='<span style="font-size:11px;color:var(--red);margin-top:4px">• '+b+'</span>');html+='</div>'});html+='</div>'}else{html+='<div style="text-align:center;color:var(--text);padding:20px">🎉 No blocked projects!</div>'}
+      }else if(type==='tasks'){
+        const total=data.reduce((a,p)=>a+(p.done?.length||0)+(p.todo?.length||0),0);
+        const done=data.reduce((a,p)=>a+(p.done?.length||0),0);
+        const todo=data.reduce((a,p)=>a+(p.todo?.length||0),0);
+        html='<div class="st-panel-h"><div style="font-size:14px;font-weight:700;color:var(--blue)">📋 Total Tasks</div><button class="st-panel-close" onclick="closeStatTab()">×</button></div>';
+        html+='<div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:10px"><div style="text-align:center;padding:16px;background:var(--bg-hover);border-radius:12px"><div style="font-size:32px;font-weight:800;color:var(--secondary)">'+done+'</div><div style="font-size:11px;color:var(--text)">Done</div></div><div style="text-align:center;padding:16px;background:var(--bg-hover);border-radius:12px"><div style="font-size:32px;font-weight:800;color:var(--yellow)">'+todo+'</div><div style="font-size:11px;color:var(--text)">To Do</div></div></div>';
       }
-      
-      content.innerHTML = html;
+      panel.innerHTML=html;
+      panel.classList.add('on');
+      playSound('modal');
     }
-    function closeStats(){document.getElementById('statsPanel').classList.remove('show');playSound('close')}
+    function closeStatTab(){document.querySelectorAll('.st-tab').forEach(t=>t.classList.remove('on'));document.getElementById('stPanel').classList.remove('on');currentStatTab=null;playSound('close')}
   </script>
-
-
-  <div class="stats-panel" id="statsPanel" onclick="if(event.target===this)closeStats()">
-    <button class="stats-close" onclick="closeStats()">×</button>
-    <div class="stats-content" id="statsContent">
-    </div>
-  </div>
-  </body>
+</body>
 </html>
