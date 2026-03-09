@@ -69,16 +69,17 @@
     :root .green .p-f{background:var(--secondary)}:root .red .p-f{background:var(--red)}:root .yellow .p-f{background:var(--yellow)}
     .p-m{display:flex;justify-content:space-between;font-size:11px;color:var(--text);font-weight:600}
     .p-bd{display:none;padding-top:12px;border-top:1px solid var(--border);margin-top:12px}
-    .p-bd.on{display:block;animation:slideIn 0.3s;margin-top:12px;border-left:4px solid currentColor;background:var(--bg-hover);border-radius:8px;padding:12px}
+    .p-bd.on{display:block;animation:slideIn 0.3s;margin-top:12px;border-left:4px solid currentColor;background:var(--bg-hover);border-radius:8px;padding:16px}
+    .p-bd .sec{margin-top:12px}
     .green .p-bd.on{border-left-color:var(--secondary)}
     .red .p-bd.on{border-left-color:var(--red)}
     .yellow .p-bd.on{border-left-color:var(--yellow)}
-    .sec{margin-bottom:12px}
-    .s-h{font-size:13px;font-weight:700;padding:12px 16px;background:var(--bg-card);border-radius:10px;cursor:pointer;display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;border:1px solid var(--border)}
+    .sec{margin-bottom:16px}
+    .s-h{font-size:13px;font-weight:700;padding:10px 12px;background:var(--bg-card);border-radius:8px;cursor:pointer;display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;border:1px solid var(--border)}
     .s-h:hover{border-color:var(--primary)}
     .s-h.y{color:var(--yellow)}.s-h.b{color:var(--blue)}
-    .s-l{display:none;padding-left:4px}.s-l.on{display:block}
-    .t{padding:12px 16px;background:var(--bg-card);border-radius:10px;margin-bottom:8px;font-size:14px;display:flex;align-items:center;gap:14px;cursor:pointer;border:1px solid var(--border);transition:0.2s}
+    .s-l{display:none;padding-left:8px;margin-top:8px}.s-l.on{display:block}
+    .t{padding:10px 12px;background:var(--bg-card);border-radius:8px;margin-bottom:6px;font-size:13px;display:flex;align-items:center;gap:10px;cursor:pointer;border:1px solid var(--border);transition:0.2s}
     .t:hover{background:var(--bg-card);border-color:var(--border)}
     .t.o{opacity:0.5;text-decoration:line-through}
     .t-c{width:18px;height:18px;border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800}
@@ -296,7 +297,7 @@
       document.getElementById('streak').textContent=streak;
       if(!pf.length){document.getElementById('p').innerHTML='<div style="padding:40px;text-align:center;color:var(--text);font-size:14px">No projects</div>';return}
       let h='';pf.forEach((p,i)=>{const d=p.done?.length||0,td=p.todo?.length||0,tot=d+td,pc=tot?Math.round(d/tot*100):0;const fs=files[p.key]||[];const id=p.key||'p'+i;
-        h+=`<div class="proj ${p.status}" onclick="toggle('${id}')"><div class="proj-inner"><div class="p-h"><div class="p-l"><div class="p-i"></div><span class="p-n">${p.name}</span></div><span class="p-b">${p.status}</span></div><div class="p-bar"><div class="p-f" style="width:${pc}%"></div></div><div class="p-m"><span>${d}/${tot}</span><span>${pc}%</span></div><div class="p-bd" id="b-${id}">`;
+        h+=`<div class="proj ${p.status}" onclick="toggle('${id}')"><div class="proj-inner"><div class="p-h"><div class="p-l"><div class="p-i"></div><span class="p-n">${p.name}</span></div><span class="p-b">${p.status}</span></div><div class="p-bar"><div class="p-f" style="width:${pc}%"></div></div><div class="p-m"><span>${d}/${tot}</span><span>${pc}%</span></div><div class="p-bd" id="b-${id}" onclick="event.stopPropagation()">`;
         if(p.blockers?.length)p.blockers.forEach(b=>h+=`<div class="blk">🚫 ${b}</div>`);
         if(p.done?.length){h+=`<div class="sec"><div class="s-h" onclick="event.stopPropagation();toggS(this);playSound('tap')">✅ Done (${p.done.length}) <span class="arr">▼</span></div><div class="s-l">`;p.done.forEach((t,j)=>{const k=id+'-'+j,ck=checked[k]?' o':'';h+=`<div class="t${ck}" onclick="event.stopPropagation();chk('${id}',${j})"><span class="t-c d">✓</span> <span class="t-tex">${typeof t==='string'?t:t.task||''}</span></div>`});h+='</div></div>'}
         if(p.todo?.length){h+=`<div class="sec"><div class="s-h y" onclick="event.stopPropagation();toggS(this);playSound('tap')">⬜ To Do (${p.todo.length}) <span class="arr">▼</span></div><div class="s-l">`;p.todo.forEach((t,j)=>{const taskText=typeof t==='string'?t:t.task||'';h+=`<div class="t"><span class="t-c o"></span> <span class="t-tex">${taskText}</span> <button class="send-btn" onclick="event.stopPropagation();sendToG('${p.name}','${taskText.replace(/'/g,"\\'")}')">📱</button></div>`});h+='</div></div>'}
