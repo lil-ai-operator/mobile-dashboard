@@ -44,7 +44,11 @@
     .st-tab.y .st-tab-n{color:var(--yellow)}
     .st-tab.r .st-tab-n{color:var(--red)}
     .st-tab.b .st-tab-n{color:var(--blue)}
-    .st-panel{background:var(--bg-card);border-radius:16px;padding:16px;margin-bottom:12px;display:none;animation:slideUp 0.3s}
+    .st-panel{background:var(--bg-card);border-radius:16px;padding:16px;margin-bottom:12px;display:none;animation:slideUp 0.3s;border:2px solid var(--border);transition:border-color 0.3s,box-shadow 0.3s}
+    .st-panel.g{border-color:var(--secondary);box-shadow:0 0 20px rgba(0,229,160,0.2)}
+    .st-panel.y{border-color:var(--yellow);box-shadow:0 0 20px rgba(245,158,11,0.2)}
+    .st-panel.r{border-color:var(--red);box-shadow:0 0 20px rgba(239,68,68,0.2)}
+    .st-panel.b{border-color:var(--blue);box-shadow:0 0 20px rgba(56,189,248,0.2)}
     .st-panel.on{display:block}
     .st-panel-h{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
     .st-panel-close{background:none;border:none;color:var(--text);font-size:20px;cursor:pointer;padding:4px}
@@ -383,9 +387,11 @@
       const panel=document.getElementById('stPanel');
       const isSame=currentStatTab===type;
       document.querySelectorAll('.st-tab').forEach(t=>t.classList.remove('on'));
+      panel.classList.remove('g','y','r','b');
       if(isSame){panel.classList.remove('on');currentStatTab=null;return}
       el.classList.add('on');
       currentStatTab=type;
+      const colorClass=type==='active'?'g':type==='progress'?'y':type==='blocked'?'r':'b';
       let html='';
       if(type==='active'){
         const active=data.filter(p=>p.status==='green');
@@ -409,10 +415,10 @@
         html+='<div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:10px"><div style="text-align:center;padding:16px;background:var(--bg-hover);border-radius:12px"><div style="font-size:32px;font-weight:800;color:var(--secondary)">'+done+'</div><div style="font-size:11px;color:var(--text)">Done</div></div><div style="text-align:center;padding:16px;background:var(--bg-hover);border-radius:12px"><div style="font-size:32px;font-weight:800;color:var(--yellow)">'+todo+'</div><div style="font-size:11px;color:var(--text)">To Do</div></div></div>';
       }
       panel.innerHTML=html;
-      panel.classList.add('on');
+      panel.classList.add('on',colorClass);
       playSound('modal');
     }
-    function closeStatTab(){document.querySelectorAll('.st-tab').forEach(t=>t.classList.remove('on'));document.getElementById('stPanel').classList.remove('on');currentStatTab=null;playSound('close')}
+    function closeStatTab(){document.querySelectorAll('.st-tab').forEach(t=>t.classList.remove('on'));const panel=document.getElementById('stPanel');panel.classList.remove('on','g','y','r','b');currentStatTab=null;playSound('close')}
   </script>
 </body>
 </html>
