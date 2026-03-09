@@ -30,14 +30,14 @@
     .fil:hover{border-color:var(--primary)}
     .fil.on{background:var(--primary);color:#fff;border-color:var(--primary)}
     .st{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:12px}
-    .st-tabs{display:flex;gap:4px;margin-bottom:0}
+    .st-tabs{display:flex;gap:4px;margin-bottom:0;position:relative;z-index:2}
     .st-tab{flex:1;padding:12px 8px;background:var(--bg-card);border:2px solid var(--border);border-radius:12px;text-align:center;cursor:pointer;transition:all 0.3s cubic-bezier(0.4,0,0.2,1)}
     .st-tab:hover{transform:translateY(-2px)}
     .st-tab.g{border-color:var(--secondary)}
     .st-tab.y{border-color:var(--yellow)}
     .st-tab.r{border-color:var(--red)}
     .st-tab.b{border-color:var(--blue)}
-    .st-tab.on{transform:scale(1.02);border-radius:12px 12px 0 0;border-bottom-color:transparent!important}
+    .st-tab.on{transform:scale(1.02);border-radius:12px 12px 0 0;border-bottom:none;margin-bottom:-2px;z-index:3}
     .st-tab.g.on{box-shadow:0 -4px 20px rgba(0,229,160,0.3)}
     .st-tab.y.on{box-shadow:0 -4px 20px rgba(245,158,11,0.3)}
     .st-tab.r.on{box-shadow:0 -4px 20px rgba(239,68,68,0.3)}
@@ -48,7 +48,8 @@
     .st-tab.y .st-tab-n{color:var(--yellow)}
     .st-tab.r .st-tab-n{color:var(--red)}
     .st-tab.b .st-tab-n{color:var(--blue)}
-    .st-panel{background:var(--bg-card);border-radius:0 0 16px 16px;padding:16px;margin-bottom:12px;display:none;animation:slideUp 0.3s;border:2px solid var(--border);border-top:none;margin-top:-2px;transition:border-color 0.3s,box-shadow 0.3s}
+    .st-panel-wrap{position:relative;z-index:1}
+    .st-panel{background:var(--bg-card);border-radius:0 0 16px 16px;padding:16px;margin-bottom:12px;display:none;animation:slideUp 0.3s;border:2px solid var(--border);border-top:2px solid var(--border);transition:border-color 0.3s,box-shadow 0.3s}
     .st-panel.on{display:block}
     .st-panel.g{border-color:var(--secondary);box-shadow:0 4px 20px rgba(0,229,160,0.2)}
     .st-panel.y{border-color:var(--yellow);box-shadow:0 4px 20px rgba(245,158,11,0.2)}
