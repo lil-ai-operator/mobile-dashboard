@@ -130,7 +130,7 @@
     .stats-panel{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.9);z-index:2000;display:none;align-items:center;justify-content:center;padding:20px;animation:fadeIn 0.3s}
     .stats-panel.show{display:flex}
     @keyframes fadeIn{from{opacity:0;transform:scale(0.9)}to{opacity:1;transform:scale(1)}}
-    .stats-content{background:var(--bg-card);border:2px solid var(--primary);border-radius:20px;padding:24px;width:100%;max-width:320px;max-height:80vh;overflow-y:auto;animation:slideUp 0.3s}
+    .stats-content{background:var(--bg-card);border-radius:20px;padding:24px;width:100%;max-width:320px;max-height:80vh;overflow-y:auto;animation:slideUp 0.3s}
     @keyframes slideUp{from{transform:translateY(20px);opacity:0}to{transform:translateY(0);opacity:1}}
     .stats-close{position:absolute;top:20px;right:20px;background:none;border:none;color:#fff;font-size:32px;cursor:pointer}
     .stat-detail{text-align:center;padding:20px}
@@ -161,9 +161,9 @@
     <div class="fil" onclick="setF('red',this)">Blocked</div>
   </div>
   <div class="st">
-    <div class="stat g" onclick="this.classList.toggle('on');openStats('active')"><div class="stat-n" id="g">0</div><div class="stat-l">ACTIVE</div></div>
-    <div class="stat y" onclick="this.classList.toggle('on');openStats('progress')"><div class="stat-n" id="y">0</div><div class="stat-l">IN PROGRESS</div></div>
-    <div class="stat r" onclick="this.classList.toggle('on');openStats('blocked')"><div class="stat-n" id="r">0</div><div class="stat-l">BLOCKED</div></div>
+    <div class="stat g" onclick="this.classList.toggle('on');openStats('active','green')"><div class="stat-n" id="g">0</div><div class="stat-l">ACTIVE</div></div>
+    <div class="stat y" onclick="this.classList.toggle('on');openStats('progress','yellow')"><div class="stat-n" id="y">0</div><div class="stat-l">IN PROGRESS</div></div>
+    <div class="stat r" onclick="this.classList.toggle('on');openStats('blocked','red')"><div class="stat-n" id="r">0</div><div class="stat-l">BLOCKED</div></div>
     <div class="stat blu" onclick="this.classList.toggle('on');openStats('tasks')"><div class="stat-n" id="t">0</div><div class="stat-l">TASKS</div></div>
   </div>
   <div class="prog">
@@ -307,9 +307,11 @@
     load();
   
     // Stats Panel - unique for each box
-    function openStats(type){
+    function openStats(type, color){
       const panel = document.getElementById('statsPanel');
       const content = document.getElementById('statsContent');
+      const colors = { green: 'var(--secondary)', yellow: 'var(--yellow)', red: 'var(--red)' };
+      content.style.border = '2px solid ' + (colors[color] || 'var(--primary)');
       panel.classList.add('show');
       playSound('modal');
       
