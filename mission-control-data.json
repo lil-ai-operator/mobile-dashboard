@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-03-09T06:59:19Z",
+  "updatedAt": "2026-03-09T10:10:25Z",
   "projects": [
     {
       "key": "autobookr_suite",
@@ -58,6 +58,14 @@
         {
           "task": "Implement waitlist for overcapacity periods",
           "completedAt": "2026-03-08"
+        },
+        {
+          "task": "Add analytics dashboard with conversion funnels",
+          "completedAt": "2026-03-09"
+        },
+        {
+          "task": "Implement waitlist for overcapacity periods",
+          "completedAt": "2026-03-09"
         },
         {
           "task": "Add analytics dashboard with conversion funnels",
@@ -155,6 +163,14 @@
         {
           "task": "Create backup status widget",
           "completedAt": "2026-03-09"
+        },
+        {
+          "task": "Add incremental backup option",
+          "completedAt": "2026-03-09"
+        },
+        {
+          "task": "Create backup status widget",
+          "completedAt": "2026-03-09"
         }
       ],
       "todo": [
@@ -203,6 +219,10 @@
         {
           "task": "Create region health monitoring",
           "completedAt": "2026-03-08"
+        },
+        {
+          "task": "Create region health monitoring",
+          "completedAt": "2026-03-09"
         },
         {
           "task": "Create region health monitoring",
@@ -496,6 +516,123 @@
       "projectName": "✨ Clare Reiki/Spiritual Business",
       "count": 0,
       "tasks": []
+    },
+    "2026-03-09_autobookr_suite": {
+      "date": "2026-03-09",
+      "project": "autobookr_suite",
+      "projectName": "📞 AutoBookr Suite (App + Landing)",
+      "count": 26,
+      "tasks": [
+        {
+          "task": "Implement waitlist for overcapacity periods",
+          "completedAt": "2026-03-08"
+        },
+        {
+          "task": "Add analytics dashboard with conversion funnels",
+          "completedAt": "2026-03-09"
+        },
+        {
+          "task": "Implement waitlist for overcapacity periods",
+          "completedAt": "2026-03-09"
+        },
+        {
+          "task": "Add analytics dashboard with conversion funnels",
+          "completedAt": "2026-03-09"
+        },
+        {
+          "task": "Implement waitlist for overcapacity periods",
+          "completedAt": "2026-03-09"
+        }
+      ]
+    },
+    "2026-03-09_mission_control": {
+      "date": "2026-03-09",
+      "project": "mission_control",
+      "projectName": "🚀 Mission Control",
+      "count": 4,
+      "tasks": [
+        "Build dashboard v2",
+        "Add files section",
+        "Add search & filters",
+        "Deploy to GitHub"
+      ]
+    },
+    "2026-03-09_system_backup": {
+      "date": "2026-03-09",
+      "project": "system_backup",
+      "projectName": "🛟 System Backup + Recovery",
+      "count": 18,
+      "tasks": [
+        {
+          "task": "Create backup status widget",
+          "completedAt": "2026-03-08"
+        },
+        {
+          "task": "Add incremental backup option",
+          "completedAt": "2026-03-09"
+        },
+        {
+          "task": "Create backup status widget",
+          "completedAt": "2026-03-09"
+        },
+        {
+          "task": "Add incremental backup option",
+          "completedAt": "2026-03-09"
+        },
+        {
+          "task": "Create backup status widget",
+          "completedAt": "2026-03-09"
+        }
+      ]
+    },
+    "2026-03-09_neuronet": {
+      "date": "2026-03-09",
+      "project": "neuronet",
+      "projectName": "🧠 NeuroNet Agent Team",
+      "count": 21,
+      "tasks": [
+        {
+          "task": "Create region health monitoring",
+          "completedAt": "2026-03-08"
+        },
+        {
+          "task": "Create region health monitoring",
+          "completedAt": "2026-03-08"
+        },
+        {
+          "task": "Create region health monitoring",
+          "completedAt": "2026-03-08"
+        },
+        {
+          "task": "Create region health monitoring",
+          "completedAt": "2026-03-09"
+        },
+        {
+          "task": "Create region health monitoring",
+          "completedAt": "2026-03-09"
+        }
+      ]
+    },
+    "2026-03-09_aavegotchi_bot": {
+      "date": "2026-03-09",
+      "project": "aavegotchi_bot",
+      "projectName": "👻 Aavegotchi Petting Bot",
+      "count": 0,
+      "tasks": []
+    },
+    "2026-03-09_etsy_business": {
+      "date": "2026-03-09",
+      "project": "etsy_business",
+      "projectName": "🛍️ Etsy Business",
+      "count": 0,
+      "tasks": []
+    },
+    "2026-03-09_clare_reiki": {
+      "date": "2026-03-09",
+      "project": "clare_reiki",
+      "projectName": "✨ Clare Reiki/Spiritual Business",
+      "count": 0,
+      "tasks": []
     }
   },
   "weeklyCompleted": {
@@ -641,6 +778,174 @@
     },
     "2026-W09_clare_reiki": {
       "week": "2026-W09",
+      "project": "clare_reiki",
+      "projectName": "✨ Clare Reiki/Spiritual Business",
+      "count": 0,
+      "tasks": []
+    },
+    "2026-W10_autobookr_suite": {
+      "week": "2026-W10",
+      "project": "autobookr_suite",
+      "projectName": "📞 AutoBookr Suite (App + Landing)",
+      "count": 26,
+      "tasks": [
+        {
+          "task": "Add analytics dashboard with conversion funnels",
+          "completedAt": "2026-03-08"
+        },
+        {
+          "task": "Implement waitlist for overcapacity periods",
+          "completedAt": "2026-03-08"
+        },
+        {
+          "task": "Add analytics dashboard with conversion funnels",
+          "completedAt": "2026-03-08"
+        },
+        {
+          "task": "Implement waitlist for overcapacity periods",
+          "completedAt": "2026-03-08"
+        },
+        {
+          "task": "Add analytics dashboard with conversion funnels",
+          "completedAt": "2026-03-08"
+        },
+        {
+          "task": "Implement waitlist for overcapacity periods",
+          "completedAt": "2026-03-08"
+        },
+        {
+          "task": "Add analytics dashboard with conversion funnels",
+          "completedAt": "2026-03-09"
+        },
+        {
+          "task": "Implement waitlist for overcapacity periods",
+          "completedAt": "2026-03-09"
+        },
+        {
+          "task": "Add analytics dashboard with conversion funnels",
+          "completedAt": "2026-03-09"
+        },
+        {
+          "task": "Implement waitlist for overcapacity periods",
+          "completedAt": "2026-03-09"
+        }
+      ]
+    },
+    "2026-W10_mission_control": {
+      "week": "2026-W10",
+      "project": "mission_control",
+      "projectName": "🚀 Mission Control",
+      "count": 4,
+      "tasks": [
+        "Build dashboard v2",
+        "Add files section",
+        "Add search & filters",
+        "Deploy to GitHub"
+      ]
+    },
+    "2026-W10_system_backup": {
+      "week": "2026-W10",
+      "project": "system_backup",
+      "projectName": "🛟 System Backup + Recovery",
+      "count": 18,
+      "tasks": [
+        {
+          "task": "Add incremental backup option",
+          "completedAt": "2026-03-08"
+        },
+        {
+          "task": "Create backup status widget",
+          "completedAt": "2026-03-08"
+        },
+        {
+          "task": "Add incremental backup option",
+          "completedAt": "2026-03-08"
+        },
+        {
+          "task": "Create backup status widget",
+          "completedAt": "2026-03-08"
+        },
+        {
+          "task": "Add incremental backup option",
+          "completedAt": "2026-03-08"
+        },
+        {
+          "task": "Create backup status widget",
+          "completedAt": "2026-03-08"
+        },
+        {
+          "task": "Add incremental backup option",
+          "completedAt": "2026-03-09"
+        },
+        {
+          "task": "Create backup status widget",
+          "completedAt": "2026-03-09"
+        },
+        {
+          "task": "Add incremental backup option",
+          "completedAt": "2026-03-09"
+        },
+        {
+          "task": "Create backup status widget",
+          "completedAt": "2026-03-09"
+        }
+      ]
+    },
+    "2026-W10_neuronet": {
+      "week": "2026-W10",
+      "project": "neuronet",
+      "projectName": "🧠 NeuroNet Agent Team",
+      "count": 21,
+      "tasks": [
+        "Define handoff format between regions",
+        "Add region prompts/checklists",
+        "projects/NeuroNetAgentTeam/docs/handoff-protocol.md",
+        {
+          "task": "Create region health monitoring",
+          "completedAt": "2026-03-08"
+        },
+        {
+          "task": "Create region health monitoring",
+          "completedAt": "2026-03-08"
+        },
+        {
+          "task": "Create region health monitoring",
+          "completedAt": "2026-03-08"
+        },
+        {
+          "task": "Create region health monitoring",
+          "completedAt": "2026-03-08"
+        },
+        {
+          "task": "Create region health monitoring",
+          "completedAt": "2026-03-08"
+        },
+        {
+          "task": "Create region health monitoring",
+          "completedAt": "2026-03-09"
+        },
+        {
+          "task": "Create region health monitoring",
+          "completedAt": "2026-03-09"
+        }
+      ]
+    },
+    "2026-W10_aavegotchi_bot": {
+      "week": "2026-W10",
+      "project": "aavegotchi_bot",
+      "projectName": "👻 Aavegotchi Petting Bot",
+      "count": 0,
+      "tasks": []
+    },
+    "2026-W10_etsy_business": {
+      "week": "2026-W10",
+      "project": "etsy_business",
+      "projectName": "🛍️ Etsy Business",
+      "count": 0,
+      "tasks": []
+    },
+    "2026-W10_clare_reiki": {
+      "week": "2026-W10",
       "project": "clare_reiki",
       "projectName": "✨ Clare Reiki/Spiritual Business",
       "count": 0,
