@@ -30,52 +30,15 @@
     .fil:hover{border-color:var(--primary)}
     .fil.on{background:var(--primary);color:#fff;border-color:var(--primary)}
     .st{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:12px}
-    .st-tabs{display:flex;gap:4px;margin-bottom:0;position:relative;z-index:2}
-    .st-tab{flex:1;padding:12px 8px;background:var(--bg-card);border:2px solid var(--border);border-radius:12px;text-align:center;cursor:pointer;transition:all 0.3s cubic-bezier(0.4,0,0.2,1)}
-    .st-tab:hover{transform:translateY(-2px)}
-    .st-tab.g{border-color:var(--secondary)}
-    .st-tab.y{border-color:var(--yellow)}
-    .st-tab.r{border-color:var(--red)}
-    .st-tab.b{border-color:var(--blue)}
-    .st-tab.on{transform:scale(1.02);border-radius:12px 12px 0 0;border-bottom:none;margin-bottom:-2px;z-index:3;animation:tabPulse 2s ease-in-out infinite}
-    .st-tab.g.on{box-shadow:0 -4px 20px rgba(0,229,160,0.3),0 0 30px rgba(0,229,160,0.2)}
-    .st-tab.y.on{box-shadow:0 -4px 20px rgba(245,158,11,0.3),0 0 30px rgba(245,158,11,0.2)}
-    .st-tab.r.on{box-shadow:0 -4px 20px rgba(239,68,68,0.3),0 0 30px rgba(239,68,68,0.2)}
-    .st-tab.b.on{box-shadow:0 -4px 20px rgba(56,189,248,0.3),0 0 30px rgba(56,189,248,0.2)}
-    .st-tab-n{font-size:20px;font-weight:800}
-    .st-tab-l{font-size:9px;color:var(--text);margin-top:2px;font-weight:600;text-transform:uppercase}
-    .st-tab.g .st-tab-n{color:var(--secondary)}
-    .st-tab.y .st-tab-n{color:var(--yellow)}
-    .st-tab.r .st-tab-n{color:var(--red)}
-    .st-tab.b .st-tab-n{color:var(--blue)}
-    .st-panel-wrap{position:relative;z-index:1}
-    .st-panel{background:var(--bg-card);border-radius:0 0 16px 16px;padding:16px;margin-bottom:12px;display:none;animation:panelPop 0.4s cubic-bezier(0.34,1.56,0.64,1) forwards;border:2px solid var(--border);border-top:2px solid var(--border);transition:border-color 0.3s,box-shadow 0.3s;transform-origin:top center}
-    .st-panel.on{display:block}
-    .st-panel.g{border-color:var(--secondary);box-shadow:0 4px 30px rgba(0,229,160,0.3),inset 0 1px 0 rgba(0,229,160,0.1);animation:panelPop 0.4s cubic-bezier(0.34,1.56,0.64,1) forwards,glowPulse 3s ease-in-out infinite 0.4s}
-    .st-panel.y{border-color:var(--yellow);box-shadow:0 4px 30px rgba(245,158,11,0.3),inset 0 1px 0 rgba(245,158,11,0.1);animation:panelPop 0.4s cubic-bezier(0.34,1.56,0.64,1) forwards;--glow-color:rgba(245,158,11,0.3)}
-    .st-panel.r{border-color:var(--red);box-shadow:0 4px 30px rgba(239,68,68,0.3),inset 0 1px 0 rgba(239,68,68,0.1);animation:panelPop 0.4s cubic-bezier(0.34,1.56,0.64,1) forwards;--glow-color:rgba(239,68,68,0.3)}
-    .st-panel.b{border-color:var(--blue);box-shadow:0 4px 30px rgba(56,189,248,0.3),inset 0 1px 0 rgba(56,189,248,0.1);animation:panelPop 0.4s cubic-bezier(0.34,1.56,0.64,1) forwards;--glow-color:rgba(56,189,248,0.3)}
-    .st-panel-h{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
-    .st-panel-close{background:none;border:none;color:var(--text);font-size:20px;cursor:pointer;padding:4px;transition:transform 0.2s,background 0.2s;border-radius:50%;animation:itemSlide 0.3s backwards}
-    .st-panel-close:hover{transform:scale(1.2);background:var(--bg-hover)}
-    .st-panel-list{max-height:200px;overflow-y:auto}
-    .st-panel-item{display:flex;justify-content:space-between;padding:10px;background:var(--bg-hover);border-radius:8px;margin-bottom:6px;font-size:13px;transition:transform 0.2s;animation:itemSlide 0.35s cubic-bezier(0.34,1.56,0.64,1) backwards}
-    .st-panel-item:nth-child(1){animation-delay:0.05s}.st-panel-item:nth-child(2){animation-delay:0.1s}.st-panel-item:nth-child(3){animation-delay:0.15s}.st-panel-item:nth-child(4){animation-delay:0.2s}.st-panel-item:nth-child(5){animation-delay:0.25s}.st-panel-item:nth-child(6){animation-delay:0.3s}.st-panel-item:nth-child(7){animation-delay:0.35s}.st-panel-item:nth-child(8){animation-delay:0.4s}
-    .st-panel-item:hover{transform:translateX(4px);background:var(--bg-card);box-shadow:0 2px 10px rgba(0,0,0,0.2)}
-    .stat{background:var(--bg-card);border-radius:12px;padding:12px 8px;text-align:center;border:2px solid var(--border);cursor:pointer;transition:all 0.3s cubic-bezier(0.4,0,0.2,1)}
+    .stat{background:var(--bg-card);border-radius:12px;padding:12px 8px;text-align:center;border:2px solid var(--border)}
     .stat.g{border-color:var(--secondary);box-shadow:0 0 15px rgba(0,229,160,0.3)}
-    .stat.on{border-width:3px;padding:11px 7px;transform:scale(1.05);z-index:10;animation:statGlow 2s ease-in-out infinite}
+    .stat.on{border-width:3px;padding:11px 7px}
     [data-theme="light"] .stat{box-shadow:none}
     .stat.r{border-color:var(--red);box-shadow:0 0 15px rgba(239,68,68,0.3)}
-    .stat.r.on{border-color:var(--red);box-shadow:0 0 25px rgba(239,68,68,0.5);transform:scale(1.05);animation:statGlowRed 2s ease-in-out infinite}
-    .stat.y{border-color:var(--yellow);box-shadow:0 0 15px rgba(245,158,11,0.3)}
-    .stat.y.on{border-color:var(--yellow);box-shadow:0 0 25px rgba(245,158,11,0.5);transform:scale(1.05);animation:statGlowYellow 2s ease-in-out infinite}
-    .stat.blu{border-color:var(--blue);box-shadow:0 0 15px rgba(56,189,248,0.3)}
-    .stat.blu.on{border-color:var(--blue);box-shadow:0 0 25px rgba(56,189,248,0.5);transform:scale(1.05);animation:statGlowBlue 2s ease-in-out infinite}
-    .stat:active{transform:scale(0.95)}
-    .stat-n{font-size:20px;font-weight:800;transition:transform 0.3s}
-    .stat.on .stat-n{transform:scale(1.1)}
-    .stat-l{font-size:9px;color:var(--text);margin-top:2px;font-weight:600;text-transform:uppercase}
+    .stat.r.on{border-color:var(--red);box-shadow:0 0 15px rgba(239,68,68,0.4);transform:scale(1.02)}.stat.y{border-color:var(--yellow);box-shadow:0 0 15px rgba(245,158,11,0.3)}
+    .stat.y.on{border-color:var(--yellow);box-shadow:0 0 15px rgba(245,158,11,0.4);transform:scale(1.02)}.stat.blu{border-color:var(--blue);box-shadow:0 0 15px rgba(56,189,248,0.3)}
+    .stat.blu.on{border-color:var(--blue);box-shadow:0 0 15px rgba(56,189,248,0.4);transform:scale(1.02)}
+    .stat-n{font-size:20px;font-weight:800}.stat-l{font-size:9px;color:var(--text);margin-top:2px;font-weight:600;text-transform:uppercase}
     .g .stat-n{color:var(--secondary)}.r .stat-n{color:var(--red)}.y .stat-n{color:var(--yellow)}.b .stat-n{color:var(--blue)}
     .prog{margin-bottom:12px;background:var(--bg-card);border-radius:12px;padding:12px 16px;border:1px solid var(--border)}
     .prog-h{display:flex;justify-content:space-between;margin-bottom:8px;font-size:12px}
@@ -118,39 +81,6 @@
     .s-h{font-size:13px;font-weight:700;padding:10px 12px;background:var(--bg-card);border-radius:8px;cursor:pointer;display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
     .s-h.y{color:var(--yellow)}.s-h.b{color:var(--blue)}
     .s-l{display:none;padding-left:8px;margin-top:8px;max-height:250px;overflow-y:auto}.s-l.on{display:block}
-    /* Pull to refresh */
-    .pull-indicator{position:fixed;top:0;left:0;right:0;height:50px;display:flex;align-items:center;justify-content:center;font-size:20px;transition:transform 0.2s;z-index:50;background:var(--bg);border-radius:0 0 20px 20px;transform:translateY(-50px)}
-    .pull-indicator.pulling{transform:translateY(0)}
-    /* Search improvements */
-    .search-wrap{position:relative;flex:1;min-width:100px}
-    .search-clear{position:absolute;right:8px;top:50%;transform:translateY(-50%);background:var(--border);border:none;border-radius:50%;width:20px;height:20px;cursor:pointer;color:var(--text-bright);font-size:12px;display:none}
-    .search-wrap.has-text .search-clear{display:flex;align-items:center;justify-content:center}
-    .search-results{position:absolute;top:100%;left:0;right:0;background:var(--bg-card);border:1px solid var(--border);border-radius:8px;padding:6px 12px;font-size:11px;color:var(--text);margin-top:4px;display:none}
-    .search-wrap.has-results .search-results{display:block}
-    /* Empty state */
-    .empty-state{padding:40px 20px;text-align:center;color:var(--text)}
-    .empty-state-icon{font-size:48px;margin-bottom:16px}
-    .empty-state-title{font-size:16px;font-weight:700;color:var(--text-bright);margin-bottom:8px}
-    .empty-state-text{font-size:13px}
-    /* Stats shortcuts */
-    .stat{cursor:pointer;transition:all 0.2s}
-    .stat:active{transform:scale(0.95)}
-    /* Keyboard hint */
-    .kbd-hint{position:fixed;bottom:70px;left:50%;transform:translateX(-50%);background:var(--bg-card);border:1px solid var(--border);border-radius:20px;padding:6px 14px;font-size:10px;color:var(--text);z-index:90;opacity:0;transition:opacity 0.3s}
-    .kbd-hint.show{opacity:1}
-    /* Animation toggle */
-    .anim-toggle{position:fixed;bottom:20px;left:70px;width:40px;height:40px;border-radius:50%;background:var(--bg-card);border:2px solid var(--border);color:var(--text);font-size:14px;cursor:pointer;z-index:100;display:flex;align-items:center;justify-content:center}
-    .anim-toggle.on{border-color:var(--secondary);color:var(--secondary)}
-    /* Section badge */
-    .s-h .badge{font-size:10px;padding:2px 6px;border-radius:10px;background:var(--bg-hover);margin-left:8px}
-    .s-h .badge.done{background:rgba(0,229,160,0.2);color:var(--secondary)}
-    /* Reduced motion */
-    @media(prefers-reduced-motion:reduce){*{animation-duration:0.01ms!important;transition-duration:0.01ms!important}}
-    .reduce-motion *{animation-duration:0.01ms!important;transition-duration:0.01ms!important}
-    /* Notification badge */
-    .notif-badge{position:absolute;top:-4px;right:-4px;background:var(--red);color:#fff;font-size:9px;font-weight:700;min-width:16px;height:16px;border-radius:8px;display:flex;align-items:center;justify-content:center}
-    .notif-clear{padding:10px;text-align:center}
-    .notif-clear button{background:var(--primary);border:none;border-radius:8px;padding:8px 16px;color:#fff;font-size:11px;cursor:pointer}
     .t{padding:10px 12px;background:var(--bg-card);border-radius:8px;margin-bottom:6px;font-size:13px;display:flex;align-items:center;gap:10px;cursor:pointer;transition:0.2s}
     .t.o{opacity:0.6}
     .t-c{width:18px;height:18px;border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800}
@@ -198,34 +128,21 @@
     .notif-close{background:none;border:none;color:var(--text);font-size:24px;cursor:pointer}
     .notif-item{padding:14px;border-bottom:1px solid var(--border);font-size:13px}
     .notif-item .time{font-size:10px;color:var(--text);margin-top:6px}
-
-    .stats-panel{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0);z-index:2000;display:none;align-items:center;justify-content:center;padding:20px;transition:background 0.3s}
-    .stats-panel.show{display:flex;background:rgba(0,0,0,0.8)}
-    .stats-content{background:var(--bg-card);border-radius:20px;padding:24px;width:100%;max-width:320px;max-height:80vh;overflow-y:auto;transform:scale(0.9) translateY(20px);opacity:0;transition:all 0.3s cubic-bezier(0.4,0,0.2,1)}
-    .stats-panel.show .stats-content{transform:scale(1) translateY(0);opacity:1}
+  
+    .stats-panel{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.9);z-index:2000;display:none;align-items:center;justify-content:center;padding:20px;animation:fadeIn 0.3s}
+    .stats-panel.show{display:flex}
     @keyframes fadeIn{from{opacity:0;transform:scale(0.9)}to{opacity:1;transform:scale(1)}}
     .stats-content{background:var(--bg-card);border-radius:20px;padding:24px;width:100%;max-width:320px;max-height:80vh;overflow-y:auto;animation:slideUp 0.3s}
     @keyframes slideUp{from{transform:translateY(20px);opacity:0}to{transform:translateY(0);opacity:1}}
-    @keyframes panelPop{0%{opacity:0;transform:scale(0.95) translateY(-10px)}60%{opacity:1;transform:scale(1.02) translateY(2px)}100%{transform:scale(1) translateY(0)}}
-    @keyframes tabPulse{0%,100%{box-shadow:0 -4px 20px rgba(0,229,160,0.3),0 0 20px rgba(0,229,160,0.15)}50%{box-shadow:0 -4px 25px rgba(0,229,160,0.5),0 0 40px rgba(0,229,160,0.25)}}
-    @keyframes itemSlide{from{opacity:0;transform:translateX(-15px)}to{opacity:1;transform:translateX(0)}}
-    @keyframes glowPulse{0%,100%{box-shadow:0 4px 20px rgba(0,229,160,0.2)}50%{box-shadow:0 4px 35px rgba(0,229,160,0.4),0 0 15px rgba(0,229,160,0.2)}}
-    @keyframes progressGrow{from{width:0%}to{width:var(--target-width,100%)}}
-    @keyframes statGlow{0%,100%{box-shadow:0 0 25px rgba(0,229,160,0.5),0 0 40px rgba(0,229,160,0.2)}50%{box-shadow:0 0 35px rgba(0,229,160,0.7),0 0 60px rgba(0,229,160,0.3)}}
-    @keyframes statGlowRed{0%,100%{box-shadow:0 0 25px rgba(239,68,68,0.5),0 0 40px rgba(239,68,68,0.2)}50%{box-shadow:0 0 35px rgba(239,68,68,0.7),0 0 60px rgba(239,68,68,0.3)}}
-    @keyframes statGlowYellow{0%,100%{box-shadow:0 0 25px rgba(245,158,11,0.5),0 0 40px rgba(245,158,11,0.2)}50%{box-shadow:0 0 35px rgba(245,158,11,0.7),0 0 60px rgba(245,158,11,0.3)}}
-    @keyframes statGlowBlue{0%,100%{box-shadow:0 0 25px rgba(56,189,248,0.5),0 0 40px rgba(56,189,248,0.2)}50%{box-shadow:0 0 35px rgba(56,189,248,0.7),0 0 60px rgba(56,189,248,0.3)}}}
     .stats-close{position:absolute;top:20px;right:20px;background:none;border:none;color:#fff;font-size:32px;cursor:pointer}
     .stat-detail{text-align:center;padding:20px}
     .stat-detail-n{font-size:48px;font-weight:800;margin:10px 0}
     .stat-detail-l{font-size:14px;color:var(--text)}
     .stat-list{text-align:left;margin-top:16px;max-height:200px;overflow-y:auto}
-    .stat-list-item{display:flex;justify-content:space-between;padding:10px;background:var(--bg-hover);border-radius:8px;margin-bottom:6px;font-size:13px;transition:transform 0.2s,background 0.2s}
-    .stat-list-item:hover{transform:translateX(4px);background:var(--bg-card)}
+    .stat-list-item{display:flex;justify-content:space-between;padding:10px;background:var(--bg-hover);border-radius:8px;margin-bottom:6px;font-size:13px}
   </style>
 </head>
 <body>
-  <div class="pull-indicator" id="pullIndicator">↓</div>
   <div class="hdr">
     <div class="logo">
       <img src="01_PEPE4-export.gif">
@@ -239,22 +156,17 @@
     </div>
   </div>
   <div class="sf">
-    <div class="search-wrap" id="searchWrap">
-      <input class="sch" id="s" placeholder="🔍 Search..." oninput="handleSearch()">
-      <button class="search-clear" onclick="clearSearch()">×</button>
-      <div class="search-results" id="searchResults"></div>
-    </div>
+    <input class="sch" id="s" placeholder="🔍 Search..." oninput="render()">
     <div class="fil on" onclick="setF('all',this)">All</div>
     <div class="fil" onclick="setF('green',this)">Active</div>
     <div class="fil" onclick="setF('red',this)">Blocked</div>
   </div>
-  <div class="st-tabs">
-    <div class="st-tab g" onclick="toggleStatTab('active',this)"><div class="st-tab-n" id="g">0</div><div class="st-tab-l">ACTIVE</div></div>
-    <div class="st-tab y" onclick="toggleStatTab('progress',this)"><div class="st-tab-n" id="y">0</div><div class="st-tab-l">IN PROGRESS</div></div>
-    <div class="st-tab r" onclick="toggleStatTab('blocked',this)"><div class="st-tab-n" id="r">0</div><div class="st-tab-l">BLOCKED</div></div>
-    <div class="st-tab b" onclick="toggleStatTab('tasks',this)"><div class="st-tab-n" id="t">0</div><div class="st-tab-l">TASKS</div></div>
+  <div class="st">
+    <div class="stat g" onclick="this.classList.toggle('on');openStats('active','green')"><div class="stat-n" id="g">0</div><div class="stat-l">ACTIVE</div></div>
+    <div class="stat y" onclick="this.classList.toggle('on');openStats('progress','yellow')"><div class="stat-n" id="y">0</div><div class="stat-l">IN PROGRESS</div></div>
+    <div class="stat r" onclick="this.classList.toggle('on');openStats('blocked','red')"><div class="stat-n" id="r">0</div><div class="stat-l">BLOCKED</div></div>
+    <div class="stat blu" onclick="this.classList.toggle('on');openStats('tasks','blue')"><div class="stat-n" id="t">0</div><div class="stat-l">TASKS</div></div>
   </div>
-  <div class="st-panel" id="stPanel"></div>
   <div class="prog">
     <div class="prog-h"><span class="prog-l">Weekly Progress</span><span class="prog-r" id="progPct">0%</span></div>
     <div class="prog-bar"><div class="prog-fill" id="progFill" style="width:0%"></div></div>
@@ -295,14 +207,14 @@
     // Distinct Zen Sound Palette
     let soundOn = false;
     let audioCtx = null;
-
+    
     function initAudio() {
       try {
         if (!audioCtx) { audioCtx = new (window.AudioContext || window.webkitAudioContext)(); }
         if (audioCtx.state === 'suspended') { audioCtx.resume(); }
       } catch(e) {}
     }
-
+    
     function playSound(type) {
       try {
         if (!soundOn || !audioCtx) return;
@@ -323,7 +235,7 @@
         }
       } catch(e) {}
     }
-
+    
     function t(freq, dur, dely, vol) {
       const osc = audioCtx.createOscillator();
       const gain = audioCtx.createGain();
@@ -334,7 +246,7 @@
       gain.gain.exponentialRampToValueAtTime(0.001, now + dur);
       osc.start(now); osc.stop(now + dur);
     }
-
+    
     function toggleSound() {
       soundOn = !soundOn;
       document.getElementById('soundToggle').textContent = soundOn ? '🔊' : '🔇';
@@ -396,45 +308,62 @@
       document.getElementById('p').innerHTML=h;
     }
     load();
-
+  
     // Stats Panel - unique for each box
-    let currentStatTab=null;
-    function toggleStatTab(type,el){
-      const panel=document.getElementById('stPanel');
-      const isSame=currentStatTab===type;
-      document.querySelectorAll('.st-tab').forEach(t=>t.classList.remove('on'));
-      panel.classList.remove('g','y','r','b');
-      if(isSame){panel.classList.remove('on');currentStatTab=null;return}
-      el.classList.add('on');
-      currentStatTab=type;
-      const colorClass=type==='active'?'g':type==='progress'?'y':type==='blocked'?'r':'b';
-      let html='';
-      if(type==='active'){
-        const active=data.filter(p=>p.status==='green');
-        html='<div class="st-panel-h"><div style="font-size:14px;font-weight:700;color:var(--secondary)">✅ Active Projects</div><button class="st-panel-close" onclick="closeStatTab()">×</button></div>';
-        if(active.length){html+='<div class="st-panel-list">';active.forEach(p=>html+='<div class="st-panel-item"><span>'+p.name+'</span><span style="color:var(--secondary)">'+(p.done?.length||0)+'/'+((p.done?.length||0)+(p.todo?.length||0))+'</span></div>');html+='</div>'}else{html+='<div style="text-align:center;color:var(--text);padding:20px">No active projects</div>'}
-      }else if(type==='progress'){
-        const total=data.reduce((a,p)=>a+(p.done?.length||0)+(p.todo?.length||0),0);
-        const done=data.reduce((a,p)=>a+(p.done?.length||0),0);
-        const pct=total?Math.round(done/total*100):0;
-        html='<div class="st-panel-h"><div style="font-size:14px;font-weight:700;color:var(--yellow)">⏳ Overall Progress</div><button class="st-panel-close" onclick="closeStatTab()">×</button></div>';
-        html+='<div style="text-align:center;padding:20px"><div style="font-size:48px;font-weight:800;color:var(--yellow);animation:itemSlide 0.4s backwards">'+pct+'%</div><div style="height:10px;background:var(--bg-hover);border-radius:5px;margin:16px 0;overflow:hidden"><div style="width:'+pct+'%;height:100%;background:linear-gradient(90deg,var(--yellow),var(--secondary));border-radius:5px;animation:progressGrow 1s cubic-bezier(0.34,1.56,0.64,1) backwards"></div></div><div style="font-size:12px;color:var(--text);animation:itemSlide 0.4s backwards;animation-delay:0.2s">'+done+' of '+total+' tasks complete</div></div>';
-      }else if(type==='blocked'){
-        const blocked=data.filter(p=>p.status==='red');
-        html='<div class="st-panel-h"><div style="font-size:14px;font-weight:700;color:var(--red)">🚫 Blocked Projects</div><button class="st-panel-close" onclick="closeStatTab()">×</button></div>';
-        if(blocked.length){html+='<div class="st-panel-list">';blocked.forEach(p=>{html+='<div class="st-panel-item" style="flex-direction:column;align-items:flex-start"><span style="font-weight:700">'+p.name+'</span>';if(p.blockers?.length)p.blockers.forEach(b=>html+='<span style="font-size:11px;color:var(--red);margin-top:4px">• '+b+'</span>');html+='</div>'});html+='</div>'}else{html+='<div style="text-align:center;color:var(--text);padding:20px">🎉 No blocked projects!</div>'}
-      }else if(type==='tasks'){
-        const total=data.reduce((a,p)=>a+(p.done?.length||0)+(p.todo?.length||0),0);
-        const done=data.reduce((a,p)=>a+(p.done?.length||0),0);
-        const todo=data.reduce((a,p)=>a+(p.todo?.length||0),0);
-        html='<div class="st-panel-h"><div style="font-size:14px;font-weight:700;color:var(--blue)">📋 Total Tasks</div><button class="st-panel-close" onclick="closeStatTab()">×</button></div>';
-        html+='<div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:10px"><div style="text-align:center;padding:16px;background:var(--bg-hover);border-radius:12px"><div style="font-size:32px;font-weight:800;color:var(--secondary)">'+done+'</div><div style="font-size:11px;color:var(--text)">Done</div></div><div style="text-align:center;padding:16px;background:var(--bg-hover);border-radius:12px"><div style="font-size:32px;font-weight:800;color:var(--yellow)">'+todo+'</div><div style="font-size:11px;color:var(--text)">To Do</div></div></div>';
-      }
-      panel.innerHTML=html;
-      panel.classList.add('on',colorClass);
+    function openStats(type, color){
+      const panel = document.getElementById('statsPanel');
+      const content = document.getElementById('statsContent');
+      const colors = { green: 'var(--secondary)', yellow: 'var(--yellow)', red: 'var(--red)', blue: 'var(--blue)' };
+      content.style.border = '2px solid ' + (colors[color] || 'var(--primary)');
+      panel.classList.add('show');
       playSound('modal');
+      
+      let html = '';
+      if(type === 'active') {
+        const active = data.filter(p => p.status === 'green');
+        html = '<div class="stat-detail"><div style="font-size:40px">✅</div><div class="stat-detail-n" style="color:var(--secondary)">'+active.length+'</div><div class="stat-detail-l">Active Projects</div></div>';
+        if(active.length) {
+          html += '<div class="stat-list">';
+          active.forEach(p => html += '<div class="stat-list-item"><span>'+p.name+'</span><span style="color:var(--secondary)">'+p.done?.length+'/'+((p.done?.length||0)+(p.todo?.length||0))+'</span></div>');
+          html += '</div>';
+        }
+      } else if(type === 'progress') {
+        const total = data.reduce((a,p) => a + (p.done?.length||0) + (p.todo?.length||0), 0);
+        const done = data.reduce((a,p) => a + (p.done?.length||0), 0);
+        const pct = total ? Math.round(done/total*100) : 0;
+        html = '<div class="stat-detail"><div style="font-size:40px">⏳</div><div class="stat-detail-n" style="color:var(--yellow)">'+pct+'%</div><div class="stat-detail-l">Overall Progress</div></div>';
+        html += '<div class="stat-bar" style="height:10px;margin-top:16px"><div style="width:'+pct+'%;height:100%;background:linear-gradient(90deg,var(--yellow),var(--secondary));border-radius:5px"></div></div>';
+        html += '<div style="text-align:center;margin-top:8px;color:var(--text);font-size:12px">'+done+' of '+total+' tasks complete</div>';
+      } else if(type === 'blocked') {
+        const blocked = data.filter(p => p.status === 'red');
+        html = '<div class="stat-detail"><div style="font-size:40px">🚫</div><div class="stat-detail-n" style="color:var(--red)">'+blocked.length+'</div><div class="stat-detail-l">Blocked Projects</div></div>';
+        if(blocked.length) {
+          html += '<div class="stat-list">';
+          blocked.forEach(p => {
+            html += '<div style="padding:10px;background:var(--bg-hover);border-radius:8px;margin-bottom:6px"><div style="font-size:13px;font-weight:700">'+p.name+'</div>';
+            if(p.blockers?.length) p.blockers.forEach(b => html += '<div style="font-size:11px;color:var(--red);margin-top:4px">• '+b+'</div>');
+            html += '</div>';
+          });
+          html += '</div>';
+        }
+      } else if(type === 'tasks') {
+        const total = data.reduce((a,p) => a + (p.done?.length||0) + (p.todo?.length||0), 0);
+        const done = data.reduce((a,p) => a + (p.done?.length||0), 0);
+        const todo = data.reduce((a,p) => a + (p.todo?.length||0), 0);
+        html = '<div class="stat-detail"><div style="font-size:40px">📋</div><div class="stat-detail-n" style="color:var(--blue)">'+total+'</div><div class="stat-detail-l">Total Tasks</div></div>';
+        html += '<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:16px"><div style="text-align:center;padding:12px;background:var(--bg-hover);border-radius:10px"><div style="font-size:20px;font-weight:800;color:var(--secondary)">'+done+'</div><div style="font-size:10px;color:var(--text)">Done</div></div><div style="text-align:center;padding:12px;background:var(--bg-hover);border-radius:10px"><div style="font-size:20px;font-weight:800;color:var(--yellow)">'+todo+'</div><div style="font-size:10px;color:var(--text)">To Do</div></div></div>';
+      }
+      
+      content.innerHTML = html;
     }
-    function closeStatTab(){document.querySelectorAll('.st-tab').forEach(t=>t.classList.remove('on'));const panel=document.getElementById('stPanel');panel.classList.remove('on','g','y','r','b');currentStatTab=null;playSound('close')}
+    function closeStats(){document.getElementById('statsPanel').classList.remove('show');playSound('close')}
   </script>
-</body>
+
+
+  <div class="stats-panel" id="statsPanel" onclick="if(event.target===this)closeStats()">
+    <button class="stats-close" onclick="closeStats()">×</button>
+    <div class="stats-content" id="statsContent">
+    </div>
+  </div>
+  </body>
 </html>
