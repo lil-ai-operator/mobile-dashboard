@@ -238,24 +238,24 @@
     @keyframes statGlowYellow{0%,100%{box-shadow:0 0 25px rgba(245,158,11,0.5),0 0 40px rgba(245,158,11,0.2)}50%{box-shadow:0 0 35px rgba(245,158,11,0.7),0 0 60px rgba(245,158,11,0.3)}}
     @keyframes statGlowBlue{0%,100%{box-shadow:0 0 25px rgba(56,189,248,0.5),0 0 40px rgba(56,189,248,0.2)}50%{box-shadow:0 0 35px rgba(56,189,248,0.7),0 0 60px rgba(56,189,248,0.3)}}}
     .stats-close{position:absolute;top:20px;right:20px;background:none;border:none;color:#fff;font-size:32px;cursor:pointer}
-    .video-studio{margin:0 0 14px 0;background:linear-gradient(180deg,rgba(168,85,247,0.14),rgba(8,8,16,0.96));border:1px solid rgba(168,85,247,0.35);border-radius:18px;padding:16px;box-shadow:0 12px 35px rgba(0,0,0,0.28)}
-    .video-studio-head{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin-bottom:12px}
+    .video-studio{margin:0 0 14px 0;background:linear-gradient(180deg,rgba(168,85,247,0.14),rgba(8,8,16,0.96));border:1px solid rgba(168,85,247,0.35);border-radius:18px;padding:14px;box-shadow:0 12px 35px rgba(0,0,0,0.28)}
+    .video-studio-head{display:flex;justify-content:space-between;align-items:center;gap:12px;cursor:pointer}.video-studio-toggle{font-size:18px;color:var(--text);transition:transform .2s}.video-studio.collapsed .video-studio-toggle{transform:rotate(-90deg)}.video-studio-body{display:grid;gap:12px;margin-top:12px}.video-studio.collapsed .video-studio-body{display:none}
     .video-studio-title{font-size:18px;font-weight:800;color:var(--text-bright)}
     .video-studio-sub{font-size:12px;color:var(--text);margin-top:4px;line-height:1.45}
     .video-studio-badge{padding:6px 10px;border-radius:999px;border:1px solid rgba(0,229,160,0.3);background:rgba(0,229,160,0.08);color:var(--secondary);font-size:10px;font-weight:800;text-transform:uppercase;white-space:nowrap}
-    .studio-grid{display:grid;gap:12px}
-    .studio-card{background:var(--bg-card);border:1px solid var(--border);border-radius:14px;padding:12px}
+    .studio-grid{display:grid;gap:10px}
+    .studio-card{background:var(--bg-card);border:1px solid var(--border);border-radius:14px;padding:12px}.studio-card.compact{padding:10px}
     .studio-label{font-size:11px;color:var(--text);font-weight:800;text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px}
     .studio-card input,.studio-card textarea,.studio-card select{width:100%;padding:12px;background:var(--bg-hover);border:1px solid var(--border);border-radius:12px;color:var(--text-bright);font-size:14px;font-family:inherit}
     .studio-card textarea{min-height:110px;resize:vertical}
-    .studio-inline{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+    .studio-inline{display:grid;grid-template-columns:1fr 1fr;gap:10px}.studio-inline.compact-3{grid-template-columns:1.1fr .9fr .8fr}
     .studio-chip-row{display:flex;flex-wrap:wrap;gap:8px}
     .studio-chip{padding:8px 10px;border-radius:999px;border:1px solid var(--border);background:var(--bg-hover);color:var(--text-bright);font-size:11px;font-weight:700;cursor:pointer;transition:0.2s}
     .studio-chip:hover,.studio-chip.on{border-color:var(--primary);background:rgba(168,85,247,0.14);transform:translateY(-1px)}
     .studio-meta{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
     .studio-pill{padding:7px 10px;border-radius:10px;background:var(--bg-hover);font-size:11px;color:var(--text);font-weight:700}
     .studio-safe{margin-top:8px;padding:10px;border-radius:12px;background:rgba(56,189,248,0.08);border:1px solid rgba(56,189,248,0.25);font-size:12px;line-height:1.5;color:var(--text-bright)}
-    .studio-actions{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+    .studio-actions{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.studio-actions.two{grid-template-columns:1fr 1fr}
     .studio-btn{border:none;border-radius:12px;padding:12px 10px;font-size:13px;font-weight:800;cursor:pointer;transition:0.2s}
     .studio-btn.primary{background:linear-gradient(135deg,var(--primary),var(--primary-light));color:#fff}
     .studio-btn.secondary{background:var(--bg-hover);color:var(--text-bright);border:1px solid var(--border)}
@@ -272,12 +272,12 @@
     .studio-image-preview{display:none;align-items:center;gap:12px;padding:10px;border-radius:12px;background:var(--bg-hover);border:1px solid var(--border)}
     .studio-image-preview.show{display:flex}
     .studio-image-preview img{width:60px;height:60px;object-fit:cover;border-radius:10px;border:1px solid var(--border)}
-    .studio-stack{display:grid;gap:12px;grid-template-columns:1.15fr .85fr}
+    .studio-stack{display:grid;gap:12px;grid-template-columns:1fr}.studio-secondary{display:grid;gap:12px;grid-template-columns:1fr 1fr}
     .studio-list{display:grid;gap:8px;margin-top:10px}
     .studio-list-item{padding:10px 12px;background:var(--bg-hover);border:1px solid var(--border);border-radius:12px;font-size:12px}
     .studio-list-item strong{display:block;color:var(--text-bright);margin-bottom:4px}
     .studio-small{font-size:11px;color:var(--text);line-height:1.45}
-    @media(max-width:640px){.studio-inline,.studio-actions,.studio-stack{grid-template-columns:1fr}.video-studio-head{flex-direction:column}.video-studio-badge{align-self:flex-start}}
+    @media(max-width:640px){.studio-inline,.studio-inline.compact-3,.studio-actions,.studio-actions.two,.studio-stack,.studio-secondary{grid-template-columns:1fr}.video-studio-head{align-items:flex-start}.video-studio-badge{align-self:flex-start}}
     .stat-detail{text-align:center;padding:20px}
     .stat-detail-n{font-size:48px;font-weight:800;margin:10px 0}
     .stat-detail-l{font-size:14px;color:var(--text)}
@@ -350,102 +350,86 @@
     <div id="notifList"></div>
   </div>
   <section class="video-studio" id="videoStudio">
-    <div class="video-studio-head">
+    <div class="video-studio-head" onclick="toggleVideoStudio()">
       <div>
         <div class="video-studio-title">🎥 Video Studio</div>
-        <div class="video-studio-sub">Build Veo-ready prompts for videos, motion graphics, and Galaxy Z Flip 6 front-screen visuals without leaving Mission Control.</div>
+        <div class="video-studio-sub" id="videoStudioSummary">Flip 6-ready video maker — tap to open</div>
       </div>
-      <div class="video-studio-badge">Flip 6 ready</div>
+      <div style="display:flex;align-items:center;gap:10px">
+        <div class="video-studio-badge" id="videoStudioBadge">Flip 6 ready</div>
+        <div class="video-studio-toggle" id="videoStudioToggle">⌄</div>
+      </div>
     </div>
-    <div class="studio-grid">
-      <div class="studio-card">
-        <div class="studio-label">1. Source + prompt</div>
-        <div class="studio-inline">
-          <div class="studio-upload">
-            <input id="studioImage" type="text" placeholder="Image URL or note">
-            <input id="studioFile" class="studio-file" type="file" accept="image/*">
-            <div class="studio-image-preview" id="studioImagePreview">
-              <img id="studioPreviewImg" alt="Uploaded image preview">
-              <div>
-                <strong style="font-size:12px">Image loaded</strong>
-                <div class="studio-small" id="studioImageMeta">Ready to use for image-to-video planning.</div>
-              </div>
-            </div>
-            <div class="studio-help">Phase 2: local image upload preview is live. Next backend step will connect this to a real Veo run from the dashboard.</div>
-          </div>
-          <div>
-            <input id="studioTitle" type="text" placeholder="What are we making? e.g. Flip cover logo loop">
-          </div>
-        </div>
-        <div style="margin-top:10px">
-          <textarea id="studioPrompt" placeholder="Describe the motion, vibe, lighting, background, and what should stay centered."></textarea>
-        </div>
-      </div>
-      <div class="studio-card">
-        <div class="studio-label">2. Format</div>
-        <div class="studio-inline">
-          <select id="studioFormat" onchange="updateVideoStudio()">
-            <option value="flip6-safe">Galaxy Z Flip 6 cover — Safe (720×748)</option>
-            <option value="flip6-full">Galaxy Z Flip 6 cover — Full (720×748)</option>
-            <option value="vertical">Vertical social — 9:16</option>
-            <option value="landscape">Landscape — 16:9</option>
-            <option value="square">Square — 1:1</option>
-          </select>
+    <div class="video-studio-body">
+      <div class="studio-card compact">
+        <div class="studio-label">Quick create</div>
+        <div class="studio-inline compact-3">
+          <input id="studioTitle" type="text" placeholder="What are we making?">
           <select id="studioPreset" onchange="applyStudioPreset(this.value)">
-            <option value="">Choose a preset…</option>
-            <option value="flip-ambient">Flip cover ambient</option>
-            <option value="flip-logo">Flip cover logo loop</option>
-            <option value="flip-hype">Flip cover hype motion</option>
+            <option value="">Preset…</option>
+            <option value="flip-ambient">Flip ambient</option>
+            <option value="flip-logo">Logo loop</option>
+            <option value="flip-hype">Hype motion</option>
             <option value="luxury-ad">Luxury ad</option>
-            <option value="neon-motion">Neon motion graphic</option>
+            <option value="neon-motion">Neon motion</option>
             <option value="ui-promo">UI promo</option>
           </select>
+          <select id="studioFormat" onchange="updateVideoStudio()">
+            <option value="flip6-safe">Flip 6 Safe</option>
+            <option value="flip6-full">Flip 6 Full</option>
+            <option value="vertical">9:16</option>
+            <option value="landscape">16:9</option>
+            <option value="square">1:1</option>
+          </select>
         </div>
-        <div class="studio-chip-row" style="margin-top:10px" id="presetChips">
-          <button class="studio-chip" onclick="applyStudioPreset('flip-ambient')">Ambient</button>
-          <button class="studio-chip" onclick="applyStudioPreset('flip-logo')">Logo loop</button>
-          <button class="studio-chip" onclick="applyStudioPreset('flip-hype')">Hype</button>
-          <button class="studio-chip" onclick="applyStudioPreset('luxury-ad')">Luxury</button>
-          <button class="studio-chip" onclick="applyStudioPreset('neon-motion')">Neon</button>
-          <button class="studio-chip" onclick="applyStudioPreset('ui-promo')">UI promo</button>
+        <div style="margin-top:10px">
+          <textarea id="studioPrompt" placeholder="Describe the video in simple words. Example: luxury glowing logo reveal, centered, smooth loop, dark background."></textarea>
+        </div>
+        <div class="studio-upload" style="margin-top:10px">
+          <input id="studioImage" type="text" placeholder="Optional image note or URL">
+          <input id="studioFile" class="studio-file" type="file" accept="image/*">
+          <div class="studio-image-preview" id="studioImagePreview">
+            <img id="studioPreviewImg" alt="Uploaded image preview">
+            <div>
+              <strong style="font-size:12px">Image loaded</strong>
+              <div class="studio-small" id="studioImageMeta">Ready to use for image-to-video planning.</div>
+            </div>
+          </div>
         </div>
         <div class="studio-meta">
           <div class="studio-pill" id="studioDims">720 × 748</div>
           <div class="studio-pill" id="studioRatio">Flip 6 cover</div>
           <div class="studio-pill" id="studioMode">Safe zone on</div>
         </div>
-        <div class="studio-safe" id="studioSafeCopy">Keep logos, faces, and text centered and away from the top-right camera area.</div>
+        <div class="studio-help" id="studioSafeCopy">Keep logos, faces, and text centered and away from the top-right camera area.</div>
       </div>
       <div class="studio-stack">
-        <div class="studio-card">
-          <div class="studio-label">3. Preview + actions</div>
+        <div class="studio-card compact">
+          <div class="studio-label">Preview</div>
           <div class="studio-preview flip" id="studioPreview">
             <div class="studio-preview-safe" id="studioPreviewSafe"></div>
             <div class="studio-preview-title" id="studioPreviewTitle">Flip 6 cover visual</div>
             <div class="studio-preview-sub" id="studioPreviewSub">Centered, loop-friendly, cover-screen-safe motion graphics.</div>
           </div>
           <div class="studio-actions" style="margin-top:12px">
-            <button class="studio-btn primary" onclick="runStudioJob()">Generate now</button>
-            <button class="studio-btn secondary" onclick="copyStudioCommand()">Copy Veo command</button>
-            <button class="studio-btn ghost" onclick="copyStudioPrompt()">Copy prompt</button>
+            <button class="studio-btn primary" onclick="event.stopPropagation();runStudioJob()">Generate now</button>
+            <button class="studio-btn secondary" onclick="event.stopPropagation();copyStudioCommand()">Copy command</button>
+            <button class="studio-btn ghost" onclick="event.stopPropagation();copyStudioPrompt()">Copy prompt</button>
           </div>
-          <div class="studio-actions" style="margin-top:10px">
-            <button class="studio-btn secondary" onclick="saveStudioDraft()">Save draft</button>
-            <button class="studio-btn secondary" onclick="queueStudioJob()">Queue job card</button>
-            <button class="studio-btn ghost" onclick="sendStudioToTelegram()">Send to Telegram</button>
+          <div class="studio-actions two" style="margin-top:10px">
+            <button class="studio-btn secondary" onclick="event.stopPropagation();saveStudioDraft()">Save draft</button>
+            <button class="studio-btn ghost" onclick="event.stopPropagation();sendStudioToTelegram()">Send to Telegram</button>
           </div>
-          <div class="studio-help" id="studioCommandHint">This builds the exact command for <code>scripts/veo.py generate</code> using the format you picked.</div>
-        <div class="studio-help" id="studioBackendHint">Backend status: checking local bridge…</div>
+          <div class="studio-help" id="studioCommandHint">This builds the exact command for <code>scripts/veo.py generate</code>.</div>
+          <div class="studio-help" id="studioBackendHint">Backend status: checking local bridge…</div>
         </div>
-        <div>
-          <div class="studio-card">
-            <div class="studio-label">4. Saved drafts</div>
-            <div class="studio-small">Keep reusable prompt ideas, Flip 6 concepts, and image-linked requests right here on your phone/browser.</div>
+        <div class="studio-secondary">
+          <div class="studio-card compact">
+            <div class="studio-label">Saved drafts</div>
             <div class="studio-list" id="studioDraftList"></div>
           </div>
-          <div class="studio-card" style="margin-top:12px">
-            <div class="studio-label">5. Job / result cards</div>
-            <div class="studio-small">Phase 2 creates visible job cards now. Next backend step will swap these from mock cards to real Veo job status/results.</div>
+          <div class="studio-card compact">
+            <div class="studio-label">Jobs</div>
             <div class="studio-list" id="studioJobList"></div>
           </div>
         </div>
@@ -522,6 +506,7 @@
     const WARNING_AGE_MS=3*60*60*1000;
     const STALE_AGE_MS=12*60*60*1000;
     let data=[],f='all',checked=JSON.parse(localStorage.getItem('mc_chk')||'{}'),modalType='',openProjects=JSON.parse(localStorage.getItem('mc_open')||'[]'),openSections=JSON.parse(localStorage.getItem('mc_sections')||'[]');
+    let videoStudioCollapsed=JSON.parse(localStorage.getItem('mc_video_collapsed')||'false');
     let modalProjectsInit=false,lastLoadedMeta=null,autoRefreshHandle=null,refreshInFlight=false;
     document.documentElement.setAttribute('data-theme',localStorage.getItem('mc_th')||'dark');
     document.addEventListener('keydown',e=>{if(e.key==='/'&&document.activeElement.tagName!=='INPUT'){e.preventDefault();document.getElementById('s').focus()}if(e.key==='r')refresh()});
@@ -640,6 +625,8 @@
     function getStudioValues(){return {title:document.getElementById('studioTitle')?.value.trim()||'Video concept',image:document.getElementById('studioImage')?.value.trim()||'',prompt:document.getElementById('studioPrompt')?.value.trim()||'',format:document.getElementById('studioFormat')?.value||'flip6-safe'}}
     function buildStudioCommand(){const vals=getStudioValues();const map={vertical:'9:16',landscape:'16:9',square:'1:1','flip6-safe':'16:9','flip6-full':'16:9'};const ratio=map[vals.format]||'16:9';const cleanPrompt=(vals.prompt||'Describe the motion here').replace(/"/g,'\"');return `python3 scripts/veo.py generate --prompt "${cleanPrompt}" --aspect-ratio ${ratio}`;}
     function updateVideoStudio(){const vals=getStudioValues();const cfg=STUDIO_FORMATS[vals.format]||STUDIO_FORMATS['flip6-safe'];document.getElementById('studioDims').textContent=cfg.dims;document.getElementById('studioRatio').textContent=cfg.ratio;document.getElementById('studioMode').textContent=cfg.mode;document.getElementById('studioSafeCopy').textContent=cfg.safe;const preview=document.getElementById('studioPreview');preview.style.aspectRatio=cfg.aspect;preview.classList.toggle('flip',vals.format.startsWith('flip6'));document.getElementById('studioPreviewTitle').textContent=vals.title||cfg.previewTitle;document.getElementById('studioPreviewSub').textContent=vals.prompt?vals.prompt.slice(0,120):cfg.previewSub;document.getElementById('studioPreviewSafe').style.display=cfg.safeOn?'block':'none';document.getElementById('studioCommandHint').innerHTML=`Ready command: <code>${buildStudioCommand()}</code>`;}
+    function syncVideoStudioShell(){const root=document.getElementById('videoStudio');root.classList.toggle('collapsed',videoStudioCollapsed);document.getElementById('videoStudioSummary').textContent=videoStudioCollapsed?'Flip 6-ready video maker — tap to open':((document.getElementById('studioTitle').value.trim()||'Quick create')+' • '+document.getElementById('studioRatio').textContent);document.getElementById('videoStudioToggle').textContent=videoStudioCollapsed?'›':'⌄';}
+    function toggleVideoStudio(){videoStudioCollapsed=!videoStudioCollapsed;localStorage.setItem('mc_video_collapsed',JSON.stringify(videoStudioCollapsed));syncVideoStudioShell();playSound(videoStudioCollapsed?'close':'open');}
     function applyStudioPreset(key){const preset=STUDIO_PRESETS[key];if(!preset)return;document.getElementById('studioPreset').value=key;document.getElementById('studioTitle').value=preset.title;document.getElementById('studioPrompt').value=preset.prompt;document.getElementById('studioFormat').value=preset.format;document.querySelectorAll('#presetChips .studio-chip').forEach(ch=>ch.classList.remove('on'));updateVideoStudio();playSound('tap');}
     function copyStudioPrompt(){const vals=getStudioValues();const text=(vals.prompt||'').trim();if(!text){alert('Add a prompt first bro');return;}navigator.clipboard.writeText(text).then(()=>alert('Prompt copied'));playSound('send');}
     function copyStudioCommand(){const cmd=buildStudioCommand();navigator.clipboard.writeText(cmd).then(()=>alert('Veo command copied'));playSound('send');}
@@ -675,6 +662,7 @@ ${vals.prompt||'Add prompt here'}`;window.open('https://t.me/lilPepeG_bot?text='
     renderStudioDrafts();
     renderStudioJobs();
     checkStudioBackend();
+    syncVideoStudioShell();
     function render(){
       const q=document.getElementById('s').value.toLowerCase();
       let pf=f==='all'?data:data.filter(p=>p.status===f);
