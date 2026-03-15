@@ -238,6 +238,36 @@
     @keyframes statGlowYellow{0%,100%{box-shadow:0 0 25px rgba(245,158,11,0.5),0 0 40px rgba(245,158,11,0.2)}50%{box-shadow:0 0 35px rgba(245,158,11,0.7),0 0 60px rgba(245,158,11,0.3)}}
     @keyframes statGlowBlue{0%,100%{box-shadow:0 0 25px rgba(56,189,248,0.5),0 0 40px rgba(56,189,248,0.2)}50%{box-shadow:0 0 35px rgba(56,189,248,0.7),0 0 60px rgba(56,189,248,0.3)}}}
     .stats-close{position:absolute;top:20px;right:20px;background:none;border:none;color:#fff;font-size:32px;cursor:pointer}
+    .video-studio{margin:0 0 14px 0;background:linear-gradient(180deg,rgba(168,85,247,0.14),rgba(8,8,16,0.96));border:1px solid rgba(168,85,247,0.35);border-radius:18px;padding:16px;box-shadow:0 12px 35px rgba(0,0,0,0.28)}
+    .video-studio-head{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin-bottom:12px}
+    .video-studio-title{font-size:18px;font-weight:800;color:var(--text-bright)}
+    .video-studio-sub{font-size:12px;color:var(--text);margin-top:4px;line-height:1.45}
+    .video-studio-badge{padding:6px 10px;border-radius:999px;border:1px solid rgba(0,229,160,0.3);background:rgba(0,229,160,0.08);color:var(--secondary);font-size:10px;font-weight:800;text-transform:uppercase;white-space:nowrap}
+    .studio-grid{display:grid;gap:12px}
+    .studio-card{background:var(--bg-card);border:1px solid var(--border);border-radius:14px;padding:12px}
+    .studio-label{font-size:11px;color:var(--text);font-weight:800;text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px}
+    .studio-card input,.studio-card textarea,.studio-card select{width:100%;padding:12px;background:var(--bg-hover);border:1px solid var(--border);border-radius:12px;color:var(--text-bright);font-size:14px;font-family:inherit}
+    .studio-card textarea{min-height:110px;resize:vertical}
+    .studio-inline{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+    .studio-chip-row{display:flex;flex-wrap:wrap;gap:8px}
+    .studio-chip{padding:8px 10px;border-radius:999px;border:1px solid var(--border);background:var(--bg-hover);color:var(--text-bright);font-size:11px;font-weight:700;cursor:pointer;transition:0.2s}
+    .studio-chip:hover,.studio-chip.on{border-color:var(--primary);background:rgba(168,85,247,0.14);transform:translateY(-1px)}
+    .studio-meta{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+    .studio-pill{padding:7px 10px;border-radius:10px;background:var(--bg-hover);font-size:11px;color:var(--text);font-weight:700}
+    .studio-safe{margin-top:8px;padding:10px;border-radius:12px;background:rgba(56,189,248,0.08);border:1px solid rgba(56,189,248,0.25);font-size:12px;line-height:1.5;color:var(--text-bright)}
+    .studio-actions{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+    .studio-btn{border:none;border-radius:12px;padding:12px 10px;font-size:13px;font-weight:800;cursor:pointer;transition:0.2s}
+    .studio-btn.primary{background:linear-gradient(135deg,var(--primary),var(--primary-light));color:#fff}
+    .studio-btn.secondary{background:var(--bg-hover);color:var(--text-bright);border:1px solid var(--border)}
+    .studio-btn.ghost{background:rgba(0,229,160,0.08);color:var(--secondary);border:1px solid rgba(0,229,160,0.2)}
+    .studio-preview{width:100%;aspect-ratio:1/1;border-radius:20px;border:1px dashed rgba(255,255,255,0.12);background:radial-gradient(circle at 50% 32%,rgba(168,85,247,0.45),transparent 35%),linear-gradient(180deg,#10101a,#050507);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:18px;text-align:center;position:relative;overflow:hidden}
+    .studio-preview.flip{aspect-ratio:720/748;border-radius:28px}
+    .studio-preview::after{content:'';position:absolute;top:18px;right:18px;width:54px;height:22px;border-radius:999px;background:rgba(2,2,4,0.82);border:1px solid rgba(255,255,255,0.12);box-shadow:0 0 0 4px rgba(2,2,4,0.28)}
+    .studio-preview-title{font-size:14px;font-weight:800;color:#fff;max-width:180px;position:relative;z-index:1}
+    .studio-preview-sub{font-size:11px;color:rgba(255,255,255,0.72);margin-top:8px;max-width:210px;line-height:1.45;position:relative;z-index:1}
+    .studio-preview-safe{position:absolute;inset:36px 26px 24px;border:1px dashed rgba(0,229,160,0.38);border-radius:22px;z-index:0}
+    .studio-help{font-size:12px;color:var(--text);line-height:1.5;margin-top:8px}
+    @media(max-width:640px){.studio-inline,.studio-actions{grid-template-columns:1fr}.video-studio-head{flex-direction:column}.video-studio-badge{align-self:flex-start}}
     .stat-detail{text-align:center;padding:20px}
     .stat-detail-n{font-size:48px;font-weight:800;margin:10px 0}
     .stat-detail-l{font-size:14px;color:var(--text)}
@@ -309,6 +339,81 @@
     <div style="padding:10px;font-size:11px;color:var(--text);text-align:center">← Swipe right to close</div>
     <div id="notifList"></div>
   </div>
+  <section class="video-studio" id="videoStudio">
+    <div class="video-studio-head">
+      <div>
+        <div class="video-studio-title">🎥 Video Studio</div>
+        <div class="video-studio-sub">Build Veo-ready prompts for videos, motion graphics, and Galaxy Z Flip 6 front-screen visuals without leaving Mission Control.</div>
+      </div>
+      <div class="video-studio-badge">Flip 6 ready</div>
+    </div>
+    <div class="studio-grid">
+      <div class="studio-card">
+        <div class="studio-label">1. Source + prompt</div>
+        <div class="studio-inline">
+          <div>
+            <input id="studioImage" type="text" placeholder="Image URL or note: upload via Telegram first for now">
+            <div class="studio-help">V1 note: Mission Control can design the request now. Direct image upload + Veo run inside the dashboard is the next backend step.</div>
+          </div>
+          <div>
+            <input id="studioTitle" type="text" placeholder="What are we making? e.g. Flip cover logo loop">
+          </div>
+        </div>
+        <div style="margin-top:10px">
+          <textarea id="studioPrompt" placeholder="Describe the motion, vibe, lighting, background, and what should stay centered."></textarea>
+        </div>
+      </div>
+      <div class="studio-card">
+        <div class="studio-label">2. Format</div>
+        <div class="studio-inline">
+          <select id="studioFormat" onchange="updateVideoStudio()">
+            <option value="flip6-safe">Galaxy Z Flip 6 cover — Safe (720×748)</option>
+            <option value="flip6-full">Galaxy Z Flip 6 cover — Full (720×748)</option>
+            <option value="vertical">Vertical social — 9:16</option>
+            <option value="landscape">Landscape — 16:9</option>
+            <option value="square">Square — 1:1</option>
+          </select>
+          <select id="studioPreset" onchange="applyStudioPreset(this.value)">
+            <option value="">Choose a preset…</option>
+            <option value="flip-ambient">Flip cover ambient</option>
+            <option value="flip-logo">Flip cover logo loop</option>
+            <option value="flip-hype">Flip cover hype motion</option>
+            <option value="luxury-ad">Luxury ad</option>
+            <option value="neon-motion">Neon motion graphic</option>
+            <option value="ui-promo">UI promo</option>
+          </select>
+        </div>
+        <div class="studio-chip-row" style="margin-top:10px" id="presetChips">
+          <button class="studio-chip" onclick="applyStudioPreset('flip-ambient')">Ambient</button>
+          <button class="studio-chip" onclick="applyStudioPreset('flip-logo')">Logo loop</button>
+          <button class="studio-chip" onclick="applyStudioPreset('flip-hype')">Hype</button>
+          <button class="studio-chip" onclick="applyStudioPreset('luxury-ad')">Luxury</button>
+          <button class="studio-chip" onclick="applyStudioPreset('neon-motion')">Neon</button>
+          <button class="studio-chip" onclick="applyStudioPreset('ui-promo')">UI promo</button>
+        </div>
+        <div class="studio-meta">
+          <div class="studio-pill" id="studioDims">720 × 748</div>
+          <div class="studio-pill" id="studioRatio">Flip 6 cover</div>
+          <div class="studio-pill" id="studioMode">Safe zone on</div>
+        </div>
+        <div class="studio-safe" id="studioSafeCopy">Keep logos, faces, and text centered and away from the top-right camera area.</div>
+      </div>
+      <div class="studio-card">
+        <div class="studio-label">3. Preview + actions</div>
+        <div class="studio-preview flip" id="studioPreview">
+          <div class="studio-preview-safe" id="studioPreviewSafe"></div>
+          <div class="studio-preview-title" id="studioPreviewTitle">Flip 6 cover visual</div>
+          <div class="studio-preview-sub" id="studioPreviewSub">Centered, loop-friendly, cover-screen-safe motion graphics.</div>
+        </div>
+        <div class="studio-actions" style="margin-top:12px">
+          <button class="studio-btn primary" onclick="copyStudioCommand()">Copy Veo command</button>
+          <button class="studio-btn secondary" onclick="sendStudioToTelegram()">Send to Telegram</button>
+          <button class="studio-btn ghost" onclick="copyStudioPrompt()">Copy prompt</button>
+        </div>
+        <div class="studio-help" id="studioCommandHint">This builds the exact command for <code>scripts/veo.py generate</code> using the format you picked.</div>
+      </div>
+    </div>
+  </section>
   <div class="modal" id="modal">
     <div class="modal-content">
       <h2 id="modalTitle">Add Task</h2>
@@ -492,9 +597,28 @@
     function attachSwipe(){if(!swipeAttached){document.addEventListener('touchstart',onTouchStart,{passive:true});document.addEventListener('touchmove',onTouchMove,{passive:false});document.addEventListener('touchend',onTouchEnd,{passive:true});swipeAttached=true}}
     function detachSwipe(){if(swipeAttached){document.removeEventListener('touchstart',onTouchStart);document.removeEventListener('touchmove',onTouchMove);document.removeEventListener('touchend',onTouchEnd);swipeAttached=false}}
     function toggleNotifs(){const p=document.getElementById('notifPanel'),t=document.getElementById('notifTab'),o=p.classList.contains('open');if(o){p.classList.remove('open');p.style.right='-300px';detachSwipe();playSound('swipe')}else{p.classList.add('open');p.style.right='0px';attachSwipe();t.classList.remove('has-new');playSound('modal')}}
+    const STUDIO_FORMATS={'flip6-safe':{dims:'720 × 748',ratio:'Flip 6 cover',mode:'Safe zone on',safe:'Keep logos, faces, and text centered and away from the top-right camera area.',previewTitle:'Flip 6 safe cover',previewSub:'Centered, loop-friendly, cover-screen-safe motion graphics.',aspect:'720/748',safeOn:true},'flip6-full':{dims:'720 × 748',ratio:'Flip 6 cover',mode:'Full frame',safe:'Use the full cover screen, but still avoid tiny text near the cutout.',previewTitle:'Flip 6 full cover',previewSub:'Edge-to-edge visual built for the outer screen.',aspect:'720/748',safeOn:false},'vertical':{dims:'9:16',ratio:'Vertical social',mode:'Reels / Shorts',safe:'Keep the subject centered and leave breathing room for crop differences across apps.',previewTitle:'Vertical promo',previewSub:'Tall format for reels, shorts, and stories.',aspect:'9/16',safeOn:false},'landscape':{dims:'16:9',ratio:'Landscape',mode:'Widescreen',safe:'Keep the main action center-weighted for trailers, promos, and hero shots.',previewTitle:'Landscape promo',previewSub:'Wide cinematic format for demos and ads.',aspect:'16/9',safeOn:false},'square':{dims:'1:1',ratio:'Square',mode:'Feed friendly',safe:'Use bold composition and avoid crowding the edges.',previewTitle:'Square motion graphic',previewSub:'Balanced format for square social placements.',aspect:'1/1',safeOn:false}};
+    const STUDIO_PRESETS={'flip-ambient':{title:'Flip ambient loop',format:'flip6-safe',prompt:'Create a smooth looping animated wallpaper for a Galaxy Z Flip 6 cover screen, centered composition, safe for the top-right camera area, subtle elegant motion, high contrast, premium look, minimal clutter.'},'flip-logo':{title:'Flip logo loop',format:'flip6-safe',prompt:'Animate this logo for a Galaxy Z Flip 6 cover screen, centered and clean, safe padding around edges, subtle glow, premium motion graphics, loop-friendly, dark luxurious background.'},'flip-hype':{title:'Flip hype motion',format:'flip6-full',prompt:'Create a bold hype animation for a Galaxy Z Flip 6 cover screen with vibrant glow, energetic movement, high contrast, centered composition, and a clean loop that still leaves the camera area readable.'},'luxury-ad':{title:'Luxury ad visual',format:'vertical',prompt:'Create a luxury ad-style motion graphic with elegant gold particles, soft cinematic lighting, premium contrast, smooth camera motion, and a polished brand feel.'},'neon-motion':{title:'Neon motion graphic',format:'flip6-safe',prompt:'A neon geometric motion graphic for a Galaxy Z Flip 6 cover screen, vibrant glow, centered subject, dark background, smooth looping animation, safe for the cover-display cutout.'},'ui-promo':{title:'UI promo clip',format:'landscape',prompt:'A futuristic dashboard UI animating into place with glowing charts, sleek transitions, premium tech aesthetic, and smooth cinematic motion.'}};
+    function getStudioValues(){return {title:document.getElementById('studioTitle')?.value.trim()||'Video concept',image:document.getElementById('studioImage')?.value.trim()||'',prompt:document.getElementById('studioPrompt')?.value.trim()||'',format:document.getElementById('studioFormat')?.value||'flip6-safe'}}
+    function buildStudioCommand(){const vals=getStudioValues();const map={vertical:'9:16',landscape:'16:9',square:'1:1','flip6-safe':'16:9','flip6-full':'16:9'};const ratio=map[vals.format]||'16:9';const cleanPrompt=(vals.prompt||'Describe the motion here').replace(/"/g,'\"');return `python3 scripts/veo.py generate --prompt "${cleanPrompt}" --aspect-ratio ${ratio}`;}
+    function updateVideoStudio(){const vals=getStudioValues();const cfg=STUDIO_FORMATS[vals.format]||STUDIO_FORMATS['flip6-safe'];document.getElementById('studioDims').textContent=cfg.dims;document.getElementById('studioRatio').textContent=cfg.ratio;document.getElementById('studioMode').textContent=cfg.mode;document.getElementById('studioSafeCopy').textContent=cfg.safe;const preview=document.getElementById('studioPreview');preview.style.aspectRatio=cfg.aspect;preview.classList.toggle('flip',vals.format.startsWith('flip6'));document.getElementById('studioPreviewTitle').textContent=vals.title||cfg.previewTitle;document.getElementById('studioPreviewSub').textContent=vals.prompt?vals.prompt.slice(0,120):cfg.previewSub;document.getElementById('studioPreviewSafe').style.display=cfg.safeOn?'block':'none';document.getElementById('studioCommandHint').innerHTML=`Ready command: <code>${buildStudioCommand()}</code>`;}
+    function applyStudioPreset(key){const preset=STUDIO_PRESETS[key];if(!preset)return;document.getElementById('studioPreset').value=key;document.getElementById('studioTitle').value=preset.title;document.getElementById('studioPrompt').value=preset.prompt;document.getElementById('studioFormat').value=preset.format;document.querySelectorAll('#presetChips .studio-chip').forEach(ch=>ch.classList.remove('on'));updateVideoStudio();playSound('tap');}
+    function copyStudioPrompt(){const vals=getStudioValues();const text=(vals.prompt||'').trim();if(!text){alert('Add a prompt first bro');return;}navigator.clipboard.writeText(text).then(()=>alert('Prompt copied'));playSound('send');}
+    function copyStudioCommand(){const cmd=buildStudioCommand();navigator.clipboard.writeText(cmd).then(()=>alert('Veo command copied'));playSound('send');}
+    function sendStudioToTelegram(){const vals=getStudioValues();const fmt=STUDIO_FORMATS[vals.format]||STUDIO_FORMATS['flip6-safe'];const msg=`🎥 VIDEO STUDIO REQUEST
+
+Title: ${vals.title||'Video concept'}
+Format: ${fmt.ratio} (${fmt.dims})
+Mode: ${fmt.mode}
+Image: ${vals.image||'None supplied yet'}
+
+Prompt:
+${vals.prompt||'Add prompt here'}`;window.open('https://t.me/lilPepeG_bot?text='+encodeURIComponent(msg),'_blank');playSound('send');showC();}
+    ['studioTitle','studioImage','studioPrompt','studioFormat'].forEach(id=>setTimeout(()=>document.getElementById(id)?.addEventListener(id==='studioFormat'?'change':'input',updateVideoStudio),0));
     const notifs=[{t:'Mission Control updated',d:'Just now'},{t:'AutoBookr landing ready',d:'5 min ago'},{t:'Backup scripts ready',d:'1 hour ago'},{t:'NeuroNet needs approval',d:'2 hours ago'}];
     function renderNotifs(){document.getElementById('notifList').innerHTML=notifs.map(n=>'<div class="notif-item">'+n.t+'<div class="time">'+n.d+'</div></div>').join('')}
     renderNotifs();
+    updateVideoStudio();
     function render(){
       const q=document.getElementById('s').value.toLowerCase();
       let pf=f==='all'?data:data.filter(p=>p.status===f);
