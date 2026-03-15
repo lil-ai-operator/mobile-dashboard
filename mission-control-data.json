@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-03-15T01:46:29Z",
+  "updatedAt": "2026-03-15T07:30:02Z",
   "projects": [
     {
       "key": "autobookr_suite",
@@ -170,134 +170,11 @@
       ]
     }
   ],
-  "verified_live_at": "2026-03-15T01:30:03Z",
+  "verified_live_at": "2026-03-15T07:30:04Z",
   "freshness": {
     "level": "live",
     "warning_after_hours": 3,
     "stale_after_hours": 12,
     "live_json_url": "https://lil-ai-operator.github.io/mobile-dashboard/mission-control-data.json"
-  },
-  "readQueue": [
-    {
-      "id": "session-start",
-      "title": "SESSION_START.md",
-      "group": "🧠 Memory",
-      "project": "Mission Control",
-      "note": "Auto-tracked from docs folder",
-      "priority": "normal",
-      "path": "docs/SESSION_START.md",
-      "url": "https://raw.githack.com/lil-ai-operator/mobile-dashboard/main/docs/SESSION_START.md",
-      "updatedAt": "2026-03-14T08:22:21Z"
-    },
-    {
-      "id": "master-project-execution-guide",
-      "title": "MASTER_PROJECT_EXECUTION_GUIDE.md",
-      "group": "🧭 Control Docs",
-      "project": "Mission Control",
-      "note": "Auto-tracked from docs folder",
-      "priority": "normal",
-      "path": "docs/MASTER_PROJECT_EXECUTION_GUIDE.md",
-      "url": "https://raw.githack.com/lil-ai-operator/mobile-dashboard/main/docs/MASTER_PROJECT_EXECUTION_GUIDE.md",
-      "updatedAt": "2026-03-04T12:09:50Z"
-    },
-    {
-      "id": "plain-english-guide",
-      "title": "PLAIN_ENGLISH_GUIDE.md",
-      "group": "🧭 Control Docs",
-      "project": "Mission Control",
-      "note": "Auto-tracked from docs folder",
-      "priority": "normal",
-      "path": "docs/PLAIN_ENGLISH_GUIDE.md",
-      "url": "https://raw.githack.com/lil-ai-operator/mobile-dashboard/main/docs/PLAIN_ENGLISH_GUIDE.md",
-      "updatedAt": "2026-03-04T12:09:50Z"
-    },
-    {
-      "id": "today-focus",
-      "title": "TODAY_FOCUS.md",
-      "group": "🔥 Today",
-      "project": "Mission Control",
-      "note": "Auto-tracked from docs folder",
-      "priority": "normal",
-      "path": "docs/TODAY_FOCUS.md",
-      "url": "https://raw.githack.com/lil-ai-operator/mobile-dashboard/main/docs/TODAY_FOCUS.md",
-      "updatedAt": "2026-03-04T12:09:50Z"
-    },
-    {
-      "id": "memory",
-      "title": "MEMORY.md",
-      "group": "🧠 Memory",
-      "project": "Mission Control",
-      "note": "Auto-tracked from docs folder",
-      "priority": "normal",
-      "path": "docs/MEMORY.md",
-      "url": "https://raw.githack.com/lil-ai-operator/mobile-dashboard/main/docs/MEMORY.md",
-      "updatedAt": "2026-03-04T12:09:50Z"
-    },
-    {
-      "id": "activity-feed-spec",
-      "title": "activity-feed-spec.md",
-      "group": "📚 Docs",
-      "project": "Mission Control",
-      "note": "Auto-tracked from docs folder",
-      "priority": "normal",
-      "path": "docs/activity-feed-spec.md",
-      "url": "https://raw.githack.com/lil-ai-operator/mobile-dashboard/main/docs/activity-feed-spec.md",
-      "updatedAt": "2026-03-14T08:32:33Z"
-    },
-    {
-      "id": "wayne-action-stack",
-      "title": "wayne-action-stack.md",
-      "group": "📚 Docs",
-      "project": "Mission Control",
-      "note": "Auto-tracked from docs folder",
-      "priority": "normal",
-      "path": "docs/wayne-action-stack.md",
-      "url": "https://raw.githack.com/lil-ai-operator/mobile-dashboard/main/docs/wayne-action-stack.md",
-      "updatedAt": "2026-03-04T12:09:50Z"
-    },
-    {
-      "id": "projects-backlog-wayne",
-      "title": "PROJECTS_BACKLOG_WAYNE.md",
-      "group": "🧭 Control Docs",
-      "project": "Mission Control",
-      "note": "Auto-tracked from docs folder",
-      "priority": "normal",
-      "path": "docs/PROJECTS_BACKLOG_WAYNE.md",
-      "url": "https://raw.githack.com/lil-ai-operator/mobile-dashboard/main/docs/PROJECTS_BACKLOG_WAYNE.md",
-      "updatedAt": "2026-03-04T12:09:50Z"
-    },
-    {
-      "id": "brand-kit-v1",
-      "title": "BRAND_KIT_V1.md",
-      "group": "🎨 Brand",
-      "project": "AutoBookr",
-      "note": "Auto-tracked from docs folder",
-      "priority": "normal",
-      "path": "docs/BRAND_KIT_V1.md",
-      "url": "https://raw.githack.com/lil-ai-operator/mobile-dashboard/main/docs/BRAND_KIT_V1.md",
-      "updatedAt": "2026-03-04T22:00:11Z"
-    },
-    {
-      "id": "current-status",
-      "title": "CURRENT_STATUS.md",
-      "group": "🔥 Today",
-      "project": "Mission Control",
-      "note": "Auto-tracked from docs folder",
-      "priority": "normal",
-      "path": "docs/CURRENT_STATUS.md",
-      "url": "https://raw.githack.com/lil-ai-operator/mobile-dashboard/main/docs/CURRENT_STATUS.md",
-      "updatedAt": "2026-03-14T08:22:21Z"
-    },
-    {
-      "id": "portal-mvp-spec",
-      "title": "PORTAL_MVP_SPEC.md",
-      "group": "🎨 Brand",
-      "project": "AutoBookr",
-      "note": "Auto-tracked from docs folder",
-      "priority": "normal",
-      "path": "docs/PORTAL_MVP_SPEC.md",
-      "url": "https://raw.githack.com/lil-ai-operator/mobile-dashboard/main/docs/PORTAL_MVP_SPEC.md",
-      "updatedAt": "2026-03-04T16:51:59Z"
-    }
-  ]
+  }
 }
