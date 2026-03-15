@@ -425,16 +425,17 @@
             <div class="studio-preview-sub" id="studioPreviewSub">Centered, loop-friendly, cover-screen-safe motion graphics.</div>
           </div>
           <div class="studio-actions" style="margin-top:12px">
-            <button class="studio-btn primary" onclick="copyStudioCommand()">Copy Veo command</button>
-            <button class="studio-btn secondary" onclick="sendStudioToTelegram()">Send to Telegram</button>
+            <button class="studio-btn primary" onclick="runStudioJob()">Generate now</button>
+            <button class="studio-btn secondary" onclick="copyStudioCommand()">Copy Veo command</button>
             <button class="studio-btn ghost" onclick="copyStudioPrompt()">Copy prompt</button>
           </div>
           <div class="studio-actions" style="margin-top:10px">
             <button class="studio-btn secondary" onclick="saveStudioDraft()">Save draft</button>
             <button class="studio-btn secondary" onclick="queueStudioJob()">Queue job card</button>
-            <button class="studio-btn ghost" onclick="clearStudioDrafts()">Clear drafts</button>
+            <button class="studio-btn ghost" onclick="sendStudioToTelegram()">Send to Telegram</button>
           </div>
           <div class="studio-help" id="studioCommandHint">This builds the exact command for <code>scripts/veo.py generate</code> using the format you picked.</div>
+        <div class="studio-help" id="studioBackendHint">Backend status: checking local bridge…</div>
         </div>
         <div>
           <div class="studio-card">
@@ -642,6 +643,8 @@
     function applyStudioPreset(key){const preset=STUDIO_PRESETS[key];if(!preset)return;document.getElementById('studioPreset').value=key;document.getElementById('studioTitle').value=preset.title;document.getElementById('studioPrompt').value=preset.prompt;document.getElementById('studioFormat').value=preset.format;document.querySelectorAll('#presetChips .studio-chip').forEach(ch=>ch.classList.remove('on'));updateVideoStudio();playSound('tap');}
     function copyStudioPrompt(){const vals=getStudioValues();const text=(vals.prompt||'').trim();if(!text){alert('Add a prompt first bro');return;}navigator.clipboard.writeText(text).then(()=>alert('Prompt copied'));playSound('send');}
     function copyStudioCommand(){const cmd=buildStudioCommand();navigator.clipboard.writeText(cmd).then(()=>alert('Veo command copied'));playSound('send');}
+    const STUDIO_BACKEND='http://127.0.0.1:8787';
+    let studioBackendOnline=false;
     function sendStudioToTelegram(){const vals=getStudioValues();const fmt=STUDIO_FORMATS[vals.format]||STUDIO_FORMATS['flip6-safe'];const msg=`🎥 VIDEO STUDIO REQUEST
 
 Title: ${vals.title||'Video concept'}
@@ -651,15 +654,18 @@ Image: ${vals.image||'None supplied yet'}
 
 Prompt:
 ${vals.prompt||'Add prompt here'}`;window.open('https://t.me/lilPepeG_bot?text='+encodeURIComponent(msg),'_blank');playSound('send');showC();}
+    async function checkStudioBackend(){try{const res=await fetch(`${STUDIO_BACKEND}/health`);studioBackendOnline=res.ok;document.getElementById('studioBackendHint').textContent=studioBackendOnline?'Backend status: local bridge online ✅':'Backend status: local bridge unavailable';}catch(e){studioBackendOnline=false;document.getElementById('studioBackendHint').textContent='Backend status: local bridge unavailable';}}
     function getStudioDrafts(){return JSON.parse(localStorage.getItem('mc_video_drafts')||'[]')}
     function setStudioDrafts(items){localStorage.setItem('mc_video_drafts', JSON.stringify(items.slice(0,8)))}
     function getStudioJobs(){return JSON.parse(localStorage.getItem('mc_video_jobs')||'[]')}
     function setStudioJobs(items){localStorage.setItem('mc_video_jobs', JSON.stringify(items.slice(0,8)))}
     function renderStudioDrafts(){const list=document.getElementById('studioDraftList');const items=getStudioDrafts();list.innerHTML=items.length?items.map((d,i)=>`<div class="studio-list-item"><strong>${d.title||'Untitled draft'}</strong><div class="studio-small">${d.format} • ${d.when}</div><div class="studio-small">${(d.prompt||'').slice(0,90)}</div></div>`).join(''):'<div class="studio-list-item">No drafts yet — save one from the builder.</div>';}
-    function renderStudioJobs(){const list=document.getElementById('studioJobList');const items=getStudioJobs();list.innerHTML=items.length?items.map((j,i)=>`<div class="studio-list-item"><strong>${j.title}</strong><div class="studio-small">${j.status} • ${j.when}</div><div class="studio-small">${j.note}</div></div>`).join(''):'<div class="studio-list-item">No job cards yet — queue one to track what you want to make next.</div>';}
+    function renderStudioJobs(){const list=document.getElementById('studioJobList');const items=getStudioJobs();list.innerHTML=items.length?items.map((j,i)=>`<div class="studio-list-item"><strong>${j.title}</strong><div class="studio-small">${j.status} • ${j.when}</div><div class="studio-small">${j.note}${j.videoPath?`<br><a href="${j.videoPath}" target="_blank">Open video</a>`:''}</div></div>`).join(''):'<div class="studio-list-item">No job cards yet — queue one to track what you want to make next.</div>';}
     function saveStudioDraft(){const vals=getStudioValues();const fmt=STUDIO_FORMATS[vals.format]||STUDIO_FORMATS['flip6-safe'];const items=getStudioDrafts();items.unshift({title:vals.title||'Video concept',prompt:vals.prompt,format:`${fmt.ratio} (${fmt.dims})`,when:new Date().toLocaleString()});setStudioDrafts(items);renderStudioDrafts();playSound('send');showC();}
     function clearStudioDrafts(){localStorage.removeItem('mc_video_drafts');localStorage.removeItem('mc_video_jobs');renderStudioDrafts();renderStudioJobs();playSound('close');}
     function queueStudioJob(){const vals=getStudioValues();const items=getStudioJobs();items.unshift({title:vals.title||'Video concept',status:'Ready to run',when:new Date().toLocaleString(),note:(vals.prompt||'Add prompt').slice(0,90)});setStudioJobs(items);renderStudioJobs();playSound('modal');showC();}
+    async function runStudioJob(){const vals=getStudioValues();if(!vals.prompt){alert('Add a prompt first bro');return;}if(!studioBackendOnline){alert('Local backend not reachable yet. Start it with: python3 scripts/veo_studio_server.py');return;}const fmt=STUDIO_FORMATS[vals.format]||STUDIO_FORMATS['flip6-safe'];const ratioMap={vertical:'9:16',landscape:'16:9',square:'1:1','flip6-safe':'16:9','flip6-full':'16:9'};const payload={title:vals.title||'Video concept',prompt:vals.prompt,format:vals.format,aspectRatio:ratioMap[vals.format]||'16:9',resolution:'720p',imageNote:vals.image||''};const fileInput=document.getElementById('studioFile');if(fileInput?.files?.[0]){payload.imageFilename=fileInput.files[0].name;payload.imageBase64=await new Promise((resolve,reject)=>{const r=new FileReader();r.onload=()=>resolve(r.result);r.onerror=reject;r.readAsDataURL(fileInput.files[0]);});}const res=await fetch(`${STUDIO_BACKEND}/jobs`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});const data=await res.json();if(!res.ok||!data.ok){alert(data.error||'Could not queue video job');return;}const jobs=getStudioJobs();jobs.unshift({title:data.job.title,status:'Queued',when:new Date().toLocaleString(),note:`${fmt.ratio} • waiting for backend`,id:data.job.id});setStudioJobs(jobs);renderStudioJobs();pollStudioJob(data.job.id);playSound('send');showC();}
+    async function pollStudioJob(jobId){for(let i=0;i<90;i++){try{const res=await fetch(`${STUDIO_BACKEND}/jobs/${jobId}`);const data=await res.json();if(data.ok&&data.job){const jobs=getStudioJobs().map(j=>j.id===jobId?{...j,status:data.job.status,when:new Date().toLocaleString(),note:data.job.error||data.job.notes||data.job.prompt?.slice(0,90)||j.note,videoPath:data.job.videoPath?data.job.videoPath.replace('/Users/aioperator/.openclaw/workspace/',''):j.videoPath}:j);setStudioJobs(jobs);renderStudioJobs();if(['done','failed'].includes(data.job.status))return;}}catch(e){}await new Promise(r=>setTimeout(r,4000));}}
     function handleStudioFile(evt){const file=evt.target.files&&evt.target.files[0];if(!file)return;const reader=new FileReader();reader.onload=()=>{document.getElementById('studioPreviewImg').src=reader.result;document.getElementById('studioImagePreview').classList.add('show');document.getElementById('studioImageMeta').textContent=`${file.name} • ${(file.size/1024).toFixed(0)} KB`;document.getElementById('studioImage').value=file.name;updateVideoStudio();};reader.readAsDataURL(file);}
     ['studioTitle','studioImage','studioPrompt','studioFormat'].forEach(id=>setTimeout(()=>document.getElementById(id)?.addEventListener(id==='studioFormat'?'change':'input',updateVideoStudio),0));setTimeout(()=>document.getElementById('studioFile')?.addEventListener('change', handleStudioFile),0);
     const notifs=[{t:'Mission Control updated',d:'Just now'},{t:'AutoBookr landing ready',d:'5 min ago'},{t:'Backup scripts ready',d:'1 hour ago'},{t:'NeuroNet needs approval',d:'2 hours ago'}];
@@ -668,6 +674,7 @@ ${vals.prompt||'Add prompt here'}`;window.open('https://t.me/lilPepeG_bot?text='
     updateVideoStudio();
     renderStudioDrafts();
     renderStudioJobs();
+    checkStudioBackend();
     function render(){
       const q=document.getElementById('s').value.toLowerCase();
       let pf=f==='all'?data:data.filter(p=>p.status===f);
