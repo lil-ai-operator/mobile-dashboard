@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-10-03T06:32:02Z",
+  "updatedAt": "2026-10-03T14:30:09Z",
   "activity": [
     {
       "project": "mission_control",
@@ -196,7 +196,7 @@
       ]
     }
   ],
-  "verified_live_at": "2026-10-03T07:59:39Z",
+  "verified_live_at": "2026-10-03T14:30:13Z",
   "freshness": {
     "level": "live",
     "warning_after_hours": 3,
